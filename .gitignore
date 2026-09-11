@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.zudoku/
+.npm-cache/
+src/
+.env
+*.local
+**/.env
+**/.env.local
+.zudoku-state/

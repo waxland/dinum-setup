@@ -1,0 +1,161 @@
+/*
+ * Couche d'integration Zudoku + DSFR.
+ * Le rendu principal vient du paquet officiel @gouvfr/dsfr.
+ * Ces styles ne remplacent pas le DSFR : ils limitent les conflits avec la coquille Zudoku
+ * et ajustent seulement les conteneurs generes par la documentation.
+ */
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background-default-grey, #fff);
+}
+
+/* Zudoku layout shell */
+header,
+[data-header],
+nav[aria-label="Main"],
+nav[aria-label="Primary"] {
+  border-bottom: 1px solid var(--border-default-grey, #ddd) !important;
+  box-shadow: none !important;
+}
+
+aside,
+[data-sidebar] {
+  background: var(--background-alt-grey, #f6f6f6) !important;
+  border-right: 1px solid var(--border-default-grey, #ddd) !important;
+}
+
+aside a,
+[data-sidebar] a {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+aside a[aria-current="page"],
+[data-sidebar] a[aria-current="page"],
+aside a[data-active="true"],
+[data-sidebar] a[data-active="true"] {
+  color: var(--text-action-high-blue-france, #000091) !important;
+  background: var(--background-action-low-blue-france, #f5f5fe) !important;
+  box-shadow: inset 0.25rem 0 0 var(--border-action-high-blue-france, #000091) !important;
+}
+
+main {
+  background: var(--background-default-grey, #fff);
+}
+
+/* Markdown content harmonized with DSFR rhythm */
+main h1,
+main h2,
+main h3,
+main h4,
+main p,
+main li,
+main table {
+  letter-spacing: 0;
+}
+
+main h1 {
+  color: var(--text-title-grey, #161616);
+}
+
+main h2 {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-default-grey, #ddd);
+}
+
+main table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+main th {
+  color: var(--text-title-grey, #161616);
+  background: var(--background-alt-grey, #f6f6f6);
+}
+
+main th,
+main td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border-default-grey, #ddd);
+}
+
+main pre {
+  border-radius: 0 !important;
+  border: 1px solid var(--border-default-grey, #ddd) !important;
+  box-shadow: none !important;
+}
+
+main code {
+  border-radius: 0 !important;
+}
+
+/* DSFR blocks embedded inside Markdown */
+.dsfr-doc-home {
+  margin: 0 0 3rem;
+}
+
+.dsfr-doc-home .fr-card,
+.dsfr-doc-home .fr-alert,
+.dsfr-doc-home .fr-callout {
+  border-radius: 0;
+}
+
+.dsfr-doc-home .fr-card__title a {
+  color: var(--text-action-high-blue-france, #000091);
+}
+
+.dsfr-doc-home .fr-card__desc {
+  color: var(--text-default-grey, #3a3a3a);
+}
+
+.dsfr-doc-hero {
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+  border-top: 0.25rem solid var(--border-action-high-blue-france, #000091);
+  background: var(--background-alt-blue-france, #f5f5fe);
+}
+
+.dsfr-doc-hero code {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  color: var(--text-inverted-grey, #fff);
+  background: var(--background-inverted-grey, #161616);
+}
+
+.dsfr-doc-brandline {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  color: var(--text-action-high-blue-france, #000091);
+  font-weight: 700;
+}
+
+.dsfr-doc-brandline::before {
+  content: "";
+  display: block;
+  width: 2rem;
+  height: 0.25rem;
+  background: linear-gradient(
+    90deg,
+    var(--background-action-high-blue-france, #000091) 0 50%,
+    var(--background-action-high-red-marianne, #e1000f) 50% 100%
+  );
+}
+
+@media (max-width: 48em) {
+  .dsfr-doc-hero {
+    margin-right: -1rem;
+    margin-left: -1rem;
+  }
+}
