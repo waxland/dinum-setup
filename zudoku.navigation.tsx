@@ -10,6 +10,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       "/guide/index",
       "/guide/auth",
       "/guide/env",
+      "/guide/git-ssh",
       "/guide/hot-reload",
       "/guide/onboarding",
       "/guide/projects-status",

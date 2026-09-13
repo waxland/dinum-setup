@@ -7,6 +7,7 @@ Ce depot ne contient pas le code des applications. Le Makefile clone les projets
 ## Lecture rapide
 
 - Onboarding Développeur : [docs/guide/onboarding.md](docs/guide/onboarding.md)
+- Configuration Git & SSH : [docs/guide/git-ssh.md](docs/guide/git-ssh.md)
 - Roadmaps & Ressources : [docs/guide/roadmap.md](docs/guide/roadmap.md)
 - Documentation principale : [docs/guide/index.md](docs/guide/index.md)
 - Workflow Makefile : [docs/guide/workflow.md](docs/guide/workflow.md)

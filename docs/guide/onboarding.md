@@ -27,6 +27,10 @@ Ce guide a pour objectif de vous accompagner pas à pas dès votre premier jour 
 
 Suivez ces 5 étapes pour avoir un environnement de développement opérationnel en quelques minutes :
 
+### 0. Configurer Git et votre clé SSH GitHub
+Avant de cloner ou de pousser du code, assurez-vous que votre identité Git locale et votre clé SSH sont correctement enregistrées sur GitHub :
+👉 [Consulter le guide complet Configuration Git & SSH](git-ssh.md)
+
 ### 1. Cloner ce dépôt d'orchestration
 ```bash
 git clone https://github.com/suitenumerique/dinum-setup.git

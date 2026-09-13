@@ -1,0 +1,186 @@
+---
+title: Configuration Git & SSH
+description: Tutoriel complet pour configurer Git, générer et installer sa clé SSH sur GitHub et gérer les permissions.
+---
+
+# 🔑 Guide de Configuration Git & Clés SSH
+
+Ce tutoriel détaille pas à pas comment configurer votre environnement Git local, générer une clé SSH sécurisée, l'enregistrer sur votre compte GitHub et résoudre les problèmes fréquents de permissions.
+
+---
+
+## 1. Configuration Initiale de Git
+
+Avant de créer des commits, configurez votre identité globale dans Git :
+
+```bash
+# Définir votre nom et prénom (visibles dans l'historique des commits)
+git config --global user.name "Prénom Nom"
+
+# Définir votre adresse email (doit être associée à votre compte GitHub)
+git config --global user.email "prenom.nom@interieur.gouv.fr"
+
+# Définir la branche par défaut pour les nouveaux dépôts
+git config --global init.defaultBranch main
+
+# Configurer le comportement des pull pour privilégier les avances rapides
+git config --global pull.ff only
+```
+
+Pour vérifier votre configuration actuelle :
+
+```bash
+git config --list --show-origin
+```
+
+---
+
+## 2. Générer une Clé SSH (Ed25519)
+
+L'algorithme **Ed25519** est le standard recommandé par l'ANSSI et GitHub pour sa sécurité et ses performances.
+
+### Commande de génération
+
+Ouvrez un terminal et exécutez :
+
+```bash
+ssh-keygen -t ed25519 -C "votre.email@exemple.gouv.fr"
+```
+
+Lors de l'invite :
+1. **Emplacement :** Appuyez sur `Entrée` pour accepter le chemin par défaut (`~/.ssh/id_ed25519`) ou indiquez un nom spécifique (ex: `/home/deploy/.ssh/id_ed25519_lasuite`).
+2. **Passphrase (Recommandé) :** Saisissez une phrase de passe pour protéger votre clé privée.
+
+---
+
+## 3. Sécuriser les Permissions des Fichiers SSH
+
+Le client SSH exige des permissions très strictes. Si les fichiers sont lisibles par d'autres utilisateurs, SSH refusera de charger la clé (`UNPROTECTED PRIVATE KEY FILE`).
+
+Appliquez les droits appropriés :
+
+```bash
+# Permissions du dossier .ssh (lecture/écriture/exécution uniquement pour vous)
+chmod 700 ~/.ssh
+
+# Permissions de la clé privée (lecture/écriture uniquement pour vous)
+chmod 600 ~/.ssh/id_ed25519
+
+# Permissions de la clé publique (lecture pour tous, écriture pour vous)
+chmod 644 ~/.ssh/id_ed25519.pub
+```
+
+---
+
+## 4. Ajouter la Clé Publique sur GitHub
+
+### A. Récupérer le contenu de votre clé publique
+
+Affichez le contenu de votre clé publique (attention : **ne partagez jamais la clé privée**) :
+
+```bash
+cat ~/.ssh/id_ed25519.pub
+```
+
+Le contenu ressemble à :
+```text
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... votre.email@exemple.gouv.fr
+```
+
+### B. Liens directs sur GitHub
+
+1. Accédez directement à la page de gestion des clés SSH de votre compte :
+   👉 **[https://github.com/settings/keys](https://github.com/settings/keys)**
+
+2. Ou ouvrez directement le formulaire d'ajout d'une nouvelle clé :
+   👉 **[https://github.com/settings/ssh/new](https://github.com/settings/ssh/new)**
+
+3. Renseignez les champs :
+   - **Title :** Donnez un nom explicite (ex: `PC Portable Travail - Ubuntu 2026`).
+   - **Key type :** Laissez `Authentication Key`.
+   - **Key :** Collez la clé publique complète (commençant par `ssh-ed25519 ...`).
+4. Cliquez sur **Add SSH key**.
+
+---
+
+## 5. Configuration Avancée Multi-Comptes (`~/.ssh/config`)
+
+Si vous travaillez avec plusieurs comptes GitHub (ex: compte personnel et compte organisation d'État) ou un fichier de clé personnalisé, configurez votre fichier `~/.ssh/config` :
+
+```bash
+nano ~/.ssh/config
+```
+
+Exemple de configuration :
+
+```ssh-config
+# Compte principal GitHub
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+
+# Compte spécifique (ex: alias pour une clé dédiée)
+Host github-lasuite
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_ed25519_lasuite
+  IdentitiesOnly yes
+```
+
+Appliquez les permissions sur le fichier de config :
+```bash
+chmod 600 ~/.ssh/config
+```
+
+---
+
+## 6. Tester la Connexion SSH
+
+Pour tester que votre clé est correctement reconnue par GitHub :
+
+```bash
+ssh -T git@github.com
+```
+*(ou `ssh -T git@github-lasuite` si vous utilisez un alias défini dans votre config SSH)*.
+
+### Résultat attendu :
+```text
+Hi pseudo-github! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
+---
+
+## 7. Résolution des Erreurs Fréquentes (Troubleshooting)
+
+### 🔴 `WARNING: UNPROTECTED PRIVATE KEY FILE! Permissions 0440 are too open`
+- **Cause :** Les droits sur votre clé privée ne sont pas assez restrictifs.
+- **Solution :**
+  ```bash
+  chmod 600 ~/.ssh/id_ed25519
+  ```
+
+### 🔴 `Load key "...": error in libcrypto`
+- **Cause :** Le fichier de clé privée est corrompu ou il manque le saut de ligne final après `-----END OPENSSH PRIVATE KEY-----`.
+- **Solution :**
+  ```bash
+  echo "" >> ~/.ssh/id_ed25519
+  ssh-keygen -y -f ~/.ssh/id_ed25519 # Pour tester sa validité
+  ```
+
+### 🔴 `ERROR: Permission to organization/repo.git denied to userX`
+- **Cause :** GitHub détermine votre identité **uniquement** grâce à la clé publique que vous lui présentez. Si votre clé est enregistrée sur le compte `userX`, GitHub vous identifie en tant que `userX`. Si `userX` n'a pas les droits en écriture sur le dépôt de l'organisation :
+- **Solutions :**
+  1. **Option 1 :** Sur GitHub, allez dans les **Settings** du dépôt cible > **Collaborators** et invitez `userX` avec les permissions d'écriture (**Write** ou **Admin**).
+  2. **Option 2 :** Si vous devez utiliser un autre compte GitHub, générez une clé dédiée pour ce compte et ajoutez-la dans les clés SSH de ce second compte sur [https://github.com/settings/ssh/new](https://github.com/settings/ssh/new).
+
+### 🔴 `git@github.com: Permission denied (publickey)`
+- **Causes possibles :**
+  - La clé publique n'a pas été ajoutée sur GitHub.
+  - Le client SSH ne présente pas la bonne clé (vérifiez `ssh-add -l` ou `~/.ssh/config`).
+  - L'agent SSH n'est pas actif :
+    ```bash
+    eval "$(ssh-agent -s)"
+    ssh-add ~/.ssh/id_ed25519
+    ```

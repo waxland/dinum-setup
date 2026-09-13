@@ -60,6 +60,7 @@ make check-tools
 
 ### Guide & Onboarding
 - [Onboarding Développeur](onboarding.md) : Prise en main pas à pas dès le premier jour
+- [Configuration Git & SSH](git-ssh.md) : Configuration Git, génération de clés SSH et ajout sur GitHub
 - [Roadmaps & Ressources](roadmap.md) : Feuilles de route, salons Matrix et liens officiels
 - [Workflow Makefile](workflow.md) : Détail des commandes d'orchestration
 - [Variables et .env](env.md) : Gestion des variables d'environnement
