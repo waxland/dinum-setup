@@ -55,6 +55,9 @@ Ce depot ne contient pas le code des applications. Le Makefile clone les projets
   - [Intégrer l'Authentification OIDC](docs/06-tutoriels/02-integration-et-tests/integrer-authentification-oidc.mdx)
   - [Écrire un Test E2E Playwright](docs/06-tutoriels/02-integration-et-tests/ecrire-un-test-e2e-playwright.mdx)
   - [Créer un Bot Tchap (Matrix)](docs/06-tutoriels/01-developpement-applicatif/creer-un-bot-tchap-matrix.mdx)
+- **Skills d'Agent & Ingénierie :** [docs/07-skills/index.mdx](docs/07-skills/index.mdx)
+  - [DSFR](docs/07-skills/dsfr.mdx) • [RGAA Review](docs/07-skills/rgaa-review.mdx) • [La Suite Dev](docs/07-skills/lasuite-dev.mdx)
+  - [Docs MDX](docs/07-skills/docs-mdx.mdx) • [Code Review](docs/07-skills/code-review.mdx) • [Architecture Review](docs/07-skills/architecture-review.mdx) • [Design Change](docs/07-skills/design-change.mdx)
 - **Ressources & Communauté :** [docs/05-ressources/roadmap.mdx](docs/05-ressources/roadmap.mdx)
   - [Salons Matrix & Contacts](docs/05-ressources/communaute.mdx)
 

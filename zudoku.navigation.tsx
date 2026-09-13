@@ -219,6 +219,22 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
         ]
       }
     ]
+  },
+  {
+    "type": "category",
+    "label": "Skills",
+    "icon": "bot",
+    "collapsed": false,
+    "items": [
+      "/07-skills/index",
+      "/07-skills/architecture-review",
+      "/07-skills/code-review",
+      "/07-skills/design-change",
+      "/07-skills/docs-mdx",
+      "/07-skills/dsfr",
+      "/07-skills/lasuite-dev",
+      "/07-skills/rgaa-review"
+    ]
   }
 ];
 
@@ -252,6 +268,10 @@ export const docsRedirects: ZudokuConfig["redirects"] = [
     "to": "/06-tutoriels/index"
   },
   {
+    "from": "/07-skills",
+    "to": "/07-skills/index"
+  },
+  {
     "from": "/onboarding",
     "to": "/01-onboarding/index"
   },
@@ -280,8 +300,20 @@ export const docsRedirects: ZudokuConfig["redirects"] = [
     "to": "/06-tutoriels/index"
   },
   {
+    "from": "/skills",
+    "to": "/07-skills/index"
+  },
+  {
     "from": "/guide",
     "to": "/01-onboarding/index"
+  },
+  {
+    "from": "/01-onboarding/challenge-42",
+    "to": "/01-onboarding/01-demarrage/challenge-42"
+  },
+  {
+    "from": "/challenge-42",
+    "to": "/01-onboarding/01-demarrage/challenge-42"
   },
   {
     "from": "/01-onboarding/environnement-machine-hote",
@@ -482,6 +514,62 @@ export const docsRedirects: ZudokuConfig["redirects"] = [
   {
     "from": "/06-tutoriels/ecrire-un-test-e2e-playwright",
     "to": "/06-tutoriels/02-integration-et-tests/ecrire-un-test-e2e-playwright"
+  },
+  {
+    "from": "/07-skills/dsfr-skill",
+    "to": "/07-skills/dsfr"
+  },
+  {
+    "from": "/07-skills/rgaa-review-skill",
+    "to": "/07-skills/rgaa-review"
+  },
+  {
+    "from": "/07-skills/lasuite-dev-skill",
+    "to": "/07-skills/lasuite-dev"
+  },
+  {
+    "from": "/07-skills/docs-mdx-skill",
+    "to": "/07-skills/docs-mdx"
+  },
+  {
+    "from": "/07-skills/code-review-skill",
+    "to": "/07-skills/code-review"
+  },
+  {
+    "from": "/07-skills/architecture-review-skill",
+    "to": "/07-skills/architecture-review"
+  },
+  {
+    "from": "/07-skills/design-change-skill",
+    "to": "/07-skills/design-change"
+  },
+  {
+    "from": "/skills/dsfr",
+    "to": "/07-skills/dsfr"
+  },
+  {
+    "from": "/skills/rgaa-review",
+    "to": "/07-skills/rgaa-review"
+  },
+  {
+    "from": "/skills/lasuite-dev",
+    "to": "/07-skills/lasuite-dev"
+  },
+  {
+    "from": "/skills/docs-mdx",
+    "to": "/07-skills/docs-mdx"
+  },
+  {
+    "from": "/skills/code-review",
+    "to": "/07-skills/code-review"
+  },
+  {
+    "from": "/skills/architecture-review",
+    "to": "/07-skills/architecture-review"
+  },
+  {
+    "from": "/skills/design-change",
+    "to": "/07-skills/design-change"
   },
   {
     "from": "/04-ressources",

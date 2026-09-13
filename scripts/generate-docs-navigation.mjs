@@ -51,6 +51,7 @@ function formatLabel(name) {
     e2e: "E2E",
     blocknote: "BlockNote",
     legifrance: "Légifrance",
+    mdx: "MDX",
   };
 
   return clean
@@ -86,6 +87,12 @@ function getDefaultIcon(name, depth) {
       lower.includes("recette")
     )
       return "sparkles";
+    if (
+      lower.includes("skill") ||
+      lower.includes("agent") ||
+      lower.includes("competence")
+    )
+      return "bot";
     if (
       lower.includes("ressource") ||
       lower.includes("roadmap") ||
@@ -213,6 +220,7 @@ function generateNavForTarget(target) {
     { from: "/04-design-system", to: "/04-design-system/index" },
     { from: "/05-ressources", to: "/05-ressources/communaute" },
     { from: "/06-tutoriels", to: "/06-tutoriels/index" },
+    { from: "/07-skills", to: "/07-skills/index" },
     { from: "/onboarding", to: "/01-onboarding/index" },
     { from: "/architecture", to: "/02-architecture/index" },
     { from: "/projets", to: "/03-projets/index" },
@@ -220,9 +228,18 @@ function generateNavForTarget(target) {
     { from: "/dsfr", to: "/04-design-system/index" },
     { from: "/ressources", to: "/05-ressources/communaute" },
     { from: "/tutoriels", to: "/06-tutoriels/index" },
+    { from: "/skills", to: "/07-skills/index" },
     { from: "/guide", to: "/01-onboarding/index" },
 
     // Flat to subfolder backwards compatibility: Onboarding
+    {
+      from: "/01-onboarding/challenge-42",
+      to: "/01-onboarding/01-demarrage/challenge-42",
+    },
+    {
+      from: "/challenge-42",
+      to: "/01-onboarding/01-demarrage/challenge-42",
+    },
     {
       from: "/01-onboarding/environnement-machine-hote",
       to: "/01-onboarding/01-demarrage/environnement-machine-hote",
@@ -428,6 +445,22 @@ function generateNavForTarget(target) {
       from: "/06-tutoriels/ecrire-un-test-e2e-playwright",
       to: "/06-tutoriels/02-integration-et-tests/ecrire-un-test-e2e-playwright",
     },
+
+    // Skills aliases and backwards compatibility
+    { from: "/07-skills/dsfr-skill", to: "/07-skills/dsfr" },
+    { from: "/07-skills/rgaa-review-skill", to: "/07-skills/rgaa-review" },
+    { from: "/07-skills/lasuite-dev-skill", to: "/07-skills/lasuite-dev" },
+    { from: "/07-skills/docs-mdx-skill", to: "/07-skills/docs-mdx" },
+    { from: "/07-skills/code-review-skill", to: "/07-skills/code-review" },
+    { from: "/07-skills/architecture-review-skill", to: "/07-skills/architecture-review" },
+    { from: "/07-skills/design-change-skill", to: "/07-skills/design-change" },
+    { from: "/skills/dsfr", to: "/07-skills/dsfr" },
+    { from: "/skills/rgaa-review", to: "/07-skills/rgaa-review" },
+    { from: "/skills/lasuite-dev", to: "/07-skills/lasuite-dev" },
+    { from: "/skills/docs-mdx", to: "/07-skills/docs-mdx" },
+    { from: "/skills/code-review", to: "/07-skills/code-review" },
+    { from: "/skills/architecture-review", to: "/07-skills/architecture-review" },
+    { from: "/skills/design-change", to: "/07-skills/design-change" },
 
     // Backwards compatibility for 04-ressources moved to 05-ressources
     { from: "/04-ressources", to: "/05-ressources/communaute" },
