@@ -38,8 +38,8 @@ Tous les dépôts de l'organisation imposent la convention [Conventional Commits
 
 ## 🌿 2. Cycle de Vie d'une Branche & Pull Request
 
-```mermaid
-gitGraph
+<Mermaid
+  chart={`gitGraph
    commit id: "Initial"
    commit id: "v1.2.0"
    branch feat/docs-export-pdf
@@ -48,8 +48,8 @@ gitGraph
    commit id: "test: unit tests for exporter"
    checkout main
    merge feat/docs-export-pdf id: "PR #42 (Squash & Merge)"
-   commit id: "v1.3.0" tag: "v1.3.0"
-```
+   commit id: "v1.3.0" tag: "v1.3.0"`}
+/>
 
 ### Étape par étape
 
