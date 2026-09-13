@@ -10,7 +10,7 @@ const CONFIGS = {
   docs: {
     docsDir: path.join(ROOT_DIR, "docs"),
     outputFile: path.join(ROOT_DIR, "zudoku.navigation.tsx"),
-    defaultRedirect: { from: "/", to: "/01-onboarding/index" },
+    defaultRedirect: { from: "/", to: "/01-onboarding" },
   },
 };
 
@@ -214,22 +214,16 @@ function generateNavForTarget(target) {
   const redirects = [
     config.defaultRedirect,
     // Category aliases and root redirects
-    { from: "/01-onboarding", to: "/01-onboarding/index" },
-    { from: "/02-architecture", to: "/02-architecture/index" },
-    { from: "/03-projets", to: "/03-projets/index" },
-    { from: "/04-design-system", to: "/04-design-system/index" },
     { from: "/05-ressources", to: "/05-ressources/communaute" },
-    { from: "/06-tutoriels", to: "/06-tutoriels/index" },
-    { from: "/07-skills", to: "/07-skills/index" },
-    { from: "/onboarding", to: "/01-onboarding/index" },
-    { from: "/architecture", to: "/02-architecture/index" },
-    { from: "/projets", to: "/03-projets/index" },
-    { from: "/design-system", to: "/04-design-system/index" },
-    { from: "/dsfr", to: "/04-design-system/index" },
+    { from: "/onboarding", to: "/01-onboarding" },
+    { from: "/architecture", to: "/02-architecture" },
+    { from: "/projets", to: "/03-projets" },
+    { from: "/design-system", to: "/04-design-system" },
+    { from: "/dsfr", to: "/04-design-system" },
     { from: "/ressources", to: "/05-ressources/communaute" },
-    { from: "/tutoriels", to: "/06-tutoriels/index" },
-    { from: "/skills", to: "/07-skills/index" },
-    { from: "/guide", to: "/01-onboarding/index" },
+    { from: "/tutoriels", to: "/06-tutoriels" },
+    { from: "/skills", to: "/07-skills" },
+    { from: "/guide", to: "/01-onboarding" },
 
     // Flat to subfolder backwards compatibility: Onboarding
     {
@@ -473,14 +467,14 @@ function generateNavForTarget(target) {
     { from: "/04-ressources/communaute", to: "/05-ressources/communaute" },
     { from: "/04-ressources/roadmap", to: "/05-ressources/roadmap" },
     // Legacy guide redirects
-    { from: "/guide/index", to: "/01-onboarding/index" },
-    { from: "/guide/onboarding", to: "/01-onboarding/index" },
+    { from: "/guide/index", to: "/01-onboarding" },
+    { from: "/guide/onboarding", to: "/01-onboarding" },
     { from: "/guide/git-ssh", to: "/01-onboarding/01-demarrage/git-ssh" },
     {
       from: "/guide/workflow",
       to: "/01-onboarding/02-workflow-et-contribution/workflow",
     },
-    { from: "/guide/architecture", to: "/02-architecture/index" },
+    { from: "/guide/architecture", to: "/02-architecture" },
     {
       from: "/guide/auth",
       to: "/02-architecture/01-securite-et-identite/auth",
@@ -490,7 +484,7 @@ function generateNavForTarget(target) {
       to: "/02-architecture/03-devops-et-deploiement/hot-reload",
     },
     { from: "/guide/env", to: "/02-architecture/03-devops-et-deploiement/env" },
-    { from: "/guide/projects-status", to: "/03-projets/index" },
+    { from: "/guide/projects-status", to: "/03-projets" },
     { from: "/guide/roadmap", to: "/05-ressources/roadmap" },
     { from: "/projets/docs", to: "/03-projets/01-documents-et-contenus/docs" },
     {

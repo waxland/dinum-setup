@@ -241,55 +241,31 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
 export const docsRedirects: ZudokuConfig["redirects"] = [
   {
     "from": "/",
-    "to": "/01-onboarding/index"
-  },
-  {
-    "from": "/01-onboarding",
-    "to": "/01-onboarding/index"
-  },
-  {
-    "from": "/02-architecture",
-    "to": "/02-architecture/index"
-  },
-  {
-    "from": "/03-projets",
-    "to": "/03-projets/index"
-  },
-  {
-    "from": "/04-design-system",
-    "to": "/04-design-system/index"
+    "to": "/01-onboarding"
   },
   {
     "from": "/05-ressources",
     "to": "/05-ressources/communaute"
   },
   {
-    "from": "/06-tutoriels",
-    "to": "/06-tutoriels/index"
-  },
-  {
-    "from": "/07-skills",
-    "to": "/07-skills/index"
-  },
-  {
     "from": "/onboarding",
-    "to": "/01-onboarding/index"
+    "to": "/01-onboarding"
   },
   {
     "from": "/architecture",
-    "to": "/02-architecture/index"
+    "to": "/02-architecture"
   },
   {
     "from": "/projets",
-    "to": "/03-projets/index"
+    "to": "/03-projets"
   },
   {
     "from": "/design-system",
-    "to": "/04-design-system/index"
+    "to": "/04-design-system"
   },
   {
     "from": "/dsfr",
-    "to": "/04-design-system/index"
+    "to": "/04-design-system"
   },
   {
     "from": "/ressources",
@@ -297,15 +273,15 @@ export const docsRedirects: ZudokuConfig["redirects"] = [
   },
   {
     "from": "/tutoriels",
-    "to": "/06-tutoriels/index"
+    "to": "/06-tutoriels"
   },
   {
     "from": "/skills",
-    "to": "/07-skills/index"
+    "to": "/07-skills"
   },
   {
     "from": "/guide",
-    "to": "/01-onboarding/index"
+    "to": "/01-onboarding"
   },
   {
     "from": "/01-onboarding/challenge-42",
@@ -585,11 +561,11 @@ export const docsRedirects: ZudokuConfig["redirects"] = [
   },
   {
     "from": "/guide/index",
-    "to": "/01-onboarding/index"
+    "to": "/01-onboarding"
   },
   {
     "from": "/guide/onboarding",
-    "to": "/01-onboarding/index"
+    "to": "/01-onboarding"
   },
   {
     "from": "/guide/git-ssh",
@@ -601,7 +577,7 @@ export const docsRedirects: ZudokuConfig["redirects"] = [
   },
   {
     "from": "/guide/architecture",
-    "to": "/02-architecture/index"
+    "to": "/02-architecture"
   },
   {
     "from": "/guide/auth",
@@ -617,7 +593,7 @@ export const docsRedirects: ZudokuConfig["redirects"] = [
   },
   {
     "from": "/guide/projects-status",
-    "to": "/03-projets/index"
+    "to": "/03-projets"
   },
   {
     "from": "/guide/roadmap",
