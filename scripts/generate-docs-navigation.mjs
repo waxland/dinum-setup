@@ -10,7 +10,7 @@ const CONFIGS = {
   docs: {
     docsDir: path.join(ROOT_DIR, "docs"),
     outputFile: path.join(ROOT_DIR, "zudoku.navigation.tsx"),
-    defaultRedirect: { from: "/", to: "/guide/index" },
+    defaultRedirect: { from: "/", to: "/01-onboarding/index" },
   },
 };
 
@@ -31,6 +31,10 @@ function formatLabel(name) {
     v2: "V2",
     v3: "V3",
     faq: "FAQ",
+    sso: "SSO",
+    oidc: "OIDC",
+    ssh: "SSH",
+    git: "Git",
   };
 
   return clean
@@ -49,13 +53,13 @@ function formatLabel(name) {
 function getDefaultIcon(name, depth) {
   if (depth === 0) {
     const lower = name.toLowerCase();
-    if (lower.includes("archi")) return "layers";
     if (lower.includes("onboarding") || lower.includes("demarrage"))
       return "compass";
-    if (lower.includes("roadmap") || lower.includes("ressource"))
+    if (lower.includes("archi")) return "layers";
+    if (lower.includes("projet") || lower.includes("project")) return "boxes";
+    if (lower.includes("ressource") || lower.includes("roadmap") || lower.includes("communaute"))
       return "map";
     if (lower.includes("guide") || lower.includes("doc")) return "book-open";
-    if (lower.includes("projet") || lower.includes("project")) return "boxes";
     if (lower.includes("lien") || lower.includes("link"))
       return "external-link";
     if (lower === "backend") return "server";
@@ -162,13 +166,31 @@ function generateNavForTarget(target) {
     ],
   });
 
+  const redirects = [
+    config.defaultRedirect,
+    { from: "/guide/index", to: "/01-onboarding/index" },
+    { from: "/guide/onboarding", to: "/01-onboarding/index" },
+    { from: "/guide/git-ssh", to: "/01-onboarding/git-ssh" },
+    { from: "/guide/workflow", to: "/01-onboarding/workflow" },
+    { from: "/guide/architecture", to: "/02-architecture/index" },
+    { from: "/guide/auth", to: "/02-architecture/auth" },
+    { from: "/guide/hot-reload", to: "/02-architecture/hot-reload" },
+    { from: "/guide/env", to: "/02-architecture/env" },
+    { from: "/guide/projects-status", to: "/03-projets/index" },
+    { from: "/guide/roadmap", to: "/04-ressources/roadmap" },
+    { from: "/projets/docs", to: "/03-projets/docs" },
+    { from: "/projets/projects", to: "/03-projets/projects" },
+    { from: "/projets/meet", to: "/03-projets/meet" },
+    { from: "/projets/transfers", to: "/03-projets/transfers" },
+    { from: "/projets/people", to: "/03-projets/people" },
+    { from: "/projets/accounts", to: "/03-projets/accounts" },
+  ];
+
   const content = `import type { ZudokuConfig } from "zudoku";
 
 export const docsNavigation: ZudokuConfig["navigation"] = ${JSON.stringify(navItems, null, 2)};
 
-export const docsRedirects: ZudokuConfig["redirects"] = [
-  ${JSON.stringify(config.defaultRedirect, null, 2)}
-];
+export const docsRedirects: ZudokuConfig["redirects"] = ${JSON.stringify(redirects, null, 2)};
 `;
 
   fs.mkdirSync(path.dirname(config.outputFile), { recursive: true });

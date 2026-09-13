@@ -1,5 +1,5 @@
 ---
-title: Roadmaps & Ressources
+title: Roadmaps & Chantiers
 description: Vue d'ensemble des feuilles de route, des chantiers prioritaires et des ressources officielles de La Suite numérique.
 ---
 
@@ -53,19 +53,3 @@ Chaque équipe produit maintient ses jalons et tickets sur GitHub :
 | **Transfers** | [suitenumerique/transfers](https://github.com/suitenumerique/transfers) • [Issues](https://github.com/suitenumerique/transfers/issues) | Salon La Suite Territoriale | — |
 | **People** | [suitenumerique/people](https://github.com/suitenumerique/people) • [Issues](https://github.com/suitenumerique/people/issues) | Salon DINUM | — |
 | **Accounts** | [suitenumerique/accounts](https://github.com/suitenumerique/accounts) • [Backlog](https://github.com/suitenumerique/accounts#not-ready-for-production-yet-) | Salon DINUM | — |
-
----
-
-## 📚 Ressources Documentaires & Liens Utiles
-
-### Références Officielles
-- 🌐 **Site web La Suite :** [lasuite.numerique.gouv.fr](https://lasuite.numerique.gouv.fr/)
-- 🏛️ **Direction Interministérielle du Numérique (DINUM) :** [numerique.gouv.fr](https://www.numerique.gouv.fr/)
-- 🏡 **Agence Nationale de la Cohésion des Territoires (ANCT) :** [agence-cohesion-territoires.gouv.fr](https://agence-cohesion-territoires.gouv.fr/)
-
-### Standards & Écosystème Technique
-- 🏆 **Digital Public Goods Alliance :** [Registry Docs](https://digitalpublicgoods.net/r/docs-collaborative-text-editing) • [Registry Meet](https://digitalpublicgoods.net/r/la-suite-meet-simple-video-conferencing)
-- 🎨 **Système de Design de l'État (DSFR) :** [systeme-de-design.gouv.fr](https://www.systeme-de-design.gouv.fr/)
-- 📹 **LiveKit (Moteur WebRTC de Meet) :** [livekit.io](https://livekit.io/)
-- 📝 **Yjs (Moteur CRDT temps réel de Docs) :** [yjs.dev](https://yjs.dev/)
-- 🔐 **Keycloak (Serveur d'identité OIDC) :** [keycloak.org](https://www.keycloak.org/)

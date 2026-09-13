@@ -1,5 +1,5 @@
 ---
-title: Accounts
+title: Accounts (Identités)
 description: Présentation détaillée, architecture, roadmap et démarrage local du projet Accounts de La Suite numérique.
 ---
 
@@ -65,4 +65,3 @@ make run
 - **Identifiants de test par défaut :**
   - **Identifiant :** `accounts`
   - **Mot de passe :** `accounts`
-

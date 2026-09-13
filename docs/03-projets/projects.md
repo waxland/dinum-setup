@@ -1,5 +1,5 @@
 ---
-title: Projects
+title: Projects (Kanban)
 description: Présentation détaillée, architecture, roadmap et démarrage local du projet Projects de La Suite numérique.
 ---
 
@@ -18,7 +18,7 @@ description: Présentation détaillée, architecture, roadmap et démarrage loca
 
 - **Tableaux Kanban & Listes :** Création intuitive de projets, tableaux, listes et cartes de tâches.
 - **Détails & Enrichissement :** Descriptions en Markdown, dates d'échéance, pièces jointes, suivi du temps passé et étiquettes personnalisables.
-- **Collaboration Synchrone :** Mises à jour en direct (WebSockets) répercutées instantanément sur tous les écrans.
+- **Collaboration Synchrone :** Mises à jour en direct (WebSockets via Socket.io) répercutées instantanément sur tous les écrans.
 - **Filtres Avancés :** Recherche et filtrage par membre assigné, date, étiquette ou mot-clé.
 - **Centre de Notifications :** Alertes internes pour les assignations et modifications de cartes.
 - **Internationalisation :** Support multilingue natif (Français, Anglais...).
@@ -27,9 +27,9 @@ description: Présentation détaillée, architecture, roadmap et démarrage loca
 
 ## 🏗️ Architecture & Stack Technique
 
-- **Frontend :** React 18+, TypeScript, composants UI modernes, communication WebSocket en temps réel.
-- **Backend / Serveur :** Node.js (v22), Express / Fastify, TypeScript.
-- **Base de données :** PostgreSQL.
+- **Frontend :** React 18, TypeScript, Redux, Redux-Saga, composants UI Cunningham.
+- **Backend / Serveur :** Node.js 22, Sails.js (MVC), Socket.io.
+- **Base de données :** PostgreSQL (migrations Knex.js).
 - **Stockage d'objets :** Compatible S3 (MinIO en dev / Scaleway / AWS en prod).
 - **Authentification :** OpenID Connect (Keycloak).
 
@@ -69,4 +69,3 @@ make logs-projects
   ```text
   127.0.0.1 auth.local
   ```
-

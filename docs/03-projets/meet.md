@@ -1,5 +1,5 @@
 ---
-title: Meet / Visio
+title: Meet (Visio)
 description: Présentation détaillée, architecture, roadmap et fonctionnalités du service de visioconférence Meet de La Suite numérique.
 ---
 
@@ -61,4 +61,3 @@ graph LR
   ```
 - **Lancement :**
   Meet nécessite une instance LiveKit opérationnelle ainsi que des clés API configurées. Pour le développement complet d'une salle de test, référez-vous au guide de démarrage dans `src/meet/README.md`.
-

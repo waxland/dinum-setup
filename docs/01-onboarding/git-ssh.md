@@ -70,6 +70,8 @@ chmod 600 ~/.ssh/id_ed25519
 chmod 644 ~/.ssh/id_ed25519.pub
 ```
 
+> ⚠️ **Important sur les retours à la ligne :** Le fichier de clé privée doit toujours se terminer par un saut de ligne (`\n`) après la ligne `-----END OPENSSH PRIVATE KEY-----`, sous peine de provoquer l'erreur `Load key: error in libcrypto`.
+
 ---
 
 ## 4. Ajouter la Clé Publique sur GitHub

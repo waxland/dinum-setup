@@ -1,5 +1,5 @@
 ---
-title: Transfers
+title: Transfers (Fichiers)
 description: Présentation détaillée, architecture, roadmap et démarrage local du projet Transfers de La Suite territoriale.
 ---
 
@@ -25,9 +25,9 @@ description: Présentation détaillée, architecture, roadmap et démarrage loca
 
 ## 🏗️ Architecture & Stack Technique
 
-- **Frontend :** React, Vite, TanStack Router.
-- **Backend API :** Python, Django, Django REST Framework.
-- **Tâches asynchrones :** Celery, Redis.
+- **Frontend :** React 18, Vite, TanStack Router, TanStack Query.
+- **Backend API :** Python 3.14, Django 5, Django REST Framework.
+- **Tâches asynchrones & Purge :** Celery, Celery Beat, Redis.
 - **Stockage Objets (S3) :** RustFS / MinIO en environnement de développement, compatible tout bucket S3 en production.
 - **Authentification :** ProConnect via OIDC (avec Keycloak pré-configuré en dev).
 
@@ -63,4 +63,3 @@ make bootstrap
 | **Serveur OIDC Keycloak** | [http://localhost:8902](http://localhost:8902) | `admin` / `admin` |
 | **Console S3 (RustFS/MinIO)** | [http://localhost:8987](http://localhost:8987) | — |
 | **Webmail de test (Maildev)** | [http://localhost:8984](http://localhost:8984) | Consultation des emails générés |
-

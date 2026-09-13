@@ -9,6 +9,7 @@
     "docs:preview": "ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku preview --host 0.0.0.0"
   },
   "dependencies": {
+    "mermaid": "^11.17.2",
     "zudoku": "^0.86.0"
   },
   "devDependencies": {

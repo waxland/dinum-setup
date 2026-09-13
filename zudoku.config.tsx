@@ -1,4 +1,4 @@
-import type { ZudokuConfig } from "zudoku";
+import { defaultLanguages, type ZudokuConfig } from "zudoku";
 import { docsNavigation, docsRedirects } from "./zudoku.navigation";
 import "./zudoku.theme.css";
 
@@ -17,6 +17,16 @@ const config: ZudokuConfig = {
     //   dismissible: true,
     // },
     showPoweredBy: false,
+  },
+  syntaxHighlighting: {
+    languages: [
+      ...defaultLanguages,
+      "mermaid",
+      "make",
+      "docker",
+      "dockerfile",
+      "nginx",
+    ],
   },
   docs: {
     files: "./docs/**/*.{md,mdx}",

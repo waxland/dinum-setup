@@ -1,5 +1,5 @@
 ---
-title: People
+title: People (Annuaire)
 description: Présentation détaillée, architecture, roadmap et démarrage local du projet People de La Suite numérique.
 ---
 
@@ -27,6 +27,7 @@ description: Présentation détaillée, architecture, roadmap et démarrage loca
 - **Backend API :** Python, Django, Django REST Framework (DRF).
 - **Base de données :** PostgreSQL.
 - **Conteneurisation :** Docker & Docker Compose.
+- **Client TypeScript SDK (`src/people/src/tsclient`) :** Client SDK typé généré pour la consommation d'API dans les autres frontends.
 - **Authentification :** OpenID Connect (Keycloak).
 
 ---
@@ -63,4 +64,3 @@ make run-dev
 
 - **API & Interface :** [http://localhost:8071](http://localhost:8071)
 - **Administration Django :** [http://localhost:8071/admin](http://localhost:8071/admin) (identifiants créés avec `make superuser` : `admin` / `admin`)
-
