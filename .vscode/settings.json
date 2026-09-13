@@ -62,5 +62,74 @@
     "**/node_modules/**": true,
     "**/dist/**": true,
     "**/.zudoku/**": true
-  }
+  },
+  "sqltools.useNodeRuntime": true,
+  "sqltools.connections": [
+    {
+      "name": "Docs (Impress DB)",
+      "driver": "PostgreSQL",
+      "server": "localhost",
+      "port": 15432,
+      "database": "impress",
+      "username": "impress",
+      "password": "password",
+      "askForPassword": false,
+      "previewLimit": 50
+    },
+    {
+      "name": "Keycloak SSO DB",
+      "driver": "PostgreSQL",
+      "server": "localhost",
+      "port": 5433,
+      "database": "keycloak",
+      "username": "keycloak",
+      "password": "password",
+      "askForPassword": false,
+      "previewLimit": 50
+    },
+    {
+      "name": "Projects DB",
+      "driver": "PostgreSQL",
+      "server": "localhost",
+      "port": 5432,
+      "database": "projects",
+      "username": "postgres",
+      "password": "postgres",
+      "askForPassword": false,
+      "previewLimit": 50
+    },
+    {
+      "name": "Transfers DB",
+      "driver": "PostgreSQL",
+      "server": "localhost",
+      "port": 5432,
+      "database": "transfers",
+      "username": "transfers",
+      "password": "password",
+      "askForPassword": false,
+      "previewLimit": 50
+    },
+    {
+      "name": "People DB",
+      "driver": "PostgreSQL",
+      "server": "localhost",
+      "port": 15432,
+      "database": "people",
+      "username": "people",
+      "password": "password",
+      "askForPassword": false,
+      "previewLimit": 50
+    },
+    {
+      "name": "Accounts DB",
+      "driver": "PostgreSQL",
+      "server": "localhost",
+      "port": 15432,
+      "database": "accounts",
+      "username": "accounts",
+      "password": "password",
+      "askForPassword": false,
+      "previewLimit": 50
+    }
+  ]
 }

@@ -1,0 +1,65 @@
+---
+title: Transfers (Fichiers)
+description: Présentation détaillée, architecture, roadmap et démarrage local du projet Transfers de La Suite territoriale.
+---
+
+**Transfers** est le service souverain d'envoi et de partage sécurisé de fichiers volumineux développé dans le cadre de **La Suite territoriale / numérique**.
+
+- **Dépôt officiel :** [suitenumerique/transfers](https://github.com/suitenumerique/transfers)
+- **Licence :** Open Source
+- **Dépôt source initial :** Fork de [suitenumerique/messages](https://github.com/suitenumerique/messages)
+
+🔗 **Technologies & Références :** [Spécification AWS S3 Multipart Upload](https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html) • [Documentation Celery & Celery Beat](https://docs.celeryq.dev/) • [Documentation TanStack Router](https://tanstack.com/router)
+
+---
+
+## 🌟 Fonctionnalités Clés
+
+- **Fichiers très volumineux :** Supporte des transferts jusqu'à **20 Go** par fichier / par transfert (configurable).
+- **Expiration & Rétention automatique :** Choix de la durée de validité (1 jour, 7 jours, 30 jours) avec purge automatique du stockage S3.
+- **Téléchargement sécurisé :** Liens à usage unique ou protégés par mot de passe / mode confidentiel.
+- **Upload parallèle & reprise :** Découpage en fragments multipart (chunks de 25 Mo) avec téléversement parallèle.
+- **Emails personnalisables :** Système de notifications sans marquage institutionnel en dur, entièrement personnalisable par l'hébergeur.
+
+---
+
+## 🏗️ Architecture & Stack Technique
+
+- **Frontend :** React 18, Vite, TanStack Router, TanStack Query.
+- **Backend API :** Python 3.14, Django 5, Django REST Framework.
+- **Tâches asynchrones & Purge :** Celery, Celery Beat, Redis.
+- **Stockage Objets (S3) :** RustFS / MinIO en environnement de développement, compatible tout bucket S3 en production.
+- **Authentification :** ProConnect via OIDC (avec Keycloak pré-configuré en dev).
+
+---
+
+## 🗺️ Roadmap & Ressources
+
+- 📋 **Suivi des développements & Issues :** [suitenumerique/transfers/issues](https://github.com/suitenumerique/transfers/issues)
+- 📖 **Documentation interne S3 & Auth :** Disponible dans `src/transfers/docs/` (`authentication.md`, `S3.md`).
+
+---
+
+## 🚀 Démarrage et Commandes Locales
+
+Le projet dispose de sa propre cible de bootstrap complète :
+
+```bash
+# 1. Cloner le projet
+REPOS="transfers" make clone
+
+# 2. Amorcer et lancer la stack Transfers
+cd src/transfers
+make bootstrap
+```
+
+### URLs et Services Exposés
+
+| Service                       | URL                                                        | Identifiants de test                   |
+| ----------------------------- | ---------------------------------------------------------- | -------------------------------------- |
+| **Frontend Web**              | [http://localhost:8980](http://localhost:8980)             | `agent@collectivite.fr` / `transferts` |
+| **API Django**                | [http://localhost:8981](http://localhost:8981)             | —                                      |
+| **Django Admin**              | [http://localhost:8981/admin](http://localhost:8981/admin) | `admin` / `admin`                      |
+| **Serveur OIDC Keycloak**     | [http://localhost:8902](http://localhost:8902)             | `admin` / `admin`                      |
+| **Console S3 (RustFS/MinIO)** | [http://localhost:8987](http://localhost:8987)             | —                                      |
+| **Webmail de test (Maildev)** | [http://localhost:8984](http://localhost:8984)             | Consultation des emails générés        |

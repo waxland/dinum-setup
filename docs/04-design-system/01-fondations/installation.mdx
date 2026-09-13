@@ -1,0 +1,163 @@
+---
+title: Installation & Téléchargement
+description: Guides d'installation des packages officiels DSFR (@gouvfr/dsfr, @codegouvfr/react-dsfr), configuration CDN, polices Marianne et kits Figma.
+---
+
+Ce guide détaille l'ensemble des méthodes pour télécharger, installer et intégrer le **Design System de l'État (DSFR)** et ses bibliothèques de composants dans vos projets applicatifs (React, Next.js, Vue, Svelte, ou HTML/CSS vanilla).
+
+---
+
+## 🔗 Liens & Références Officielles
+
+| Ressource                            | Description                                                  | Lien Officiel                                                                                    |
+| ------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| 🏛️ **Site Officiel du DSFR**         | Documentation de référence, règles d'usage et spécifications | [systeme-de-design.gouv.fr](https://www.systeme-de-design.gouv.fr/)                              |
+| 📦 **React-DSFR (Storybook & Docs)** | Intégration React / Next.js officielle certifiée DINUM       | [components.react-dsfr.fr](https://components.react-dsfr.fr/)                                    |
+| 🐙 **Dépôt GitHub DSFR (Core)**      | Code source CSS/JS vanilla et releases officielles           | [github.com/GouvernementFR/dsfr](https://github.com/GouvernementFR/dsfr)                         |
+| 🐙 **Dépôt GitHub React-DSFR**       | Wrapper React TypeScript avec SSR et Server Components       | [github.com/codegouvfr/react-dsfr](https://github.com/codegouvfr/react-dsfr)                     |
+| 🎨 **Kits Figma Officiels**          | Composants, tokens et maquettes Figma pour designers         | [Kits Figma DSFR](https://www.systeme-de-design.gouv.fr/ressources-et-outils/kits-figma/)        |
+| ♿ **Référentiel RGAA v4.1**         | Critères légaux d'accessibilité numérique                    | [accessibilite.numerique.gouv.fr](https://accessibilite.numerique.gouv.fr/)                      |
+| 📦 **NPM `@gouvfr/dsfr`**            | Package officiel Core CSS/JS                                 | [npmjs.com/package/@gouvfr/dsfr](https://www.npmjs.com/package/@gouvfr/dsfr)                     |
+| 📦 **NPM `@codegouvfr/react-dsfr`**  | Package React / Next.js                                      | [npmjs.com/package/@codegouvfr/react-dsfr](https://www.npmjs.com/package/@codegouvfr/react-dsfr) |
+
+---
+
+## 📦 1. Installation via Gestionnaire de Packages
+
+### Option A : Pour les projets React & Next.js (Recommandé)
+
+Le package `@codegouvfr/react-dsfr` fournit l'ensemble des composants DSFR typés en TypeScript, compatibles SSR, Next.js App Router et Pages Router :
+
+```bash
+# Avec npm
+npm install @codegouvfr/react-dsfr
+
+# Avec pnpm
+pnpm add @codegouvfr/react-dsfr
+
+# Avec yarn
+yarn add @codegouvfr/react-dsfr
+
+# Avec bun
+bun add @codegouvfr/react-dsfr
+```
+
+### Option B : Package Core CSS/JS Vanilla (`@gouvfr/dsfr`)
+
+Pour les projets sans framework React (Django templates, PHP, HTML statique) :
+
+```bash
+npm install @gouvfr/dsfr
+```
+
+---
+
+## 🚀 2. Démarrage Rapide avec React / Next.js
+
+### 1. Initialisation dans `layout.tsx` (Next.js App Router)
+
+```tsx
+// app/layout.tsx
+import { DsfrHead } from "@codegouvfr/react-dsfr/next-appdir/DsfrHead";
+import { DsfrProvider } from "@codegouvfr/react-dsfr/next-appdir/DsfrProvider";
+import { getHtmlAttributes } from "@codegouvfr/react-dsfr/next-appdir/getHtmlAttributes";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html {...getHtmlAttributes({ defaultColorScheme: "system" })}>
+      <head>
+        <DsfrHead
+          preloadFonts={[
+            "Marianne-Light",
+            "Marianne-Regular",
+            "Marianne-Medium",
+            "Marianne-Bold",
+          ]}
+        />
+      </head>
+      <body>
+        <DsfrProvider>{children}</DsfrProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+### 2. Utilisation d'un Composant
+
+```tsx
+import Button from "@codegouvfr/react-dsfr/Button";
+import Alert from "@codegouvfr/react-dsfr/Alert";
+
+export default function HomePage() {
+  return (
+    <main className="p-8 space-y-4">
+      <Alert
+        severity="info"
+        title="Bienvenue sur La Suite"
+        description="Votre espace collaboratif souverain est prêt."
+      />
+      <Button priority="primary" linkProps={{ href: "/docs" }}>
+        Créer un nouveau document
+      </Button>
+    </main>
+  );
+}
+```
+
+---
+
+## 🌐 3. Intégration via CDN (Sans Build)
+
+Si vous souhaitez intégrer le DSFR directement dans une page HTML sans étape de compilation :
+
+```html
+<!DOCTYPE html>
+<html lang="fr" data-fr-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <title>Mon Application - La Suite</title>
+    <!-- Feuilles de style DSFR -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.12.1/dist/dsfr.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.12.1/dist/utility/utility.min.css"
+    />
+  </head>
+  <body>
+    <!-- Composant Bouton DSFR Vanilla -->
+    <button class="fr-btn fr-btn--primary">Action Principale</button>
+
+    <!-- Script JS DSFR -->
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.12.1/dist/dsfr.module.min.js"
+    ></script>
+  </body>
+</html>
+```
+
+---
+
+## 🔤 4. Téléchargement des Polices Officielles Marianne
+
+Les fichiers de polices web (formats `.woff2` et `.woff`) sont inclus dans le package `@gouvfr/dsfr/dist/fonts/` :
+
+```text
+node_modules/@gouvfr/dsfr/dist/fonts/
+├── Marianne-Light.woff2
+├── Marianne-Regular.woff2
+├── Marianne-Medium.woff2
+└── Marianne-Bold.woff2
+```
+
+Pour les télécharger directement en archive ZIP :
+
+- 👉 **[Télécharger le pack officiel des polices Marianne (Gouv.fr)](https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-de-l-identite-visuelle/typographie/)**

@@ -1,0 +1,148 @@
+---
+title: Modales & Boîtes de Dialogue
+description: Guide du composant officiel DSFR (@codegouvfr/react-dsfr/Modal), fenêtres modales accessibles, dialogues de confirmation et gestion du focus.
+---
+
+Les **Modales** permettent d'interrompre temporairement le flux de navigation pour demander une confirmation critique (suppression d'un document, révocation d'une clé API) ou afficher un formulaire contextuel sans quitter la page active.
+
+🔗 **Références officielles :** [Composant Modale DSFR](https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/modale) • [Storybook React-DSFR (Modal)](https://components.react-dsfr.fr/?path=/docs/components-modal--default)
+
+---
+
+## 👁️ Aperçu Visuel des Composants Officiels DSFR
+
+<ModalPreview />
+
+---
+
+## 📊 1. Tableau des Variantes & Propriétés
+
+| Variante / Propriété | Prop React-DSFR                          | Classe Core DSFR        | Description                                                            |
+| -------------------- | ---------------------------------------- | ----------------------- | ---------------------------------------------------------------------- |
+| **Modale standard**  | `size="medium"` (défaut)                 | `fr-modal`              | Modale de taille standard pour formulaires ou contenus textuels.       |
+| **Petite modale**    | `size="small"`                           | `fr-modal fr-modal--sm` | Idéale pour les boîtes de dialogue de confirmation et d'avertissement. |
+| **Grande modale**    | `size="large"`                           | `fr-modal fr-modal--lg` | Pour les tableaux complexes ou prévisualisations de fichiers.          |
+| **Gestion d'état**   | `createModal({ id, isOpenedByDefault })` | `aria-modal="true"`     | Hook déclaratif pour contrôler l'ouverture et la fermeture.            |
+
+---
+
+## 💻 2. Utilisation avec la Bibliothèque Officielle React-DSFR
+
+Importez la fabrique de modale officielle depuis `@codegouvfr/react-dsfr/Modal` :
+
+```tsx
+import { createModal } from "@codegouvfr/react-dsfr/Modal";
+import Button from "@codegouvfr/react-dsfr/Button";
+
+// 1. Déclarer l'instance de modale
+const modalSuppression = createModal({
+  id: "modal-suppression-doc",
+  isOpenedByDefault: false,
+});
+
+export function ActionSuppression() {
+  return (
+    <>
+      {/* 2. Bouton déclencheur */}
+      <Button priority="secondary" onClick={() => modalSuppression.open()}>
+        Supprimer le document
+      </Button>
+
+      {/* 3. Composant Modale avec focus trap et accessibilité native */}
+      <modalSuppression.Component
+        title="Confirmer la suppression"
+        iconId="fr-icon-warning-line"
+        size="small"
+        buttons={[
+          {
+            children: "Annuler",
+            priority: "secondary",
+          },
+          {
+            children: "Supprimer définitivement",
+            priority: "primary",
+            style: { backgroundColor: "#CE0500" },
+            onClick: () => {
+              console.log("Document supprimé");
+              modalSuppression.close();
+            },
+          },
+        ]}
+      >
+        <p>
+          Êtes-vous certain de vouloir supprimer ce document collaboratif ?
+          Toutes les révisions associées seront purgées du stockage S3.
+        </p>
+      </modalSuppression.Component>
+    </>
+  );
+}
+```
+
+---
+
+## 🌐 3. Utilisation en HTML Vanilla (Classes Core DSFR)
+
+```html
+<!-- Bouton déclencheur -->
+<button
+  class="fr-btn fr-btn--secondary"
+  data-fr-opened="false"
+  aria-controls="fr-modal-1"
+>
+  Ouvrir la modale
+</button>
+
+<!-- Structure de la modale DSFR -->
+<dialog
+  aria-labelledby="fr-modal-title-modal-1"
+  role="dialog"
+  id="fr-modal-1"
+  class="fr-modal"
+>
+  <div class="fr-container fr-container--fluid fr-container-md">
+    <div class="fr-grid-row fr-grid-row--center">
+      <div class="fr-col-12 fr-col-md-8 fr-col-lg-6">
+        <div class="fr-modal__body">
+          <div class="fr-modal__header">
+            <button class="fr-btn--close fr-btn" aria-controls="fr-modal-1">
+              Fermer
+            </button>
+          </div>
+          <div class="fr-modal__content">
+            <h1 id="fr-modal-title-modal-1" class="fr-modal__title">
+              <span class="fr-icon-arrow-right-line fr-icon--lg"></span>
+              Titre de la modale
+            </h1>
+            <p>Contenu textuel explicatif.</p>
+          </div>
+          <div class="fr-modal__footer">
+            <ul
+              class="fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse"
+            >
+              <li><button class="fr-btn">Confirmer</button></li>
+              <li>
+                <button
+                  class="fr-btn fr-btn--secondary"
+                  aria-controls="fr-modal-1"
+                >
+                  Annuler
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+```
+
+---
+
+## ♿ 4. Accessibilité & Critères RGAA (v4.1)
+
+- **Confinement du Focus (_Focus Trap_) :** La navigation au clavier (`Tab` / `Shift+Tab`) reste strictement confinée à l'intérieur de la modale tant qu'elle est active.
+- **Restauration du Focus :** À la fermeture de la modale (via le bouton ou la touche `Échap`), le focus clavier est automatiquement replacé sur l'élément déclencheur initial.
+- **Balise sémantique `<dialog>` :** Utilise l'élément HTML5 standardisé avec `aria-modal="true"`.
+- **Touche Échap :** La touche `Escape` referme immédiatement la modale.

@@ -1,0 +1,98 @@
+---
+title: Alertes & Callouts
+description: Bannières d'alerte officielles DSFR, composant @codegouvfr/react-dsfr/Alert, callouts informatifs et notifications.
+---
+
+Les **Alertes** et **Callouts** permettent de transmettre des messages cruciaux à l'utilisateur : confirmation d'action, avertissement de sécurité, erreur de traitement ou information légale.
+
+🔗 **Références officielles :** [Composant Alerte DSFR](https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/alerte) • [Storybook React-DSFR (Alert)](https://components.react-dsfr.fr/?path=/docs/components-alert--default)
+
+---
+
+## 👁️ Aperçu Visuel des Composants Officiels DSFR
+
+<AlertPreview />
+
+---
+
+## 📢 1. Variantes d'Alertes
+
+| Variante          | Sévérité React-DSFR  | Classe Core DSFR             | Signification                                           |
+| ----------------- | -------------------- | ---------------------------- | ------------------------------------------------------- |
+| **Information**   | `severity="info"`    | `fr-alert fr-alert--info`    | Conseils d'utilisation, prérequis, contexte neutre.     |
+| **Succès**        | `severity="success"` | `fr-alert fr-alert--success` | Action validée, document créé, sauvegarde réussie.      |
+| **Avertissement** | `severity="warning"` | `fr-alert fr-alert--warning` | Attention requise, action imminente, session expirante. |
+| **Erreur**        | `severity="error"`   | `fr-alert fr-alert--error`   | Blocage, échec de traitement, données manquantes.       |
+
+---
+
+## 💻 2. Utilisation avec React-DSFR (`@codegouvfr/react-dsfr/Alert`)
+
+```tsx
+import Alert from "@codegouvfr/react-dsfr/Alert";
+
+export function Notifications() {
+  return (
+    <div className="space-y-4">
+      {/* Alerte d'information standard */}
+      <Alert
+        severity="info"
+        title="Session active"
+        description="Connecté avec le compte OIDC Vincent G. (DINUM)."
+      />
+
+      {/* Alerte avec bouton de fermeture */}
+      <Alert
+        severity="success"
+        title="Document partagé"
+        description="Le lien a été copié dans votre presse-papier."
+        closable
+        onClose={() => console.log("Alerte fermée")}
+      />
+
+      {/* Alerte de petite taille (sm) */}
+      <Alert
+        severity="warning"
+        small
+        description="Attention : le serveur local sera redémarré dans 2 minutes."
+      />
+    </div>
+  );
+}
+```
+
+---
+
+## 🌐 3. Utilisation en HTML Vanilla (Classes Core DSFR)
+
+```html
+<div class="fr-alert fr-alert--info" role="status">
+  <h3 class="fr-alert__title">Information</h3>
+  <p>Votre mot de passe a bien été mis à jour.</p>
+</div>
+```
+
+---
+
+## 💡 4. Callouts dans la Documentation (Zudoku / MDX)
+
+Dans les fichiers Markdown Zudoku (`.md` / `.mdx`), vous pouvez également utiliser les conteneurs natifs :
+
+```markdown
+:::info
+Ce dépôt orchestre les services de La Suite en local.
+:::
+
+:::tip
+Utilisez `make docs-dev` pour tester vos modifications en direct.
+:::
+
+:::caution
+Ne supprimez jamais la couche d'authentification Keycloak dans le code source.
+:::
+```
+
+- **Rôle ARIA selon l'urgence :**
+  - Utilisez `role="status"` ou `aria-live="polite"` pour les messages d'information et de succès (lus par le lecteur d'écran dès que la synthèse vocale est libre).
+  - Utilisez `role="alert"` ou `aria-live="assertive"` pour les erreurs bloquantes ou les alertes de sécurité (interrompt immédiatement la lecture en cours).
+- **Titres de niveau approprié :** Si l'alerte est insérée dans le flux du document, assurez-vous que son titre s'intègre harmonieusement dans l'arbre d'accessibilité.

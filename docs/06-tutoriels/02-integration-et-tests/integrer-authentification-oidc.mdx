@@ -1,0 +1,117 @@
+---
+title: Intégrer l'Authentification OIDC (ProConnect)
+description: Tutoriel d'intégration d'un client OpenID Connect en Node.js/TypeScript avec openid-client, gestion du flux PKCE et vérification JWT.
+---
+
+Ce tutoriel détaille la mise en place d'une couche d'authentification robuste avec **ProConnect** en utilisant la bibliothèque de référence `openid-client` en TypeScript.
+
+---
+
+## 📦 1. Installation des Dépendances
+
+```bash
+pnpm add openid-client jose dotenv
+pnpm add -D @types/node
+```
+
+---
+
+## ⚙️ 2. Configuration du Client OIDC
+
+Créez le service d'authentification `src/auth/oidc.ts` :
+
+```typescript
+import { Issuer, Strategy, type Client } from "openid-client";
+
+let oidcClient: Client;
+
+export async function getOidcClient(): Promise<Client> {
+  if (oidcClient) return oidcClient;
+
+  const issuerUrl =
+    process.env.OIDC_ISSUER_URL || "https://app.proconnect.gouv.fr/api/v2";
+  const proConnectIssuer = await Issuer.discover(issuerUrl);
+
+  oidcClient = new proConnectIssuer.Client({
+    client_id: process.env.OIDC_CLIENT_ID!,
+    client_secret: process.env.OIDC_CLIENT_SECRET!,
+    redirect_uris: [
+      process.env.OIDC_REDIRECT_URI || "http://localhost:3000/auth/callback",
+    ],
+    response_types: ["code"],
+  });
+
+  return oidcClient;
+}
+```
+
+---
+
+## 🔀 3. Route de Connexion (Login avec PKCE)
+
+```typescript
+import { generators } from "openid-client";
+import type { Request, Response } from "express";
+import { getOidcClient } from "./oidc";
+
+export async function handleLogin(req: Request, res: Response) {
+  const client = await getOidcClient();
+
+  // Générer les paramètres de sécurité PKCE & Nonce
+  const code_verifier = generators.codeVerifier();
+  const code_challenge = generators.codeChallenge(code_verifier);
+  const state = generators.state();
+  const nonce = generators.nonce();
+
+  // Stocker dans la session temporaire (cookie chiffré)
+  req.session.authParams = { code_verifier, state, nonce };
+
+  const authUrl = client.authorizationUrl({
+    scope: "openid profile email organization",
+    state,
+    nonce,
+    code_challenge,
+    code_challenge_method: "S256",
+  });
+
+  res.redirect(authUrl);
+}
+```
+
+---
+
+## 🎯 4. Route de Callback & Échange de Token
+
+```typescript
+import type { Request, Response } from "express";
+import { getOidcClient } from "./oidc";
+
+export async function handleCallback(req: Request, res: Response) {
+  const client = await getOidcClient();
+  const { code_verifier, state, nonce } = req.session.authParams;
+
+  const params = client.callbackParams(req);
+  const tokenSet = await client.callback(
+    process.env.OIDC_REDIRECT_URI,
+    params,
+    { code_verifier, state, nonce },
+  );
+
+  const claims = tokenSet.claims();
+  console.log(
+    "Agent connecté :",
+    claims.email,
+    claims.given_name,
+    claims.family_name,
+  );
+
+  // Récupérer les informations étendues
+  const userinfo = await client.userinfo(tokenSet.access_token!);
+
+  // Créer ou rafraîchir l'agent en base PostgreSQL
+  req.session.userId = claims.sub;
+  req.session.userEmail = claims.email;
+
+  res.redirect("/dashboard");
+}
+```

@@ -1,0 +1,62 @@
+---
+title: Sauvegardes & Plan de Continuité (PRA / PCA)
+description: Stratégie de sauvegarde continue PostgreSQL (WAL-G / pgBackRest), réplication S3 inter-régionale et procédures de restauration d'urgence.
+---
+
+La résilience des données critiques des agents publics (documents collaboratifs, organisations, salons de messagerie) est assurée par un mécanisme de sauvegarde continue avec Point-in-Time Recovery (**PITR**).
+
+---
+
+## 🗄️ 1. Mécanisme de Sauvegarde PostgreSQL (WAL-G)
+
+<Mermaid chart={`flowchart LR
+    subgraph PGPrimary["🗄️ Base PostgreSQL Primaire"]
+        DataFiles["Fichiers de Données"]
+        WAL["Write-Ahead Logs (WAL)"]
+    end
+
+    subgraph BackupDaemon["⚡ Daemon de Sauvegarde (WAL-G)"]
+        FullBackup["Full Base Backup (Hebdomadaire)"]
+        WALStream["Archivage continu des WAL (Toutes les 60s)"]
+    end
+
+    subgraph S3Backup["🪣 Bucket S3 de Sauvegarde Dédié"]
+        S3Tar["Snapshots compressés zstd"]
+        S3WAL["Segments WAL chiffrés AES-256"]
+    end
+
+    DataFiles --> FullBackup --> S3Tar
+    WAL --> WALStream --> S3WAL
+
+`} />
+
+---
+
+## ⏱️ 2. Objectifs RTO / RPO
+
+| Métrique                             | Valeur Cible   | Description                                                                                                    |
+| ------------------------------------ | -------------- | -------------------------------------------------------------------------------------------------------------- |
+| **RPO (_Recovery Point Objective_)** | $< 1$ minute   | Perte maximale de données admissible en cas de sinistre majeur (grâce à l'archivage continu des segments WAL). |
+| **RTO (_Recovery Time Objective_)**  | $< 30$ minutes | Temps maximal pour restaurer l'ensemble des services opérationnels sur une nouvelle infrastructure.            |
+
+---
+
+## 🔄 3. Procédure de Restauration Point-in-Time (PITR)
+
+Pour restaurer une base de données à un instant précis (par exemple, juste avant une corruption accidentelle survenue à `2026-04-12 14:32:00 UTC`) :
+
+```bash
+# 1. Récupérer le backup complet le plus proche
+wal-g backup-fetch /var/lib/postgresql/data LATEST
+
+# 2. Configurer la cible de restauration dans postgresql.conf
+cat <<EOF >> /var/lib/postgresql/data/postgresql.conf
+restore_command = 'wal-g wal-fetch "%f" "%p"'
+recovery_target_time = '2026-04-12 14:32:00 UTC'
+recovery_target_action = 'promote'
+EOF
+
+# 3. Créer le fichier signal de restauration et démarrer le service
+touch /var/lib/postgresql/data/recovery.signal
+systemctl start postgresql
+```

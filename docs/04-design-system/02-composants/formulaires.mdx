@@ -1,0 +1,159 @@
+---
+title: Formulaires & Saisie
+description: Composants de formulaires officiels DSFR (@codegouvfr/react-dsfr/Input, Select, Checkbox, RadioButtons) et règles de saisie accessible.
+---
+
+Les formulaires constituent le point d'interaction principal entre les utilisateurs et les applications (création de projet, téléversement de fichiers, paramétrage de profil). Dans **La Suite numérique**, les formulaires sont construits avec les composants officiels **React-DSFR**.
+
+🔗 **Références officielles :** [Champs de Saisie DSFR](https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/champ-de-saisie) • [Storybook React-DSFR (Input)](https://components.react-dsfr.fr/?path=/docs/components-input--default) • [Boutons Radio DSFR](https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/boutons-radio) • [Cases à Cocher DSFR](https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/cases-a-cocher)
+
+---
+
+## 👁️ Aperçu Visuel des Composants Officiels DSFR
+
+<FormPreview />
+
+---
+
+## 💻 1. Utilisation avec la Bibliothèque Officielle React-DSFR
+
+Importez directement les composants typés depuis `@codegouvfr/react-dsfr` :
+
+```tsx
+import Input from "@codegouvfr/react-dsfr/Input";
+import Select from "@codegouvfr/react-dsfr/Select";
+import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
+import RadioButtons from "@codegouvfr/react-dsfr/RadioButtons";
+
+export function FormulaireProjet() {
+  return (
+    <form className="space-y-6">
+      {/* 1. Champ texte avec description et validation */}
+      <Input
+        label="Titre du projet"
+        hintText="Titre visible par tous les membres de l'organisation"
+        nativeInputProps={{
+          placeholder: "Ex: Déploiement ProConnect",
+          required: true,
+        }}
+      />
+
+      {/* 2. Champ avec erreur de validation */}
+      <Input
+        label="Email de contact"
+        state="error"
+        stateRelatedMessage="Veuillez renseigner une adresse email valide."
+        nativeInputProps={{
+          type: "email",
+          defaultValue: "mauvais-format",
+        }}
+      />
+
+      {/* 3. Sélecteur déroulant */}
+      <Select
+        label="Visibilité"
+        nativeSelectProps={{
+          defaultValue: "public",
+        }}
+      >
+        <option value="private">Privé (vous uniquement)</option>
+        <option value="team">Équipe</option>
+        <option value="public">Organisation publique</option>
+      </Select>
+
+      {/* 4. Cases à cocher */}
+      <Checkbox
+        legend="Options de notification"
+        options={[
+          {
+            label: "Notifications par email",
+            nativeInputProps: { name: "email_notif", defaultChecked: true },
+          },
+          {
+            label: "Notifications Matrix",
+            nativeInputProps: { name: "matrix_notif" },
+          },
+        ]}
+      />
+
+      {/* 5. Boutons radio */}
+      <RadioButtons
+        legend="Méthode d'authentification"
+        options={[
+          {
+            label: "ProConnect / AgentConnect (Recommandé)",
+            nativeInputProps: {
+              name: "auth_mode",
+              value: "proconnect",
+              defaultChecked: true,
+            },
+          },
+          {
+            label: "Keycloak local",
+            nativeInputProps: { name: "auth_mode", value: "keycloak" },
+          },
+        ]}
+      />
+    </form>
+  );
+}
+```
+
+---
+
+## 🌐 3. Utilisation en HTML Vanilla (Classes Core DSFR)
+
+```html
+<!-- Champ Texte avec hint et label officiel -->
+<div class="fr-input-group">
+  <label class="fr-label" for="user-email">
+    Adresse email professionnelle
+    <span class="fr-hint-text"
+      >Format attendu : prenom.nom@domaine.gouv.fr</span
+    >
+  </label>
+  <input class="fr-input" type="email" id="user-email" name="email" required />
+</div>
+
+<!-- Champ avec état d'erreur -->
+<div class="fr-input-group fr-input-group--error">
+  <label class="fr-label" for="user-email-err">Adresse email</label>
+  <input
+    class="fr-input fr-input--error"
+    type="email"
+    id="user-email-err"
+    aria-describedby="email-error-desc"
+  />
+  <p id="email-error-desc" class="fr-error-text">
+    L'adresse email saisie est invalide.
+  </p>
+</div>
+
+<!-- Groupe de cases à cocher -->
+<fieldset class="fr-fieldset">
+  <legend class="fr-fieldset__legend">Préférences de communication</legend>
+  <div class="fr-fieldset__element">
+    <div class="fr-checkbox-group">
+      <input type="checkbox" id="checkbox-1" name="opt-1" checked />
+      <label class="fr-label" for="checkbox-1"
+        >Recevoir les alertes par email</label
+      >
+    </div>
+  </div>
+</fieldset>
+```
+
+---
+
+## ♿ 4. Accessibilité & Critères RGAA (v4.1)
+
+- **Liaison explicite obligatoire :** Chaque champ possède un label visible et lié par `for="id_du_champ"`.
+- **Indication des erreurs :** L'attribut `aria-invalid="true"` et le lien `aria-describedby` pointant vers le message d'erreur sont requis.
+- **Groupement sémantique :** Les boutons radios et cases à cocher associées utilisent `<fieldset>` et `<legend>` (géré nativement par React-DSFR via la prop `legend`).
+- **Autocomplétion :** Renseignez toujours `autocomplete` (ex: `autocomplete="email"`, `autocomplete="username"`).
+
+- [x] **Aucun champ sans `<label>` :** Tout contrôle possède une étiquette visible et liée par `for`.
+- [x] **Indication des champs obligatoires :** Les champs obligatoires sont signalés visuellement (ex: `*`) et programmés avec `required` et `aria-required="true"`.
+- [x] **Groupement sémantique :** Les boutons radios ou cases à cocher associées utilisent `<fieldset>` et `<legend>`.
+- [x] **Contour de focus visible :** Le focus clavier ne doit jamais être supprimé (`outline: none` sans remplacement par un anneau visible est interdit).
+- [x] **Autocomplétion :** Renseignez l'attribut standard `autocomplete` (ex: `autocomplete="email"`, `autocomplete="username"`).

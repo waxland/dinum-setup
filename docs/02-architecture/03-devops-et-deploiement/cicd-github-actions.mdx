@@ -1,0 +1,104 @@
+---
+title: Intégration Continue (CI/CD GitHub Actions)
+description: Pipelines de tests automatisés, matrices de build multi-plateformes, scan de sécurité et publication des images Docker.
+---
+
+Les dépôts de La Suite numérique utilisent des workflows **GitHub Actions** standardisés pour valider chaque proposition de modification et garantir la non-régression avant tout déploiement en production.
+
+---
+
+## 🔄 1. Architecture du Pipeline CI
+
+<Mermaid chart={`flowchart LR
+    subgraph Trigger["Déclencheur Git"]
+        PR["Pull Request / Push main"]
+    end
+
+    subgraph FastValidation["Validation Rapide (~2 min)"]
+        Lint["pnpm lint & format"]
+        TypeCheck["tsc --noEmit"]
+        SecurityScan["gitleaks & trivy"]
+    end
+
+    subgraph DeepValidation["Tests Approfondis (~5 min)"]
+        UnitTests["Vitest / Jest"]
+        IntegrationTests["Supertest + PostgreSQL"]
+        E2E["Playwright E2E"]
+    end
+
+    subgraph Delivery["Livraison & Packaging"]
+        DockerBuild["Docker Multi-arch Build (amd64 / arm64)"]
+        Registry["Publication Registry (GHCR)"]
+    end
+
+    Trigger --> FastValidation
+    FastValidation --> DeepValidation
+    DeepValidation --> Delivery
+
+`} />
+
+---
+
+## 🛠️ 2. Workflow GitHub Actions Typique
+
+Exemple de structure d'un fichier `.github/workflows/ci.yml` :
+
+```yaml
+name: CI & Tests Automatisés
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  qualite:
+    name: Lint & Typage TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "pnpm"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+
+  tests-unitaires:
+    name: Tests Unitaires & Couverture
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "pnpm"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test:coverage
+
+  tests-e2e:
+    name: Tests de Bout en Bout Playwright
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: pnpm install --frozen-lockfile
+      - run: npx playwright install --with-deps chromium
+      - run: pnpm test:e2e
+```
+
+---
+
+## 🛡️ 3. Politiques de Sécurité CI
+
+- **Analyse des dépendances :** Dependabot et Socket.dev analysent en continu les failles CVE et les comportements suspects de paquets npm/Python.
+- **Scan de vulnérabilités d'images :** Trivy inspecte les images Docker générées avant publication sur le registre de conteneurs.

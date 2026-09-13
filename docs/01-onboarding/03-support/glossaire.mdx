@@ -1,0 +1,87 @@
+---
+title: Glossaire & Termes Techniques
+description: Lexique complet des acronymes, concepts d'architecture et standards utilisés à la DINUM et dans l'écosystème La Suite numérique.
+---
+
+Ce glossaire regroupe les définitions techniques, protocoles et standards essentiels utilisés quotidiennement sur les dépôts de La Suite numérique et au sein de la Direction Interministérielle du Numérique (DINUM).
+
+---
+
+## 🏛️ 1. Identité, Sécurité & Cadre Souverain
+
+### ProConnect (ex-AgentConnect)
+
+Fournisseur d'identité officiel de l'État français (SSO) réservé aux agents publics (fonctionnaires d'État, territoriaux, hospitaliers, enseignants). Repose sur le standard **OpenID Connect (OIDC)** et intègre des contrôles d'éligibilité d'adresse email interministérielle.
+
+### OIDC (OpenID Connect)
+
+Couche d'identité moderne construite au-dessus du protocole d'autorisation **OAuth 2.0**. Elle permet aux applications clientes de vérifier l'identité de l'agent connecté via un jeton signé (`id_token` JWT) et de récupérer ses attributs de profil (nom, prénom, email, organisation) via le endpoint `/userinfo`.
+
+### IAL & AAL (Identity & Authenticator Assurance Levels)
+
+- **IAL (Identity Assurance Level) :** Niveau de certitude sur l'identité physique de l'agent (IAL1 : simple email auto-déclaré ; IAL2 : vérification administrative ou preuve d'identité).
+- **AAL (Authenticator Assurance Level) :** Force du mécanisme d'authentification (AAL1 : mot de passe simple ; AAL2 : 2FA / MFA avec TOTP ou clé matérielle FIDO2/WebAuthn).
+
+### SecNumCloud
+
+Référentiel d'exigence de cybersécurité établi par l'**ANSSI** (Agence Nationale de la Sécurité des Systèmes d'Information) pour qualifier les offres de Cloud computing souveraines et immunisées contre les lois extraterritoriales (hébergeurs français tels qu'OVHcloud, Scaleway, Outscale).
+
+### DPG (Doctrine du Cloud au Centre)
+
+Doctrine gouvernementale encadrant l'hébergement des données sensibles de l'État : obligation de recourir à des infrastructures qualifiées SecNumCloud pour les données stratégiques ou de souveraineté.
+
+---
+
+## ⚡ 2. Collaboration Temps Réel & Médias
+
+### CRDT (Conflict-free Replicated Data Type)
+
+Structure de données distribuée capable d'être modifiée simultanément et de manière asynchrone sur plusieurs nœuds sans nécessiter de verrouillage centralisé, tout en garantissant une **convergence mathématique forte** (résolution automatique et déterministe de tous les conflits d'édition). Utilisé dans _Docs_ et _Docspec_.
+
+### Yjs
+
+Framework JavaScript open-source implémentant des CRDTs extrêmement performants. Yjs permet la synchronisation en temps réel de texte enrichi (via ProseMirror, Quill ou BlockSuite) et partage les deltas binaires via WebSocket.
+
+### WebRTC (Web Real-Time Communication)
+
+Standard du W3C permettant des communications audio, vidéo et de données pair-à-pair (P2P) chiffrées en temps réel directement dans le navigateur, sans plugin additionnel.
+
+### SFU (Selective Forwarding Unit)
+
+Architecture serveur média pour les visioconférences multi-participants (utilisée par _Meet_ via LiveKit). Contrairement à un pont MCU qui décode et ré-encode tous les flux vidéos, le SFU reçoit chaque flux vidéo et le réachemine intelligemment aux autres participants selon leur bande passante et leur disposition d'écran.
+
+### LiveKit
+
+Plateforme serveur et SDK open-source moderne pour le transport WebRTC haute performance à l'échelle, utilisée pour propulser l'infrastructure de _La Suite Meet_.
+
+---
+
+## 💬 3. Messagerie & Protocoles Fédérés
+
+### Matrix
+
+Protocole ouvert et décentralisé de communication sécurisée en temps réel (messagerie instantanée, voix, vidéo, passerelles IoT). Utilisé par le réseau interministériel **Tchap**.
+
+### Synapse
+
+Serveur de référence open-source implémentant le protocole Matrix en Python/Twisted, développé par The Matrix.org Foundation.
+
+### E2EE (End-to-End Encryption / Chiffrement de Bout en Bout)
+
+Mécanisme cryptographique garantissant que seuls les participants à une conversation possèdent les clés privées pour déchiffrer les messages et pièces jointes (implémenté via les algorithmes _Olm_ et _Megolm_ dans Matrix). Même l'administrateur du serveur ne peut lire le contenu des échanges.
+
+---
+
+## 🛠️ 4. Infrastructure & Stockage
+
+### S3 Compatible Storage (MinIO / Ceph / Scaleway Object Storage)
+
+Protocole de stockage d'objets standardisé par AWS, reposant sur des requêtes HTTP/REST (GET, PUT, DELETE) pour manipuler des blobs immuables associés à des métadonnées (fichiers dans _Transfers_, avatars, pièces jointes).
+
+### SOPS (Secrets OPerationS)
+
+Outil open-source de Mozilla permettant de chiffrer des fichiers de configuration YAML/JSON avec des clés PGP ou des KMS Cloud (AWS KMS, GCP KMS, HashiCorp Vault), autorisant ainsi le stockage sécurisé des secrets directement dans les dépôts Git (GitOps).
+
+### BlockSuite
+
+Moteur d'édition de blocs de contenu collaboratif open-source sur lequel repose la nouvelle génération de l'éditeur de documents _Docs_.

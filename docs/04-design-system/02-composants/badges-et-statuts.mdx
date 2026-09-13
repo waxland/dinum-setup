@@ -1,0 +1,143 @@
+---
+title: Badges, Tags & Statuts
+description: Composants d'état officiels DSFR (@codegouvfr/react-dsfr/Badge et Tag), puces indicatrices et filtres pour La Suite numérique.
+---
+
+Les **Badges** et **Tags** permettent d'afficher de manière synthétique un état, une catégorie, une version ou un statut d'activité dans les tableaux, cartes et listes.
+
+🔗 **Références officielles :** [Composant Badge DSFR](https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/badge) • [Composant Tag DSFR](https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/tag) • [Storybook React-DSFR (Badge)](https://components.react-dsfr.fr/?path=/docs/components-badge--default)
+
+---
+
+## 👁️ Aperçu Visuel des Composants Officiels DSFR
+
+<BadgePreview />
+
+---
+
+## 🏷️ 1. Badges de Statut Sémantiques
+
+| Statut            | Sévérité React-DSFR  | Classe Core DSFR             | Signification                                 |
+| ----------------- | -------------------- | ---------------------------- | --------------------------------------------- |
+| **Succès**        | `severity="success"` | `fr-badge fr-badge--success` | Validé, en ligne, terminé, actif.             |
+| **Erreur**        | `severity="error"`   | `fr-badge fr-badge--error`   | Échec, arrêté, bloqué, rejeté.                |
+| **Avertissement** | `severity="warning"` | `fr-badge fr-badge--warning` | En attente, révision requise, bientôt expiré. |
+| **Information**   | `severity="info"`    | `fr-badge fr-badge--info`    | Nouveauté, information neutre.                |
+| **Nouveau**       | `severity="new"`     | `fr-badge fr-badge--new`     | Fonctionnalité récente.                       |
+
+---
+
+## 💻 2. Utilisation avec React-DSFR (`@codegouvfr/react-dsfr/Badge` et `Tag`)
+
+```tsx
+import Badge from "@codegouvfr/react-dsfr/Badge";
+import Tag from "@codegouvfr/react-dsfr/Tag";
+
+export function Statuts() {
+  return (
+    <div className="flex flex-col gap-4">
+      {/* Badges de statut */}
+      <div className="flex gap-2">
+        <Badge severity="success">En Ligne</Badge>
+        <Badge severity="error">Arrêté</Badge>
+        <Badge severity="warning">Maintenance</Badge>
+        <Badge severity="info" small>
+          v2.4.0
+        </Badge>
+      </div>
+
+      {/* Tags interactifs sélectionnables */}
+      <div className="flex gap-2">
+        <Tag
+          pressed={true}
+          nativeButtonProps={{
+            onClick: () => console.log("Filtre DINUM basculé"),
+          }}
+        >
+          DINUM
+        </Tag>
+        <Tag
+          pressed={false}
+          nativeButtonProps={{
+            onClick: () => console.log("Filtre Projets basculé"),
+          }}
+        >
+          Projets
+        </Tag>
+      </div>
+    </div>
+  );
+}
+```
+
+---
+
+## 🌐 3. Utilisation en HTML Vanilla (Classes Core DSFR)
+
+```html
+<!-- Badges -->
+<p class="fr-badge fr-badge--success">Validé</p>
+<p class="fr-badge fr-badge--sm fr-badge--info">v1.0</p>
+
+<!-- Tag Cliquable -->
+<button class="fr-tag" aria-pressed="true" type="button">
+  Label sélectionné
+</button>
+```
+
+---
+
+## 🏷️ 3. Tags Cliquables & Filtres
+
+Les **Tags** sont interactifs et permettent à l'utilisateur d'activer ou de désactiver des filtres dans une vue (ex: filtrer les cartes par étiquette dans _Projects_).
+
+```tsx
+interface TagProps {
+  label: string;
+  selected?: boolean;
+  onToggle?: () => void;
+  onRemove?: () => void;
+}
+
+export const Tag: React.FC<TagProps> = ({
+  label,
+  selected = false,
+  onToggle,
+  onRemove,
+}) => {
+  return (
+    <span
+      onClick={onToggle}
+      role="button"
+      tabIndex={0}
+      className={`inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full cursor-pointer transition-colors ${
+        selected
+          ? "bg-[#000091] text-white"
+          : "bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+      }`}
+    >
+      <span>{label}</span>
+      {onRemove && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove();
+          }}
+          className="hover:opacity-75 focus:outline-none"
+          aria-label={`Supprimer le tag ${label}`}
+        >
+          ×
+        </button>
+      )}
+    </span>
+  );
+};
+```
+
+---
+
+## ♿ 4. Accessibilité RGAA des Badges
+
+1. **Ne pas dépendre uniquement de la couleur :** Un badge d'erreur doit afficher le mot "Erreur" ou "Échec", pas seulement une pastille rouge.
+2. **Contraste de texte :** Veillez à ce que le ratio de contraste entre le texte du badge et son fond soit toujours supérieur à **4.5:1**.

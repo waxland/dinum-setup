@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
     "target": "ES2022",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "jsx": "react-jsx",
     "strict": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "types": ["node"]
+    "types": ["zudoku/client", "node"]
   },
-  "include": ["zudoku.config.tsx"]
+  "include": ["src", "zudoku.config.tsx", "vite.config.ts"]
 }

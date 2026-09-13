@@ -1,0 +1,69 @@
+---
+title: Grist (Bases de Données Relationnelles No-Code)
+description: Présentation de Grist dans La Suite numérique, tableur-base de données relationnel, formules Python, gestion de droits granulaire et connecteurs.
+---
+
+**Grist** est l'outil hybride combinant la simplicité d'un tableur et la puissance d'une base de données relationnelle no-code, permettant aux équipes métiers de concevoir des outils de gestion personnalisés (suivi de recrutement, gestion de subventions, inventaires, plannings).
+
+---
+
+## 🧩 1. Pourquoi Grist au sein de La Suite ?
+
+```mermaid
+mindmap
+  root((Grist Numérique))
+    Tableur Intelligent
+      Colonnes Typées (Date, Choix, Référence)
+      Formules Python Complètes
+      Vues Multiples (Cartes, Tableaux, Graphiques)
+    Base Relationnelle
+      Liaisons entre Tables (Clés Étrangères)
+      Jointures Automatiques
+      Intégrité Référentielle
+    Contrôle d'Accès Fin
+      Règles par Ligne (Row-Level Security)
+      Règles par Colonne
+      Filtrage par Rôle ou Organisation
+    Écosystème Ouvert
+      API REST Complète
+      Webhooks Temps Réel
+      Widgets Personnalisés HTML/JS
+```
+
+---
+
+## 🐍 2. Formules Python Intégrées
+
+Contrairement aux tableurs traditionnels limités par des syntaxes complexes de formules propriétaires, Grist exécute un environnement **Python standard** sécurisé dans un sandbox WebAssembly :
+
+```python
+# Exemple de formule de calcul de date d'échéance et de statut
+import datetime
+
+def calculer_statut(rec):
+    if rec.DateValidation:
+        return "Validé"
+    elif rec.DateLimite and rec.DateLimite < datetime.date.today():
+        return "En retard"
+    return "En cours"
+```
+
+---
+
+## 🔒 3. Sécurité & Droits d'Accès Granulaires
+
+Grist permet d'écrire des règles de sécurité déclaratives basées sur l'identité de l'agent connecté :
+
+| Règle / Cas d'usage                               | Formule de politique d'accès                   |
+| ------------------------------------------------- | ---------------------------------------------- |
+| **Lecture seule de ses propres dossiers**         | `user.Email == rec.AgentEmail`                 |
+| **Masquage de colonnes confidentielles**          | `user.Role == "Administrateur"`                |
+| **Interdiction de modification après validation** | `not rec.IsLocked or user.Role == "Direction"` |
+
+---
+
+## 🌐 4. Intégration dans La Suite numérique
+
+- **Authentification SSO :** Connexion transparente via **ProConnect**.
+- **Partage inter-équipes :** Intégration avec l'annuaire d'agents **People** et les espaces d'équipe **Projects**.
+- **Stockage Souverain :** Fichiers `.grist` (bases SQLite optimisées) sauvegardés et chiffrés sur le cluster S3 souverain.

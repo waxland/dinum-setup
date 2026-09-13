@@ -1,0 +1,94 @@
+---
+title: Déploiement en Production & Cloud Souverain
+description: Infrastructure Kubernetes (K8s), charts Helm, ingress Traefik, hébergement SecNumCloud (Scaleway / OVHcloud / Outscale).
+---
+
+Les services de La Suite numérique sont déployés sur des infrastructures infonuagiques souveraines conformes aux directives de l'ANSSI et à la **Doctrine Cloud au Centre de l'État**.
+
+---
+
+## 🏛️ 1. Architecture Infrastructure de Production
+
+<Mermaid chart={`flowchart TB
+    subgraph Internet["🌐 Réseau Public & RIE (Réseau Interministériel de l'État)"]
+        Users["🧑‍💼 Agents Publics"]
+    end
+
+    subgraph SecNumCloud["🇫🇷 Hébergement Cloud Souverain (Scaleway / OVH / Outscale)"]
+        subgraph Edge["Ingress & Sécurité Périmétrique"]
+            WAF["WAF & Anti-DDoS"]
+            Ingress["Ingress Controller (Traefik / Nginx)"]
+            TLS["Cert-Manager (Let's Encrypt / Certificats d'État)"]
+            WAF --> Ingress
+        end
+
+        subgraph K8s["Cluster Kubernetes Managé"]
+            subgraph AppPods["Workloads Applicatifs"]
+                PodDocs["Pod Docs (Node.js)"]
+                PodMeet["Pod Meet (LiveKit + Go)"]
+                PodProjects["Pod Projects (Django / Node)"]
+                PodTransfers["Pod Transfers"]
+            end
+
+            subgraph Services["Services Internes"]
+                RedisCluster["Cluster Redis (Cache & PubSub)"]
+                WSSync["Serveurs de Sync WebSocket"]
+            end
+        end
+
+        subgraph Storage["Persistance & Données"]
+            ManagedPG["PostgreSQL Haute Disponibilité (HA)"]
+            S3Buckets["Stockage d'Objets S3 (Chiffré)"]
+        end
+    end
+
+    Users --> WAF
+    Ingress --> AppPods
+    Ingress --> WSSync
+    AppPods --> RedisCluster
+    AppPods --> ManagedPG
+    AppPods --> S3Buckets
+
+`} />
+
+---
+
+## 📦 2. Déploiement GitOps avec Helm
+
+Chaque microservice dispose de son propre chart Helm ou utilise un chart mutualisé décrivant les ressources K8s :
+
+```yaml
+# values-production.yaml (Exemple)
+replicaCount: 4
+
+image:
+  repository: ghcr.io/numerique-gouv/lasuite-docs
+  tag: "v1.4.2"
+  pullPolicy: IfNotPresent
+
+resources:
+  limits:
+    cpu: 2000m
+    memory: 4Gi
+  requests:
+    cpu: 500m
+    memory: 1Gi
+
+autoscaling:
+  enabled: true
+  minReplicas: 4
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 75
+
+env:
+  NODE_ENV: production
+  OIDC_ISSUER_URL: https://app.proconnect.gouv.fr/api/v2
+```
+
+---
+
+## 📊 3. Observabilité & Métriques
+
+- **Métriques :** Prometheus & Grafana pour la collecte des métriques système (CPU, RAM, requêtes/sec, latence P99).
+- **Logs :** Vector / Fluentbit vers OpenSearch pour la centralisation et l'audit des traces applicatives.
+- **Traçage distribué :** OpenTelemetry pour le profilage des requêtes microservices complexes.

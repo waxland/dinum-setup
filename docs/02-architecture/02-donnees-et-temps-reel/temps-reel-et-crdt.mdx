@@ -1,0 +1,59 @@
+---
+title: Collaboration Temps Réel & CRDT (Yjs)
+description: Architecture de synchronisation temps réel, structures CRDT (Conflict-free Replicated Data Types), protocoles WebSocket et support hors-ligne.
+---
+
+Les outils collaboratifs de La Suite (notamment **Docs** et **Docspec**) reposent sur des structures de données répliquées sans conflit (**CRDT**) orchestrées par la bibliothèque **Yjs**, garantissant une édition à plusieurs fluide, sans verrouillage et avec un support hors-ligne naturel.
+
+---
+
+## 🏗️ 1. Architecture de Synchronisation Yjs & WebSockets
+
+<Mermaid chart={`flowchart TB
+    subgraph ClientA["🧑‍💻 Navigateur Agent A"]
+        EditorA["BlockSuite / ProseMirror"]
+        YDocA["Y.Doc (Local CRDT)"]
+        ProviderA["y-websocket Provider"]
+        EditorA <--> YDocA
+        YDocA <--> ProviderA
+    end
+
+    subgraph ClientB["🧑‍💻 Navigateur Agent B"]
+        EditorB["BlockSuite / ProseMirror"]
+        YDocB["Y.Doc (Local CRDT)"]
+        ProviderB["y-websocket Provider"]
+        EditorB <--> YDocB
+        YDocB <--> ProviderB
+    end
+
+    subgraph Server["⚡ Serveur Temps Réel (Node.js / Hocuspocus)"]
+        WSServer["Serveur WebSocket"]
+        RoomManager["Gestionnaire de Salles (Rooms)"]
+        Persistence["Persistance Asynchrone (PostgreSQL / Redis)"]
+        WSServer <--> RoomManager
+        RoomManager --> Persistence
+    end
+
+    ProviderA <-->|"Deltas binaires (SyncStep 1 & 2)"| WSServer
+    ProviderB <-->|"Deltas binaires (SyncStep 1 & 2)"| WSServer
+
+`} />
+
+---
+
+## ⚙️ 2. Principes Fondamentaux des CRDTs
+
+Contrairement aux mécanismes de verrouillage pessimiste ou aux algorithmes _Operational Transformation (OT)_ (comme dans Google Docs historique) nécessitant un serveur central arbitre de chaque opération :
+
+1. **Autonomie Locale :** Chaque frappe de clavier d'un utilisateur mute immédiatement son arbre de document local (`Y.Doc`) sans attendre de réponse réseau.
+2. **Convergence Déterministe :** Deux états locaux ayant reçu le même ensemble de modifications (dans n'importe quel ordre) convergent mathématiquement vers un état strictement identique.
+3. **Vecteurs d'État (_State Vectors_) :** Lors de la reconnexion, les pairs échangent un vecteur d'état binaire compact pour n'envoyer que les modifications manquantes (_Sync Step 1 & 2_).
+4. **Gestion de Présence (_Awareness_) :** Les curseurs des collaborateurs, sélections de texte et avatars sont synchronisés via un canal éphémère (_Awareness protocol_) qui n'est pas persisté en base de données.
+
+---
+
+## 💾 3. Persistance & Stockage des Documents
+
+- **En mémoire / Cache chaud :** Les sessions d'édition actives sont maintenues en mémoire vive sur les nœuds de synchronisation WebSocket avec Redis comme bus pub/sub.
+- **Instantanés (_Snapshots_) :** Périodiquement ou à la fermeture d'une salle, un état consolidé du document est sérialisé sous forme de blob binaire compact (`Y.encodeStateAsUpdate(ydoc)`) et sauvegardé dans **PostgreSQL**.
+- **Historique & Révisions :** Chaque snapshot majeur constitue une version nommée du document, permettant de restaurer ou de comparer des états antérieurs.

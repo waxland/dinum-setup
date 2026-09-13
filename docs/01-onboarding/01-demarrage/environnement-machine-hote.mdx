@@ -1,0 +1,85 @@
+---
+title: Configuration de la Machine Hôte
+description: Prérequis système, moteurs d'exécution de conteneurs (OrbStack, Colima, Docker Desktop), versions de Node.js, Python et Go.
+---
+
+Pour exécuter confortablement la stack locale de La Suite numérique, votre machine de développement doit disposer d'un environnement moderne et optimisé pour la conteneurisation.
+
+---
+
+## 💻 1. Prérequis Matériels & Système
+
+| Composant                  | Recommandation Minimale                                    | Recommandation Optimale                                                |
+| -------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------- |
+| **Système d'exploitation** | macOS (Apple Silicon M1/M2/M3/M4) ou Linux (Ubuntu 22.04+) | macOS Apple Silicon 16 Go+ RAM                                         |
+| **Mémoire RAM**            | 16 Go RAM                                                  | 32 Go RAM (pour faire tourner l'ensemble des conteneurs simultanément) |
+| **Espace Disque**          | 40 Go libres                                               | SSD NVMe avec 100 Go libres (images Docker & volumes PostgreSQL)       |
+
+---
+
+## 🐳 2. Choix du Moteur de Conteneurs (macOS)
+
+Sur macOS, Docker Desktop peut s'avérer lourd en mémoire et ressources processeur. Deux alternatives open-source et légères sont plébiscitées au sein de l'équipe :
+
+### Option A : OrbStack (Recommandé pour la rapidité & légèreté)
+
+OrbStack consomme jusqu'à 5× moins de mémoire que Docker Desktop et démarre en moins de 2 secondes :
+
+```bash
+brew install --cask orbstack
+```
+
+### Option B : Colima + Docker CLI (100% Open-Source)
+
+Colima fait tourner des conteneurs légers via Alpine Linux sous Lima :
+
+```bash
+brew install colima docker docker-compose
+colima start --cpu 4 --memory 8 --disk 60
+```
+
+### Option C : Docker Desktop
+
+Si vous disposez d'une licence ou travaillez sous Linux :
+
+```bash
+# Vérifier la présence de Docker Compose v2
+docker compose version
+```
+
+---
+
+## 📦 3. Gestionnaires de Versions (Node.js, Python, Go)
+
+Pour éviter les conflits entre projets, nous recommandons l'utilisation de gestionnaires de versions polyvalents :
+
+### Gestion globale avec `mise` ou `asdf`
+
+```bash
+# Installation de mise (alternative ultra-rapide en Rust)
+brew install mise
+
+# Activation dans votre ~/.zshrc
+echo 'eval "$(mise activate zsh)"' >> ~/.zshrc
+```
+
+### Versions de référence par projet
+
+| Outil / Langage                  | Version de référence | Gestionnaire recommandé |
+| -------------------------------- | -------------------- | ----------------------- |
+| **Node.js**                      | `>= 22.x LTS` (Iron) | `mise` / `nvm` / `fnm`  |
+| **Package Manager**              | `pnpm >= 9.x`        | `corepack enable`       |
+| **Python**                       | `>= 3.12.x`          | `mise` / `uv` / `pyenv` |
+| **Go**                           | `>= 1.22.x`          | `mise` / `gvm`          |
+| **Rust** (si compilation locale) | `>= 1.80.x`          | `rustup`                |
+
+```bash
+# Installation des runtimes recommandés
+mise use --global node@22
+mise use --global python@3.12
+mise use --global go@1.22
+
+# Activer pnpm via Corepack
+corepack enable
+corepack prepare pnpm@latest --activate
+```

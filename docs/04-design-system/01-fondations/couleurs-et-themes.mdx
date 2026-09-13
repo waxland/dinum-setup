@@ -1,0 +1,101 @@
+---
+title: Couleurs & Thèmes
+description: Système de couleurs du DSFR et de La Suite numérique, palette institutionnelle, couleurs sémantiques, surfaces et mode sombre.
+---
+
+Le système de couleurs de **La Suite numérique** est fondé sur la palette officielle du **Système de Design de l'État (DSFR)**. Il garantit la reconnaissance institutionnelle tout en répondant aux critères stricts de contraste du **RGAA (ratios $\ge 4.5:1$ pour le texte courant et $\ge 3:1$ pour les éléments graphiques)**.
+
+🔗 **Références officielles :** [Palette de Couleurs DSFR](https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-de-l-identite-visuelle/couleurs-palette) • [Couleurs en Mode Sombre DSFR](https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-de-l-identite-visuelle/mode-sombre)
+
+---
+
+## 👁️ Nuancier Visuel Interactif
+
+<ColorPalettePreview />
+
+---
+
+## 🇫🇷 1. Couleurs Institutionnelles
+
+Ces couleurs définissent l'identité de l'État français et sont réservées aux éléments clés de navigation, d'action principale et d'accentuation.
+
+| Nom                   | Token DSFR              | Code Hexa | Exemple Visuel | Usage Principal                                                    |
+| --------------------- | ----------------------- | --------- | -------------- | ------------------------------------------------------------------ |
+| **Bleu France**       | `--blue-france-sun-113` | `#000091` | `■ #000091`    | Boutons primaires, liens actifs, focus, navigation principale.     |
+| **Bleu France Clair** | `--blue-france-975`     | `#f5f5fe` | `■ #f5f5fe`    | Arrière-plan de sélection, bannières d'accent, badges actifs.      |
+| **Rouge Marianne**    | `--red-marianne-425`    | `#E1000F` | `■ #E1000F`    | Accentuation officielle, logo Marianne, alertes institutionnelles. |
+
+---
+
+## 🚦 2. Couleurs Sémantiques d'État
+
+Les couleurs sémantiques véhiculent une information d'état (succès, avertissement, danger ou information).
+
+| Statut                      | Token DSFR      | Code Hexa | Fond Clair | Rôle & Signification                                                 |
+| --------------------------- | --------------- | --------- | ---------- | -------------------------------------------------------------------- |
+| **Succès (Success)**        | `--success-425` | `#18753C` | `#b8fec9`  | Tâche terminée, sauvegarde effectuée, service en ligne.              |
+| **Erreur (Error)**          | `--error-425`   | `#CE0500` | `#ffe8e5`  | Échec de validation, suppression irréversible, service indisponible. |
+| **Avertissement (Warning)** | `--warning-425` | `#B34000` | `#ffe9e6`  | Session expirant bientôt, quota presque atteint, attention requise.  |
+| **Information (Info)**      | `--info-425`    | `#0063CB` | `#e8edff`  | Conseils, nouveautés, indication d'aide contextuelle.                |
+
+> ⚠️ **Règle d'Accessibilité RGAA (Critère 3.1) :**  
+> L'information ne doit jamais être véhiculée uniquement par la couleur. Associez toujours une icône ou un texte explicite à une couleur d'état (ex: une icône de coche ✅ avec le vert).
+
+---
+
+## 🌫️ 3. Palette Neutre & Niveaux de Gris
+
+| Échelon              | Token DSFR                  | Code Clair (Light) | Code Sombre (Dark) | Utilisation                                       |
+| -------------------- | --------------------------- | ------------------ | ------------------ | ------------------------------------------------- |
+| **Fond de page**     | `--background-default-grey` | `#FFFFFF`          | `#161616`          | Arrière-plan principal de l'application.          |
+| **Fond alternatif**  | `--background-alt-grey`     | `#F6F6F6`          | `#242424`          | Arrière-plan de cartes, sidebars et en-têtes.     |
+| **Bordure standard** | `--border-default-grey`     | `#E5E5E5`          | `#3A3A3A`          | Séparateurs, bordures de tableaux et de cartes.   |
+| **Texte principal**  | `--text-default-grey`       | `#161616`          | `#F6F6F6`          | Titres, paragraphes et contenus lisibles.         |
+| **Texte secondaire** | `--text-mention-grey`       | `#666666`          | `#929292`          | Métadonnées, dates, légendes et mentions légales. |
+
+---
+
+## 🌙 4. Gestion du Mode Sombre (Dark Mode)
+
+La Suite numérique implémente le mode sombre via l'attribut `data-theme="dark"` sur l'élément racine `<html>`.
+
+### Exemple de Déclaration CSS :
+
+```css
+:root {
+  --color-surface-base: #ffffff;
+  --color-surface-subtle: #f6f6f6;
+  --color-text-primary: #161616;
+  --color-text-secondary: #666666;
+  --color-border: #e5e5e5;
+  --color-primary: #000091;
+  --color-primary-hover: #1212ff;
+}
+
+[data-theme="dark"] {
+  --color-surface-base: #161616;
+  --color-surface-subtle: #242424;
+  --color-text-primary: #f6f6f6;
+  --color-text-secondary: #929292;
+  --color-border: #3a3a3a;
+  --color-primary: #8585f6;
+  --color-primary-hover: #a2a2f8;
+}
+```
+
+### Utilisation avec les Classes Officielles DSFR :
+
+```html
+<div class="fr-card fr-background-default--grey fr-text-default--grey">
+  <div class="fr-card__body">
+    <div class="fr-card__content">
+      <h3 class="fr-card__title fr-text-title--blue-france">
+        Titre du document
+      </h3>
+      <p class="fr-card__desc fr-text-mention--grey">
+        Description avec un contraste garanti conforme RGAA (≥ 4.5:1).
+      </p>
+    </div>
+  </div>
+</div>
+```

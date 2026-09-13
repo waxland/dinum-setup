@@ -1,0 +1,110 @@
+---
+title: Tableaux de Données
+description: Guide du composant officiel DSFR (@codegouvfr/react-dsfr/Table), tableaux structurés, données tabulaires, tri et accessibilité des données.
+---
+
+Le composant **Table** présente des jeux de données complexes et tabulaires (gestion des membres d'équipe dans _People_, historique des transferts volumineux dans _Transfers_, métriques système).
+
+🔗 **Références officielles :** [Composant Tableau DSFR](https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/tableau) • [Storybook React-DSFR (Table)](https://components.react-dsfr.fr/?path=/docs/components-table--default)
+
+---
+
+## 👁️ Aperçu Visuel des Composants Officiels DSFR
+
+<TablePreview />
+
+---
+
+## 📊 1. Tableau des Variantes & Propriétés
+
+| Propriété / Variante       | Prop React-DSFR   | Classe Core DSFR      | Usage                                                                        |
+| -------------------------- | ----------------- | --------------------- | ---------------------------------------------------------------------------- |
+| **Bordures complètes**     | `bordered={true}` | `fr-table--bordered`  | Ajoute un encadrement et des bordures séparatrices de cellules.              |
+| **Lignes alternées**       | `noScroll={true}` | `fr-table--no-scroll` | Désactive le conteneur de défilement horizontal si le tableau est compact.   |
+| **En-tête fixe / Caption** | `caption="..."`   | `<caption>`           | Titre accessible indispensable pour décrire le tableau aux lecteurs d'écran. |
+
+---
+
+## 💻 2. Utilisation avec la Bibliothèque Officielle React-DSFR
+
+```tsx
+import Table from "@codegouvfr/react-dsfr/Table";
+import Badge from "@codegouvfr/react-dsfr/Badge";
+
+export function MembresProjet() {
+  return (
+    <Table
+      caption="Liste des contributeurs actifs de La Suite numérique"
+      headers={["Agent", "Email", "Rôle", "Statut"]}
+      data={[
+        [
+          "Vincent G.",
+          "vincent.guerand@numerique.gouv.fr",
+          "Administrateur",
+          <Badge key="1" severity="success" small>
+            Actif
+          </Badge>,
+        ],
+        [
+          "Damien S.",
+          "damien.s@collectivite.fr",
+          "Éditeur",
+          <Badge key="2" severity="success" small>
+            Actif
+          </Badge>,
+        ],
+        [
+          "Claire M.",
+          "claire.m@interieur.gouv.fr",
+          "Lecteur",
+          <Badge key="3" severity="info" small>
+            Invité
+          </Badge>,
+        ],
+      ]}
+      bordered
+    />
+  );
+}
+```
+
+---
+
+## 🌐 3. Utilisation en HTML Vanilla (Classes Core DSFR)
+
+```html
+<div class="fr-table fr-table--bordered">
+  <table>
+    <caption>
+      Transferts de fichiers récents
+    </caption>
+    <thead>
+      <tr>
+        <th scope="col">Fichier</th>
+        <th scope="col">Taille</th>
+        <th scope="col">Date d'expiration</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>rapport-activite-2026.pdf</td>
+        <td>14.2 Mo</td>
+        <td>20 septembre 2026</td>
+      </tr>
+      <tr>
+        <td>archive-base-donnees.sql.gz</td>
+        <td>1.8 Go</td>
+        <td>15 octobre 2026</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+```
+
+---
+
+## ♿ 4. Accessibilité & Critères RGAA (v4.1)
+
+- **Balise `<caption>` obligatoire (Critère 5.4) :** Tout tableau de données doit obligatoirement posséder un titre explicite sous la balise `<caption>`.
+- **En-têtes de colonnes avec `scope="col"` (Critère 5.6) :** Permet aux technologies d'assistance de relier chaque cellule de données à son intitulé de colonne lors de la lecture vocale.
+- **Pas de tableau pour la mise en page (Critère 5.3) :** Les tableaux ne doivent être utilisés que pour des données tabulaires réelles.

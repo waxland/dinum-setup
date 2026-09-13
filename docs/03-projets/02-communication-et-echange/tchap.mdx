@@ -1,0 +1,59 @@
+---
+title: Tchap (Messagerie Sécurisée Matrix)
+description: Présentation de Tchap, la messagerie instantanée souveraine de l'administration française basée sur le protocole ouvert Matrix.
+---
+
+**Tchap** est le service de messagerie instantanée sécurisé et chiffré de bout en bout mis à disposition de l'ensemble des agents des trois versants de la fonction publique (État, Territoriale, Hospitalière).
+
+---
+
+## 🏛️ 1. Architecture Fédérée Matrix
+
+Tchap repose sur le standard ouvert et décentralisé **Matrix**, permettant l'interopérabilité entre différents serveurs d'administration (_Homeservers_) :
+
+<Mermaid chart={`flowchart TB
+    subgraph AgentInterieur["Ministère de l'Intérieur"]
+        AppMobile1["📱 Application Mobile Tchap"]
+        AppWeb1["💻 Client Web Tchap"]
+        HS1["⚡ Serveur Synapse (interieur.gouv.fr)"]
+        AppMobile1 <--> HS1
+        AppWeb1 <--> HS1
+    end
+
+    subgraph AgentEducation["Ministère de l'Éducation Nationale"]
+        AppMobile2["📱 Application Mobile Tchap"]
+        HS2["⚡ Serveur Synapse (education.gouv.fr)"]
+        AppMobile2 <--> HS2
+    end
+
+    subgraph External["Invités Externes (Partenaires)"]
+        Guest["🧑‍💼 Partenaire Externe"]
+        HS3["⚡ Serveur Invités (partenaires.tchap.gouv.fr)"]
+        Guest <--> HS3
+    end
+
+    HS1 <-->|"Fédération Matrix (Port 8448 E2EE)"| HS2
+    HS1 <-->|"Fédération Matrix (Port 8448 E2EE)"| HS3
+
+`} />
+
+---
+
+## 🔒 2. Sécurité & Chiffrement de Bout en Bout (E2EE)
+
+- **Protocoles Cryptographiques :** Utilisation des algorithmes **Olm** (dérivé du Double Ratchet de Signal) et **Megolm** (chiffrement de groupe à haute efficacité).
+- **Salons Publics vs Salons Privés :**
+  - _Salons publics (Forum) :_ Accessibles à tous les agents vérifiés sans invitation préalable.
+  - _Salons privés (Chiffrés) :_ Clés de session partagées uniquement entre membres autorisés ; les serveurs intermédiaires ne peuvent jamais lire le contenu des échanges ni les pièces jointes.
+- **Vérification croisée des appareils (_Cross-signing_) :** Validation de l'intégrité des nouveaux téléphones et ordinateurs via des codes emojis ou signatures de clés.
+
+---
+
+## 🚀 3. Stack Technique & Intégration
+
+| Composant           | Technologie / Logiciel                         | Rôle                                                           |
+| ------------------- | ---------------------------------------------- | -------------------------------------------------------------- |
+| **Homeserver**      | Python / Twisted (Synapse)                     | Routage, persistance fédérée et gestion des événements Matrix. |
+| **Clients Mobiles** | Element Android (Kotlin) / Element iOS (Swift) | Applications natives distribuées sur les stores et MDM d'État. |
+| **Client Web**      | React / Matrix React SDK                       | Accès rapide via navigateur web sans installation.             |
+| **Base de Données** | PostgreSQL HA                                  | Stockage des états de salons et métadonnées d'utilisateurs.    |

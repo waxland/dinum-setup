@@ -1,0 +1,84 @@
+---
+title: Pagination & Stepper
+description: Guide des composants officiels DSFR (@codegouvfr/react-dsfr/Pagination et Stepper), navigation paginée et indicateur d'étapes de parcours.
+---
+
+Les composants **Pagination** (`Pagination`) et **Indicateur d'étapes** (`Stepper`) permettent d'accompagner l'utilisateur dans les listes volumineuses ou dans les parcours séquentiels guidés (création de compte, configuration d'un espace d'équipe).
+
+🔗 **Références officielles :** [Composant Pagination DSFR](https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/pagination) • [Storybook React-DSFR (Pagination)](https://components.react-dsfr.fr/?path=/docs/components-pagination--default) • [Composant Indicateur d'Étapes DSFR](https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/indicateur-d-etapes)
+
+---
+
+## 👁️ Aperçu Visuel des Composants Officiels DSFR
+
+<PaginationStepperPreview />
+
+---
+
+## 📊 1. Tableau des Variantes & Propriétés
+
+| Composant            | Prop React-DSFR                    | Classe Core DSFR      | Usage                                                          |
+| -------------------- | ---------------------------------- | --------------------- | -------------------------------------------------------------- |
+| **Stepper**          | `currentStep={2}`, `stepCount={3}` | `fr-stepper`          | Affiche la progression dans un formulaire en plusieurs étapes. |
+| **Stepper (Détail)** | `nextTitle="..."`                  | `fr-stepper__details` | Annonce le titre de l'étape suivante.                          |
+| **Pagination**       | `count={10}`, `defaultPage={1}`    | `fr-pagination`       | Navigation entre les pages de listes de données.               |
+
+---
+
+## 💻 2. Utilisation avec la Bibliothèque Officielle React-DSFR
+
+```tsx
+import Pagination from "@codegouvfr/react-dsfr/Pagination";
+import Stepper from "@codegouvfr/react-dsfr/Stepper";
+
+export function ParcoursEtPagination() {
+  return (
+    <div className="space-y-8">
+      {/* 1. Indicateur d'étape officiel */}
+      <Stepper
+        currentStep={2}
+        stepCount={4}
+        title="Paramétrage du fournisseur OIDC"
+        nextTitle="Invitation des membres"
+      />
+
+      {/* 2. Pagination complète */}
+      <Pagination
+        count={8}
+        defaultPage={1}
+        getPageLinkProps={(pageNumber) => ({
+          href: `/docs/documents?page=${pageNumber}`,
+        })}
+        showFirstLast
+      />
+    </div>
+  );
+}
+```
+
+---
+
+## 🌐 3. Utilisation en HTML Vanilla (Classes Core DSFR)
+
+```html
+<!-- Stepper -->
+<div class="fr-stepper">
+  <h2 class="fr-stepper__title">
+    <span class="fr-stepper__state">Étape 1 sur 3</span>
+    Création du compte
+  </h2>
+  <div
+    class="fr-stepper__steps"
+    data-fr-current-step="1"
+    data-fr-steps="3"
+  ></div>
+</div>
+```
+
+---
+
+## ♿ 4. Accessibilité & Critères RGAA (v4.1)
+
+- **Page active explicitée (`aria-current="page"`) :** Indispensable pour signaler vocalement le numéro de la page active.
+- **Titres accessibles sur les numéros :** Chaque lien porte un attribut `title="Page X"` pour éviter les annonces ambiguës de simples chiffres.
+- **Boutons inactifs :** Les flèches précédent/suivant désactivées utilisent `aria-disabled="true"`.

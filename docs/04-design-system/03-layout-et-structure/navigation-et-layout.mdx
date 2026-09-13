@@ -1,0 +1,183 @@
+---
+title: Navigation & Layout
+description: Composants officiels de navigation DSFR (@codegouvfr/react-dsfr/Header, Breadcrumb, Tabs, Footer) pour La Suite numérique.
+---
+
+La structure de navigation guide l'utilisateur à travers l'écosystème de **La Suite numérique**. Elle reprend fidèlement les éléments de structure prescrits par le **DSFR** et la bibliothèque officielle **React-DSFR**.
+
+🔗 **Références officielles :** [En-tête (Header) DSFR](https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/en-tete) • [Fil d'Ariane DSFR](https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/fil-d-ariane) • [Onglets DSFR](https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/onglets) • [Pied de Page DSFR](https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/pied-de-page)
+
+---
+
+## 👁️ Aperçu Visuel des Composants Officiels DSFR
+
+<HeaderBreadcrumbPreview />
+
+---
+
+## 💻 1. Utilisation avec la Bibliothèque Officielle React-DSFR
+
+```tsx
+import Header from "@codegouvfr/react-dsfr/Header";
+import Breadcrumb from "@codegouvfr/react-dsfr/Breadcrumb";
+import Tabs from "@codegouvfr/react-dsfr/Tabs";
+import Footer from "@codegouvfr/react-dsfr/Footer";
+
+export function LayoutComplet({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      {/* 1. Header institutionnel avec bloc marque */}
+      <Header
+        brandTop={
+          <>
+            RÉPUBLIQUE
+            <br />
+            FRANÇAISE
+          </>
+        }
+        homeLinkProps={{
+          href: "/",
+          title: "Accueil - La Suite numérique",
+        }}
+        serviceTitle="Docs - La Suite numérique"
+        serviceTagline="Édition collaborative souveraine"
+        quickAccessItems={[
+          {
+            iconId: "fr-icon-user-line",
+            text: "Mon Compte",
+            linkProps: { href: "/profil" },
+          },
+        ]}
+      />
+
+      {/* 2. Fil d'Ariane */}
+      <Breadcrumb
+        segments={[
+          { label: "Accueil", linkProps: { href: "/" } },
+          {
+            label: "Design System",
+            linkProps: { href: "/04-design-system/index" },
+          },
+        ]}
+        currentPageLabel="Navigation & Layout"
+      />
+
+      {/* 3. Onglets de section */}
+      <Tabs
+        tabs={[
+          { label: "Vue Document", content: children },
+          {
+            label: "Historique des versions",
+            content: <p>Historique des révisions...</p>,
+          },
+          {
+            label: "Paramètres de partage",
+            content: <p>Gestion des permissions OIDC...</p>,
+          },
+        ]}
+      />
+
+      {/* 4. Footer officiel avec déclaration RGAA */}
+      <Footer
+        brandTop={
+          <>
+            RÉPUBLIQUE
+            <br />
+            FRANÇAISE
+          </>
+        }
+        accessibility="fully_compliant"
+        contentDescription="La Suite numérique est développée par la Direction Interministérielle du Numérique (DINUM)."
+        bottomItems={[
+          {
+            label: "Mentions légales",
+            linkProps: { href: "/mentions-legales" },
+          },
+          {
+            label: "Données personnelles",
+            linkProps: { href: "/donnees-personnelles" },
+          },
+          {
+            label: "Code source (GitHub)",
+            linkProps: { href: "https://github.com/suitenumerique" },
+          },
+        ]}
+      />
+    </>
+  );
+}
+```
+
+---
+
+## 🌐 2. Utilisation en HTML Vanilla (Classes Core DSFR)
+
+```html
+<!-- En-tête DSFR -->
+<header role="banner" class="fr-header">
+  <div class="fr-header__body">
+    <div class="fr-container">
+      <div class="fr-header__brand">
+        <p class="fr-logo">République<br />Française</p>
+        <div class="fr-header__service">
+          <p class="fr-header__service-title">La Suite numérique</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Fil d'Ariane DSFR -->
+<nav class="fr-breadcrumb" aria-label="vous êtes ici :">
+  <ol class="fr-breadcrumb__list">
+    <li><a class="fr-breadcrumb__link" href="/">Accueil</a></li>
+    <li><a class="fr-breadcrumb__link" aria-current="page">Document</a></li>
+  </ol>
+</nav>
+
+<!-- Onglets DSFR -->
+<div class="fr-tabs">
+  <ul class="fr-tabs__list" role="tablist">
+    <li role="presentation">
+      <button
+        id="tabpanel-1-btn"
+        class="fr-tabs__tab"
+        tabindex="0"
+        role="tab"
+        aria-selected="true"
+        aria-controls="tabpanel-1"
+      >
+        Édition
+      </button>
+    </li>
+    <li role="presentation">
+      <button
+        id="tabpanel-2-btn"
+        class="fr-tabs__tab"
+        tabindex="-1"
+        role="tab"
+        aria-selected="false"
+        aria-controls="tabpanel-2"
+      >
+        Aperçu
+      </button>
+    </li>
+  </ul>
+  <div
+    id="tabpanel-1"
+    class="fr-tabs__panel fr-tabs__panel--selected"
+    role="tabpanel"
+    aria-labelledby="tabpanel-1-btn"
+  >
+    <p>Contenu de l'éditeur.</p>
+  </div>
+</div>
+```
+
+---
+
+## ♿ 3. Accessibilité & Critères RGAA (v4.1)
+
+- **Repères de structure (Landmarks) :** Utilisez `<header role="banner">`, `<main id="main-content">`, `<nav aria-label="...">` et `<footer role="contentinfo">`.
+- **Onglets ARIA :** La gestion des rôles `tablist`, `tab`, `tabpanel` et des flèches gauche/droite pour naviguer est garantie nativement par React-DSFR.
+- **Mention d'accessibilité légale :** Le pied de page doit obligatoirement porter la mention de conformité (ex: `accessibility="fully_compliant"` ou `"partially_compliant"`).

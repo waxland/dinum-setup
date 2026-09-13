@@ -1,0 +1,47 @@
+---
+title: Fichiers & Drive (Espace de Stockage Centralisé)
+description: Espace de stockage de fichiers unifié de La Suite numérique, organisation en dossiers, partage collaboratif et synchronisation multi-postes.
+---
+
+Le module **Fichiers / Drive** offre à chaque agent de l'État un espace de stockage souverain sécurisé pour centraliser ses documents administratifs, présentations et données de travail.
+
+---
+
+## 🗂️ 1. Modèle de Données & Arborescence
+
+<Mermaid chart={`flowchart TD
+    User["🧑‍💼 Agent Public"] --> RootDrive["📁 Mon Espace Personnel"]
+    User --> SharedSpaces["👥 Espaces Partagés (Équipes)"]
+
+    RootDrive --> FolderA["📂 Projets 2026"]
+    RootDrive --> FolderB["📂 Notes de Synthèse"]
+
+    SharedSpaces --> TeamA["🏢 Direction Générale DINUM"]
+    SharedSpaces --> TeamB["🚀 Équipe La Suite"]
+
+    FolderA --> Doc1["📄 Stratégie-Cloud.docx"]
+    FolderA --> Doc2["📊 Budget-Q1.xlsx"]
+
+    TeamB --> Doc3["📑 Architecture-Meet.pdf"]
+
+`} />
+
+---
+
+## 🚀 2. Fonctionnalités Clés
+
+| Fonctionnalité                            | Description                                                                                                   |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| **Partage fin par lien ou agent**         | Partage public avec mot de passe et date d'expiration, ou partage nominatif restreint aux agents vérifiés.    |
+| **Prévisualisation universelle**          | Prévisualisation instantanée dans le navigateur (PDF, LibreOffice, images, vidéos, fichiers audio, Markdown). |
+| **Gestion des versions**                  | Historique complet des versions avec restauration possible en un clic.                                        |
+| **Corbeille & Rétention**                 | Rétention configurable (30 jours par défaut) pour prévenir toute suppression accidentelle.                    |
+| **Synchronisation WebDAV / Client local** | Accès direct depuis l'explorateur de fichiers Windows ou le Finder macOS via le protocole standardisé WebDAV. |
+
+---
+
+## 🔒 3. Souveraineté & Chiffrement
+
+- **Hébergement SecNumCloud :** Données stockées exclusivement sur des infrastructures qualifiées par l'ANSSI.
+- **Chiffrement au repos (At Rest) :** Clés gérées par HSM souverain et chiffrement côté serveur (SSE-S3).
+- **Protection Anti-Virus / Scan de Malware :** Analyse automatique des flux de téléversement avec ClamAV avant mise à disposition.

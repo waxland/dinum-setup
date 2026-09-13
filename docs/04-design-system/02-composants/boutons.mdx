@@ -1,0 +1,112 @@
+---
+title: Boutons & Actions
+description: Guide des boutons officiels DSFR, variantes (primaire, secondaire, tertiaire, destructif), composant @codegouvfr/react-dsfr/Button et règles d'accessibilité.
+---
+
+Le bouton permet à l'utilisateur de déclencher une action immédiate (soumettre un formulaire, ouvrir une modale, créer un document). Dans **La Suite numérique**, les boutons sont importés directement depuis la bibliothèque officielle **React-DSFR (`@codegouvfr/react-dsfr/Button`)** ou stylisés avec les classes **Core DSFR (`fr-btn`)**.
+
+🔗 **Références officielles :** [Composant Bouton DSFR](https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/bouton) • [Storybook React-DSFR (Button)](https://components.react-dsfr.fr/?path=/docs/components-button--default) • [Dépôt GitHub](https://github.com/codegouvfr/react-dsfr)
+
+---
+
+## 👁️ Aperçu Visuel des Composants Officiels DSFR
+
+<ButtonPreview />
+
+---
+
+## 🔘 1. Variantes de Boutons
+
+| Variante                   | Priorité React-DSFR              | Classe Core DSFR                     | Style & Rôle                                                             |
+| -------------------------- | -------------------------------- | ------------------------------------ | ------------------------------------------------------------------------ |
+| **Primaire**               | `priority="primary"`             | `fr-btn`                             | Action principale de la page (Bleu France plein `#000091`, texte blanc). |
+| **Secondaire**             | `priority="secondary"`           | `fr-btn fr-btn--secondary`           | Action importante mais non prédominante (bordure Bleu France).           |
+| **Tertiaire**              | `priority="tertiary"`            | `fr-btn fr-btn--tertiary`            | Action contextuelle discrète avec fine bordure grise.                    |
+| **Tertiaire sans contour** | `priority="tertiary no outline"` | `fr-btn fr-btn--tertiary-no-outline` | Action légère sans bordure (fond transparent).                           |
+
+---
+
+## 💻 2. Utilisation avec la Bibliothèque Officielle React-DSFR
+
+Importez directement le composant officiel depuis `@codegouvfr/react-dsfr/Button` :
+
+```tsx
+import Button from "@codegouvfr/react-dsfr/Button";
+
+export function BarreActions() {
+  return (
+    <div className="flex items-center gap-4">
+      {/* 1. Bouton Primaire avec action */}
+      <Button priority="primary" onClick={() => console.log("Créer document")}>
+        Créer un document
+      </Button>
+
+      {/* 2. Bouton Secondaire avec icône Remix Icon intégrée */}
+      <Button
+        priority="secondary"
+        iconId="fr-icon-download-line"
+        iconPosition="right"
+        linkProps={{
+          href: "/export/rapport.pdf",
+          download: true,
+        }}
+      >
+        Télécharger le rapport
+      </Button>
+
+      {/* 3. Bouton Tertiaire sans contour */}
+      <Button priority="tertiary no outline">Annuler</Button>
+
+      {/* 4. Bouton avec confirmation / disabled */}
+      <Button priority="primary" disabled>
+        Enregistrement...
+      </Button>
+    </div>
+  );
+}
+```
+
+---
+
+## 🌐 3. Utilisation en HTML Vanilla (Classes Core DSFR)
+
+Pour les projets Django ou sans React :
+
+```html
+<!-- Bouton Primaire -->
+<button class="fr-btn" type="button">Créer un document</button>
+
+<!-- Bouton Secondaire avec icône à gauche -->
+<button
+  class="fr-btn fr-btn--secondary fr-icon-add-line fr-btn--icon-left"
+  type="button"
+>
+  Ajouter un membre
+</button>
+
+<!-- Bouton Lien accessible -->
+<a class="fr-btn fr-btn--tertiary" href="/aide"> Consulter l'aide </a>
+```
+
+---
+
+## ♿ 4. Bonnes Pratiques d'Accessibilité (RGAA)
+
+- **Bouton vs Lien :** Utilisez `<button>` pour déclencher une action dans la page et `<a>` (avec `href` et `linkProps`) pour une navigation vers une autre URL.
+- **Bouton d'icône sans texte :** Si le bouton ne contient qu'une icône (ex: croix pour fermer), vous devez obligatoirement lui fournir un label accessible :
+
+  ```tsx
+  <Button
+    iconId="fr-icon-close-line"
+    title="Fermer la boîte de dialogue"
+    priority="tertiary no outline"
+  />
+  ```
+
+- **Bouton vs Lien :** Utilisez `<button>` pour déclencher une action dans la page et `<a>` (avec `href`) pour une navigation vers une autre URL.
+- **Bouton d'icône sans texte :** Si le bouton ne contient qu'une icône (ex: croix pour fermer), vous devez obligatoirement lui fournir un label accessible :
+  ```html
+  <button aria-label="Fermer la boîte de dialogue" class="...">
+    <XIcon aria-hidden="true" />
+  </button>
+  ```

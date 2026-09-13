@@ -1,0 +1,234 @@
+---
+title: Ajouter la Commande /law dans BlockNote (Légifrance)
+description: Tutoriel pas-à-pas pour étendre BlockNote sans forker la librairie, créer un bloc de loi DSFR et implémenter la commande slash /law pour lier des textes officiels.
+---
+
+import { Mermaid } from "../../../src/components/Mermaid";
+
+Ce tutoriel détaille l'implémentation complète d'une extension pour **BlockNote** permettant aux agents publics d'insérer des références juridiques officielles **Légifrance** avec la commande slash `/law` ou `/loi`.
+
+---
+
+## 🎯 1. Spécifications du Projet
+
+<FeatureGrid cols={3}>
+  <FeatureCard
+    icon="🪄"
+    title="Commande Slash /law"
+    description="Tapez /law ou /loi pour déclencher l'insertion ou la recherche d'un texte juridique."
+  />
+  <FeatureCard
+    icon="⚖️"
+    title="Bloc Métier DSFR"
+    description="Mise en page institutionnelle Marianne avec extrait, statut de vigueur et lien certifié."
+  />
+  <FeatureCard
+    icon="🔄"
+    title="Synchronisation CRDT"
+    description="Réplication temps réel automatique sans conflit via Yjs pour tous les collaborateurs."
+  />
+</FeatureGrid>
+
+---
+
+## 📦 2. Installation des Dépendances
+
+```bash
+pnpm add @blocknote/core @blocknote/react @blocknote/mantine @mantine/core
+```
+
+---
+
+## 🏗️ 3. Structure des Fichiers à Créer
+
+```
+src/editor/
+├── blocks/
+│   └── LawBlock.tsx            # Définition du composant et schéma du bloc de loi
+├── extensions/
+│   └── lawSlashMenu.ts         # Déclaration de la commande slash et aliases
+├── schema.ts                   # Schéma BlockNote étendu
+└── DocsEditor.tsx              # Composant principal d'édition avec Yjs
+```
+
+---
+
+## 💻 4. Code Source Complet
+
+### A. Le Bloc React (`src/editor/blocks/LawBlock.tsx`)
+
+```tsx
+import { createReactBlockSpec } from "@blocknote/react";
+
+export const LawBlock = createReactBlockSpec(
+  {
+    type: "law",
+    propSchema: {
+      codeName: { default: "Code de la commande publique" },
+      articleNumber: { default: "Article L. 2122-1" },
+      legifranceUrl: {
+        default:
+          "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000037728472",
+      },
+      excerpt: {
+        default:
+          "L'acheteur peut passer un marché sans publicité ni mise en concurrence préalables...",
+      },
+      status: { default: "En vigueur" },
+    },
+    content: "none",
+  },
+  {
+    render: (props) => {
+      const { codeName, articleNumber, legifranceUrl, excerpt, status } =
+        props.block.props;
+
+      return (
+        <div className="fr-callout fr-callout--blue-france my-4 p-4 border-l-4 border-[#000091] bg-blue-50/50 dark:bg-blue-950/20 rounded-r-lg shadow-xs">
+          <div className="flex items-center justify-between gap-2 mb-2">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">⚖️</span>
+              <span className="text-sm font-bold text-[#000091] dark:text-[#8585f6]">
+                {codeName} — {articleNumber}
+              </span>
+            </div>
+            <span className="text-xs px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-semibold">
+              {status}
+            </span>
+          </div>
+
+          <blockquote className="text-sm italic text-gray-700 dark:text-gray-300 my-2 border-l-2 border-gray-300 dark:border-gray-700 pl-3">
+            « {excerpt} »
+          </blockquote>
+
+          <div className="flex items-center justify-end pt-2">
+            <a
+              href={legifranceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-semibold text-[#000091] dark:text-[#8585f6] hover:underline"
+            >
+              Consulter la version officielle sur Légifrance ↗
+            </a>
+          </div>
+        </div>
+      );
+    },
+  },
+);
+```
+
+---
+
+### B. Le Schéma Consolidation (`src/editor/schema.ts`)
+
+```tsx
+import { BlockNoteSchema, defaultBlockSpecs } from "@blocknote/core";
+import { LawBlock } from "./blocks/LawBlock";
+
+export const appSchema = BlockNoteSchema.create({
+  blockSpecs: {
+    ...defaultBlockSpecs,
+    law: LawBlock,
+  },
+});
+
+export type AppBlockNoteEditor = typeof appSchema.BlockNoteEditor;
+```
+
+---
+
+### C. La Commande Slash (`src/editor/extensions/lawSlashMenu.ts`)
+
+```tsx
+import type { AppBlockNoteEditor } from "../schema";
+
+export const createLawSlashItem = (editor: AppBlockNoteEditor) => ({
+  title: "Texte de Loi (Légifrance)",
+  onItemClick: async () => {
+    // Insère le bloc de loi après le bloc actuel
+    editor.insertBlocks(
+      [
+        {
+          type: "law",
+          props: {
+            codeName: "Code général de la fonction publique",
+            articleNumber: "Article L. 111-1",
+            legifranceUrl:
+              "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044414167",
+            excerpt:
+              "Les agents publics sont au service de la Nation et de l'intérêt général.",
+            status: "En vigueur",
+          },
+        },
+      ],
+      editor.getTextCursorPosition().block,
+      "after",
+    );
+  },
+  aliases: ["law", "loi", "legifrance", "article", "droit", "juridique"],
+  group: "Outils de l'État",
+  icon: <span>⚖️</span>,
+  subtext: "Lier un texte de loi officiel certifié",
+});
+```
+
+---
+
+### D. L'Éditeur Complet (`src/editor/DocsEditor.tsx`)
+
+```tsx
+import "@blocknote/core/fonts/inter.css";
+import "@blocknote/mantine/style.css";
+import { BlockNoteView } from "@blocknote/mantine";
+import {
+  useCreateBlockNote,
+  SuggestionMenuController,
+  getDefaultSlashMenuItems,
+} from "@blocknote/react";
+import { appSchema } from "./schema";
+import { createLawSlashItem } from "./extensions/lawSlashMenu";
+
+export function DocsEditor({ ydoc, provider }: { ydoc: any; provider: any }) {
+  const editor = useCreateBlockNote({
+    schema: appSchema,
+    collaboration: {
+      provider,
+      fragment: ydoc.getXmlFragment("document-store"),
+      user: {
+        name: "Agent DINUM",
+        color: "#000091",
+      },
+    },
+  });
+
+  return (
+    <BlockNoteView editor={editor} slashMenu={false}>
+      <SuggestionMenuController
+        triggerCharacter="/"
+        getItems={async (query) => {
+          const defaultItems = getDefaultSlashMenuItems(editor);
+          const customItems = [createLawSlashItem(editor)];
+          const allItems = [...defaultItems, ...customItems];
+
+          return allItems.filter(
+            (item) =>
+              item.title.toLowerCase().includes(query.toLowerCase()) ||
+              item.aliases?.some((a) =>
+                a.toLowerCase().includes(query.toLowerCase()),
+              ),
+          );
+        }}
+      />
+    </BlockNoteView>
+  );
+}
+```
+
+---
+
+## 🚀 5. Validation et Test
+
+1. Lancez l'éditeur local : `make dev-docs`.
+2. Tapez `/law` ou `/loi` dans n'importe quel paragraphe.
+3. Appuyez sur `Entrée` : le bloc Légifrance stylisé DSFR s'insère immédiatement et se synchronise sur tous les postes des collaborateurs connectés !

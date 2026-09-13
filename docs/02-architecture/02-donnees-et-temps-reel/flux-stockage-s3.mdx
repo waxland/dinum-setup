@@ -1,0 +1,57 @@
+---
+title: Stockage d'Objets & Flux S3
+description: Architecture de stockage S3, URLs présignées pour téléversements directs (multipart upload), politiques de conservation et isolation des buckets.
+---
+
+Pour traiter des volumes de données importants (transferts de fichiers volumineux dans **Transfers**, pièces jointes de messagerie, avatars dans **People**), La Suite numérique utilise le protocole standard **S3** avec une architecture de **téléversement direct présigné** (_Presigned Direct Upload_).
+
+---
+
+## 🚀 1. Flux de Téléversement Direct sans Traversée du Serveur
+
+Pour éviter de saturer les serveurs d'API et la mémoire des conteneurs applicatifs lors de l'envoi de fichiers lourds (jusqu'à plusieurs gigaoctets), le navigateur envoie directement les données vers le bucket S3 :
+
+<Mermaid chart={`sequenceDiagram
+    autonumber
+    actor User as 🧑‍💻 Utilisateur
+    participant Frontend as 💻 Application Web
+    participant API as ⚙️ API Backend
+    participant S3 as 🪣 Bucket S3 (MinIO / Scaleway / OVH)
+
+    User->>Frontend: Sélection d'un fichier lourd (ex: 2 Go)
+    Frontend->>API: POST /api/v1/uploads/presign (filename, size, mimetype)
+    API->>API: Vérification des quotas, de l'authentification et permissions
+    API->>S3: Génération d'une URL présignée PUT / Multipart
+    S3-->>API: URL présignée temporaire (valide 15 minutes)
+    API-->>Frontend: JSON avec l'URL S3 présignée + token de complétion
+    Frontend->>S3: PUT /parts direct vers S3 avec barre de progression
+    S3-->>Frontend: 200 OK + ETag
+    Frontend->>API: POST /api/v1/uploads/complete (upload_id, parts)
+    API->>S3: Vérification de l'intégrité de l'objet (HeadObject)
+    API->>API: Enregistrement des métadonnées en base de données PostgreSQL
+    API-->>Frontend: Fichier prêt et accessible
+
+`} />
+
+---
+
+## 🪣 2. Découpage & Typologie des Buckets
+
+En environnement de production et en local (MinIO), les buckets sont strictement isolés par cas d'usage :
+
+| Nom du Bucket         | Cas d'usage                                      | Politique de rétention / Sécurité                                           |
+| --------------------- | ------------------------------------------------ | --------------------------------------------------------------------------- |
+| `lasuite-transfers`   | Fichiers temporaires échangés via _Transfers_    | Expiration automatique (Lifecycle rule : 7 à 30 jours), chiffrement SSE-S3. |
+| `lasuite-media`       | Avatars d'agents, vignettes d'espaces de travail | Rétention permanente, mise en cache CDN souverain.                          |
+| `lasuite-attachments` | Pièces jointes de documents et fiches _Projects_ | Accès restreint par signature cryptographique d'URL de téléchargement.      |
+| `lasuite-backups`     | Sauvegardes froides et WAL PostgreSQL            | Verrouillage d'objet (_Object Lock / WORM_), immuabilité 90 jours.          |
+
+---
+
+## 🧪 3. Configuration Locale avec MinIO
+
+En développement local, l'instance MinIO simule l'ensemble du comportement S3 :
+
+- **Endpoint API S3 :** `http://localhost:9000`
+- **Console Web MinIO :** `http://localhost:9001` (Identifiants : `minioadmin` / `minioadmin`)
+- **Création automatique des buckets :** Réalisée au démarrage via le conteneur `mc` (_MinIO Client_).

@@ -1,0 +1,57 @@
+---
+title: Fédération d'Identité & ProConnect
+description: Architecture de fédération d'identité OpenID Connect (OIDC), ProConnect (ex-AgentConnect), claims, mire de connexion et sessions inter-applicatives.
+---
+
+**ProConnect** (anciennement AgentConnect) constitue le pivot d'identité unique de l'État français permettant aux agents de la fonction publique d'accéder à tous les services de La Suite numérique sans réauthentification répétée (_Single Sign-On_).
+
+---
+
+## 🔄 1. Séquence d'Authentification OpenID Connect (OIDC)
+
+Le diagramme suivant détaille le flux standard **Authorization Code Grant avec PKCE** orchestré entre le navigateur de l'agent, le frontend de l'application, l'API backend et le serveur ProConnect :
+
+<Mermaid chart={`sequenceDiagram
+    autonumber
+    actor Agent as 🧑‍💼 Agent Public
+    participant App as 💻 Frontend (La Suite)
+    participant API as ⚙️ Backend API
+    participant ProConnect as 🏛️ ProConnect (OIDC Provider)
+
+    Agent->>App: Clic sur "Se connecter avec ProConnect"
+    App->>API: GET /auth/oidc/login (Génération nonce + state + PKCE)
+    API-->>App: Redirection 302 vers ProConnect
+    App->>ProConnect: Requête /authorize avec client_id, scopes, code_challenge
+    ProConnect-->>Agent: Affichage de la mire d'authentification interministérielle
+    Agent->>ProConnect: Saisie des identifiants (Email pro + 2FA)
+    ProConnect-->>App: Redirection 302 vers callback avec code d'autorisation
+    App->>API: POST /auth/oidc/callback?code=AUTH_CODE
+    API->>ProConnect: POST /token (Échange code contre tokens avec client_secret)
+    ProConnect-->>API: Retourne id_token (JWT) + access_token
+    API->>ProConnect: GET /userinfo (avec Bearer access_token)
+    ProConnect-->>API: Profil agent (email, sub, nom, siret, organisation)
+    API->>API: Création / synchronisation du profil utilisateur local
+    API-->>App: Émission du cookie de session chiffré (HttpOnly, SameSite=Lax)
+    App-->>Agent: Accès autorisé à l'espace de travail
+
+`} />
+
+---
+
+## 📋 2. Scopes & Claims OIDC Exploités
+
+Lors de la requête d'autorisation, les applications de La Suite demandent les scopes standardisés suivants :
+
+| Scope OIDC     | Claims retournés                          | Utilisation dans La Suite                                                            |
+| -------------- | ----------------------------------------- | ------------------------------------------------------------------------------------ |
+| `openid`       | `sub` (identifiant unique de l'agent)     | Clé primaire immuable pour relier le compte local.                                   |
+| `profile`      | `given_name`, `family_name`, `usual_name` | Affichage du nom dans les documents collaboratifs et cartes de membre.               |
+| `email`        | `email`, `email_verified`                 | Adresse de messagerie officielle pour les notifications et partages.                 |
+| `organization` | `siret`, `organizational_unit`, `idp_id`  | Détection automatique du ministère, de la collectivité ou de l'établissement public. |
+
+---
+
+## 🔒 3. Gestion des Sessions & Déconnexion Globale (Single Sign-Out)
+
+1. **Session Applicative Locale :** Gérée via un cookie HTTP chiffré `SameSite=Lax` et `Secure`, avec renouvellement automatique du jeton de rafraîchissement (_Refresh Token_).
+2. **Backchannel Logout :** Lorsque l'agent se déconnecte du portail central ProConnect, un webhook de déconnexion (`/auth/oidc/backchannel-logout`) invalide instantanément la session sur toutes les applications de La Suite.

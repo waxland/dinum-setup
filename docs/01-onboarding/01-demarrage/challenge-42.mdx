@@ -1,0 +1,130 @@
+---
+title: Challenge La Suite Numérique x 42
+description: Présentation officielle du hackathon 42 x DINUM à Forty 2 (Île d'Oléron), objectifs, tracks de développement et modalités de contribution.
+---
+
+> 👀 **Et si le prochain outil collaboratif utilisé par des millions d'agents publics, c'était toi qui le codait ?**
+
+La **DINUM** (Direction interministérielle du numérique) et **42** s'allient pour organiser un challenge inédit à destination des étudiants de 42 en France ! L'objectif ? Contribuer ensemble aux prochains développements de **[La Suite Numérique](https://lasuite.numerique.gouv.fr/)** de l'État, développée par la DINUM, l'ANCT et le Ministère des Armées, et utilisée par les agents publics français au quotidien.
+
+🔗 **Liens & Candidatures :** [Page Notion officielle](https://ft42.notion.site/Challenge-La-Suite-Num-rique-x-42-3ac9c27081be80a1b394ee05c2bc6e5c) • [Portail La Suite](https://lasuite.numerique.gouv.fr/) • [Dépôt DINUM](https://www.numerique.gouv.fr/)
+
+---
+
+## 🏝️ 1. L'Événement : 1 Semaine de Hackathon à Forty 2
+
+Organisé au cœur de **Forty 2**, le campus d'été de 42 à l'**Île d'Oléron 🏖️** (du 14 au 18 septembre 2026), ce challenge regroupe une centaine d'étudiants de 42 et des développeurs et experts techniques de la DINUM et du logiciel libre afin de contribuer directement sur les différentes applications.
+
+<FeatureGrid cols={3}>
+  <FeatureCard
+    icon="📍"
+    title="Forty 2 (Île d'Oléron)"
+    description="Campus d'été de 42 en immersion complète."
+  />
+  <FeatureCard
+    icon="📅"
+    title="14 au 18 Septembre 2026"
+    description="5 jours de hackathon intensif en équipe."
+  />
+  <FeatureCard
+    icon="🤝"
+    title="Mentorat & Experts DINUM"
+    description="Accompagnement par les mainteneurs officiels."
+  />
+</FeatureGrid>
+
+---
+
+## 🏛️ 2. La Suite Numérique, c'est quoi ?
+
+La Suite numérique est l'environnement de travail souverain des agents publics. Elle équipe déjà des centaines de milliers d'agents publics et d'enseignants :
+
+- 💬 **Messagerie instantanée** : [Tchap](/03-projets/02-communication-et-echange/tchap) (protocole décentralisé Matrix).
+- 📝 **Prise de notes & Édition collaborative** : [Docs](/03-projets/01-documents-et-contenus/docs) (CRDTs Yjs & BlockSuite).
+- 📁 **Stockage & Partage de fichiers** : [Drive / Fichiers](/03-projets/01-documents-et-contenus/fichiers-drive) & [Transfers](/03-projets/02-communication-et-echange/transfers).
+- 📹 **Visioconférence** : [Visio / Meet](/03-projets/02-communication-et-echange/meet) (WebRTC & LiveKit SFU).
+- 🤖 **Agent conversationnel IA** : Conversations (LLM souverain).
+- 📊 **Bases relationnelles low-code** : [Grist](/03-projets/01-documents-et-contenus/grist) (tableur relationnel avec formules Python).
+
+### ⌨️ Sur le plan technique :
+
+- **100% Open Source** : Pas de boîte noire — tu lis le code, tu le forkes, tu l'améliores et tu proposes ta Pull Request.
+- **Stack moderne** : Python / Django 5 pour le back-end, TypeScript / React / Next.js pour le front-end, PostgreSQL 16, Redis, et stockage compatible S3.
+
+---
+
+## 🎯 3. Les Tracks du Challenge
+
+<TrackCard
+  icon="🔗"
+  trackNumber={1}
+  title="Interopérabilité & Automatisations"
+  color="blue"
+>
+  <strong>Objectif :</strong> Faire parler les applications de La Suite entre
+  elles. Docs, Drive, Meet, Conversations et Messages exposent des API REST et
+  WebSockets. Construisez la couche d'orchestration ou les connecteurs qui les
+  font collaborer sans friction (ex. automatiser un compte-rendu Docs post-Meet,
+  alimenter une table Grist depuis des pièces jointes Drive).
+</TrackCard>
+
+<TrackCard icon="🔒" trackNumber={2} title="Sécurité & Audit" color="red">
+  <strong>Objectif :</strong> Protéger les applications souveraines utilisées
+  par les services publics. Pour ceux qui aiment auditer, tester la robustesse
+  des flux OIDC/PKCE, inspecter les contrôles de droits d'accès (Row-Level
+  Security), ou durcir la sécurité des flux de données et des téléversements S3.
+</TrackCard>
+
+<TrackCard
+  icon="🧩"
+  trackNumber={3}
+  title="Mini-apps & Surcouches Métiers"
+  color="purple"
+>
+  <strong>Objectif :</strong> Augmenter les pouvoirs de La Suite sans modifier
+  le cœur des produits. Construisez des micro-applications externes branchées
+  sur les API de La Suite (ex: une extension qui prend un lien Docs et génère un
+  PDF prêt à l'impression officiel via un template Typst soigné avec en-têtes
+  Marianne).
+</TrackCard>
+
+<TrackCard
+  icon="💡"
+  title="Signature Électronique & Horodatage sur Drive"
+  color="amber"
+  badge="Idée Phare"
+>
+  Un document déposé dans Drive n'a aujourd'hui aucune valeur probatoire
+  immédiate : impossible de prouver de manière cryptographique qui l'a validé, à
+  quelle date, ni s'il a été altéré. Intégrer une brique d'horodatage ou de
+  signature électronique certifiée peut transformer un projet d'Oléron en un
+  service utile à l'ensemble de l'administration !
+</TrackCard>
+
+---
+
+## 🛠️ 4. Pourquoi ce Dépôt (`dinum-setup`) pour le Hackathon ?
+
+Ce dépôt d'orchestration **`dinum-setup`** a été spécialement conçu pour résoudre le principal goulot d'étranglement d'un hackathon : **le temps perdu à installer et configurer les environnements de dev**.
+
+<Mermaid chart={`flowchart LR
+    subgraph Sans["❌ Sans dinum-setup"]
+        S1["Cloner 6 repos manuellement"] --> S2["Installer 3 versions de Node/Python"]
+        S2 --> S3["Créer 6 BDD PostgreSQL"]
+        S3 --> S4["Résoudre les conflits de ports"]
+        S4 --> S5["1 jour perdu à debugger le setup"]
+    end
+
+    subgraph Avec["✅ Avec dinum-setup (42 x DINUM)"]
+        A1["git clone dinum-setup"] --> A2["make install && make clone"]
+        A2 --> A3["make env && make dev"]
+        A3 --> A4["🚀 Prêt à coder en 5 minutes !"]
+    end
+
+`} />
+
+Grâce à ce dépôt :
+
+- 📦 **Une seule commande pour tout orchestrer** : `make install`, `make clone`, `make env`, `make dev`.
+- 🐘 **Connexions PostgreSQL en 1-clic** : SQLTools est pré-configuré pour toutes les BDDs locales dans VS Code.
+- 📖 **Documentation centralisée** : Architecture, schémas, endpoints, Design System DSFR et glossaire à portée de main sur `http://localhost:3000`.

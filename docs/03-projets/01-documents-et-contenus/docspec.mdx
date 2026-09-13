@@ -1,0 +1,82 @@
+---
+title: Docspec (Spécifications & Formats de Documents)
+description: Spécifications techniques des formats de documents structurés, schémas de données, compatibilité inter-applicative et passerelles d'export.
+---
+
+**Docspec** définit les spécifications techniques et formats d'échange standards pour les documents structurés générés et consommés au sein de l'écosystème La Suite numérique (interopérabilité entre _Docs_, _Grist_, _Drive_ et services ministériels tiers).
+
+---
+
+## 📐 1. Architecture du Modèle de Données Docspec
+
+<Mermaid chart={`flowchart LR
+    DocFormat["📐 Modèle Canonique Docspec (JSON-LD / CRDT)"]
+
+    subgraph Inputs["📥 Entrées & Importateurs"]
+        Markdown["Markdown / GFM"]
+        DOCX["Microsoft Word (.docx)"]
+        ODT["OpenDocument (.odt)"]
+        HTML["HTML Sémantique"]
+    end
+
+    subgraph Outputs["📤 Sorties & Exportateurs"]
+        PDF["PDF Accessible (PDF/UA)"]
+        EPUB["Livre Numérique (EPUB3)"]
+        Typst["Moteur de rendu Typst"]
+        WebHTML["Page Web Statique DSFR"]
+    end
+
+    Inputs --> DocFormat
+    DocFormat --> Outputs
+
+`} />
+
+---
+
+## 📑 2. Structure d'un Nœud de Document
+
+Docspec utilise un arbre de syntaxe abstrait (AST) typé et conforme au standard _BlockSuite / ProseMirror_ :
+
+```json
+{
+  "id": "doc-a1b2c3d4",
+  "version": "1.0.0",
+  "meta": {
+    "title": "Cahier des Charges DINUM",
+    "authors": ["vincent.guerand@numerique.gouv.fr"],
+    "createdAt": "2026-04-12T09:00:00Z",
+    "updatedAt": "2026-04-12T10:15:00Z"
+  },
+  "blocks": [
+    {
+      "id": "b-header-1",
+      "type": "heading",
+      "properties": { "level": 1, "text": "1. Objectifs du Projet" }
+    },
+    {
+      "id": "b-para-1",
+      "type": "paragraph",
+      "properties": {
+        "text": "Ce document formalise les orientations d'architecture souveraine."
+      }
+    },
+    {
+      "id": "b-callout-1",
+      "type": "callout",
+      "properties": {
+        "type": "info",
+        "title": "Prérequis d'homologation RGS",
+        "text": "L'authentification doit obligatoirement transiter par ProConnect."
+      }
+    }
+  ]
+}
+```
+
+---
+
+## 🎯 3. Objectifs d'Interopérabilité
+
+1. **Pérennité des archives de l'État :** Les documents ne dépendent d'aucun format propriétaire fermé et peuvent être relus et convertis 20 ans plus tard.
+2. **Accessibilité native (RGAA / PDF/UA) :** Tous les exportateurs PDF génèrent des balises sémantiques et un balisage textuel conforme aux exigences des lecteurs d'écran.
+3. **Moteur de composition Typst :** Rendu typographique professionnel haute précision sans la lourdeur historique de LaTeX.

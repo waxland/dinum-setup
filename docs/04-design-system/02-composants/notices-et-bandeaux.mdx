@@ -1,0 +1,71 @@
+---
+title: Notices & Bandeaux d'Information
+description: Guide du composant officiel DSFR (@codegouvfr/react-dsfr/Notice), bandeaux transversaux, annonces de maintenance et alertes globales.
+---
+
+Le composant **Bandeau d'information importante** (`Notice`) permet d'afficher une information transversale et prioritaire sur l'ensemble d'un service (annonce d'une coupure technique pour maintenance, avertissement sur une version bêta ou changement d'URL officiel).
+
+🔗 **Références officielles :** [Composant Bandeau d'information DSFR](https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/bandeau-d-information-importante) • [Storybook React-DSFR (Notice)](https://components.react-dsfr.fr/?path=/docs/components-notice--default)
+
+---
+
+## 👁️ Aperçu Visuel des Composants Officiels DSFR
+
+<NoticePreview />
+
+---
+
+## 📊 1. Tableau des Variantes & Propriétés
+
+| Variante / Propriété       | Prop React-DSFR            | Classe Core DSFR             | Usage                                                                    |
+| -------------------------- | -------------------------- | ---------------------------- | ------------------------------------------------------------------------ |
+| **Notice Information**     | `severity="info"` (défaut) | `fr-notice fr-notice--info`  | Événement, annonce de nouvelle fonctionnalité ou maintenance programmée. |
+| **Notice Alerte / Danger** | `severity="alert"`         | `fr-notice fr-notice--alert` | Avertissement critique impactant immédiatement l'expérience.             |
+| **Fermeture / Dismiss**    | `isClosable={true}`        | `fr-notice .fr-btn--close`   | Bouton permettant à l'utilisateur de masquer le bandeau.                 |
+
+---
+
+## 💻 2. Utilisation avec la Bibliothèque Officielle React-DSFR
+
+```tsx
+import Notice from "@codegouvfr/react-dsfr/Notice";
+
+export function BandeauMaintenance() {
+  return (
+    <Notice
+      title="Intervention technique : La Suite Docs sera indisponible samedi matin de 01h à 03h UTC."
+      severity="info"
+      isClosable
+      onClose={() => console.log("Bandeau fermé")}
+    />
+  );
+}
+```
+
+---
+
+## 🌐 3. Utilisation en HTML Vanilla (Classes Core DSFR)
+
+```html
+<div class="fr-notice fr-notice--info">
+  <div class="fr-container">
+    <div class="fr-notice__body">
+      <p class="fr-notice__title">
+        <span class="fr-text--bold">Information importante :</span> Consultez
+        les nouvelles règles d'authentification ProConnect.
+      </p>
+      <button class="fr-btn--close fr-btn" title="Masquer le message">
+        Masquer le message
+      </button>
+    </div>
+  </div>
+</div>
+```
+
+---
+
+## ♿ 4. Accessibilité & Critères RGAA (v4.1)
+
+- **Emplacement dans l'arbre DOM :** Les notices doivent idéalement être placées tout en haut du `<main>` ou juste en dessous du `<header>` pour être lues dès l'arrivée sur la page.
+- **Bouton de fermeture accessible :** Doit comporter un `title` et un texte explicite (`title="Masquer le message"`).
+- **Contraste des textes :** Les notices respectent nativement un ratio de contraste supérieur à $4.5:1$ en thème clair et sombre.

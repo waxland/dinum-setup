@@ -1,0 +1,60 @@
+---
+title: Sécurité du Poste Développeur
+description: Bonnes pratiques de sécurité, signature cryptographique des commits (SSH / GPG), hygiène des secrets et protection des données.
+---
+
+En tant que contributeur aux projets de l'État et de La Suite numérique, la sécurisation de votre poste de travail et de votre chaîne d'approvisionnement logicielle (_Supply Chain Security_) est obligatoire.
+
+---
+
+## 🔑 1. Signature Cryptographique des Commits Git (SSH / GPG)
+
+Tous les commits fusionnés sur les dépôts officiels doivent être cryptographiquement signés afin de garantir l'authenticité de l'auteur et prévenir toute usurpation d'identité.
+
+### Option recommandée : Signature avec votre clé SSH
+
+Git prend en charge nativement la signature via vos clés SSH existantes (sans nécessiter GPG) :
+
+```bash
+# 1. Configurer Git pour utiliser SSH pour la signature
+git config --global gpg.format ssh
+
+# 2. Renseigner le chemin de votre clé publique SSH (ex: ed25519)
+git config --global user.signingkey ~/.ssh/id_ed25519.pub
+
+# 3. Activer la signature automatique par défaut pour tous les commits
+git config --global commit.gpgsign true
+git config --global tag.gpgsign true
+```
+
+Ajoutez ensuite votre clé publique SSH sur GitHub dans **Settings > SSH and GPG keys > New SSH Key**, en choisissant le type **Signing Key**.
+
+---
+
+## 🚫 2. Prévention des Fuites de Secrets (Gitleaks)
+
+Pour éviter de commiter par mégarde des clés d'API, des mots de passe en clair ou des jetons de service :
+
+### Installation du hook local avec pre-commit
+
+```bash
+# Installer gitleaks
+brew install gitleaks pre-commit
+
+# Installer le hook dans votre dépôt local
+pre-commit install
+```
+
+### Scan manuel d'un dépôt avant push
+
+```bash
+gitleaks detect --source . --verbose
+```
+
+---
+
+## 🔒 3. Gestion des Fichiers `.env` et Variables Sensibles
+
+- ⚠️ **Règle absolue :** Ne jamais commiter de fichier `.env`, `.env.local` ou `.env.production`.
+- ✅ **Utilisez systématiquement :** Un fichier modèle public `.env.example` contenant uniquement des valeurs factices ou des clés de test locales.
+- 🔐 **Chiffrement GitOps :** Les variables de production et de préproduction doivent être chiffrées avec **SOPS** et stockées sous forme de fichiers `.sops.yaml` ou injectées par le coffre-fort de l'infrastructure de déploiement (Vault / SealedSecrets).

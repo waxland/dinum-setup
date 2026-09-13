@@ -1,22 +1,68 @@
 import { defaultLanguages, type ZudokuConfig } from "zudoku";
+import {
+  AlertPreview,
+  BadgePreview,
+  ButtonPreview,
+  CardContainerPreview,
+  ColorPalettePreview,
+  FeatureCard,
+  FeatureGrid,
+  FormPreview,
+  HeaderBreadcrumbPreview,
+  IconsCatalog,
+  Mermaid,
+  ModalPreview,
+  NoticePreview,
+  PaginationStepperPreview,
+  TablePreview,
+  TrackCard,
+  TutorialCard,
+  TypographySpecimen,
+} from "./src/components";
 import { docsNavigation, docsRedirects } from "./zudoku.navigation";
 import "./zudoku.theme.css";
 
 const config: ZudokuConfig = {
   metadata: {
-    title: "%s | DINUM La Suite Dev Setup",
+    title: "%s | La Suite Numérique — Documentation & Onboarding",
     description:
-      "Documentation locale pour cloner, configurer et lancer les projets de La Suite numerique en developpement.",
+      "Portail d'accueil, guides pratiques, tutoriels, glossaire et documentation pour découvrir, lancer et contribuer à l'écosystème de La Suite numérique.",
+    favicon: "/favicon.ico",
   },
   site: {
     title: "La Suite dev setup",
-    // banner: {
-    //   message:
-    //     "Documentation locale pour preparer, lancer et comprendre les projets La Suite en developpement.",
-    //   color: "info",
-    //   dismissible: true,
-    // },
+    banner: {
+      message:
+        "📖 Onboarding, tutoriels, glossaire & documentation pour découvrir et contribuer à La Suite numérique (Non officiel)",
+      color: "info",
+      dismissible: true,
+    },
+    logo: {
+      src: {
+        light: "/lasuite.svg",
+        dark: "/lasuite-dark.svg",
+      },
+      alt: "La Suite numérique - Non officiel",
+      width: 145,
+      href: "/",
+    },
     showPoweredBy: false,
+  },
+  header: {
+    navigation: [
+      {
+        label: "GitHub dinum-setup",
+        to: "https://github.com/suitenumerique/dinum-setup",
+        target: "_blank",
+        icon: "folder-git-2",
+      },
+      {
+        label: "GitHub La Suite",
+        to: "https://github.com/suitenumerique",
+        target: "_blank",
+        icon: "git-fork",
+      },
+    ],
   },
   syntaxHighlighting: {
     languages: [
@@ -27,6 +73,28 @@ const config: ZudokuConfig = {
       "dockerfile",
       "nginx",
     ],
+  },
+  mdx: {
+    components: {
+      Mermaid,
+      FeatureCard,
+      FeatureGrid,
+      TrackCard,
+      TutorialCard,
+      ColorPalettePreview,
+      TypographySpecimen,
+      IconsCatalog,
+      ButtonPreview,
+      BadgePreview,
+      AlertPreview,
+      ModalPreview,
+      NoticePreview,
+      TablePreview,
+      FormPreview,
+      CardContainerPreview,
+      PaginationStepperPreview,
+      HeaderBreadcrumbPreview,
+    },
   },
   docs: {
     files: "./docs/**/*.{md,mdx}",

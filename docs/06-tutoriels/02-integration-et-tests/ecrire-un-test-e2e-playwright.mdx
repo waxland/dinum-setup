@@ -1,0 +1,92 @@
+---
+title: Écrire un Test E2E avec Playwright
+description: Tutoriel pour automatiser des parcours utilisateurs complets avec Playwright, fixtures d'authentification simulée et tests d'accessibilité axe-core.
+---
+
+Ce tutoriel vous montre comment concevoir un scénario de test de bout en bout (**End-to-End**) robuste pour valider le parcours utilisateur de création d'un document dans La Suite.
+
+---
+
+## 📦 1. Installation de Playwright
+
+```bash
+pnpm add -D @playwright/test @axe-core/playwright
+npx playwright install --with-deps chromium
+```
+
+---
+
+## ⚙️ 2. Configuration (`playwright.config.ts`)
+
+```typescript
+import { defineConfig, devices } from "@playwright/test";
+
+export default defineConfig({
+  testDir: "./e2e",
+  fullyParallel: true,
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 2 : undefined,
+  use: {
+    baseURL: "http://localhost:3000",
+    trace: "on-first-retry",
+    screenshot: "only-on-failure",
+  },
+  projects: [
+    {
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
+    },
+  ],
+});
+```
+
+---
+
+## 🎭 3. Écriture du Scénario de Test (`e2e/document-creation.spec.ts`)
+
+```typescript
+import { test, expect } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
+
+test.describe("Gestion des Documents Collaboratifs", () => {
+  test.beforeEach(async ({ page }) => {
+    // 1. Simuler l'authentification ProConnect locale
+    await page.goto("/auth/mock-login?user=agent-test@numerique.gouv.fr");
+    await expect(page).toHaveURL("/dashboard");
+  });
+
+  test("Créer un nouveau document et vérifier l'accessibilité RGAA", async ({
+    page,
+  }) => {
+    // 2. Cliquer sur le bouton officiel DSFR "Nouveau document"
+    const createBtn = page.getByRole("button", { name: "Nouveau document" });
+    await expect(createBtn).toBeVisible();
+    await createBtn.click();
+
+    // 3. Saisir le titre du document
+    const titleInput = page.getByPlaceholder("Titre du document");
+    await titleInput.fill("Note de cadrage DINUM 2026");
+    await titleInput.press("Enter");
+
+    // 4. Vérifier la présence du bloc dans l'éditeur
+    await expect(page.getByText("Note de cadrage DINUM 2026")).toBeVisible();
+
+    // 5. Test automatique d'accessibilité avec axe-core
+    const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
+    expect(accessibilityScanResults.violations).toEqual([]);
+  });
+});
+```
+
+---
+
+## 🚀 4. Exécution des Tests
+
+```bash
+# Lancer les tests en mode headless
+pnpm test:e2e
+
+# Lancer avec l'interface interactive Playwright UI
+npx playwright test --ui
+```
