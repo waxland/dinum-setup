@@ -6,12 +6,19 @@ Ce depot ne contient pas le code des applications. Le Makefile clone les projets
 
 ## Lecture rapide
 
-- Documentation principale : [docs/index.md](docs/index.md)
-- Workflow Makefile : [docs/workflow.md](docs/workflow.md)
-- Authentification en dev : [docs/auth.md](docs/auth.md)
-- Hot reload : [docs/hot-reload.md](docs/hot-reload.md)
-- Variables et `.env` : [docs/env.md](docs/env.md)
-- Etat de cablage des projets : [docs/projects-status.md](docs/projects-status.md)
+- **Onboarding & Démarrage :** [docs/01-onboarding/index.md](docs/01-onboarding/index.md)
+  - [Configuration Git & SSH](docs/01-onboarding/git-ssh.md)
+  - [Workflow Makefile](docs/01-onboarding/workflow.md)
+  - [Tests, Linters & Qualité](docs/01-onboarding/tests-et-qualite.md)
+  - [Guide de Dépannage & FAQ](docs/01-onboarding/troubleshooting.md)
+- **Architecture & Fonctionnement :** [docs/02-architecture/index.md](docs/02-architecture/index.md) (ou [TODO_ARCHITECTURE.md](TODO_ARCHITECTURE.md))
+  - [Authentification OIDC & Keycloak](docs/02-architecture/auth.md)
+  - [Stratégie de Hot Reload](docs/02-architecture/hot-reload.md)
+  - [Variables et .env](docs/02-architecture/env.md)
+  - [Gestion des Secrets (SOPS & age)](docs/02-architecture/secrets-sops.md)
+- **Fiches Projets :** [docs/03-projets/index.md](docs/03-projets/index.md)
+- **Ressources & Communauté :** [docs/04-ressources/roadmap.md](docs/04-ressources/roadmap.md)
+  - [Salons Matrix & Contacts](docs/04-ressources/communaute.md)
 
 ## Commandes principales
 
@@ -19,6 +26,12 @@ Afficher l'aide :
 
 ```bash
 make help
+```
+
+Installer les prérequis système (plugins Docker, etc.) :
+
+```bash
+make install # ou ./install.sh
 ```
 
 Cloner les projets declares :

@@ -1,0 +1,39 @@
+---
+title: Hot-Reload & Dev Local
+description: Fonctionnement du rechargement à chaud en développement (Docker vs machine hôte).
+---
+
+# ⚡ Stratégie de Développement & Hot-Reload
+
+Le **hot-reload** (rechargement à chaud) permet de voir immédiatement le résultat de ses modifications dans le code sans avoir à reconstruire les images Docker ou redémarrer les services.
+
+---
+
+## 🔍 Comment Ça Fonctionne ?
+
+Dans nos configurations de développement :
+- Les répertoires de code locaux (`./src/<projet>/...`) sont montés en **volumes Docker bind-mounts** dans les conteneurs.
+- Les processus d'arrière-plan (Django auto-reload, WebSockets watchers, Next.js Turbopack / Fast Refresh) surveillent l'arborescence et rechargent à la volée.
+
+---
+
+## 🛠️ État par Composant
+
+### 1. Backend Django (`Docs`, `Transfers`, `People`, `Accounts`)
+- **Actif par défaut avec `make dev`** : Les fichiers Python sous `src/<projet>/src/backend/` sont montés dans `/app`.
+- Toute modification d'une vue, d'un modèle ou d'une route redémarre instantanément le serveur ASGI/WSGI.
+
+### 2. Serveur de Collaboration Yjs (`Docs / y-provider`)
+- **Actif par défaut avec `make dev`** : Le code TypeScript sous `src/docs/src/frontend/servers/y-provider/` est surveillé et recompilé à chaud.
+
+### 3. Frontend Next.js / React
+- **Option Conteneurisée (via `make dev`)** : Le conteneur `frontend-development` monte `src/frontend` et fait tourner le serveur de dev.
+- **Option Locale Directe (Recommandée pour les développeurs frontend)** :
+  Pour bénéficier d'une réactivité instantanée sans overhead de virtualisation de fichiers Docker :
+  ```bash
+  # 1. Démarrer les services dépendants (DB, Auth, S3, Backend)
+  make -C src/docs run-backend
+
+  # 2. Démarrer le frontend en local sur votre machine
+  make -C src/docs run-frontend-development
+  ```

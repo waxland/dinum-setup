@@ -8,12 +8,14 @@ SRC_DIR ?= $(ROOT_DIR)/src
 #   REPOS="docs projects" make clone
 REPOS ?= docs projects meet transfers people accounts
 
-docs_URL := https://github.com/suitenumerique/docs.git
-projects_URL := https://github.com/suitenumerique/projects.git
-meet_URL := https://github.com/suitenumerique/meet.git
-transfers_URL := https://github.com/suitenumerique/transfers.git
-people_URL := https://github.com/suitenumerique/people.git
-accounts_URL := https://github.com/suitenumerique/accounts.git
+DOCKER_COMPOSE ?= $(shell if docker compose version >/dev/null 2>&1; then echo "docker compose"; elif command -v docker-compose >/dev/null 2>&1; then echo "docker-compose"; fi)
+
+export docs_URL ?= https://github.com/suitenumerique/docs.git
+export projects_URL ?= https://github.com/suitenumerique/projects.git
+export meet_URL ?= https://github.com/suitenumerique/meet.git
+export transfers_URL ?= https://github.com/suitenumerique/transfers.git
+export people_URL ?= https://github.com/suitenumerique/people.git
+export accounts_URL ?= https://github.com/suitenumerique/accounts.git
 
 .DEFAULT_GOAL := help
 
@@ -21,6 +23,7 @@ accounts_URL := https://github.com/suitenumerique/accounts.git
 help:
 	@printf "DINUM / La Suite dev setup\n\n"
 	@printf "Commandes principales:\n"
+	@printf "  make install            Installe les dependances systeme (Docker plugins, etc.)\n"
 	@printf "  make clone              Clone les depots dans ./src\n"
 	@printf "  make pull               Met a jour les depots deja clones\n"
 	@printf "  make env                Prepare les fichiers .env locaux connus\n"
@@ -38,10 +41,28 @@ help:
 
 .PHONY: check-tools
 check-tools:
-	@command -v git >/dev/null
-	@command -v make >/dev/null
-	@command -v docker >/dev/null
-	@docker compose version >/dev/null
+	@command -v git >/dev/null || (echo "Erreur: git n'est pas installe" >&2; exit 1)
+	@command -v make >/dev/null || (echo "Erreur: make n'est pas installe" >&2; exit 1)
+	@command -v docker >/dev/null || (echo "Erreur: docker n'est pas installe" >&2; exit 1)
+	@[ -n "$(DOCKER_COMPOSE)" ] || (echo "Erreur: docker compose / docker-compose n'est pas installe" >&2; exit 1)
+
+.PHONY: prepare-docker
+prepare-docker:
+	@docker network create lasuite-network >/dev/null 2>&1 || true
+	@if ! docker image inspect minio/minio:latest >/dev/null 2>&1; then \
+		echo "Preparation de l'image MinIO (quay.io)..."; \
+		docker pull quay.io/minio/minio:latest >/dev/null 2>&1 && \
+		docker tag quay.io/minio/minio:latest minio/minio:latest; \
+	fi
+	@if ! docker image inspect minio/mc:latest >/dev/null 2>&1; then \
+		echo "Preparation de l'image MinIO Client (quay.io)..."; \
+		docker pull quay.io/minio/mc:latest >/dev/null 2>&1 && \
+		docker tag quay.io/minio/mc:latest minio/mc:latest; \
+	fi
+
+.PHONY: install
+install:
+	@./install.sh
 
 .PHONY: clone
 clone: check-tools
@@ -123,7 +144,7 @@ env-accounts:
 	fi
 
 .PHONY: bootstrap
-bootstrap: clone env bootstrap-docs bootstrap-projects
+bootstrap: clone env prepare-docker bootstrap-docs bootstrap-projects
 
 .PHONY: bootstrap-docs
 bootstrap-docs:
@@ -139,7 +160,7 @@ bootstrap-projects:
 	fi
 
 .PHONY: dev
-dev: clone env dev-docs dev-projects dev-meet dev-transfers dev-people dev-accounts
+dev: clone env prepare-docker dev-docs dev-projects dev-meet dev-transfers dev-people dev-accounts
 
 .PHONY: dev-docs
 dev-docs:
@@ -152,7 +173,7 @@ dev-docs:
 dev-projects:
 	@if [ -d "$(SRC_DIR)/projects" ]; then \
 		echo "Lancement Projects..."; \
-		cd "$(SRC_DIR)/projects" && docker compose -f docker-compose-dev.yml up -d; \
+		cd "$(SRC_DIR)/projects" && $(DOCKER_COMPOSE) -f docker-compose-dev.yml up -d; \
 	fi
 
 .PHONY: dev-meet
@@ -184,8 +205,8 @@ stop:
 	@for repo in docs projects meet transfers people accounts; do \
 		if [ -d "$(SRC_DIR)/$$repo" ]; then \
 			echo "Stop $$repo..."; \
-			(cd "$(SRC_DIR)/$$repo" && docker compose down 2>/dev/null || true); \
-			(cd "$(SRC_DIR)/$$repo" && docker compose -f docker-compose-dev.yml down 2>/dev/null || true); \
+			(cd "$(SRC_DIR)/$$repo" && $(DOCKER_COMPOSE) down 2>/dev/null || true); \
+			(cd "$(SRC_DIR)/$$repo" && $(DOCKER_COMPOSE) -f docker-compose-dev.yml down 2>/dev/null || true); \
 		fi; \
 	done
 
@@ -199,7 +220,7 @@ logs-docs:
 
 .PHONY: logs-projects
 logs-projects:
-	@cd "$(SRC_DIR)/projects" && docker compose -f docker-compose-dev.yml logs -f --tail=200
+	@cd "$(SRC_DIR)/projects" && $(DOCKER_COMPOSE) -f docker-compose-dev.yml logs -f --tail=200
 
 .PHONY: generate-docs-nav
 generate-docs-nav:
