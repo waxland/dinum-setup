@@ -8,6 +8,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
     "collapsed": false,
     "items": [
       "/guide/index",
+      "/guide/architecture",
       "/guide/auth",
       "/guide/env",
       "/guide/git-ssh",

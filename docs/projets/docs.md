@@ -80,9 +80,38 @@ make dev-docs
 make logs-docs
 ```
 
-### URLs et Accès Locaux
+### URLs et Services Locaux
 
-- **Application Frontend :** [http://localhost:3000](http://localhost:3000)
-- **API Backend :** [http://localhost:8071](http://localhost:8071)
-- **Django Admin :** [http://localhost:8071/admin](http://localhost:8071/admin) (identifiants créés lors du bootstrap)
+| Service | URL / Port | Identifiants par défaut | Rôle |
+|---|---|---|---|
+| **Frontend Docs** | [http://localhost:3000](http://localhost:3000) | `impress` / `impress` *(pas besoin de créer de compte)* | Interface utilisateur Next.js / React |
+| **API Django** | [http://localhost:8071](http://localhost:8071) | — | API REST backend |
+| **Admin Django** | [http://localhost:8071/admin](http://localhost:8071/admin) | `admin` / `admin` | Administration des modèles de données |
+| **Keycloak SSO** | [http://localhost:8080](http://localhost:8080) (ou [http://localhost:8083](http://localhost:8083)) | `admin` / `admin` | Serveur d'authentification OIDC |
+| **Console MinIO** | [http://localhost:9001](http://localhost:9001) | `impress` / `password` | Stockage S3 des pièces jointes et médias |
+| **Mailcatcher** | [http://localhost:1081](http://localhost:1081) | — | Boîte de réception des emails générés |
+| **Docspec API** | [http://localhost:4000](http://localhost:4000) | — | Service de conversion et rendu de documents |
+| **Serveur Yjs** | `ws://localhost:4444` | — | Serveur WebSockets temps réel (CRDT) |
+
+---
+
+## ⚡ Fonctionnement du Hot-Reload
+
+1. **Backend Django (`app-dev`) :**
+   - **Déjà en hot-reload par défaut.** Le dossier `./src/backend` est monté en volume dans `/app`. Toute modification d'un fichier Python recharge automatiquement le serveur backend.
+
+2. **Serveur de collaboration (`y-provider`) :**
+   - **Déjà en hot-reload.** Le serveur Node.js Yjs redémarre à chaque modification du code TypeScript sous `src/frontend/servers/y-provider`.
+
+3. **Frontend Next.js (`frontend-development`) :**
+   - **Mode conteneurisé (par défaut avec `make dev`) :** Le volume `./src/frontend` est monté dans `/home/frontend` et tourne avec Turbopack / Fast Refresh.
+   - **Mode local (recommandé pour les développeurs frontend) :**
+     Pour un confort optimal et des temps de réponse instantanés :
+     ```bash
+     # 1. Faire tourner les services et le backend dans Docker
+     make -C src/docs run-backend
+
+     # 2. Lancer le frontend directement sur votre machine hôte
+     make -C src/docs run-frontend-development
+     ```
 

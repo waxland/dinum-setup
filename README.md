@@ -6,6 +6,7 @@ Ce depot ne contient pas le code des applications. Le Makefile clone les projets
 
 ## Lecture rapide
 
+- Architecture Globale & Technique : [docs/guide/architecture.md](docs/guide/architecture.md) (ou [TODO_ARCHITECTURE.md](TODO_ARCHITECTURE.md))
 - Onboarding Développeur : [docs/guide/onboarding.md](docs/guide/onboarding.md)
 - Configuration Git & SSH : [docs/guide/git-ssh.md](docs/guide/git-ssh.md)
 - Roadmaps & Ressources : [docs/guide/roadmap.md](docs/guide/roadmap.md)

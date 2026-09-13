@@ -59,6 +59,7 @@ make check-tools
 ## Sommaire de la documentation
 
 ### Guide & Onboarding
+- [Architecture Globale & Technique](architecture.md) : Schémas Mermaid, choix techniques, bibliothèques et flux de données
 - [Onboarding Développeur](onboarding.md) : Prise en main pas à pas dès le premier jour
 - [Configuration Git & SSH](git-ssh.md) : Configuration Git, génération de clés SSH et ajout sur GitHub
 - [Roadmaps & Ressources](roadmap.md) : Feuilles de route, salons Matrix et liens officiels

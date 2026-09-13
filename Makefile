@@ -46,6 +46,20 @@ check-tools:
 	@command -v docker >/dev/null || (echo "Erreur: docker n'est pas installe" >&2; exit 1)
 	@[ -n "$(DOCKER_COMPOSE)" ] || (echo "Erreur: docker compose / docker-compose n'est pas installe" >&2; exit 1)
 
+.PHONY: prepare-docker
+prepare-docker:
+	@docker network create lasuite-network >/dev/null 2>&1 || true
+	@if ! docker image inspect minio/minio:latest >/dev/null 2>&1; then \
+		echo "Preparation de l'image MinIO (quay.io)..."; \
+		docker pull quay.io/minio/minio:latest >/dev/null 2>&1 && \
+		docker tag quay.io/minio/minio:latest minio/minio:latest; \
+	fi
+	@if ! docker image inspect minio/mc:latest >/dev/null 2>&1; then \
+		echo "Preparation de l'image MinIO Client (quay.io)..."; \
+		docker pull quay.io/minio/mc:latest >/dev/null 2>&1 && \
+		docker tag quay.io/minio/mc:latest minio/mc:latest; \
+	fi
+
 .PHONY: install
 install:
 	@./install.sh
@@ -130,7 +144,7 @@ env-accounts:
 	fi
 
 .PHONY: bootstrap
-bootstrap: clone env bootstrap-docs bootstrap-projects
+bootstrap: clone env prepare-docker bootstrap-docs bootstrap-projects
 
 .PHONY: bootstrap-docs
 bootstrap-docs:
@@ -146,7 +160,7 @@ bootstrap-projects:
 	fi
 
 .PHONY: dev
-dev: clone env dev-docs dev-projects dev-meet dev-transfers dev-people dev-accounts
+dev: clone env prepare-docker dev-docs dev-projects dev-meet dev-transfers dev-people dev-accounts
 
 .PHONY: dev-docs
 dev-docs:
