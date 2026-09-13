@@ -3,8 +3,6 @@ title: Accueil
 description: Documentation locale pour cloner, configurer et lancer les projets de La Suite numérique en développement.
 ---
 
-# DINUM / La Suite dev setup
-
 Bienvenue sur la documentation d'orchestration locale des dépôts de **La Suite numérique** (DINUM).
 
 Ce dépôt centralise les commandes et la configuration nécessaires pour cloner, initialiser et exécuter les différents services de La Suite sur un environnement de développement local.
@@ -66,12 +64,11 @@ make check-tools
 - [Authentification](auth.md) : Keycloak, OIDC et configuration locale
 - [Hot reload](hot-reload.md) : Fonctionnement du rechargement à chaud
 - [État des projets](projects-status.md) : Matrice de support des différents dépôts
-- [DSFR officiel](dsfr.md) : Intégration du Système de Design de l'État
 
 ### Projets
-- [Docs](docs.md) : Gestion documentaire et partage
-- [Projects](projects.md) : Gestion de projets et tâches
-- [Meet](meet.md) : Visioconférence (LiveKit)
-- [Transfers](transfers.md) : Transfert de fichiers
-- [People](people.md) : Annuaire et gestion des profils
-- [Accounts](accounts.md) : Gestion des comptes et identités
+- [Docs](../projets/docs.md) : Gestion documentaire et partage
+- [Projects](../projets/projects.md) : Gestion de projets et tâches
+- [Meet](../projets/meet.md) : Visioconférence (LiveKit)
+- [Transfers](../projets/transfers.md) : Transfert de fichiers
+- [People](../projets/people.md) : Annuaire et gestion des profils
+- [Accounts](../projets/accounts.md) : Gestion des comptes et identités

@@ -3,8 +3,6 @@ title: Hot reload
 description: Fonctionnement et contraintes du rechargement à chaud en développement local.
 ---
 
-# Hot Reload et Volumes Locaux
-
 Le rechargement à chaud (*hot reload*) permet de voir immédiatement les modifications apportées au code source dans le navigateur sans devoir redémarrer manuellement les conteneurs Docker.
 
 ## Principe de fonctionnement

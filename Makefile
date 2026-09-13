@@ -21,15 +21,17 @@ accounts_URL := https://github.com/suitenumerique/accounts.git
 help:
 	@printf "DINUM / La Suite dev setup\n\n"
 	@printf "Commandes principales:\n"
-	@printf "  make clone          Clone les depots dans ./src\n"
-	@printf "  make pull           Met a jour les depots deja clones\n"
-	@printf "  make env            Prepare les fichiers .env locaux connus\n"
-	@printf "  make bootstrap      Prepare les projets supportes\n"
-	@printf "  make dev            Lance les projets supportes en mode dev\n"
-	@printf "  make stop           Stoppe les stacks Docker connues\n"
-	@printf "  make status         Affiche les containers Docker actifs\n"
-	@printf "  make logs-docs      Suit les logs Docs\n"
-	@printf "  make logs-projects  Suit les logs Projects\n"
+	@printf "  make clone              Clone les depots dans ./src\n"
+	@printf "  make pull               Met a jour les depots deja clones\n"
+	@printf "  make env                Prepare les fichiers .env locaux connus\n"
+	@printf "  make bootstrap          Prepare les projets supportes\n"
+	@printf "  make dev                Lance les projets supportes en mode dev\n"
+	@printf "  make stop               Stoppe les stacks Docker connues\n"
+	@printf "  make status             Affiche les containers Docker actifs\n"
+	@printf "  make logs-docs          Suit les logs Docs\n"
+	@printf "  make logs-projects      Suit les logs Projects\n"
+	@printf "  make generate-docs-nav  Genere zudoku.navigation.tsx\n"
+	@printf "  make docs-dev           Lance la documentation en local\n"
 	@printf "\nExemples:\n"
 	@printf "  REPOS=\"docs projects\" make clone\n"
 	@printf "  SRC_DIR=/opt/lasuite/src make dev\n"
@@ -199,12 +201,16 @@ logs-docs:
 logs-projects:
 	@cd "$(SRC_DIR)/projects" && docker compose -f docker-compose-dev.yml logs -f --tail=200
 
+.PHONY: generate-docs-nav
+generate-docs-nav:
+	node scripts/generate-docs-navigation.mjs
+
 .PHONY: docs-dev
-docs-dev:
+docs-dev: generate-docs-nav
 	@npm run docs:dev
 
 .PHONY: docs-build
-docs-build:
+docs-build: generate-docs-nav
 	@npm run docs:build
 
 .PHONY: docs-preview

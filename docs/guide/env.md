@@ -3,8 +3,6 @@ title: Variables et .env
 description: Gestion des variables d'environnement et fichiers locaux.
 ---
 
-# Variables et .env
-
 Chaque service de La Suite utilise ses propres fichiers d'environnement pour configurer les connexions aux bases de données, aux serveurs d'authentification et aux services tiers.
 
 ## Préparation automatique : `make env`

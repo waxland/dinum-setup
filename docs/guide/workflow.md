@@ -3,8 +3,6 @@ title: Workflow Makefile
 description: Guide des commandes disponibles dans le Makefile d'orchestration.
 ---
 
-# Workflow Makefile
-
 Le `Makefile` fournit une interface unifiée pour gérer l'ensemble des projets de La Suite en local.
 
 ## Structure des répertoires

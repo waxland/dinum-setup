@@ -3,8 +3,6 @@ title: Authentification
 description: Fonctionnement de l'authentification et OIDC en environnement de développement local.
 ---
 
-# Authentification en développement
-
 Dans La Suite numérique, l'authentification est mutualisée et repose sur le protocole **OpenID Connect (OIDC)**, le plus souvent orchestré par une instance **Keycloak** ou un fournisseur d'identité compatible (ex: ProConnect / AgentConnect).
 
 ## Règle d'or en développement

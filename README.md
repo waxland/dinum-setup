@@ -84,10 +84,13 @@ Details : [docs/auth.md](docs/auth.md)
 
 ## Documentation visuelle
 
-La documentation visuelle utilise le paquet officiel `@gouvfr/dsfr` pour reprendre le DSFR, avec une couche minimale d'integration autour de Zudoku.
-
-
 Zudoku est installe pour afficher le dossier `docs/` sous forme de documentation navigable.
+
+Generer la navigation automatique :
+
+```bash
+make generate-docs-nav
+```
 
 Lancer le serveur local :
 
@@ -107,4 +110,4 @@ Previsualiser le build statique :
 make docs-preview
 ```
 
-Les scripts npm equivalents sont `npm run docs:dev`, `npm run docs:build` et `npm run docs:preview`.
+Les scripts npm equivalents sont `npm run docs:nav`, `npm run docs:dev`, `npm run docs:build` et `npm run docs:preview`.

@@ -3,8 +3,6 @@ title: État des projets
 description: Tableau récapitulatif de l'état d'intégration des projets dans dinum-setup.
 ---
 
-# État de câblage des projets
-
 Ce tableau récapitule l'état d'intégration et le niveau de support actuel pour chaque dépôt de La Suite dans ce setup d'orchestration.
 
 | Projet | Clone (`make clone`) | Env local (`make env`) | Lancement dev (`make dev`) | Notes & Mécanisme |
