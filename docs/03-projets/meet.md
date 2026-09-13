@@ -3,8 +3,6 @@ title: Meet (Visio)
 description: Présentation détaillée, architecture, roadmap et fonctionnalités du service de visioconférence Meet de La Suite numérique.
 ---
 
-# 📹 Meet (Visio) : Visioconférence Sécurisée & Haute Performance
-
 **Meet** (déployé sous le nom de **Visio** pour les agents publics français) est le service de visioconférence sécurisé et open source de **La Suite numérique**, propulsé par la technologie [LiveKit](https://livekit.io/).
 
 - **Dépôt officiel :** [suitenumerique/meet](https://github.com/suitenumerique/meet)
@@ -23,19 +21,19 @@ description: Présentation détaillée, architecture, roadmap et fonctionnalité
 - **Messagerie instantanée sécurisée :** Chat éphémère chiffré intégré à la réunion.
 - **Fonctionnalités IA avancées :** Transcription automatique et génération de comptes-rendus de réunion.
 - **Intégration Téléphonie (SIP) :** Possibilité de rejoindre les visioconférences par numéro de téléphone.
-- **Optimisations LiveKit avancées :** Détection de l'interlocuteur actif (*active speaker*), simulcast, codecs vidéo de nouvelle génération (VP9, AV1), abonnements sélectifs de flux.
+- **Optimisations LiveKit avancées :** Détection de l'interlocuteur actif (_active speaker_), simulcast, codecs vidéo de nouvelle génération (VP9, AV1), abonnements sélectifs de flux.
 
 ---
 
 ## 🏗️ Architecture & Stack Technique
 
-```mermaid
-graph LR
+<Mermaid
+chart={`graph LR
     UserA[Client WebRTC] <-->|Audio / Vidéo WebRTC| SFU[LiveKit SFU Server]
     UserB[Client WebRTC] <-->|Audio / Vidéo WebRTC| SFU
     UserA <-->|HTTP / WS Tokens| AppBackend[Backend Meet Django / Node]
-    AppBackend <--> Auth[OIDC / ProConnect]
-```
+    AppBackend <--> Auth[OIDC / ProConnect]`}
+/>
 
 - **Frontend :** React, TypeScript, SDK LiveKit WebRTC client, composants d'interface personnalisables.
 - **Moteur Média (SFU) :** [LiveKit](https://livekit.io/) (Selective Forwarding Unit ultra-performant en Go).

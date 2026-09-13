@@ -3,8 +3,6 @@ title: Accounts (Identités)
 description: Présentation détaillée, architecture, roadmap et démarrage local du projet Accounts de La Suite numérique.
 ---
 
-# 🔐 Accounts : Gestion d'Identités & Authentification
-
 **Accounts** est le service d'authentification centrale, de gestion des comptes et de sécurisation des accès pour les utilisateurs internes et externes de **La Suite numérique**.
 
 - **Dépôt officiel :** [suitenumerique/accounts](https://github.com/suitenumerique/accounts)

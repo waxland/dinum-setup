@@ -1,0 +1,80 @@
+---
+title: Icônes & Visuels
+description: Bibliothèques d'icônes recommandées (Remix Icon, Lucide), dimensionnement, alignement et accessibilité pour La Suite numérique.
+---
+
+Les icônes apportent un repère visuel rapide et améliorent l'ergonomie générale des applications lorsqu'elles sont utilisées avec parcimonie et cohérence.
+
+---
+
+## 🎨 1. Bibliothèques Supportées
+
+### A. Remix Icon (Référence officielle du DSFR)
+
+Le DSFR intègre nativement le catalogue d'icônes open source **Remix Icon** :
+
+- **Style :** Traits fins, géométrie équilibrée, variantes _Line_ et _Fill_.
+- **Usage :** En-têtes officiels, composants DSFR natifs et boutons d'action d'État.
+
+### B. Lucide Icons (Idéal pour les applications React & Zudoku)
+
+Pour les applications modernes développées avec Tailwind CSS et React (Docs, Projects, Transfers) :
+
+- **Package :** `npm install lucide-react`
+- **Avantages :** Rendu SVG pur ultra-léger, tree-shaking parfait, props TypeScript complètes (`size`, `strokeWidth`, `color`).
+
+---
+
+## 📏 2. Tailles et Alignements Normalisés
+
+| Échelle                     | Taille (px / rem) | Équivalent Tailwind     | Contexte d'Utilisation                                    |
+| --------------------------- | ----------------- | ----------------------- | --------------------------------------------------------- |
+| **Très Petite (`xs`)**      | 12px / `0.75rem`  | `w-3 h-3`               | Badges de statut très denses, indicateurs.                |
+| **Petite (`sm`)**           | 16px / `1.0rem`   | `w-4 h-4`               | Intérieur de boutons, éléments de menus, fil d'Ariane.    |
+| **Moyenne (`md` - Défaut)** | 20px / `1.25rem`  | `w-5 h-5`               | Boutons d'action principaux, en-têtes de cartes, alertes. |
+| **Grande (`lg`)**           | 24px / `1.5rem`   | `w-6 h-6`               | Navigation principale, tiroirs latéraux, barres d'outils. |
+| **Très Grande (`xl`)**      | 32px à 48px       | `w-8 h-8` à `w-12 h-12` | Illustrations de pages vides (_Empty States_), modales.   |
+
+---
+
+## 💻 3. Exemple d'Intégration React & Lucide
+
+```tsx
+import { FolderPlus, FileText, CheckCircle, AlertTriangle } from "lucide-react";
+
+export const ExampleIcons = () => {
+  return (
+    <div className="flex items-center gap-4 p-4 border rounded-md">
+      {/* Bouton avec icône alignée */}
+      <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#000091] text-white rounded text-sm font-medium">
+        <FolderPlus className="w-4 h-4" aria-hidden="true" />
+        <span>Nouveau Dossier</span>
+      </button>
+
+      {/* Icône de statut */}
+      <span className="inline-flex items-center gap-1.5 text-xs text-emerald-700 font-medium">
+        <CheckCircle className="w-4 h-4" aria-hidden="true" />
+        Sauvegardé
+      </span>
+    </div>
+  );
+};
+```
+
+---
+
+## ♿ 4. Règles d'Accessibilité RGAA pour les Icônes
+
+### 1. Icône Décorative (Accompagnée d'un texte)
+
+Si l'icône accompagne un texte explicite visible (ex: une icône de disquette à côté du mot "Enregistrer"), elle est **décorative**.
+
+- Vous devez ajouter `aria-hidden="true"` sur le SVG.
+- Le lecteur d'écran ne doit pas annoncer l'icône deux fois.
+
+### 2. Icône Signifiante / Bouton Icône Seul
+
+Si le bouton ne contient qu'une icône (ex: la loupe de recherche ou la croix de fermeture) :
+
+- Fournissez un intitulé textuel via `aria-label="Rechercher"` sur le bouton conteneur.
+- Marquez le SVG interne avec `aria-hidden="true"`.

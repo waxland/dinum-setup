@@ -1,0 +1,55 @@
+---
+title: Accessibilité RGAA & Bonnes Pratiques
+description: Guide d'application du Référentiel Général d'Amélioration de l'Accessibilité (RGAA v4.1) et conformité WCAG 2.1 AA pour La Suite numérique.
+---
+
+L'accessibilité numérique est une obligation légale pour les services publics numériques de l'État (Article 47 de la loi du 11 février 2005) et un principe fondateur de **La Suite numérique** pour garantir l'inclusion de tous les agents publics et usagers.
+
+---
+
+## 🏛️ 1. Les 13 Thématiques Clés du RGAA v4.1
+
+| Thématique RGAA              | Règle Essentielle                                                             | Bonne Pratique de Dev                                         |
+| ---------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| **1. Images**                | Toute image porteuse d'information a une alternative textuelle (`alt="..."`). | `alt=""` si décorative, texte précis si informative.          |
+| **2. Cadres (iframes)**      | Chaque iframe possède un attribut `title` descriptif.                         | `<iframe title="Lecteur vidéo conférence" ...>`               |
+| **3. Couleurs**              | L'information n'est pas véhiculée uniquement par la couleur.                  | Ajouter un texte ou une icône explicite.                      |
+| **4. Multimédia**            | Les vidéos/audios disposent de sous-titres et transcriptions.                 | Intégration de sous-titres VTT dans Meet.                     |
+| **5. Tableaux**              | Tableaux de données structurés avec `<th>`, `scope="col"` et `<caption>`.     | Jamais de tableaux pour de la mise en page.                   |
+| **6. Liens**                 | L'intitulé de chaque lien est explicite hors contexte (pas de "cliquer ici"). | "Télécharger le rapport d'activité (PDF, 2 Mo)".              |
+| **7. Scripts**               | Tous les composants JS interactifs sont pilotables au clavier.                | Gestion des événements `onKeyDown` (Space, Enter, Escape).    |
+| **8. Éléments obligatoires** | Code HTML valide, doctype, balise `<html lang="fr">`.                         | Validation W3C dans les pipelines CI.                         |
+| **9. Structuration**         | Hiérarchie stricte des titres (`h1` $\rightarrow$ `h2` $\rightarrow$ `h3`).   | Un seul `h1` par page, pas de saut de niveau.                 |
+| **10. Présentation**         | Lisible lors d'un zoom 200% et respect des contrastes $\ge 4.5:1$.            | Contraste testé avec Colour Contrast Analyser.                |
+| **11. Formulaires**          | Chaque champ est relié à son `<label for="...">`.                             | Messages d'erreur reliés via `aria-describedby`.              |
+| **12. Navigation**           | Présence d'un lien d'évitement (_skip link_) vers le contenu principal.       | `<a href="#main-content" class="sr-only focus:not-sr-only">`. |
+| **13. Consultation**         | Documents bureautiques téléchargeables accessibles.                           | Export PDF balisé et accessible depuis Docs.                  |
+
+---
+
+## ⌨️ 2. Navigation au Clavier
+
+Toute fonctionnalité disponible à la souris doit être utilisable uniquement avec le clavier :
+
+- **`Tab` / `Shift + Tab` :** Déplacement séquentiel entre éléments interactifs (liens, boutons, inputs).
+- **`Enter` :** Activation d'un lien ou soumission d'un formulaire.
+- **`Space` :** Activation d'un bouton, bascule d'une case à cocher.
+- **`Flèches directionnelles` :** Navigation dans un menu, des onglets (_Tabs_) ou des boutons radio.
+- **`Escape` :** Fermeture d'une modale, d'un tiroir ou d'un menu déroulant avec remise du focus sur l'élément déclencheur.
+
+---
+
+## 🛠️ 3. Outils de Test et d'Audit Recommandés
+
+Intégrez ces outils dans votre cycle de développement :
+
+1. **Extensions de Navigateur :**
+   - **Axe DevTools** : Détection automatique des erreurs d'accessibilité dans le DOM.
+   - **Wave Evaluation Tool** : Analyse visuelle des contrastes et de la structure ARIA.
+   - **Assistant RGAA** : Outil officiel pour auditer les critères RGAA.
+2. **Lecteurs d'Écran pour Tests Réels :**
+   - **macOS :** VoiceOver (`Cmd + F5`).
+   - **Windows :** NVDA (gratuit et open source) ou JAWS.
+   - **Linux :** Orca.
+3. **Automatisation en CI :**
+   - `@axe-core/playwright` dans les tests end-to-end de `src/docs`.

@@ -3,8 +3,6 @@ title: People (Annuaire)
 description: Présentation détaillée, architecture, roadmap et démarrage local du projet People de La Suite numérique.
 ---
 
-# 👥 People : Annuaire d'Équipes & Distribution des Rôles
-
 **People** est le service d'annuaire, de gestion des équipes et de distribution des permissions et rôles à travers l'ensemble des applications de **La Suite numérique**.
 
 - **Dépôt officiel :** [suitenumerique/people](https://github.com/suitenumerique/people)

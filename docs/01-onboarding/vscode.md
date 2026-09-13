@@ -1,0 +1,161 @@
+---
+title: Configuration VS Code & Outils
+description: Guide des extensions recommandées (GitLens, Git Graph, Ruff, ESLint, Prettier), formatage automatique et configuration de l'éditeur pour l'écosystème La Suite.
+---
+
+Un environnement de développement bien configuré dans **VS Code** permet d'accélérer significativement la boucle de rétroaction : détection immédiate des erreurs de syntaxe, respect automatique des normes de style de code (_linting_ & _formatting_) et navigation fluide dans l'historique multi-dépôts.
+
+Ce dépôt inclut une configuration prédéfinie dans le dossier `.vscode/` (`extensions.json` et `settings.json`) partagée avec toute l'équipe.
+
+---
+
+## 🧩 1. Extensions Recommandées
+
+Lorsque vous ouvrez ce projet dans VS Code, une invite vous propose d'installer les extensions recommandées. Vous pouvez également ouvrir le panneau des extensions (`Ctrl+Shift+X` ou `Cmd+Shift+X`) et taper `@recommended`.
+
+### 🌿 Gestion de Version & Git
+
+| Extension     | Identifiant          | Rôle & Bénéfices                                                                                                                                                                                                                         |
+| ------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **GitLens**   | `eamodio.gitlens`    | Affiche l'auteur et la date de modification de la ligne active (_inline blame_), permet d'explorer l'historique d'un fichier, de comparer des révisions et de naviguer dans les commits sans quitter l'éditeur.                          |
+| **Git Graph** | `mhutchie.git-graph` | Visualisation claire sous forme d'arbre graphique de toutes les branches, tags, merges et commits locaux/distants. Idéal pour appréhender les flux Git complexes et effectuer des opérations (checkout, rebase, cherry-pick) en un clic. |
+
+> 💡 **Conseil GitLens / Git Graph :**
+>
+> - Cliquez sur l'icône **Git Graph** dans la barre d'état inférieure pour ouvrir la vue graphique interactive de votre historique.
+> - Dans vos fichiers de code, survolez n'importe quelle ligne pour voir la Pull Request ou le commit Git associé grâce à GitLens.
+
+---
+
+### 🐍 Python, Django & Linters Backend
+
+Les projets backend de La Suite (`Docs`, `Transfers`, `People`, `Accounts`) s'appuient sur Python 3.12+ et Django 5.
+
+| Extension           | Identifiant                 | Rôle                                                                                                                                                                        |
+| ------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Python**          | `ms-python.python`          | Support officiel du langage Python (débogage, environnements virtuels, exécution de tests).                                                                                 |
+| **Pylance**         | `ms-python.vscode-pylance`  | Moteur d'analyse statique performant pour l'autocomplétion, le typage et la détection d'erreurs en temps réel.                                                              |
+| **Ruff**            | `charliermarsh.ruff`        | Linter et formateur Python extrêmement rapide écrit en Rust. Il remplace et unifie Flake8, Black et isort tout en exécutant les corrections instantanément à la sauvegarde. |
+| **Black Formatter** | `ms-python.black-formatter` | Formateur de code Python sans compromis garantissant un style homogène.                                                                                                     |
+| **Flake8**          | `ms-python.flake8`          | Vérification des règles PEP8 et de complexité cyclomatique.                                                                                                                 |
+| **isort**           | `ms-python.isort`           | Tri et organisation automatique des imports Python.                                                                                                                         |
+
+---
+
+### ⚛️ TypeScript, React & Frontend
+
+Les interfaces de La Suite (`Docs`, `Projects`, `Transfers`, `Meet`) utilisent React 18/19, Next.js et TypeScript.
+
+| Extension                     | Identifiant                 | Rôle                                                                                                                   |
+| ----------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **ESLint**                    | `dbaeumer.vscode-eslint`    | Analyse statique du code JavaScript/TypeScript pour identifier les bugs potentiels et forcer les conventions d'équipe. |
+| **Prettier - Code Formatter** | `esbenp.prettier-vscode`    | Formatage automatique du code TypeScript, HTML, CSS, JSON et Markdown.                                                 |
+| **Tailwind CSS IntelliSense** | `bradlc.vscode-tailwindcss` | Autocomplétion intelligente des classes utilitaires Tailwind, coloration et prévisualisation CSS.                      |
+| **Biome**                     | `biomejs.biome`             | Outil moderne tout-en-un de formatage et linting ultra-rapide pour JS/TS.                                              |
+
+---
+
+### 🐳 Docker & Fichiers de Configuration
+
+| Extension            | Identifiant                   | Rôle                                                                                                                                                                                                           |
+| -------------------- | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Docker**           | `ms-azuretools.vscode-docker` | Visualisation et gestion de vos conteneurs actifs, images, volumes et réseaux Docker sans passer par le terminal. Permet de consulter les logs en streaming et d'attacher un shell directement à un conteneur. |
+| **YAML**             | `redhat.vscode-yaml`          | Coloration syntaxique, validation de schéma et autocomplétion pour les fichiers `docker-compose.yml`, `deployment.yaml` et les workflows GitHub Actions.                                                       |
+| **Even Better TOML** | `tamasfe.even-better-toml`    | Support des fichiers de configuration `pyproject.toml` et outils Rust/Python.                                                                                                                                  |
+| **EditorConfig**     | `editorconfig.editorconfig`   | Harmonise les fins de lignes (LF) et l'indentation entre différents éditeurs.                                                                                                                                  |
+
+---
+
+### 🐘 Bases de Données & PostgreSQL
+
+Toutes les applications de La Suite s'appuient sur PostgreSQL 16. Ces extensions vous permettent d'explorer vos tables, d'inspecter les migrations et d'exécuter des requêtes SQL directement depuis VS Code.
+
+| Extension                        | Identifiant                                 | Rôle & Bénéfices                                                                                                                              |
+| -------------------------------- | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| **PostgreSQL**                   | `ckolkman.vscode-postgres`                  | Explorateur visuel de bases PostgreSQL, autocomplétion des tables et colonnes, exécution de requêtes SQL avec prévisualisation des résultats. |
+| **PostgreSQL (Official)**        | `ms-ossdata.vscode-pgsql`                   | Extension Microsoft pour la gestion avancée des schémas et l'administration PostgreSQL.                                                       |
+| **SQLTools & PostgreSQL Driver** | `mtxr.sqltools` + `mtxr.sqltools-driver-pg` | Gestionnaire SQL puissant supportant plusieurs connexions simultanées, historique des requêtes et favoris.                                    |
+
+---
+
+## 🐘 2. Connexions PostgreSQL & Identifiants par Défaut
+
+En environnement de développement local (`make dev`), plusieurs instances ou bases de données PostgreSQL sont instanciées dans des conteneurs isolés.
+
+Voici le tableau récapitulatif des identifiants et des ports pour vous connecter avec l'extension VS Code ou via votre client SQL préféré :
+
+| Service / Base     | Hôte        | Port Local           | Utilisateur | Mot de passe | Nom de la BDD | URL de connexion (DATABASE_URL)                            |
+| ------------------ | ----------- | -------------------- | ----------- | ------------ | ------------- | ---------------------------------------------------------- |
+| **Docs (Impress)** | `localhost` | **`15432`**          | `impress`   | `password`   | `impress`     | `postgresql://impress:password@localhost:15432/impress`    |
+| **Keycloak SSO**   | `localhost` | **`5433`**           | `keycloak`  | `password`   | `keycloak`    | `postgresql://keycloak:password@localhost:5433/keycloak`   |
+| **Projects**       | `localhost` | **`5432`**           | `postgres`  | `postgres`   | `projects`    | `postgresql://postgres:postgres@localhost:5432/projects`   |
+| **Transfers**      | `localhost` | **`5432`**           | `transfers` | `password`   | `transfers`   | `postgresql://transfers:password@localhost:5432/transfers` |
+| **People**         | `localhost` | **`15432`** / `5432` | `people`    | `password`   | `people`      | `postgresql://people:password@localhost:15432/people`      |
+| **Accounts**       | `localhost` | **`15432`** / `5432` | `accounts`  | `password`   | `accounts`    | `postgresql://accounts:password@localhost:15432/accounts`  |
+
+> 💡 **Pourquoi le port 15432 pour Docs ?**  
+> Le port standard PostgreSQL `5432` est décalé sur `15432` dans Docs pour éviter tout conflit si une instance locale de PostgreSQL tourne déjà sur votre machine hôte.
+
+### 🪄 Configuration Rapide dans l'Extension PostgreSQL de VS Code :
+
+1. Cliquez sur l'icône **PostgreSQL** dans la barre latérale gauche de VS Code.
+2. Cliquez sur le bouton **+** (_Add Connection_).
+3. Renseignez les paramètres (ex. pour Docs) :
+   - **Host :** `localhost`
+   - **Port :** `15432`
+   - **Database :** `impress`
+   - **User :** `impress`
+   - **Password :** `password`
+   - **Standard connection (No SSL)** : Sélectionnez `Standard (non-SSL)`.
+4. Ouvrez n'importe quel fichier `.sql` ou un nouveau document, tapez vos requêtes (ex: `SELECT * FROM core_document;`) et exécutez-les avec `F5` ou `Cmd+E` / `Ctrl+E`.
+
+---
+
+## ⚙️ 3. Configuration Automatique de l'Espace de Travail
+
+Le fichier `.vscode/settings.json` applique automatiquement les réglages suivants dès que vous ouvrez le projet :
+
+### 🪄 Formatage et Corrections à la Sauvegarde
+
+Chaque sauvegarde (`Ctrl+S` / `Cmd+S`) applique automatiquement :
+
+- Le formatage du fichier selon son type (Ruff pour Python, Prettier pour JS/TS/JSON/Markdown, RedHat YAML pour le YAML).
+- La réorganisation et le tri automatique des imports (`source.organizeImports`).
+- L'application des corrections automatiques de linting (`source.fixAll`).
+
+### 📁 Associations de Fichiers
+
+- Les fichiers `.local` et `.env.*` sont automatiquement reconnus avec la coloration syntaxique des variables d'environnement (`dotenv`).
+- Le fichier `Makefile` utilise les tabulations strictes requises par Make.
+
+### 🧹 Nettoyage de l'Arborescence & Performance
+
+- Exclusion des dossiers de build temporaires (`dist/`, `.zudoku/`, `.zudoku-state/`) de la recherche globale et des watchers de fichiers pour préserver la mémoire et la réactivité de VS Code.
+
+---
+
+## 🚀 4. Raccourcis et Astuces Utiles
+
+### Ouvrir Git Graph
+
+- Raccourci palette de commandes : `Ctrl+Shift+P` (ou `Cmd+Shift+P`) puis tapez `Git Graph: View Git Graph`.
+- Ou cliquez sur le bouton **Git Graph** dans la barre inférieure de VS Code.
+
+### Afficher l'Historique d'un Fichier avec GitLens
+
+- Dans un fichier ouvert, ouvrez la palette et tapez `GitLens: Open File History` pour inspecter l'ensemble des commits ayant touché ce fichier.
+
+### Lancer les Linters avant Commit
+
+Bien que VS Code corrige automatiquement la majorité des erreurs à la sauvegarde, vous pouvez toujours vérifier manuellement l'état complet de chaque projet via le terminal intégré :
+
+```bash
+# Pour Docs
+cd src/docs && make lint
+
+# Pour Transfers
+cd src/transfers && make lint
+
+# Pour Projects
+cd src/projects && npm run lint
+```

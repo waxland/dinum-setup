@@ -35,6 +35,12 @@ function formatLabel(name) {
     oidc: "OIDC",
     ssh: "SSH",
     git: "Git",
+    vscode: "VS Code",
+    ide: "IDE",
+    url: "URL",
+    urls: "URLs",
+    dsfr: "DSFR",
+    rgaa: "RGAA",
   };
 
   return clean
@@ -57,7 +63,17 @@ function getDefaultIcon(name, depth) {
       return "compass";
     if (lower.includes("archi")) return "layers";
     if (lower.includes("projet") || lower.includes("project")) return "boxes";
-    if (lower.includes("ressource") || lower.includes("roadmap") || lower.includes("communaute"))
+    if (
+      lower.includes("design") ||
+      lower.includes("dsfr") ||
+      lower.includes("ui")
+    )
+      return "palette";
+    if (
+      lower.includes("ressource") ||
+      lower.includes("roadmap") ||
+      lower.includes("communaute")
+    )
       return "map";
     if (lower.includes("guide") || lower.includes("doc")) return "book-open";
     if (lower.includes("lien") || lower.includes("link"))
@@ -168,6 +184,24 @@ function generateNavForTarget(target) {
 
   const redirects = [
     config.defaultRedirect,
+    // Category aliases and root redirects
+    { from: "/01-onboarding", to: "/01-onboarding/index" },
+    { from: "/02-architecture", to: "/02-architecture/index" },
+    { from: "/03-projets", to: "/03-projets/index" },
+    { from: "/04-design-system", to: "/04-design-system/index" },
+    { from: "/05-ressources", to: "/05-ressources/communaute" },
+    { from: "/onboarding", to: "/01-onboarding/index" },
+    { from: "/architecture", to: "/02-architecture/index" },
+    { from: "/projets", to: "/03-projets/index" },
+    { from: "/design-system", to: "/04-design-system/index" },
+    { from: "/dsfr", to: "/04-design-system/index" },
+    { from: "/ressources", to: "/05-ressources/communaute" },
+    { from: "/guide", to: "/01-onboarding/index" },
+    // Backwards compatibility for 04-ressources moved to 05-ressources
+    { from: "/04-ressources", to: "/05-ressources/communaute" },
+    { from: "/04-ressources/communaute", to: "/05-ressources/communaute" },
+    { from: "/04-ressources/roadmap", to: "/05-ressources/roadmap" },
+    // Legacy guide redirects
     { from: "/guide/index", to: "/01-onboarding/index" },
     { from: "/guide/onboarding", to: "/01-onboarding/index" },
     { from: "/guide/git-ssh", to: "/01-onboarding/git-ssh" },
@@ -177,7 +211,7 @@ function generateNavForTarget(target) {
     { from: "/guide/hot-reload", to: "/02-architecture/hot-reload" },
     { from: "/guide/env", to: "/02-architecture/env" },
     { from: "/guide/projects-status", to: "/03-projets/index" },
-    { from: "/guide/roadmap", to: "/04-ressources/roadmap" },
+    { from: "/guide/roadmap", to: "/05-ressources/roadmap" },
     { from: "/projets/docs", to: "/03-projets/docs" },
     { from: "/projets/projects", to: "/03-projets/projects" },
     { from: "/projets/meet", to: "/03-projets/meet" },

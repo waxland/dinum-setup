@@ -3,8 +3,6 @@ title: Workflow & Commandes Make
 description: Guide des commandes disponibles dans le Makefile d'orchestration et cycle de développement local.
 ---
 
-# 🛠️ Workflow Makefile & Cycle de Développement
-
 Le `Makefile` situé à la racine du projet `dinum-setup` fournit une interface unifiée pour gérer l'ensemble des dépôts de La Suite numérique en environnement de développement local.
 
 ---
@@ -39,60 +37,79 @@ SRC_DIR=/opt/lasuite/src make clone
 ## ⚡ Commandes Principales du Makefile
 
 ### 1. `make help`
+
 Affiche le menu interactif avec l'ensemble des commandes disponibles :
+
 ```bash
 make help
 ```
 
 ### 2. `make install`
+
 Configure l'environnement système (paquets de base, clés et dépôts officiels Docker, plugins `docker-compose-plugin` et `docker-buildx-plugin`, ainsi que l'entrée `127.0.0.1 auth.local` dans `/etc/hosts`).
+
 ```bash
 make install
 ```
 
 ### 3. `make clone`
+
 Clone l'ensemble des dépôts déclarés dans la variable `REPOS` (par défaut : `docs projects meet transfers people accounts`) sous `./src/`.
 
 Pour cloner uniquement certains dépôts ciblés :
+
 ```bash
 REPOS="docs projects" make clone
 ```
 
 ### 4. `make pull`
+
 Met à jour tous les dépôts déjà clonés en mode avance rapide (`git pull --ff-only`).
+
 ```bash
 make pull
 ```
 
 ### 5. `make env`
+
 Génère ou initialise les fichiers `.env` et configurations locales nécessaires pour les services supportés.
 
 ### 6. `make bootstrap`
+
 Exécute la préparation complète des conteneurs, le téléchargement des images requises, les migrations des bases de données et les fixtures de test.
+
 ```bash
 make bootstrap
 ```
 
 ### 7. `make dev`
+
 Lance les projets supportés en mode développement (avec montage des volumes locaux et rechargement à chaud automatique).
+
 ```bash
 make dev
 ```
 
 ### 8. `make stop`
+
 Arrête proprement les stacks Docker Compose actives pour tous les dépôts.
+
 ```bash
 make stop
 ```
 
 ### 9. `make status`
+
 Affiche la liste des conteneurs Docker en cours d'exécution avec leurs noms, états et ports associés :
+
 ```bash
 make status
 ```
 
 ### 10. `make logs-<projet>`
+
 Permet de suivre en temps réel les logs d'un projet spécifique :
+
 ```bash
 make logs-docs       # Logs de Docs
 make logs-projects   # Logs de Projects

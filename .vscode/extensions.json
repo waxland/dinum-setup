@@ -1,0 +1,24 @@
+{
+  "recommendations": [
+    "eamodio.gitlens",
+    "mhutchie.git-graph",
+    "ckolkman.vscode-postgres",
+    "ms-ossdata.vscode-pgsql",
+    "mtxr.sqltools",
+    "mtxr.sqltools-driver-pg",
+    "charliermarsh.ruff",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-python.black-formatter",
+    "ms-python.flake8",
+    "ms-python.isort",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "biomejs.biome",
+    "bradlc.vscode-tailwindcss",
+    "ms-azuretools.vscode-docker",
+    "redhat.vscode-yaml",
+    "tamasfe.even-better-toml",
+    "editorconfig.editorconfig"
+  ]
+}

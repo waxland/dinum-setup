@@ -3,8 +3,6 @@ title: Transfers (Fichiers)
 description: Présentation détaillée, architecture, roadmap et démarrage local du projet Transfers de La Suite territoriale.
 ---
 
-# 📦 Transfers : Envoi Sécurisé de Fichiers Volumineux
-
 **Transfers** est le service souverain d'envoi et de partage sécurisé de fichiers volumineux développé dans le cadre de **La Suite territoriale / numérique**.
 
 - **Dépôt officiel :** [suitenumerique/transfers](https://github.com/suitenumerique/transfers)
@@ -55,11 +53,11 @@ make bootstrap
 
 ### URLs et Services Exposés
 
-| Service | URL | Identifiants de test |
-|---|---|---|
-| **Frontend Web** | [http://localhost:8980](http://localhost:8980) | `agent@collectivite.fr` / `transferts` |
-| **API Django** | [http://localhost:8981](http://localhost:8981) | — |
-| **Django Admin** | [http://localhost:8981/admin](http://localhost:8981/admin) | `admin` / `admin` |
-| **Serveur OIDC Keycloak** | [http://localhost:8902](http://localhost:8902) | `admin` / `admin` |
-| **Console S3 (RustFS/MinIO)** | [http://localhost:8987](http://localhost:8987) | — |
-| **Webmail de test (Maildev)** | [http://localhost:8984](http://localhost:8984) | Consultation des emails générés |
+| Service                       | URL                                                        | Identifiants de test                   |
+| ----------------------------- | ---------------------------------------------------------- | -------------------------------------- |
+| **Frontend Web**              | [http://localhost:8980](http://localhost:8980)             | `agent@collectivite.fr` / `transferts` |
+| **API Django**                | [http://localhost:8981](http://localhost:8981)             | —                                      |
+| **Django Admin**              | [http://localhost:8981/admin](http://localhost:8981/admin) | `admin` / `admin`                      |
+| **Serveur OIDC Keycloak**     | [http://localhost:8902](http://localhost:8902)             | `admin` / `admin`                      |
+| **Console S3 (RustFS/MinIO)** | [http://localhost:8987](http://localhost:8987)             | —                                      |
+| **Webmail de test (Maildev)** | [http://localhost:8984](http://localhost:8984)             | Consultation des emails générés        |

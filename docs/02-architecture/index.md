@@ -3,8 +3,6 @@ title: Vue d'Ensemble & Schémas
 description: Vue d'ensemble de l'architecture globale, schémas Mermaid et flux de données transversaux de La Suite numérique.
 ---
 
-# 🏗️ Architecture Globale & Choix Techniques
-
 Ce document constitue la référence d'architecture pour comprendre en profondeur le fonctionnement, les briques logicielles, les choix technologiques et les flux de communication de l'ensemble des projets de **La Suite numérique** (DINUM / ANCT).
 
 ---
@@ -13,11 +11,11 @@ Ce document constitue la référence d'architecture pour comprendre en profondeu
 
 L'écosystème de La Suite repose sur une architecture distribuée de micro-applications spécialisées, fédérées par une identité unique (**OpenID Connect**) et interconnectées via des API REST et des flux temps réel (**WebSockets / CRDT / WebRTC**).
 
-```mermaid
-graph TB
-    subgraph Clients["📱 Navigateurs & Postes Clients"]
-        UserBrowser["Navigateur Utilisateur"]
-    end
+<Mermaid
+chart={`graph TB
+subgraph Clients["📱 Navigateurs & Postes Clients"]
+UserBrowser["Navigateur Utilisateur"]
+end
 
     subgraph AuthLayer["🔐 Couche Identité & SSO"]
         Keycloak["Keycloak / ProConnect (OIDC)<br/><i>Port: 8080 / 8083</i>"]
@@ -87,21 +85,22 @@ graph TB
 
     %% Relations People
     PeopleApp -.->|Rôles & Permissions| DocsBack
-    PeopleApp -.->|Rôles & Permissions| ProjectsApp
-```
+    PeopleApp -.->|Rôles & Permissions| ProjectsApp`}
+
+/>
 
 ---
 
 ## ⚡ 2. Matrice Technique Comparative
 
-| Projet | Backend | Frontend | Base de Données | Temps Réel / Flux | Ports Locaux |
-|---|---|---|---|---|---|
-| **Docs** | Python 3.14 (Django 5) | TypeScript (Next.js 16) | PostgreSQL 16 | WebSockets + Yjs CRDT | `3000` (Front), `8071` (API), `4444` (Yjs), `8080/8083` (Auth) |
-| **Projects** | JavaScript (Node.js 22 / Sails) | JavaScript/TypeScript (React 18) | PostgreSQL 16 | WebSockets (Socket.io) | `8000` (App) |
-| **Meet** | Python (Django) / Go (LiveKit) | TypeScript (React) | PostgreSQL / Redis | WebRTC / LiveKit SFU | `3001` (Front), `7880` (LiveKit SFU) |
-| **Transfers** | Python (Django 5 / Celery) | TypeScript (React / Vite) | PostgreSQL / S3 | REST + Presigned S3 | `8980` (Front), `8981` (API), `8902` (KC) |
-| **People** | Python (Django) | TypeScript (React) | PostgreSQL | REST (TS Client SDK) | `8071` (API) |
-| **Accounts** | Python (Django) | TypeScript (Next.js) | PostgreSQL | REST / OIDC | `9900` (App) |
+| Projet        | Backend                         | Frontend                         | Base de Données    | Temps Réel / Flux      | Ports Locaux                                                   |
+| ------------- | ------------------------------- | -------------------------------- | ------------------ | ---------------------- | -------------------------------------------------------------- |
+| **Docs**      | Python 3.14 (Django 5)          | TypeScript (Next.js 16)          | PostgreSQL 16      | WebSockets + Yjs CRDT  | `3000` (Front), `8071` (API), `4444` (Yjs), `8080/8083` (Auth) |
+| **Projects**  | JavaScript (Node.js 22 / Sails) | JavaScript/TypeScript (React 18) | PostgreSQL 16      | WebSockets (Socket.io) | `8000` (App)                                                   |
+| **Meet**      | Python (Django) / Go (LiveKit)  | TypeScript (React)               | PostgreSQL / Redis | WebRTC / LiveKit SFU   | `3001` (Front), `7880` (LiveKit SFU)                           |
+| **Transfers** | Python (Django 5 / Celery)      | TypeScript (React / Vite)        | PostgreSQL / S3    | REST + Presigned S3    | `8980` (Front), `8981` (API), `8902` (KC)                      |
+| **People**    | Python (Django)                 | TypeScript (React)               | PostgreSQL         | REST (TS Client SDK)   | `8071` (API)                                                   |
+| **Accounts**  | Python (Django)                 | TypeScript (Next.js)             | PostgreSQL         | REST / OIDC            | `9900` (App)                                                   |
 
 ---
 

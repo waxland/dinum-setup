@@ -3,8 +3,6 @@ title: Guide de Dépannage & FAQ
 description: Résolution pas à pas des erreurs fréquentes en environnement de développement local (Docker, bases de données, ports, SSH, disque).
 ---
 
-# 🛠️ Guide de Dépannage & FAQ Système
-
 Cette page regroupe les diagnostics rapides et les solutions aux erreurs les plus fréquemment rencontrées lors du bootstrap et du développement local sur La Suite numérique.
 
 ---
@@ -12,6 +10,7 @@ Cette page regroupe les diagnostics rapides et les solutions aux erreurs les plu
 ## 🛑 1. Problèmes Docker & BuildKit
 
 ### `the --mount option requires BuildKit`
+
 - **Symptôme :** Échec lors du `make bootstrap` avec le message `the --mount option requires BuildKit`.
 - **Cause :** Les `Dockerfile` de nos projets utilisent des caches de compilation modernes (`RUN --mount=type=cache...`) qui nécessitent le plugin `docker-buildx`.
 - **Solution :**
@@ -24,6 +23,7 @@ Cette page regroupe les diagnostics rapides et les solutions aux erreurs les plu
 ---
 
 ### `docker: 'compose' is not a docker command`
+
 - **Symptôme :** Échec des commandes Make appelant `docker compose`.
 - **Cause :** Docker Compose v2 n'est pas installé ou seul l'ancien binaire v1 `docker-compose` est présent.
 - **Solution :**
@@ -35,6 +35,7 @@ Cette page regroupe les diagnostics rapides et les solutions aux erreurs les plu
 ---
 
 ### `Error response from daemon: network with name lasuite-network already exists`
+
 - **Symptôme :** Avertissement lors du lancement de Docs ou Projects.
 - **Cause :** Le réseau partagé `lasuite-network` a déjà été créé lors d'un lancement précédent.
 - **Solution :**
@@ -45,6 +46,7 @@ Cette page regroupe les diagnostics rapides et les solutions aux erreurs les plu
 ## 💾 2. Espace Disque Saturé & Gestion des Caches
 
 ### `initdb: error: could not create directory "/var/lib/postgresql/data/...": No space left on device`
+
 - **Symptôme :** Le conteneur PostgreSQL (`docs-postgresql` ou `docs-kc_postgresql`) s'arrête en erreur au démarrage.
 - **Cause :** La partition racine `/` est saturée à 100% par des images Docker non utilisées ou un fichier swap surdimensionné.
 - **Diagnostic :**
@@ -77,17 +79,18 @@ Cette page regroupe les diagnostics rapides et les solutions aux erreurs les plu
 
 Si un service refuse de démarrer avec l'erreur `bind: address already in use` :
 
-| Port | Service associé | Vérification du processus |
-|---|---|---|
-| **3000** | Frontend Docs / Zudoku Docs | `ss -tulpn \| grep :3000` |
-| **8071** | API Django Docs & People | `ss -tulpn \| grep :8071` |
-| **8000** | Projects Web App | `ss -tulpn \| grep :8000` |
-| **8080 / 8083** | Keycloak SSO | `ss -tulpn \| grep :8080` |
-| **9000 / 9001** | MinIO S3 API & Console | `ss -tulpn \| grep :9000` |
-| **5432 / 15432 / 5433** | PostgreSQL instances | `ss -tulpn \| grep :5432` |
-| **4444** | Serveur Collaboration Yjs | `ss -tulpn \| grep :4444` |
+| Port                    | Service associé             | Vérification du processus |
+| ----------------------- | --------------------------- | ------------------------- |
+| **3000**                | Frontend Docs / Zudoku Docs | `ss -tulpn \| grep :3000` |
+| **8071**                | API Django Docs & People    | `ss -tulpn \| grep :8071` |
+| **8000**                | Projects Web App            | `ss -tulpn \| grep :8000` |
+| **8080 / 8083**         | Keycloak SSO                | `ss -tulpn \| grep :8080` |
+| **9000 / 9001**         | MinIO S3 API & Console      | `ss -tulpn \| grep :9000` |
+| **5432 / 15432 / 5433** | PostgreSQL instances        | `ss -tulpn \| grep :5432` |
+| **4444**                | Serveur Collaboration Yjs   | `ss -tulpn \| grep :4444` |
 
 ### Solution rapide :
+
 1. Arrêtez les stacks actives : `make stop`
 2. Si un conteneur orphelin persiste : `docker ps -a` puis `docker rm -f <nom_conteneur>`.
 
@@ -98,6 +101,7 @@ Si un service refuse de démarrer avec l'erreur `bind: address already in use` :
 Si vous souhaitez réinitialiser l'état d'une base de données PostgreSQL locale (par exemple après des migrations corrompues ou des tests poussés) :
 
 ### Pour Docs :
+
 ```bash
 cd src/docs
 # Arrête les conteneurs et supprime les volumes anonymes associés
@@ -107,6 +111,7 @@ make bootstrap FLUSH_ARGS='--no-input'
 ```
 
 ### Pour Projects :
+
 ```bash
 cd src/projects
 docker compose -f docker-compose-dev.yml down -v
@@ -118,12 +123,14 @@ docker compose -f docker-compose-dev.yml up -d
 ## 🔑 5. Clés SSH & Droits GitHub
 
 ### `WARNING: UNPROTECTED PRIVATE KEY FILE! Permissions 0440 are too open`
+
 - **Solution :** Les permissions de la clé privée doivent être `0600` :
   ```bash
   chmod 600 ~/.ssh/id_ed25519*
   ```
 
 ### `Load key "...": error in libcrypto`
+
 - **Solution :** Le fichier de clé privée doit impérativement se terminer par un saut de ligne (`\n`) après `-----END OPENSSH PRIVATE KEY-----` :
   ```bash
   echo "" >> ~/.ssh/id_ed25519_votre_clef
@@ -131,5 +138,6 @@ docker compose -f docker-compose-dev.yml up -d
   ```
 
 ### `ERROR: Permission to organization/repo.git denied to userX`
+
 - **Cause :** La clé SSH présentée est rattachée à l'utilisateur `userX` sur GitHub, qui ne dispose pas des droits d'écriture sur le dépôt cible.
-- **Solution :** Inviter l'utilisateur sur le dépôt GitHub (*Settings > Collaborators > Add people*) ou configurer un alias dédié dans `~/.ssh/config`.
+- **Solution :** Inviter l'utilisateur sur le dépôt GitHub (_Settings > Collaborators > Add people_) ou configurer un alias dédié dans `~/.ssh/config`.

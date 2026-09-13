@@ -3,15 +3,14 @@ title: Tests, Linters & Qualité
 description: Guide des commandes de tests unitaires, linters, tests end-to-end et conventions de code pour La Suite numérique.
 ---
 
-# 🧪 Tests, Linters & Assurance Qualité
-
-La fiabilité et la sécurité de **La Suite numérique** reposent sur une politique rigoureuse de tests automatisés (unitaires, intégration, bout-en-bout) et de vérification continue du style de code (*linting*).
+La fiabilité et la sécurité de **La Suite numérique** reposent sur une politique rigoureuse de tests automatisés (unitaires, intégration, bout-en-bout) et de vérification continue du style de code (_linting_).
 
 ---
 
 ## 🎯 1. Conventions Générales de Contribution
 
 Avant de soumettre une Pull Request sur l'un des dépôts :
+
 - 📝 **Conventional Commits** : Préfixez vos messages de commits selon la norme (`feat: ...`, `fix: ...`, `docs: ...`, `refactor: ...`, `test: ...`).
 - 🧹 **Linting Propre** : Votre code ne doit produire aucune erreur ou avertissement de linter.
 - ✅ **Tests Passants** : Toute nouvelle fonctionnalité ou correction de bug doit s'accompagner de ses tests automatisés.
@@ -21,6 +20,7 @@ Avant de soumettre une Pull Request sur l'un des dépôts :
 ## 🔬 2. Commandes de Tests & Linting par Projet
 
 ### A. Docs (`src/docs`)
+
 Docs combine des tests backend Django (pytest), des tests frontend (Vitest) et des tests E2E (Playwright) :
 
 ```bash
@@ -44,6 +44,7 @@ make e2e                  # Exécute la suite complète Playwright
 ---
 
 ### B. Projects (`src/projects`)
+
 Projects utilise un monorepo client React / serveur Sails.js :
 
 ```bash
@@ -65,6 +66,7 @@ npm test                  # Tests Mocha / Chai de l'API REST
 ---
 
 ### C. Transfers (`src/transfers`)
+
 Transfers teste les flux de téléversement multipart S3 et les tâches asynchrones :
 
 ```bash
@@ -98,6 +100,7 @@ make test                 # Tests unitaires Django
 ## ⚙️ 3. Intégration Continue (GitHub Actions)
 
 Chaque dépôt upstream exécute automatiquement sur GitHub Actions :
+
 1. **Validation du titre et des commits** (Gitlint / Semantic Pull Requests).
 2. **Matrices de tests multi-versions** (Python 3.12 à 3.14, Node.js 20 à 22).
 3. **Analyses de sécurité** (Snyk, Trivy et audits des dépendances npm/pip).

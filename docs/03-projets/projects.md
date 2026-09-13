@@ -3,9 +3,7 @@ title: Projects (Kanban)
 description: Présentation détaillée, architecture, roadmap et démarrage local du projet Projects de La Suite numérique.
 ---
 
-# 📊 Projects : Gestion de Projets & Tableaux Kanban
-
-**Projects** est l'outil de gestion de tâches et de pilotage de projets agile de **La Suite numérique**, offrant une alternative souveraine aux plateformes comme *Trello* ou *Jira*.
+**Projects** est l'outil de gestion de tâches et de pilotage de projets agile de **La Suite numérique**, offrant une alternative souveraine aux plateformes comme _Trello_ ou _Jira_.
 
 - **Dépôt officiel :** [suitenumerique/projects](https://github.com/suitenumerique/projects)
 - **Licence :** AGPL-3.0

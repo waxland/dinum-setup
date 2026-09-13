@@ -11,6 +11,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       "/01-onboarding/git-ssh",
       "/01-onboarding/tests-et-qualite",
       "/01-onboarding/troubleshooting",
+      "/01-onboarding/urls-et-identifiants",
+      "/01-onboarding/vscode",
       "/01-onboarding/workflow"
     ]
   },
@@ -44,12 +46,31 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     "type": "category",
+    "label": "Design System",
+    "icon": "palette",
+    "collapsed": false,
+    "items": [
+      "/04-design-system/index",
+      "/04-design-system/accessibilite-rgaa",
+      "/04-design-system/alertes-et-callouts",
+      "/04-design-system/badges-et-statuts",
+      "/04-design-system/boutons",
+      "/04-design-system/cartes-et-conteneurs",
+      "/04-design-system/couleurs-et-themes",
+      "/04-design-system/formulaires",
+      "/04-design-system/icones",
+      "/04-design-system/navigation-et-layout",
+      "/04-design-system/typographie"
+    ]
+  },
+  {
+    "type": "category",
     "label": "Ressources",
     "icon": "map",
     "collapsed": false,
     "items": [
-      "/04-ressources/communaute",
-      "/04-ressources/roadmap"
+      "/05-ressources/communaute",
+      "/05-ressources/roadmap"
     ]
   },
   {
@@ -77,6 +98,66 @@ export const docsRedirects: ZudokuConfig["redirects"] = [
   {
     "from": "/",
     "to": "/01-onboarding/index"
+  },
+  {
+    "from": "/01-onboarding",
+    "to": "/01-onboarding/index"
+  },
+  {
+    "from": "/02-architecture",
+    "to": "/02-architecture/index"
+  },
+  {
+    "from": "/03-projets",
+    "to": "/03-projets/index"
+  },
+  {
+    "from": "/04-design-system",
+    "to": "/04-design-system/index"
+  },
+  {
+    "from": "/05-ressources",
+    "to": "/05-ressources/communaute"
+  },
+  {
+    "from": "/onboarding",
+    "to": "/01-onboarding/index"
+  },
+  {
+    "from": "/architecture",
+    "to": "/02-architecture/index"
+  },
+  {
+    "from": "/projets",
+    "to": "/03-projets/index"
+  },
+  {
+    "from": "/design-system",
+    "to": "/04-design-system/index"
+  },
+  {
+    "from": "/dsfr",
+    "to": "/04-design-system/index"
+  },
+  {
+    "from": "/ressources",
+    "to": "/05-ressources/communaute"
+  },
+  {
+    "from": "/guide",
+    "to": "/01-onboarding/index"
+  },
+  {
+    "from": "/04-ressources",
+    "to": "/05-ressources/communaute"
+  },
+  {
+    "from": "/04-ressources/communaute",
+    "to": "/05-ressources/communaute"
+  },
+  {
+    "from": "/04-ressources/roadmap",
+    "to": "/05-ressources/roadmap"
   },
   {
     "from": "/guide/index",
@@ -116,7 +197,7 @@ export const docsRedirects: ZudokuConfig["redirects"] = [
   },
   {
     "from": "/guide/roadmap",
-    "to": "/04-ressources/roadmap"
+    "to": "/05-ressources/roadmap"
   },
   {
     "from": "/projets/docs",
