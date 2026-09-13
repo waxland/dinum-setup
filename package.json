@@ -6,7 +6,8 @@
     "docs:nav": "node scripts/generate-docs-navigation.mjs",
     "docs:dev": "node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku dev --host 0.0.0.0",
     "docs:build": "node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku build",
-    "docs:preview": "ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku preview --host 0.0.0.0"
+    "docs:preview": "ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku preview --host 0.0.0.0",
+    "build": "npm run docs:build"
   },
   "dependencies": {
     "zudoku": "^0.86.0"
