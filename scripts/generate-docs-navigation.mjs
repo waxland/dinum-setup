@@ -452,14 +452,20 @@ function generateNavForTarget(target) {
     { from: "/07-skills/lasuite-dev-skill", to: "/07-skills/lasuite-dev" },
     { from: "/07-skills/docs-mdx-skill", to: "/07-skills/docs-mdx" },
     { from: "/07-skills/code-review-skill", to: "/07-skills/code-review" },
-    { from: "/07-skills/architecture-review-skill", to: "/07-skills/architecture-review" },
+    {
+      from: "/07-skills/architecture-review-skill",
+      to: "/07-skills/architecture-review",
+    },
     { from: "/07-skills/design-change-skill", to: "/07-skills/design-change" },
     { from: "/skills/dsfr", to: "/07-skills/dsfr" },
     { from: "/skills/rgaa-review", to: "/07-skills/rgaa-review" },
     { from: "/skills/lasuite-dev", to: "/07-skills/lasuite-dev" },
     { from: "/skills/docs-mdx", to: "/07-skills/docs-mdx" },
     { from: "/skills/code-review", to: "/07-skills/code-review" },
-    { from: "/skills/architecture-review", to: "/07-skills/architecture-review" },
+    {
+      from: "/skills/architecture-review",
+      to: "/07-skills/architecture-review",
+    },
     { from: "/skills/design-change", to: "/07-skills/design-change" },
 
     // Backwards compatibility for 04-ressources moved to 05-ressources

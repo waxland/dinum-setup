@@ -2,7 +2,8 @@ node_modules/
 dist/
 .zudoku/
 .npm-cache/
-src/
+src/*
+!src/components/
 .env
 *.local
 **/.env
