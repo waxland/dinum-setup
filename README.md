@@ -6,12 +6,14 @@ Ce depot ne contient pas le code des applications. Le Makefile clone les projets
 
 ## Lecture rapide
 
-- Documentation principale : [docs/index.md](docs/index.md)
-- Workflow Makefile : [docs/workflow.md](docs/workflow.md)
-- Authentification en dev : [docs/auth.md](docs/auth.md)
-- Hot reload : [docs/hot-reload.md](docs/hot-reload.md)
-- Variables et `.env` : [docs/env.md](docs/env.md)
-- Etat de cablage des projets : [docs/projects-status.md](docs/projects-status.md)
+- Onboarding Développeur : [docs/guide/onboarding.md](docs/guide/onboarding.md)
+- Roadmaps & Ressources : [docs/guide/roadmap.md](docs/guide/roadmap.md)
+- Documentation principale : [docs/guide/index.md](docs/guide/index.md)
+- Workflow Makefile : [docs/guide/workflow.md](docs/guide/workflow.md)
+- Authentification en dev : [docs/guide/auth.md](docs/guide/auth.md)
+- Hot reload : [docs/guide/hot-reload.md](docs/guide/hot-reload.md)
+- Variables et `.env` : [docs/guide/env.md](docs/guide/env.md)
+- Etat de cablage des projets : [docs/guide/projects-status.md](docs/guide/projects-status.md)
 
 ## Commandes principales
 
@@ -19,6 +21,12 @@ Afficher l'aide :
 
 ```bash
 make help
+```
+
+Installer les prérequis système (plugins Docker, etc.) :
+
+```bash
+make install # ou ./install.sh
 ```
 
 Cloner les projets declares :

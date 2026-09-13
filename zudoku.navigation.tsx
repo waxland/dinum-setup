@@ -11,7 +11,9 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       "/guide/auth",
       "/guide/env",
       "/guide/hot-reload",
+      "/guide/onboarding",
       "/guide/projects-status",
+      "/guide/roadmap",
       "/guide/workflow"
     ]
   },

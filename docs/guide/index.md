@@ -58,17 +58,19 @@ make check-tools
 
 ## Sommaire de la documentation
 
-### Guide
-- [Workflow Makefile](workflow.md) : Détail des commandes disponibles
+### Guide & Onboarding
+- [Onboarding Développeur](onboarding.md) : Prise en main pas à pas dès le premier jour
+- [Roadmaps & Ressources](roadmap.md) : Feuilles de route, salons Matrix et liens officiels
+- [Workflow Makefile](workflow.md) : Détail des commandes d'orchestration
 - [Variables et .env](env.md) : Gestion des variables d'environnement
 - [Authentification](auth.md) : Keycloak, OIDC et configuration locale
 - [Hot reload](hot-reload.md) : Fonctionnement du rechargement à chaud
 - [État des projets](projects-status.md) : Matrice de support des différents dépôts
 
-### Projets
-- [Docs](../projets/docs.md) : Gestion documentaire et partage
-- [Projects](../projets/projects.md) : Gestion de projets et tâches
-- [Meet](../projets/meet.md) : Visioconférence (LiveKit)
-- [Transfers](../projets/transfers.md) : Transfert de fichiers
-- [People](../projets/people.md) : Annuaire et gestion des profils
-- [Accounts](../projets/accounts.md) : Gestion des comptes et identités
+### Projets & Applications
+- [Docs](../projets/docs.md) : Éditeur de texte collaboratif temps réel
+- [Projects](../projets/projects.md) : Gestion de projets, tableaux Kanban & tâches
+- [Meet / Visio](../projets/meet.md) : Visioconférence haute performance (LiveKit)
+- [Transfers](../projets/transfers.md) : Envoi et partage sécurisé de gros fichiers
+- [People](../projets/people.md) : Annuaire d'équipes et distribution des rôles
+- [Accounts](../projets/accounts.md) : Gestion d'identités et authentification SSO

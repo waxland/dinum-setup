@@ -1,15 +1,68 @@
 ---
 title: Accounts
-description: Documentation du projet Accounts de La Suite numérique.
+description: Présentation détaillée, architecture, roadmap et démarrage local du projet Accounts de La Suite numérique.
 ---
 
-# Accounts
+# 🔐 Accounts : Gestion d'Identités & Authentification
 
-**Accounts** gère l'authentification centrale, la gestion de compte et les délégations d'accès pour La Suite numérique.
+**Accounts** est le service d'authentification centrale, de gestion des comptes et de sécurisation des accès pour les utilisateurs internes et externes de **La Suite numérique**.
 
-- **Dépôt GitHub :** [suitenumerique/accounts](https://github.com/suitenumerique/accounts)
+- **Dépôt officiel :** [suitenumerique/accounts](https://github.com/suitenumerique/accounts)
+- **Licence :** MIT
+- **Statut :** En cours de développement actif 🚧
 
-## Statut d'intégration
+---
 
-- **Clone :** Supporté via `REPOS="accounts" make clone`
-- **Env & Dev :** Consultez le `README.md` du dépôt d'origine sous `src/accounts` pour les instructions manuelles.
+## 🌟 Fonctionnalités & Objectifs
+
+- **Modèle Utilisateurs & Identités distincts :** Prise en charge de méthodes d'authentification multiples par compte utilisateur.
+- **Support Multi-facteurs (2FA / MFA) :** Support OTP / TOTP pour renforcer la sécurité des comptes.
+- **Comptes Externes & Invités :** Gestion des utilisateurs externes avec processus d'invitation par email et exigences de sécurité adaptées.
+- **Niveaux de Confiance (Trust Levels) :** Transmission du niveau d'assurance de l'authentification (IAL / AAL) aux applications clientes via les tokens OIDC.
+
+---
+
+## 🏗️ Architecture & Stack Technique
+
+- **Frontend :** Next.js, React, Tailwind CSS.
+- **Backend API :** Python, Django, Django REST Framework.
+- **Base de données :** PostgreSQL.
+- **Protocoles :** OpenID Connect (OIDC), OAuth2.
+
+---
+
+## 🗺️ Roadmap & Backlog
+
+Le projet est actuellement en phase de construction. Les chantiers prioritaires identifiés sont :
+
+- [ ] Séparation des modèles `User` et `Identity` pour supporter plusieurs providers par utilisateur.
+- [ ] Ajout de l'interface frontend d'accueil et de gestion de profil.
+- [ ] Ajout de l'attribut de méthode d'authentification dans l'endpoint `userinfo`.
+- [ ] Gestion des utilisateurs externes avec flux d'invitation.
+- [ ] Intégration du second facteur d'authentification (TOTP).
+
+Suivi des tickets : [suitenumerique/accounts/issues](https://github.com/suitenumerique/accounts/issues)
+
+---
+
+## 🚀 Démarrage et Commandes Locales
+
+```bash
+# 1. Cloner le projet
+REPOS="accounts" make clone
+
+# 2. Initialiser la stack locale
+cd src/accounts
+make bootstrap FLUSH_ARGS='--no-input'
+
+# 3. Lancer les conteneurs
+make run
+```
+
+### URLs et Identifiants de Test
+
+- **Interface Web :** [http://localhost:9900](http://localhost:9900)
+- **Identifiants de test par défaut :**
+  - **Identifiant :** `accounts`
+  - **Mot de passe :** `accounts`
+

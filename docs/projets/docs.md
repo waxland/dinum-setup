@@ -1,39 +1,88 @@
 ---
 title: Docs
-description: Documentation du projet Docs de La Suite numérique.
+description: Présentation détaillée, architecture, roadmap et démarrage local du projet Docs de La Suite numérique.
 ---
 
-# Docs
+# 📝 Docs : Édition Collaborative de Documents
 
-**Docs** est l'outil collaboratif de gestion documentaire et de prise de notes de La Suite numérique.
+**Docs** est l'application d'édition de texte et de gestion de connaissances collaborative temps réel de **La Suite numérique**, conçue comme une alternative souveraine et open source à des outils tels que *Notion* ou *Google Docs*.
 
-- **Dépôt GitHub :** [suitenumerique/docs](https://github.com/suitenumerique/docs)
-- **Stack technique :** Python / Django, PostgreSQL, Keycloak, React.
+- **Dépôt officiel :** [suitenumerique/docs](https://github.com/suitenumerique/docs)
+- **Licence :** MIT
+- **Label :** [Digital Public Good (DPG)](https://digitalpublicgoods.net/r/docs-collaborative-text-editing)
+- **Canal Matrix :** [`#docs-official:matrix.org`](https://matrix.to/#/#docs-official:matrix.org)
+- **Contact :** `docs@numerique.gouv.fr`
 
-## Commandes dédiées
+---
 
-- **Cloner le projet :**
-  ```bash
-  REPOS="docs" make clone
-  ```
+## 🌟 Fonctionnalités Clés
 
-- **Préparer l'environnement :**
-  ```bash
-  make env-docs
-  ```
-  Crée les fichiers `.local` dans `src/docs/env.d/development/`.
+### ✍️ Rédaction & Organisation
+- **Éditeur par blocs & Markdown :** Commandes slash (`/`), formatage riche, listes, tableaux, blocs de code avec coloration syntaxique.
+- **Mode Présentation automatique :** Génération de diaporamas plein écran ou export PDF à partir du séparateur `---`.
+- **Hiérarchie & Sous-pages :** Arborescence complète pour structurer la base de connaissances d'une équipe.
+- **Assistance IA souveraine :** Reformulation, résumé, traduction et correction orthographique.
 
-- **Initialiser le projet :**
-  ```bash
-  make bootstrap-docs
-  ```
+### 🤝 Collaboration Temps Réel
+- **Synchronisation CRDT ultra-rapide** basée sur Yjs et WebSockets.
+- **Curseurs et présences en direct.**
+- **Fils de commentaires et mentions.**
+- **Gestion fine des permissions** (lecture, écriture, partage public/restreint).
 
-- **Lancer le serveur de développement :**
-  ```bash
-  make dev-docs
-  ```
+---
 
-- **Consulter les logs :**
-  ```bash
-  make logs-docs
-  ```
+## 🏗️ Architecture & Stack Technique
+
+```mermaid
+graph TD
+    Client[Navigateur / Frontend React] -->|HTTP / REST| Backend[API Django / Python 3.14]
+    Client -->|WebSocket / CRDT| YProvider[Serveur Yjs Node.js]
+    Backend --> DB[(PostgreSQL 16)]
+    Backend --> Keycloak[Keycloak SSO / OIDC]
+    Backend --> ObjectStorage[(Stockage S3 / Médias)]
+```
+
+- **Frontend :** React, Next.js, Tailwind CSS, TipTap / ProseMirror.
+- **Backend API :** Python (3.14), Django REST Framework, gestion des traductions (Crowdin).
+- **Temps réel :** Yjs provider (WebSocket server) pour la synchronisation multi-utilisateurs.
+- **Base de données :** PostgreSQL.
+- **Authentification :** OpenID Connect (Keycloak).
+
+---
+
+## 🗺️ Roadmap & Ressources
+
+- 📋 **Jalons & Milestones GitHub :** [suitenumerique/docs/milestones](https://github.com/suitenumerique/docs/milestones)
+- 🐛 **Issues & Bugs :** [suitenumerique/docs/issues](https://github.com/suitenumerique/docs/issues)
+- 📖 **Documentation interne :** Disponible dans `src/docs/documentation/`
+- 💬 **Échanger avec l'équipe :** Rejoindre le salon Matrix [`#docs-official:matrix.org`](https://matrix.to/#/#docs-official:matrix.org)
+
+---
+
+## 🚀 Démarrage et Commandes Locales
+
+### Commandes Makefile
+
+```bash
+# 1. Cloner Docs
+REPOS="docs" make clone
+
+# 2. Préparer les variables d'environnement locales
+make env-docs
+
+# 3. Initialiser les conteneurs, migrations et fixtures
+make bootstrap-docs
+
+# 4. Lancer le serveur de développement
+make dev-docs
+
+# 5. Consulter les logs en temps réel
+make logs-docs
+```
+
+### URLs et Accès Locaux
+
+- **Application Frontend :** [http://localhost:3000](http://localhost:3000)
+- **API Backend :** [http://localhost:8071](http://localhost:8071)
+- **Django Admin :** [http://localhost:8071/admin](http://localhost:8071/admin) (identifiants créés lors du bootstrap)
+

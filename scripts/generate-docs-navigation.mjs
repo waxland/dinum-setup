@@ -49,6 +49,10 @@ function formatLabel(name) {
 function getDefaultIcon(name, depth) {
   if (depth === 0) {
     const lower = name.toLowerCase();
+    if (lower.includes("onboarding") || lower.includes("demarrage"))
+      return "compass";
+    if (lower.includes("roadmap") || lower.includes("ressource"))
+      return "map";
     if (lower.includes("guide") || lower.includes("doc")) return "book-open";
     if (lower.includes("projet") || lower.includes("project")) return "boxes";
     if (lower.includes("lien") || lower.includes("link"))
