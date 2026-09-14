@@ -187,8 +187,18 @@ function scanDir(dir, baseDir, depth = 0) {
       entry.isFile() &&
       (entry.name.endsWith(".md") || entry.name.endsWith(".mdx"))
     ) {
-      const route = "/" + relPath.replace(/\.mdx?$/, "");
-      items.push(route);
+      if (depth === 0 && entry.name.startsWith("index.")) {
+        items.push({
+          type: "doc",
+          file: relPath,
+          path: "/",
+          label: "Accueil",
+          icon: "home",
+        });
+      } else {
+        const route = "/" + relPath.replace(/\.mdx?$/, "");
+        items.push(route);
+      }
     }
   }
 
@@ -212,6 +222,7 @@ function generateNavForTarget(target) {
 
   const redirects = [
     // Category aliases and root redirects
+    { from: "/index", to: "/" },
     { from: "/05-ressources", to: "/05-ressources/communaute" },
     { from: "/onboarding", to: "/01-onboarding" },
     { from: "/architecture", to: "/02-architecture" },

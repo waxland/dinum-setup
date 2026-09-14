@@ -1,7 +1,13 @@
 import type { ZudokuConfig } from "zudoku";
 
 export const docsNavigation: ZudokuConfig["navigation"] = [
-  "/index",
+  {
+    "type": "doc",
+    "file": "index.mdx",
+    "path": "/",
+    "label": "Accueil",
+    "icon": "home"
+  },
   {
     "type": "category",
     "label": "Onboarding",
@@ -240,6 +246,10 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
 ];
 
 export const docsRedirects: ZudokuConfig["redirects"] = [
+  {
+    "from": "/index",
+    "to": "/"
+  },
   {
     "from": "/05-ressources",
     "to": "/05-ressources/communaute"
