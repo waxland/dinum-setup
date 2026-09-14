@@ -8,6 +8,7 @@ Ce depot ne contient pas le code des applications. Le Makefile clone les projets
 
 - **Onboarding & Démarrage :** [docs/01-onboarding/index.mdx](docs/01-onboarding/index.mdx)
   - [Challenge La Suite Numérique x 42](docs/01-onboarding/01-demarrage/challenge-42.mdx)
+  - [Planning & Agenda du Hackathon](docs/01-onboarding/01-demarrage/planning.mdx)
   - [Services, URLs & Identifiants](docs/01-onboarding/01-demarrage/urls-et-identifiants.mdx)
   - [Glossaire & Concepts Clés](docs/01-onboarding/03-support/glossaire.mdx)
   - [Configuration de la Machine Hôte](docs/01-onboarding/01-demarrage/environnement-machine-hote.mdx)

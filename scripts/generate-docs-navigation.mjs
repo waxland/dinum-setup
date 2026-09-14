@@ -245,6 +245,18 @@ function generateNavForTarget(target) {
       to: "/01-onboarding/01-demarrage/challenge-42",
     },
     {
+      from: "/01-onboarding/planning",
+      to: "/01-onboarding/01-demarrage/planning",
+    },
+    {
+      from: "/planning",
+      to: "/01-onboarding/01-demarrage/planning",
+    },
+    {
+      from: "/planning-42",
+      to: "/01-onboarding/01-demarrage/planning",
+    },
+    {
       from: "/01-onboarding/environnement-machine-hote",
       to: "/01-onboarding/01-demarrage/environnement-machine-hote",
     },

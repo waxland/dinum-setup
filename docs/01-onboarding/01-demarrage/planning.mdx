@@ -1,0 +1,461 @@
+---
+title: Planning & Agenda du Challenge DINUM x 42
+description: Emploi du temps complet, horaires des navettes, sessions de code, repas et présentations finales pour le hackathon à Forty 2 (14 - 18 septembre 2026).
+---
+
+# 📅 Planning du Challenge DINUM x 42
+
+> 🏖️ **Forty 2 (Île d'Oléron) • Du lundi 14 au vendredi 18 septembre 2026**
+
+Retrouvez ci-dessous le déroulé complet de la semaine : horaires des navettes depuis la gare de La Rochelle, sessions de hacking dans les clusters, points de synchronisation, repas et grand jury final.
+
+🔗 **Accès rapide :** [Présentation du Challenge 42](/01-onboarding/01-demarrage/challenge-42) • [Guide du Premier Commit](/01-onboarding/02-workflow-et-contribution/guide-du-premier-commit) • [URLs & Identifiants](/01-onboarding/01-demarrage/urls-et-identifiants)
+
+---
+
+## 🗺️ Vue d'Ensemble des Espaces à Forty 2
+
+<FeatureGrid cols={3}>
+  <FeatureCard
+    icon="🏛️"
+    title="Maison Commune"
+    description="Lancements de journée, debriefs quotidiens, briefs et pitchs finaux."
+  />
+  <FeatureCard
+    icon="⛺"
+    title="Chapiteau"
+    description="Petits-déjeuners, déjeuners, dîners, soirées et espace de code extérieur."
+  />
+  <FeatureCard
+    icon="💻"
+    title="Clusters"
+    description="Espaces de développement équipés, postes de travail et connexion réseau."
+  />
+</FeatureGrid>
+
+---
+
+## 📊 Chronologie Globale de la Semaine
+
+<Mermaid chart={`gantt
+    title Chronologie du Hackathon (14 - 18 Septembre 2026)
+    dateFormat YYYY-MM-DD
+    axisFormat %a %d/%m
+
+    section Lundi 14
+    Navettes & Installation       :2026-09-14, 1d
+    Lancement & Début du code     :2026-09-14, 1d
+
+    section Mardi 15
+    Sprint de Développement       :2026-09-15, 1d
+    Activité Forty 2 & Night Code :2026-09-15, 1d
+
+    section Mercredi 16
+    Intégration & Sprint Technique:2026-09-16, 1d
+
+    section Jeudi 17
+    Finalisation & Brief Pitchs   :2026-09-17, 1d
+    Apéritif & Soirée de Clôture  :2026-09-17, 1d
+
+    section Vendredi 18
+    Pitchs & Délibération Jury    :2026-09-18, 1d
+    Remise des Prix & Départs     :2026-09-18, 1d
+`} />
+
+---
+
+## 🗓️ Programme Détaillé Jour par Jour
+
+<ScheduleDay
+  dayNumber={1}
+  date="Lundi 14 septembre 2026"
+  title="Arrivées, Installation & Lancement du Challenge"
+  badge="Arrivées & Kick-off"
+>
+  <ScheduleItem
+    time="10h00"
+    title="Départ de la navette 1 vers Forty 2"
+    location="B&B HOTEL La Rochelle Centre"
+    type="transport"
+    description={
+      <span>
+        Navette organisée pour les arrivées du <strong>TGV de 09h47</strong>.<br />
+        <em>Point de rendez-vous :</em> Devant l'hôtel B&B La Rochelle Centre (situé immédiatement à droite du parvis de la gare).
+      </span>
+    }
+  />
+  <ScheduleItem
+    time="11h45"
+    title="Arrivée de la navette 1 à Forty 2 & Installation dans les dortoirs"
+    location="Forty 2 (Dortoirs)"
+    type="event"
+    description="Accueil des premiers participants, distribution des clés/badges et installation."
+  />
+  <ScheduleItem
+    time="12h30"
+    title="Départ de la navette 2 vers Forty 2"
+    location="B&B HOTEL La Rochelle Centre"
+    type="transport"
+    description={
+      <span>
+        Navette organisée pour les arrivées du <strong>TGV de 12h26</strong>.<br />
+        <em>Point de rendez-vous :</em> B&B HOTEL La Rochelle Centre (à droite du parvis de la gare).
+      </span>
+    }
+  />
+  <ScheduleItem
+    time="12h30"
+    title="Déjeuner pour le groupe arrivé avec la 1ère navette"
+    location="Chapiteau"
+    type="meal"
+    description="Premier repas convivial sous le chapiteau pour les arrivants de la matinée."
+  />
+  <ScheduleItem
+    time="14h00"
+    title="Arrivée de la navette 2 à Forty 2 & Installation dans les dortoirs"
+    location="Forty 2 (Dortoirs)"
+    type="event"
+    description="Accueil du second groupe et installation."
+  />
+  <ScheduleItem
+    time="14h30"
+    title="Lancement officiel du Challenge DINUM x 42"
+    location="Maison Commune"
+    type="event"
+    highlight
+    description="Présentation plénière de La Suite numérique, des mentors DINUM, des 3 tracks de contribution et des critères d'évaluation."
+  />
+  <ScheduleItem
+    time="15h30"
+    title="Début du code & Constitution finale des équipes"
+    location="Clusters & Chapiteau"
+    type="code"
+    highlight
+    description="Lancement du hacking ! Clonage des dépôts (make clone), configuration locale et premiers commits."
+  />
+  <ScheduleItem
+    time="18h30"
+    title="Debrief de la première journée"
+    location="Maison Commune"
+    type="event"
+    description="Tour de table rapide sur les choix de sujets, questions techniques et ajustements d'équipes."
+  />
+  <ScheduleItem
+    time="18h45"
+    title="Temps libre"
+    location="Campus Forty 2"
+    type="party"
+    description="Détente, découverte du campus, balade sur la plage."
+  />
+  <ScheduleItem
+    time="20h00"
+    title="Dîner"
+    location="Chapiteau"
+    type="meal"
+    description="Dîner chaud sous le chapiteau."
+  />
+  <ScheduleItem
+    time="21h30"
+    title="Soirée libre & Night Hacking"
+    location="Clusters & Chapiteau"
+    type="code"
+    description="Accès libre aux clusters pour les équipes souhaitant avancer tard sur leurs prototypes."
+  />
+</ScheduleDay>
+
+---
+
+<ScheduleDay
+  dayNumber={2}
+  date="Mardi 15 septembre 2026"
+  title="Sprint de Développement & Activité Forty 2"
+  badge="Full Hacking"
+>
+  <ScheduleItem
+    time="08h00 - 09h30"
+    title="Petit-déjeuner"
+    location="Chapiteau"
+    type="meal"
+    description="Café, thé, viennoiseries et fruits pour bien attaquer la journée."
+  />
+  <ScheduleItem
+    time="09h30"
+    title="Lancement de la journée & Point d'étape"
+    location="Maison Commune"
+    type="event"
+    description="Annonces logistiques et synchronisation avec les mentors techniques."
+  />
+  <ScheduleItem
+    time="09h45"
+    title="Session de Code (Matinée)"
+    location="Clusters & Chapiteau"
+    type="code"
+    highlight
+    description="Développement des briques cœur : API REST, intégration DSFR, connecteurs Matrix/WebSockets."
+  />
+  <ScheduleItem
+    time="12h30"
+    title="Déjeuner"
+    location="Chapiteau"
+    type="meal"
+    description="Repas partagé entre étudiants et équipes de la DINUM."
+  />
+  <ScheduleItem
+    time="14h00"
+    title="Session de Code (Après-midi)"
+    location="Clusters & Chapiteau"
+    type="code"
+    highlight
+    description="Ateliers techniques et revue d'architecture avec les mentors."
+  />
+  <ScheduleItem
+    time="18h30"
+    title="Debrief de la journée"
+    location="Maison Commune"
+    type="event"
+    description="Synchronisation générale sur les blocages levés et la roadmap de la semaine."
+  />
+  <ScheduleItem
+    time="18h45"
+    title="Temps libre"
+    location="Campus Forty 2"
+    type="party"
+  />
+  <ScheduleItem
+    time="20h00"
+    title="Dîner"
+    location="Chapiteau"
+    type="meal"
+  />
+  <ScheduleItem
+    time="21h30"
+    title="Activité optionnelle proposée par les équipes de Forty 2 & Night Hacking"
+    location="Campus & Clusters"
+    type="party"
+    description="Animation détendue organisée par Forty 2 ou poursuite du dev dans les clusters."
+  />
+</ScheduleDay>
+
+---
+
+<ScheduleDay
+  dayNumber={3}
+  date="Mercredi 16 septembre 2026"
+  title="Consolidation Technique & Tests d'Intégration"
+  badge="Mi-parcours"
+>
+  <ScheduleItem
+    time="08h00 - 09h30"
+    title="Petit-déjeuner"
+    location="Chapiteau"
+    type="meal"
+  />
+  <ScheduleItem
+    time="09h30"
+    title="Lancement de la journée"
+    location="Maison Commune"
+    type="event"
+  />
+  <ScheduleItem
+    time="09h45"
+    title="Session de Code (Matinée)"
+    location="Clusters & Chapiteau"
+    type="code"
+    highlight
+    description="Intégration poussée : tests unitaires, validation RGAA des interfaces, persistance PostgreSQL."
+  />
+  <ScheduleItem
+    time="12h30"
+    title="Déjeuner"
+    location="Chapiteau"
+    type="meal"
+  />
+  <ScheduleItem
+    time="14h00"
+    title="Session de Code (Après-midi)"
+    location="Clusters & Chapiteau"
+    type="code"
+    highlight
+    description="Stabilisation du MVP (Minimum Viable Product) et scénarios de démonstration."
+  />
+  <ScheduleItem
+    time="18h30"
+    title="Debrief de la journée"
+    location="Maison Commune"
+    type="event"
+  />
+  <ScheduleItem
+    time="18h45"
+    title="Temps libre"
+    location="Campus Forty 2"
+    type="party"
+  />
+  <ScheduleItem
+    time="20h00"
+    title="Dîner"
+    location="Chapiteau"
+    type="meal"
+  />
+  <ScheduleItem
+    time="21h30"
+    title="Soirée libre, possibilité de continuer à coder"
+    location="Clusters & Chapiteau"
+    type="code"
+  />
+</ScheduleDay>
+
+---
+
+<ScheduleDay
+  dayNumber={4}
+  date="Jeudi 17 septembre 2026"
+  title="Finalisation des PRs, Brief Pitchs & Grande Soirée"
+  badge="Dernière ligne droite"
+>
+  <ScheduleItem
+    time="08h00 - 09h30"
+    title="Petit-déjeuner"
+    location="Chapiteau"
+    type="meal"
+  />
+  <ScheduleItem
+    time="09h30"
+    title="Lancement de la journée & Brief officiel sur les pitchs"
+    location="Maison Commune"
+    type="event"
+    highlight
+    description="Présentation du barème du jury, format des démos (temps imparti, questions) et conseils pour réussir sa soutenance."
+  />
+  <ScheduleItem
+    time="09h45"
+    title="Sprint Final de Code & Répétition des Démos"
+    location="Clusters & Chapiteau"
+    type="code"
+    highlight
+    description="Freeze du code, rédaction du README de projet et enregistrement de la vidéo / capture de secours."
+  />
+  <ScheduleItem
+    time="12h30"
+    title="Déjeuner"
+    location="Chapiteau"
+    type="meal"
+  />
+  <ScheduleItem
+    time="14h00"
+    title="Code, Pull Requests & Répétition des Pitchs"
+    location="Clusters & Chapiteau"
+    type="code"
+    description="Ouverture des Pull Requests sur les dépôts officiels ou dépôts forked, coaching pitch avec les mentors."
+  />
+  <ScheduleItem
+    time="18h30"
+    title="Debrief & Clôture officielle du Code"
+    location="Maison Commune"
+    type="event"
+    description="Code Freeze ! Bilan de la semaine et consignes pour les présentations du lendemain matin."
+  />
+  <ScheduleItem
+    time="18h45"
+    title="Temps libre"
+    location="Campus Forty 2"
+    type="party"
+  />
+  <ScheduleItem
+    time="19h30"
+    title="Apéritif"
+    location="Chapiteau"
+    type="party"
+    highlight
+    description="Moment de convivialité entre étudiants, équipe pédagogique de 42 et membres de la DINUM."
+  />
+  <ScheduleItem
+    time="20h00"
+    title="Dîner & Grande Soirée de clôture"
+    location="Chapiteau"
+    type="party"
+    highlight
+    description="Grande soirée festive du hackathon."
+  />
+</ScheduleDay>
+
+---
+
+<ScheduleDay
+  dayNumber={5}
+  date="Vendredi 18 septembre 2026"
+  title="Pitchs Finaux, Délibérations, Clôture & Départs"
+  badge="Grand Jury & Clôture"
+>
+  <ScheduleItem
+    time="08h00 - 09h30"
+    title="Petit-déjeuner & Rangement des dortoirs"
+    location="Chapiteau"
+    type="meal"
+    description="Check-out des dortoirs et regroupement des bagages."
+  />
+  <ScheduleItem
+    time="09h30"
+    title="Démarrage des Pitchs & Démos en direct"
+    location="Maison Commune ou Chapiteau (confirmation à venir)"
+    type="pitch"
+    highlight
+    description="Passage de l'ensemble des équipes devant le jury mixte DINUM x 42. Démonstrations en direct et sessions de questions/réponses."
+  />
+  <ScheduleItem
+    time="11h30"
+    title="Délibération du jury"
+    location="Salle dédiée"
+    type="event"
+    description="Évaluation des projets selon les critères : impact pour les agents publics, qualité technique du code, respect du DSFR et accessibilité."
+  />
+  <ScheduleItem
+    time="12h00"
+    title="Annonce des résultats & Clôture officielle du Challenge"
+    location="Maison Commune / Chapiteau"
+    type="pitch"
+    highlight
+    description="Remise des prix, félicitations et mots de clôture par les directeurs de 42 et de la DINUM."
+  />
+  <ScheduleItem
+    time="12h45"
+    title="Déjeuner d'au revoir"
+    location="Chapiteau"
+    type="meal"
+    description="Dernier repas partagé avant le retour."
+  />
+  <ScheduleItem
+    time="14h45"
+    title="Départ des navettes retour de Forty 2"
+    location="Départ Forty 2 ➔ Gare La Rochelle"
+    type="transport"
+    highlight
+    description="Navettes collectives assurant le retour direct vers la gare SNCF de La Rochelle."
+  />
+</ScheduleDay>
+
+---
+
+## 🎒 Checklist Logistique pour les Participants
+
+| Catégorie | Ce qu'il faut prévoir |
+| :--- | :--- |
+| 💻 **Matériel informatique** | Ordinateur portable avec chargeur, multiprise, adaptateur RJ45/USB-C si besoin, écouteurs/casque pour les réunions et tests audio. |
+| 🔑 **Accès & Comptes** | Clé SSH configurée sur GitHub, compte sur le serveur Matrix/Tchap si applicable, Docker et Node.js pré-installés. |
+| 🧳 **Séjour Dortoirs** | Serviette de toilette, affaires de rechange pour 5 jours, vêtements chauds pour les soirées en bord d'océan, maillot de bain. |
+| 🪪 **Documents** | Pièce d'identité, billets de train SNCF (TGV La Rochelle). |
+
+---
+
+## ❓ Questions Fréquentes (FAQ Planning)
+
+### Où se trouve le point de rendez-vous pour la navette du lundi matin ?
+Le point de rendez-vous pour les deux navettes (10h00 et 12h30) est situé devant le **B&B HOTEL La Rochelle Centre**, immédiatement à droite en sortant sur le parvis de la gare de La Rochelle.
+
+### Est-il possible de coder la nuit ?
+Oui, les clusters et les espaces de travail du campus restent accessibles 24h/24 pour les équipes qui souhaitent poursuivre leurs développements en soirée.
+
+### Les repas sont-ils tous pris en charge ?
+Oui, l'ensemble des repas (petits-déjeuners, déjeuners, dîners et collations) est pris en charge sur place du lundi midi au vendredi midi.
+
+### À quelle heure arrive la navette retour le vendredi à la gare de La Rochelle ?
+Les navettes quittent Forty 2 à **14h45**. Le trajet durant environ 1h15 selon le trafic sur le pont d'Oléron, prévoyez un départ en train après **16h30**.

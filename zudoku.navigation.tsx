@@ -24,6 +24,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           "/01-onboarding/01-demarrage/challenge-42",
           "/01-onboarding/01-demarrage/environnement-machine-hote",
           "/01-onboarding/01-demarrage/git-ssh",
+          "/01-onboarding/01-demarrage/planning",
           "/01-onboarding/01-demarrage/urls-et-identifiants",
           "/01-onboarding/01-demarrage/vscode"
         ]
@@ -299,6 +300,18 @@ export const docsRedirects: ZudokuConfig["redirects"] = [
   {
     "from": "/challenge-42",
     "to": "/01-onboarding/01-demarrage/challenge-42"
+  },
+  {
+    "from": "/01-onboarding/planning",
+    "to": "/01-onboarding/01-demarrage/planning"
+  },
+  {
+    "from": "/planning",
+    "to": "/01-onboarding/01-demarrage/planning"
+  },
+  {
+    "from": "/planning-42",
+    "to": "/01-onboarding/01-demarrage/planning"
   },
   {
     "from": "/01-onboarding/environnement-machine-hote",
