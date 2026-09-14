@@ -10,7 +10,6 @@ const CONFIGS = {
   docs: {
     docsDir: path.join(ROOT_DIR, "docs"),
     outputFile: path.join(ROOT_DIR, "zudoku.navigation.tsx"),
-    defaultRedirect: { from: "/", to: "/01-onboarding" },
   },
 };
 
@@ -212,7 +211,6 @@ function generateNavForTarget(target) {
   const navItems = scanDir(config.docsDir, config.docsDir);
 
   const redirects = [
-    config.defaultRedirect,
     // Category aliases and root redirects
     { from: "/05-ressources", to: "/05-ressources/communaute" },
     { from: "/onboarding", to: "/01-onboarding" },

@@ -1,0 +1,117 @@
+---
+title: Portail La Suite dev setup (42 x DINUM)
+sidebar_label: Accueil
+description: Portail de documentation, onboarding et boîte à outils pour le développement local et le Hackathon 42 x DINUM sur La Suite numérique.
+---
+
+import { Mermaid } from "../src/components/Mermaid";
+
+Bienvenue sur le portail de développement et d'orchestration locale de **La Suite numérique** !
+
+Ce dépôt a été créé dans le cadre de la collaboration **42 x DINUM** à l'occasion du hackathon d'une semaine organisé à **Forty 2 (Île d'Oléron)** du 14 au 18 septembre 2026.
+
+🔗 **Ressources clés :** [Challenge 42 x DINUM](/01-onboarding/01-demarrage/challenge-42) • [Portail officiel La Suite](https://lasuite.numerique.gouv.fr/) • [GitHub suitenumerique](https://github.com/suitenumerique) • [DINUM](https://www.numerique.gouv.fr/) • [42](https://42.fr/)
+
+---
+
+## 🎯 Le Pourquoi du Comment de ce Dépôt
+
+### 💡 Le Constat : La complexité d'un écosystème distribué
+**La Suite numérique** n'est pas une simple application monolithique, mais un ensemble de briques souveraines et interconnectées :
+- Plusieurs back-ends (Python/Django 5, Node.js, Go),
+- Des front-ends modernes (TypeScript, React 18/19, Next.js, Vite),
+- Des services d'infrastructure dédiés (Keycloak SSO OIDC, serveurs WebSocket temps réel Yjs/CRDT, moteurs WebRTC LiveKit, stockage S3 MinIO, caches Redis et plusieurs bases PostgreSQL isolées).
+
+Sans orchestration unifiée, chaque étudiant ou contributeur arrivant sur le projet devrait passer **1 à 2 journées entières** à cloner individuellement chaque dépôt, résoudre des conflits de versions de runtimes (Node, Python), configurer à la main des dizaines de variables `.env` et déboguer des problèmes de ports ou d'authentification.
+
+### 🚀 L'Objectif : Zéro friction et setup en 5 minutes entre étudiants
+Le projet **`dinum-setup`** a été pensé pour **accélérer et simplifier au maximum l'onboarding des étudiants de 42** :
+1. **Un seul point d'entrée (`Makefile`)** : Cloner, configurer les variables d'environnement, migrer les bases de données et lancer l'ensemble des services en quelques commandes standardisées (`make install`, `make clone`, `make env`, `make dev`).
+2. **Accès base de données en 1-clic** : Toutes les connexions PostgreSQL sont pré-intégrées pour **SQLTools** dans VS Code sans mot de passe à renseigner.
+3. **Documentation vivante & interactive** : Ce site Zudoku centralise les schémas d'architecture temps réel, la matrice des projets, les guides de contribution et la bibliothèque de composants officielle du **Design System de l'État (DSFR)**.
+4. **Focus sur la valeur ajoutée** : Permettre aux équipes du hackathon de se concentrer immédiatement sur le code et les [Tracks du Challenge 42](/01-onboarding/01-demarrage/challenge-42) (interopérabilités, sécurité, mini-apps Typst, signature électronique).
+
+<Mermaid chart={`flowchart LR
+    subgraph Sans["❌ Sans dinum-setup"]
+        S1["Cloner 6 repos manuellement"] --> S2["Installer 3 versions de Node/Python"]
+        S2 --> S3["Créer 6 BDD PostgreSQL"]
+        S3 --> S4["Résoudre les conflits de ports"]
+        S4 --> S5["1 jour perdu à debugger le setup"]
+    end
+
+    subgraph Avec["✅ Avec dinum-setup (42 x DINUM)"]
+        A1["git clone dinum-setup"] --> A2["make install && make clone"]
+        A2 --> A3["make env && make dev"]
+        A3 --> A4["🚀 Prêt à coder en 5 minutes !"]
+    end
+`} />
+
+---
+
+## 🧭 Explorer les Sections du Portail
+
+<FeatureGrid cols={3}>
+  <FeatureCard
+    icon="🚀"
+    title="Onboarding & Démarrage"
+    description="Checklist du 1er jour, configuration VS Code 1-clic, Git/SSH et environnement système."
+    href="/01-onboarding"
+    badge="Démarrage"
+  />
+  <FeatureCard
+    icon="🏛️"
+    title="Architecture Globale"
+    description="Schémas Mermaid interactifs, flux OIDC ProConnect, synchronisation Yjs CRDT et stockage S3."
+    href="/02-architecture"
+    badge="Système"
+  />
+  <FeatureCard
+    icon="📦"
+    title="Matrice des Projets"
+    description="Fiches détaillées des applications : Docs, BlockNote, Meet, Tchap, Grist, Drive, Transfers."
+    href="/03-projets"
+    badge="Applications"
+  />
+  <FeatureCard
+    icon="🎨"
+    title="Design System (DSFR)"
+    description="Composants officiels @codegouvfr/react-dsfr, typographie Marianne, accessibilité RGAA AA."
+    href="/04-design-system"
+    badge="UI / UX"
+  />
+  <FeatureCard
+    icon="💡"
+    title="Tutoriels & Recettes"
+    description="Guides pratiques pas-à-pas : commande /law dans BlockNote, bot Tchap, tests Playwright E2E."
+    href="/06-tutoriels"
+    badge="Pratique"
+  />
+  <FeatureCard
+    icon="🤖"
+    title="Skills d'Agent & Ingénierie"
+    description="Procédures et compétences spécialisées pour assister les développeurs et l'IA."
+    href="/07-skills"
+    badge="Méthode"
+  />
+</FeatureGrid>
+
+---
+
+## ⚡ Commandes Principales
+
+```bash
+# 1. Cloner tous les dépôts de La Suite dans ./src
+make clone
+
+# 2. Préparer les fichiers d'environnement locaux (.env)
+make env
+
+# 3. Amorcer les conteneurs et les bases de données
+make bootstrap
+
+# 4. Lancer les services en mode développement
+make dev
+
+# 5. Démarrer le portail documentaire local Zudoku
+make docs-dev
+```

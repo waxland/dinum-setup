@@ -1,40 +1,18 @@
 ---
-title: Bienvenue & Vision du Projet (42 x DINUM)
-description: Présentation de dinum-setup, contexte du hackathon 42 x DINUM à l'Île d'Oléron, pourquoi ce dépôt a été créé et guide de démarrage pas à pas.
+title: Guide de Démarrage Rapide & Onboarding
+sidebar_label: Démarrage Rapide
+description: Guide d'accueil, prise en main pas à pas dès le premier jour, checklist et bonnes pratiques pour contribuer à l'écosystème La Suite numérique.
 ---
 
-Bienvenue sur le portail de développement et d'orchestration locale de **La Suite numérique** !
+Bienvenue dans l'espace d'onboarding et de démarrage rapide de **La Suite numérique** !
 
-Ce dépôt a été créé dans le cadre de la collaboration **42 x DINUM** à l'occasion du hackathon d'une semaine organisé à **Forty 2 (Île d'Oléron)** du 14 au 18 septembre 2026.
+Ce guide a pour objectif de vous accompagner pas à pas dès votre premier jour : comprendre la vision globale, configurer votre poste de travail, lancer votre premier projet et rejoindre les espaces de discussion de l'équipe.
 
 🔗 **Ressources clés :** [Challenge 42 x DINUM](/01-onboarding/01-demarrage/challenge-42) • [Portail officiel La Suite](https://lasuite.numerique.gouv.fr/) • [GitHub suitenumerique](https://github.com/suitenumerique) • [DINUM](https://www.numerique.gouv.fr/) • [42](https://42.fr/)
 
 ---
 
-## 🎯 Le Pourquoi du Comment de ce Dépôt
-
-### 💡 Le Constat : La complexité d'un écosystème distribué
-
-**La Suite numérique** n'est pas une simple application monolithique, mais un ensemble de briques souveraines et interconnectées :
-
-- Plusieurs back-ends (Python/Django 5, Node.js, Go),
-- Des front-ends modernes (TypeScript, React 18/19, Next.js, Vite),
-- Des services d'infrastructure dédiés (Keycloak SSO OIDC, serveurs WebSocket temps réel Yjs/CRDT, moteurs WebRTC LiveKit, stockage S3 MinIO, caches Redis et plusieurs bases PostgreSQL isolées).
-
-Sans orchestration unifiée, chaque étudiant ou contributeur arrivant sur le projet devrait passer **1 à 2 journées entières** à cloner individuellement chaque dépôt, résoudre des conflits de versions de runtimes (Node, Python), configurer à la main des dizaines de variables `.env` et déboguer des problèmes de ports ou d'authentification.
-
-### 🚀 L'Objectif : Zéro friction et setup en 5 minutes entre étudiants
-
-Le projet **`dinum-setup`** a été pensé pour **accélérer et simplifier au maximum l'onboarding des étudiants de 42** :
-
-1. **Un seul point d'entrée (`Makefile`)** : Cloner, configurer les variables d'environnement, migrer les bases de données et lancer l'ensemble des services en quelques commandes standardisées (`make install`, `make clone`, `make env`, `make dev`).
-2. **Accès base de données en 1-clic** : Toutes les connexions PostgreSQL sont pré-intégrées pour **SQLTools** dans VS Code sans mot de passe à renseigner.
-3. **Documentation vivante & interactive** : Ce site Zudoku centralise les schémas d'architecture temps réel, la matrice des projets, les guides de contribution et la bibliothèque de composants officielle du **Design System de l'État (DSFR)**.
-4. **Focus sur la valeur ajoutée** : Permettre aux équipes du hackathon de se concentrer immédiatement sur le code et les [Tracks du Challenge 42](/01-onboarding/01-demarrage/challenge-42) (interopérabilités, sécurité, mini-apps Typst, signature électronique).
-
----
-
-## 🧭 Vision et Philosophie
+## 🧭 Vision et Philosophie de La Suite
 
 **La Suite numérique** est une suite d'outils collaboratifs souverains, libres et sécurisés développée par la Direction Interministérielle du Numérique (**DINUM**) et l'Agence Nationale de la Cohésion des Territoires (**ANCT**), destinée aux agents publics de l'État, des collectivités territoriales et aux organisations publiques.
 

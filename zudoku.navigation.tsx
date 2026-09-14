@@ -1,6 +1,7 @@
 import type { ZudokuConfig } from "zudoku";
 
 export const docsNavigation: ZudokuConfig["navigation"] = [
+  "/index",
   {
     "type": "category",
     "label": "Onboarding",
@@ -239,10 +240,6 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
 ];
 
 export const docsRedirects: ZudokuConfig["redirects"] = [
-  {
-    "from": "/",
-    "to": "/01-onboarding"
-  },
   {
     "from": "/05-ressources",
     "to": "/05-ressources/communaute"
