@@ -17,7 +17,9 @@ Ce dépôt a été créé dans le cadre de la collaboration **42 x DINUM** à l'
 ## 🎯 Le Pourquoi du Comment de ce Dépôt
 
 ### 💡 Le Constat : La complexité d'un écosystème distribué
+
 **La Suite numérique** n'est pas une simple application monolithique, mais un ensemble de briques souveraines et interconnectées :
+
 - Plusieurs back-ends (Python/Django 5, Node.js, Go),
 - Des front-ends modernes (TypeScript, React 18/19, Next.js, Vite),
 - Des services d'infrastructure dédiés (Keycloak SSO OIDC, serveurs WebSocket temps réel Yjs/CRDT, moteurs WebRTC LiveKit, stockage S3 MinIO, caches Redis et plusieurs bases PostgreSQL isolées).
@@ -25,7 +27,9 @@ Ce dépôt a été créé dans le cadre de la collaboration **42 x DINUM** à l'
 Sans orchestration unifiée, chaque étudiant ou contributeur arrivant sur le projet devrait passer **1 à 2 journées entières** à cloner individuellement chaque dépôt, résoudre des conflits de versions de runtimes (Node, Python), configurer à la main des dizaines de variables `.env` et déboguer des problèmes de ports ou d'authentification.
 
 ### 🚀 L'Objectif : Zéro friction et setup en 5 minutes entre étudiants
+
 Le projet **`dinum-setup`** a été pensé pour **accélérer et simplifier au maximum l'onboarding des étudiants de 42** :
+
 1. **Un seul point d'entrée (`Makefile`)** : Cloner, configurer les variables d'environnement, migrer les bases de données et lancer l'ensemble des services en quelques commandes standardisées (`make install`, `make clone`, `make env`, `make dev`).
 2. **Accès base de données en 1-clic** : Toutes les connexions PostgreSQL sont pré-intégrées pour **SQLTools** dans VS Code sans mot de passe à renseigner.
 3. **Documentation vivante & interactive** : Ce site Zudoku centralise les schémas d'architecture temps réel, la matrice des projets, les guides de contribution et la bibliothèque de composants officielle du **Design System de l'État (DSFR)**.
@@ -44,6 +48,7 @@ Le projet **`dinum-setup`** a été pensé pour **accélérer et simplifier au m
         A2 --> A3["make env && make dev"]
         A3 --> A4["🚀 Prêt à coder en 5 minutes !"]
     end
+
 `} />
 
 ---
