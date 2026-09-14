@@ -2,9 +2,23 @@ node_modules/
 dist/
 .zudoku/
 .npm-cache/
+.zudoku-state/
+.sessions/
+
+# Variables d'environnement & fichiers locaux
 .env
 *.local
 **/.env
 **/.env.local
-.zudoku-state/
-.sessions/
+
+# Dépôts applicatifs clonés
+src/docs/
+src/projects/
+src/meet/
+src/transfers/
+src/people/
+src/accounts/
+src/docspec/
+src/grist/
+src/tchap/
+src/drive/
