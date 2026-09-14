@@ -1,0 +1,78 @@
+---
+title: Kits Figma & UI Kit La Suite
+sidebar_label: Figma & UI Kit
+description: Librairies de composants Figma officielles de La Suite numérique, UI Kit Storybook et kits graphiques de l'État.
+---
+
+Pour concevoir des maquettes et des interfaces parfaitement alignées avec l'identité visuelle de **La Suite numérique**, les équipes de design mettent à disposition un ensemble de ressources et librairies officielles sur **Figma** et **Storybook**.
+
+---
+
+## 🎨 1. Les Librairies Officielles
+
+<FeatureGrid cols={2}>
+  <FeatureCard
+    icon="🎨"
+    title="Figma UI Kit La Suite"
+    description="Librairie officielle de composants Figma de La Suite numérique publiée sur la communauté Figma."
+    href="https://www.figma.com/community/file/1562860630562131728/lasuite-ui-kit"
+    badge="Figma Community"
+  />
+  <FeatureCard
+    icon="📖"
+    title="Storybook UI Kit"
+    description="Visualiseur interactif des composants d'interface (@gouvfr-lasuite/ui-components / Cunningham)."
+    href="https://suitenumerique.github.io/ui-kit/?path=/docs/components-button--docs"
+    badge="Live Storybook"
+  />
+  <FeatureCard
+    icon="🐙"
+    title="GitHub suitenumerique/ui-kit"
+    description="Code source du kit de composants React de La Suite avec thémage, tokens et typographie."
+    href="https://github.com/suitenumerique/ui-kit"
+    badge="Open Source"
+  />
+  <FeatureCard
+    icon="🏛️"
+    title="Kits Figma DSFR de l'État"
+    description="Kits de composants officiels de l'État (Design System du Gouvernement) pour Figma et Sketch."
+    href="https://www.systeme-de-design.gouv.fr/version-courante/fr/premiers-pas/vous-etes-designer/premiers-pas-sur-figma"
+    badge="Gouv.fr"
+  />
+</FeatureGrid>
+
+---
+
+## 🛠️ 2. Utilisation de la Librairie Figma La Suite
+
+### Accéder au kit communautaire
+1. Ouvrez le fichier communautaire : **[La Suite UI Kit sur Figma Community](https://www.figma.com/community/file/1562860630562131728/lasuite-ui-kit)**.
+2. Cliquez sur **Open in Figma** pour dupliquer le fichier dans votre espace de travail.
+3. Activez la librairie dans vos projets pour accéder à l'ensemble des composants :
+   - Boutons & Variantes (Primary, Secondary, Tertiary, Bordered)
+   - Bouton d'authentification **ProConnect**
+   - Badges, Tags et Puces de statut
+   - Modales, Toasts et Bannières d'alerte
+   - Grilles et tokens d'espacement
+
+---
+
+## 💻 3. Correspondance entre Figma et Code React
+
+Le kit de composants Figma correspond directement aux packages React développés par l'équipe :
+
+| Composant Figma | Package React Officiel | Visualisation Storybook |
+|---|---|---|
+| **Buttons** | `@gouvfr-lasuite/ui-components` / `@codegouvfr/react-dsfr/Button` | [Voir la démo Storybook](https://suitenumerique.github.io/ui-kit/?path=/docs/components-button--docs) |
+| **ProConnect Button** | `@gouvfr-lasuite/ui-components` | [Voir la démo ProConnect](https://suitenumerique.github.io/ui-kit/?path=/story/components-button--pro-connect) |
+| **Typography** | Police Marianne (`@gouvfr/dsfr/dist/fonts/`) | [Guide Typographie](/04-design-system/01-fondations/typographie) |
+| **Tokens & Couleurs** | Variables CSS `--blue-france-sun-113`, etc. | [Guide Couleurs](/04-design-system/01-fondations/couleurs-et-themes) |
+
+---
+
+## 🔤 4. Typographie & Charte de l'État
+
+La typographie **Marianne** est la police officielle obligatoire pour tous les services publics et interfaces de l'État :
+
+- 👉 **[Règles officielles de la typographie sur info.gouv.fr](https://www.info.gouv.fr/marque-de-letat/la-typographie)**
+- Téléchargements des formats OTF et TTF légaux pour utilisation dans vos logiciels de design (Figma, Sketch, Adobe XD).

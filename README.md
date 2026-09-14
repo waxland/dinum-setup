@@ -35,6 +35,7 @@ Ce depot ne contient pas le code des applications. Le Makefile clone les projets
   - [Projects](docs/03-projets/03-gestion-et-utilisateurs/projects.mdx) • [People](docs/03-projets/03-gestion-et-utilisateurs/people.mdx) • [Accounts](docs/03-projets/03-gestion-et-utilisateurs/accounts.mdx)
 - **Design System & DSFR :** [docs/04-design-system/index.mdx](docs/04-design-system/index.mdx)
   - [Installation & Setup](docs/04-design-system/01-fondations/installation.mdx)
+  - [Figma & UI Kit La Suite](docs/04-design-system/01-fondations/figma.mdx)
   - [Couleurs & Thèmes](docs/04-design-system/01-fondations/couleurs-et-themes.mdx)
   - [Typographie & Échelle](docs/04-design-system/01-fondations/typographie.mdx)
   - [Boutons & Actions](docs/04-design-system/02-composants/boutons.mdx)
@@ -59,6 +60,7 @@ Ce depot ne contient pas le code des applications. Le Makefile clone les projets
   - [DSFR](docs/07-skills/dsfr.mdx) • [RGAA Review](docs/07-skills/rgaa-review.mdx) • [La Suite Dev](docs/07-skills/lasuite-dev.mdx)
   - [Docs MDX](docs/07-skills/docs-mdx.mdx) • [Code Review](docs/07-skills/code-review.mdx) • [Architecture Review](docs/07-skills/architecture-review.mdx) • [Design Change](docs/07-skills/design-change.mdx)
 - **Ressources & Communauté :** [docs/05-ressources/roadmap.mdx](docs/05-ressources/roadmap.mdx)
+  - [Templates & Outils Réutilisables](docs/05-ressources/templates-et-outils.mdx)
   - [Salons Matrix & Contacts](docs/05-ressources/communaute.mdx)
 
 ## Commandes principales

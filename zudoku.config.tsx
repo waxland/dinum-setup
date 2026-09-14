@@ -62,6 +62,18 @@ const config: ZudokuConfig = {
         target: "_blank",
         icon: "git-fork",
       },
+      {
+        label: "Figma UI Kit",
+        to: "https://www.figma.com/community/file/1562860630562131728/lasuite-ui-kit",
+        target: "_blank",
+        icon: "palette",
+      },
+      {
+        label: "Storybook UI Kit",
+        to: "https://suitenumerique.github.io/ui-kit/?path=/docs/components-button--docs",
+        target: "_blank",
+        icon: "sparkles",
+      },
     ],
   },
   syntaxHighlighting: {

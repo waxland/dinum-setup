@@ -51,6 +51,7 @@ function formatLabel(name) {
     blocknote: "BlockNote",
     legifrance: "Légifrance",
     mdx: "MDX",
+    figma: "Figma",
   };
 
   return clean

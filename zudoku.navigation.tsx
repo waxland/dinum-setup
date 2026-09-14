@@ -154,6 +154,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
         "items": [
           "/04-design-system/01-fondations/accessibilite-rgaa",
           "/04-design-system/01-fondations/couleurs-et-themes",
+          "/04-design-system/01-fondations/figma",
           "/04-design-system/01-fondations/icones",
           "/04-design-system/01-fondations/installation",
           "/04-design-system/01-fondations/typographie"
@@ -194,7 +195,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
     "collapsed": false,
     "items": [
       "/05-ressources/communaute",
-      "/05-ressources/roadmap"
+      "/05-ressources/roadmap",
+      "/05-ressources/templates-et-outils"
     ]
   },
   {
