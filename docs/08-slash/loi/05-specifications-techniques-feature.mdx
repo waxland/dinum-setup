@@ -1,0 +1,284 @@
+---
+title: Spécifications Techniques & Implémentation BlockNote
+sidebar_label: 5. Implémentation Technique
+description: Modélisation CRDT Yjs multi-modes (Extrait, Référence, Lien), schéma BlockNote custom, convertisseurs ProseMirror et proxy backend Django.
+---
+
+import { Mermaid } from "../../../src/components/Mermaid";
+
+Ce chapitre détaille l'implémentation logicielle de la feature `/loi` dans le code source de **La Suite Docs**, en couvrant le schéma CRDT, la gestion des 3 modes d'affichage et l'architecture backend.
+
+---
+
+## 🏗️ 1. Modélisation CRDT & Schéma TypeScript
+
+Le bloc est conçu pour stocker l'intégralité des métadonnées officielles de manière atomique afin de garantir une synchronisation temps réel parfaite via **Yjs** sans risque d'altération du texte juridique :
+
+```typescript
+// src/blocks/law/types.ts
+export type LawDisplayMode = "excerpt" | "reference" | "inline";
+
+export interface LawBlockProps {
+  id: string; // ex: "LEGIARTI000032041571"
+  codeId: string; // ex: "LEGITEXT000006070721"
+  codeTitle: string; // ex: "Code civil"
+  articleNumber: string; // ex: "Article 1240"
+  status: "in_force" | "amended" | "abrogated";
+  source: string; // "Légifrance"
+  versionDate: string; // "2026-09-14"
+  legifranceUrl: string; // "https://www.legifrance.gouv.fr/..."
+  paragraphs: string[]; // Paragraphes du texte officiel
+  displayMode: LawDisplayMode; // "excerpt" | "reference" | "inline"
+}
+```
+
+---
+
+## 🧩 2. Implémentation du Bloc BlockNote Multi-Modes
+
+Grâce à `createReactBlockSpec`, nous encapsulons les 3 modes de rendu au sein d'un composant unique :
+
+```tsx
+// src/blocks/law/LawBlock.tsx
+import { createReactBlockSpec } from "@blocknote/react";
+import React, { useState } from "react";
+import { LawDisplayMode } from "./types";
+
+export const LawBlock = createReactBlockSpec(
+  {
+    type: "law",
+    propSchema: {
+      articleId: { default: "LEGIARTI000032041571" },
+      codeTitle: { default: "Code civil" },
+      articleNumber: { default: "Article 1240" },
+      status: { default: "En vigueur" },
+      versionDate: { default: "2026-09-14" },
+      legifranceUrl: {
+        default:
+          "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000032041571",
+      },
+      paragraphs: {
+        default: JSON.stringify([
+          "Tout fait quelconque de l'homme, qui cause à autrui un dommage, oblige celui par la faute duquel il est arrivé, à le réparer.",
+        ]),
+      },
+      displayMode: { default: "excerpt" as LawDisplayMode },
+    },
+    content: "none",
+  },
+  {
+    render: (props) => {
+      const {
+        articleNumber,
+        codeTitle,
+        status,
+        legifranceUrl,
+        paragraphs,
+        displayMode,
+      } = props.block.props;
+
+      const parsedParagraphs: string[] = JSON.parse(paragraphs);
+      const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+      const updateMode = (newMode: LawDisplayMode) => {
+        props.editor.updateBlock(props.block, {
+          props: { displayMode: newMode },
+        });
+        setIsMenuOpen(false);
+      };
+
+      // --- RENDU MODE RÉFÉRENCE (Ligne compacte 48-56px) ---
+      if (displayMode === "reference") {
+        return (
+          <div className="h-[52px] border border-gray-200 bg-white rounded-lg px-3.5 flex items-center justify-between my-3 not-prose">
+            <div className="flex items-center gap-2 min-w-0 pr-2">
+              <span className="fr-icon-file-text-line text-gray-400" />
+              <a
+                href={legifranceUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="text-xs font-semibold text-[#000091] hover:underline flex items-center gap-1 truncate"
+              >
+                {articleNumber} · {codeTitle}
+                <span className="fr-icon-external-link-line text-[11px]" />
+              </a>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="text-xs text-gray-700 bg-gray-50 px-2 py-1 rounded border border-gray-200"
+              >
+                Référence ▾
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      // --- RENDU MODE EXTRAIT (Bloc complet par défaut) ---
+      return (
+        <div
+          className="border border-gray-200 bg-white rounded-lg overflow-hidden my-4 not-prose"
+          data-law-article={props.block.props.articleId}
+        >
+          {/* Barre d'outils compacte */}
+          <div className="bg-gray-50/80 px-3 py-1.5 border-b border-gray-100 flex items-center justify-between text-xs">
+            <div className="flex items-center gap-1.5 text-gray-600 font-medium">
+              <span className="fr-icon-scales-3-line text-[#000091]" />
+              <span>Référence juridique</span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="text-xs text-gray-700 bg-white px-2 py-0.5 rounded border border-gray-200"
+              >
+                Extrait ▾
+              </button>
+              <button type="button" className="text-xs text-gray-400 p-0.5">
+                …
+              </button>
+            </div>
+          </div>
+
+          {/* Corps de l'article */}
+          <div className="p-4 space-y-3">
+            <div>
+              <h4 className="text-sm font-bold text-gray-900 m-0">
+                {articleNumber} · {codeTitle}
+              </h4>
+              <div className="text-xs text-gray-500 mt-0.5">
+                {status} · Source : Légifrance
+              </div>
+            </div>
+
+            {parsedParagraphs.map((p, i) => (
+              <p key={i} className="text-sm text-gray-800 italic border-l-2 border-[#000091]/30 pl-3 m-0">
+                « {p} »
+              </p>
+            ))}
+
+            <div className="pt-1">
+              <a
+                href={legifranceUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1 text-xs text-[#000091] hover:underline"
+              >
+                Consulter la source
+                <span className="fr-icon-external-link-line text-[11px]" />
+              </a>
+            </div>
+          </div>
+        </div>
+      );
+    },
+  },
+);
+```
+
+---
+
+## 🔗 3. Gestion du Mode « Lien » (Inline Content & Barre Contextuelle)
+
+Pour insérer une référence sous forme de lien fluide dans une phrase, nous déclarons un **InlineContentSpec** dans BlockNote / TipTap :
+
+```tsx
+// src/blocks/law/LawInlineSpec.tsx
+import { createReactInlineContentSpec } from "@blocknote/react";
+import React, { useState } from "react";
+
+export const LawInline = createReactInlineContentSpec(
+  {
+    type: "lawLink",
+    propSchema: {
+      articleNumber: { default: "Article 1240" },
+      codeTitle: { default: "Code civil" },
+      url: { default: "https://www.legifrance.gouv.fr/..." },
+    },
+    content: "none",
+  },
+  {
+    render: (props) => {
+      const [isOpen, setIsOpen] = useState(false);
+      const { articleNumber, codeTitle, url } = props.inlineContent.props;
+
+      return (
+        <span className="relative inline-block">
+          <button
+            type="button"
+            onClick={() => setIsOpen(!isOpen)}
+            className="text-[#000091] underline font-medium hover:text-blue-900 cursor-pointer"
+          >
+            {articleNumber} du {codeTitle}
+          </button>
+
+          {/* Barre contextuelle flottante (36-40px x ~300px) */}
+          {isOpen && (
+            <div className="absolute left-0 top-6 w-[290px] h-[38px] rounded-lg border border-gray-200 bg-white shadow-md px-2 flex items-center justify-between text-xs z-30">
+              <a
+                href={url}
+                target="_blank"
+                rel="noreferrer"
+                className="text-[#000091] hover:underline font-medium flex items-center gap-1"
+              >
+                Légifrance ↗
+              </a>
+              <div className="h-4 w-[1px] bg-gray-200" />
+              <span className="text-gray-700">Lien ▾</span>
+              <span className="text-gray-400">…</span>
+            </div>
+          )}
+        </span>
+      );
+    },
+  },
+);
+```
+
+---
+
+## 🐍 4. Architecture Backend Django & Cache Redis
+
+Le backend expose deux endpoints ultra-rapides (< 10ms via cache Redis) :
+
+```python
+# docs/backend/api/views/laws.py
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.core.cache import cache
+import requests
+
+class LawSearchAPIView(APIView):
+    """
+    Recherche instantanée avec cache Redis TTL 24h.
+    """
+    def get(self, request):
+        query = request.query_params.get('q', '').strip()
+        category = request.query_params.get('filter', 'all')
+
+        if not query:
+            return Response({"error": "Paramètre 'q' requis."}, status=status.HTTP_400_BAD_REQUEST)
+
+        cache_key = f"laws:search:{category}:{query.lower()}"
+        cached = cache.get(cache_key)
+        if cached:
+            return Response(cached)
+
+        # Appel service PISTE / DILA
+        results = self.query_piste_dila(query, category)
+        cache.set(cache_key, results, timeout=86400)
+        return Response(results)
+```
+
+---
+
+## ➡️ Prochaine Étape
+
+Consultez le plan d'action opérationnel pour le déploiement de la feature `/loi` dans le dépôt officiel.
+
+👉 **[Chapitre 6 : Plan d'Action & Déploiement](/08-slash/loi/06-plan-action-et-deploiement)**

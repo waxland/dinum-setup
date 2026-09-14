@@ -245,7 +245,35 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       "/07-skills/lasuite-dev",
       "/07-skills/rgaa-review"
     ]
-  }
+  },
+  {
+    "type": "category",
+    "label": "Commandes Slash (/)",
+    "icon": "terminal",
+    "collapsed": false,
+    "items": [
+      "/08-slash/index",
+      {
+        "type": "category",
+        "label": "Projet de Loi & Légifrance (/loi)",
+        "icon": "scale",
+        "collapsed": false,
+        "items": [
+          "/08-slash/loi/index",
+          "/08-slash/loi/01-contexte-metier-et-juridique",
+          "/08-slash/loi/02-besoins-agents-et-cas-usage",
+          "/08-slash/loi/03-architecture-et-interoperabilite",
+          "/08-slash/loi/04-interface-et-modes-affichage",
+          "/08-slash/loi/05-specifications-techniques-feature",
+          "/08-slash/loi/06-plan-action-et-deploiement",
+          "/08-slash/loi/comprendre-les-lois",
+          "/08-slash/loi/ressources-juridiques"
+        ]
+      }
+    ]
+  },
+  "/comprendre-les-lois",
+  "/ressources-juridiques"
 ];
 
 export const docsRedirects: ZudokuConfig["redirects"] = [
@@ -288,6 +316,30 @@ export const docsRedirects: ZudokuConfig["redirects"] = [
   {
     "from": "/skills",
     "to": "/07-skills"
+  },
+  {
+    "from": "/slash",
+    "to": "/08-slash"
+  },
+  {
+    "from": "/08-slash/loi",
+    "to": "/08-slash/loi"
+  },
+  {
+    "from": "/loi",
+    "to": "/08-slash/loi"
+  },
+  {
+    "from": "/law",
+    "to": "/08-slash/loi"
+  },
+  {
+    "from": "/comprendre-les-lois",
+    "to": "/comprendre-les-lois"
+  },
+  {
+    "from": "/ressources-juridiques",
+    "to": "/ressources-juridiques"
   },
   {
     "from": "/guide",

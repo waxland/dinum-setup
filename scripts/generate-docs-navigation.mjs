@@ -52,6 +52,15 @@ function formatLabel(name) {
     legifrance: "Légifrance",
     mdx: "MDX",
     figma: "Figma",
+    slash: "Commandes Slash (/)",
+    loi: "Projet de Loi & Légifrance (/loi)",
+    dila: "DILA",
+    piste: "PISTE",
+    mvp: "MVP",
+    poc: "PoC",
+    ux: "UX",
+    ia: "IA",
+    jwt: "JWT",
   };
 
   return clean
@@ -94,6 +103,11 @@ function getDefaultIcon(name, depth) {
     )
       return "bot";
     if (
+      lower.includes("slash") ||
+      lower.includes("commande")
+    )
+      return "terminal";
+    if (
       lower.includes("ressource") ||
       lower.includes("roadmap") ||
       lower.includes("communaute")
@@ -118,6 +132,8 @@ function getDefaultIcon(name, depth) {
   if (lower.includes("donnees") || lower.includes("temps-reel"))
     return "database";
   if (lower.includes("devops") || lower.includes("deploiement")) return "cloud";
+  if (lower.includes("loi") || lower.includes("juridique") || lower.includes("legal"))
+    return "scale";
   if (lower.includes("document") || lower.includes("contenu"))
     return "file-text";
   if (lower.includes("communication") || lower.includes("echange"))
@@ -233,6 +249,12 @@ function generateNavForTarget(target) {
     { from: "/ressources", to: "/05-ressources/communaute" },
     { from: "/tutoriels", to: "/06-tutoriels" },
     { from: "/skills", to: "/07-skills" },
+    { from: "/slash", to: "/08-slash" },
+    { from: "/08-slash/loi", to: "/08-slash/loi" },
+    { from: "/loi", to: "/08-slash/loi" },
+    { from: "/law", to: "/08-slash/loi" },
+    { from: "/comprendre-les-lois", to: "/comprendre-les-lois" },
+    { from: "/ressources-juridiques", to: "/ressources-juridiques" },
     { from: "/guide", to: "/01-onboarding" },
 
     // Flat to subfolder backwards compatibility: Onboarding

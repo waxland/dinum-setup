@@ -1,0 +1,87 @@
+---
+title: Commandes Slash (/) pour La Suite Docs
+sidebar_label: Commandes Slash (/)
+description: Vue d'ensemble, architecture d'extension et catalogue des commandes slash personnalisées pour l'éditeur collaboratif La Suite Docs.
+---
+
+import { Mermaid } from "../../src/components/Mermaid";
+
+Les **commandes Slash (`/`)** constituent le mécanisme central d'interaction et d'extension dans l'éditeur collaboratif **La Suite Docs**. En saisissant un simple caractère `/` dans une nouvelle ligne ou en cours de rédaction, l'agent public accède instantanément à une palette d'outils, de composants structurés et d'intégrations de services de l'État.
+
+---
+
+## 🎯 Pourquoi des Commandes Slash dans La Suite ?
+
+Dans les outils d'édition traditionnels, l'insertion de contenus riches ou de données externes nécessite souvent de quitter le flux de travail, d'ouvrir de multiples onglets et de réaliser des copier-coller manuels générateurs d'erreurs.
+
+L'écosystème de commandes slash de **La Suite Docs** vise à :
+
+1. **Fluidifier la rédaction administrative :** Insérer des structures types (décisions, tableaux, callouts DSFR) sans lever les mains du clavier.
+2. **Connecter les services souverains de l'État :** Intégrer directement les visioconférences **Meet**, les canaux **Tchap**, les bases de données **Grist** ou les textes officiels **Légifrance**.
+3. **Garantir la conformité et l'accessibilité :** Chaque bloc généré respecte nativement les critères **RGAA v4.1** et le **Design System de l'État (DSFR)**.
+4. **Maintenir la synchronisation temps réel :** Tous les blocs personnalisés s'appuient sur le protocole **CRDT Yjs**, garantissant une réplication instantanée entre tous les participants.
+
+---
+
+## 🏗️ Architecture d'une Commande Slash
+
+<Mermaid chart={`flowchart TD
+    User["Agent public (Clavier : /)"] --> Menu["Menu Contextuel BlockNote / TipTap"]
+    Menu --> Choice{"Sélection de la commande"}
+    
+    Choice -->|/loi| ModalLoi["Modal de Recherche Légifrance / DILA"]
+    Choice -->|/meet| ApiMeet["Création salon visioconférence Meet"]
+    Choice -->|/decision| BlockDecision["Bloc Décision & Vote d'équipe"]
+    Choice -->|/grist| EmbedGrist["Intégration vue tabulaire Grist"]
+
+    ModalLoi --> CRDT["Arbre CRDT Yjs (Y.Doc)"]
+    ApiMeet --> CRDT
+    BlockDecision --> CRDT
+    EmbedGrist --> CRDT
+
+    CRDT --> WS["Serveur WebSockets Temps Réel"]
+    WS --> Peers["Tous les collaborateurs connectés"]
+`} />
+
+---
+
+## 📚 Catalogue & Dossiers Thématiques
+
+<FeatureGrid cols={2}>
+  <FeatureCard
+    icon="⚖️"
+    title="Dossier : Projet de Loi & Légifrance (/loi)"
+    description="Comprendre le métier juridique, la fabrique de la loi, et implémenter la commande slash /loi connectée à l'API officielle Légifrance."
+    href="/08-slash/loi"
+    badge="Focus Prioritaire"
+  />
+  <FeatureCard
+    icon="🤝"
+    title="Bloc Décision & Arbitrage (/decision)"
+    description="Insertion d'un bloc de prise de décision collaborative avec suivi des votes en temps réel."
+    href="/06-tutoriels/01-developpement-applicatif/creer-un-bloc-docs"
+    badge="Tutoriel"
+  />
+  <FeatureCard
+    icon="📹"
+    title="Visioconférence Meet (/meet)"
+    description="Génération instantanée d'un lien de salon sécurisé La Suite Meet directement dans le corps du document."
+    href="/03-projets/02-communication-et-echange/meet"
+    badge="Communication"
+  />
+  <FeatureCard
+    icon="📊"
+    title="Tableau Grist Dynamique (/grist)"
+    description="Intégration d'une vue de données tabulaire relationnelle souveraine dans les notes d'équipe."
+    href="/03-projets/01-documents-et-contenus/grist"
+    badge="Données"
+  />
+</FeatureGrid>
+
+---
+
+## 🚀 Accéder au Dossier Détaillé `/loi`
+
+Pour découvrir l'ensemble de la démarche métier, la réglementation juridique et le plan d'action technique complet pour la commande `/loi`, consultez le dossier dédié :
+
+👉 **[Consulter le dossier complet Projet de Loi & Commande `/loi`](/08-slash/loi)**

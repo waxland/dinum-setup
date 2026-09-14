@@ -1,0 +1,138 @@
+---
+title: Sommaire Général — Projet de Loi & Commande /loi
+sidebar_label: Sommaire & Vue d'ensemble
+description: Sommaire complet, objectifs métier et plan d'action technique pour l'intégration de la commande slash /loi et du référentiel Légifrance dans La Suite Docs.
+---
+
+import { Mermaid } from "../../../src/components/Mermaid";
+
+Bienvenue dans le dossier de référence dédié à **l'intégration du droit public, des projets de loi et de la commande slash `/loi`** au sein de **La Suite Docs**.
+
+Ce dossier a été conçu pour faire le pont entre la **réalité métier des administrations françaises** (hiérarchie des normes, cycle de vie législatif, sécurité juridique des actes) et la **conception logicielle moderne** (moteur d'édition BlockNote, réplication temps réel Yjs/CRDT, API officielle DILA/PISTE Légifrance et composants DSFR).
+
+---
+
+## 🎯 Pourquoi ce Dossier ?
+
+Dans les ministères, préfectures, établissements publics et collectivités territoriales, les agents passent des centaines d'heures par an à rédiger des documents où la citation exacte de la règle de droit est obligatoire :
+- Cahiers des clauses techniques et administratives de marchés publics,
+- Délibérations municipales et arrêtés préfectoraux,
+- Notes de cadrage stratégique, d'impact réglementaire ou de conformité RGPD,
+- Fiches de synthèse et comptes-rendus de réunions interministérielles.
+
+Aujourd'hui, ce travail s'effectue au moyen de copier-coller fragiles depuis des sites tiers ou des moteurs de recherche généralistes. **L'ambition de la commande `/loi` est de transformer Docs en un environnement d'écriture sécurisé, certifié par les sources officielles de l'État.**
+
+<Mermaid chart={`flowchart LR
+    subgraph Metier["1. Métier Juridique"]
+        M1["Hiérarchie des normes"] --> M2["Cycle de vie de la loi"]
+        M2 --> M3["Consolidation dans le temps"]
+    end
+
+    subgraph Usages["2. Besoins & Usages"]
+        U1["Marchés publics"] --> U2["Arrêtés & Délibérations"]
+        U2 --> U3["Conformité & RGPD"]
+    end
+
+    subgraph Tech["3. Architecture & API"]
+        T1["API PISTE / DILA"] --> T2["Proxy Django & Cache Redis"]
+        T2 --> T3["Schéma CRDT Yjs"]
+    end
+
+    subgraph Feature["4. Commande /loi"]
+        F1["Modal de recherche DSFR"] --> F2["Bloc certifié BlockNote"]
+        F2 --> F3["Veille & Alerte abrogation"]
+    end
+
+    Metier --> Usages --> Tech --> Feature
+`} />
+
+---
+
+## 📖 Sommaire Détaillé du Dossier
+
+Explorez les guides pédagogiques et les chapitres thématiques ci-dessous pour appréhender l'ensemble de la démarche :
+
+### 🔰 Guides Pédagogiques & Fondations (Débutant)
+
+<FeatureGrid cols={2}>
+  <FeatureCard
+    icon="💡"
+    title="Comprendre l'Organisation des Lois"
+    description="Guide grand public : différence entre loi, code, article, décret et arrêté, hiérarchie des normes vs codes, cycle de mise à jour et exemples concrets."
+    href="/08-slash/loi/comprendre-les-lois"
+    badge="Guide Débutant"
+  />
+  <FeatureCard
+    icon="🌐"
+    title="Ressources Juridiques Officielles"
+    description="Annuaire vérifié des 5 grands portails de l'État (Légifrance, Service-Public, Vie-publique, Assemblée nationale, Conseil constitutionnel) et fiches thématiques."
+    href="/08-slash/loi/ressources-juridiques"
+    badge="Sources Officielles"
+  />
+</FeatureGrid>
+
+### 🏗️ Conception & Plan d'Action Technique
+
+<FeatureGrid cols={3}>
+  <FeatureCard
+    icon="⚖️"
+    title="1. Contexte Métier & Juridique"
+    description="Hiérarchie des normes, navette parlementaire, promulgation, codification et identifiants DILA."
+    href="/08-slash/loi/01-contexte-metier-et-juridique"
+    badge="Chapitre 1 • Droit"
+  />
+  <FeatureCard
+    icon="👥"
+    title="2. Besoins des Agents & Usages"
+    description="Difficultés du copier-coller, risques d'obsolescence et cas d'usage réels (Marchés, Arrêtés, RGPD)."
+    href="/08-slash/loi/02-besoins-agents-et-cas-usage"
+    badge="Chapitre 2 • Usages"
+  />
+  <FeatureCard
+    icon="🏛️"
+    title="3. Architecture & PISTE"
+    description="Connecteur OAuth2 PISTE, proxy Django, cache Redis (<10ms) et synchronisation CRDT Yjs."
+    href="/08-slash/loi/03-architecture-et-interoperabilite"
+    badge="Chapitre 3 • Système"
+  />
+  <FeatureCard
+    icon="🎨"
+    title="4. Interface & 3 Modes d'Affichage"
+    description="Menu compact (340-380px), 3 modes (Extrait, Référence, Lien) et démonstrateur interactif."
+    href="/08-slash/loi/04-interface-et-modes-affichage"
+    badge="Chapitre 4 • UI / UX"
+  />
+  <FeatureCard
+    icon="🧩"
+    title="5. Implémentation BlockNote"
+    description="Code TypeScript complet de LawBlock et LawInline, convertisseurs ProseMirror et API Django."
+    href="/08-slash/loi/05-specifications-techniques-feature"
+    badge="Chapitre 5 • Code"
+  />
+  <FeatureCard
+    icon="📋"
+    title="6. Plan d'Action & Déploiement"
+    description="Feuille de route en 4 phases, tâches T-001 à T-010, tests automatisés Playwright et risques."
+    href="/08-slash/loi/06-plan-action-et-deploiement"
+    badge="Chapitre 6 • Roadmap"
+  />
+</FeatureGrid>
+
+---
+
+## ⚡ En Synthèse : La Proposition de Valeur
+
+| Axe | Situation Actuelle (Sans `/loi`) | Cible avec La Suite Docs (`/loi`) |
+| :--- | :--- | :--- |
+| **Source de données** | Copier-coller aléatoire depuis Google ou wikis | Données officielles certifiées issues de l'API DILA / Légifrance |
+| **Validité juridique** | Risque élevé de citer un article abrogé ou modifié | Vérification automatique du statut (« En vigueur » / « Abrogé ») |
+| **Expérience d'écriture** | Allers-retours permanents entre 5 onglets de navigateur | Recherche, prévisualisation et insertion en 2 secondes au clavier |
+| **Traçabilité** | Texte brut sans lien ni référence univoque | Identifiants univoques (`LEGIARTI...`) et lien direct vers Légifrance |
+| **Collaboration** | Conflits et pertes lors des éditions simultanées | Synchronisation temps réel instantanée via CRDT Yjs |
+| **Accessibilité & Rendu** | Formatages anarchiques et non conformes | Rendu élégant, responsive et conforme **RGAA AA** (DSFR) |
+
+---
+
+## 🚀 Commencer la Lecture
+
+👉 **[Accéder au Chapitre 1 : Contexte Métier & Fabrique de la Loi](/08-slash/loi/01-contexte-metier-et-juridique)**

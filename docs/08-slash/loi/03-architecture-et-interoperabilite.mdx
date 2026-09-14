@@ -1,0 +1,146 @@
+---
+title: Architecture Technique & Interopérabilité Légifrance
+sidebar_label: 3. Architecture & API
+description: Conception système, intégration de l'API Légifrance sur la plateforme PISTE, proxy backend Django, cache Redis et synchronisation CRDT Yjs.
+---
+
+import { Mermaid } from "../../../src/components/Mermaid";
+
+L'intégration de données juridiques officielles au cœur d'un éditeur temps réel nécessite une architecture robuste conciliant **performance**, **disponibilité**, **sécurité** et **cohérence collaborative**.
+
+Ce chapitre détaille l'infrastructure technique, les flux d'échange avec la plateforme **PISTE / DILA** et l'intégration dans l'arbre **CRDT Yjs** de La Suite Docs.
+
+---
+
+## 🏗️ 1. Vue d'Ensemble de l'Architecture Système
+
+<Mermaid chart={`flowchart TD
+    subgraph Client["Poste Client (Navigateur Agent)"]
+        UI["Éditeur BlockNote (React 19 / Next.js)"]
+        Modal["Modal de Recherche /loi (DSFR)"]
+        LocalYjs["Y.Doc CRDT Local"]
+    end
+
+    subgraph BackendDocs["Infrastructure La Suite Docs"]
+        DjangoProxy["API Django 5 (Proxy / Laws Service)"]
+        RedisCache[("Cache Redis 7<br/><i>(TTL 24h & Invalidation)</i>")]
+        YjsServer["Serveur Yjs WebSocket (Node.js)"]
+        PostgresDB[("Base PostgreSQL 16")]
+    end
+
+    subgraph PISTE["Plateforme Souveraine Interministérielle (PISTE)"]
+        OAuthPISTE["Serveur OAuth2 PISTE<br/><i>(Client Credentials)</i>"]
+        ApiDILA["API Légifrance / DILA<br/><i>(Base LEGI & JORF)</i>"]
+    end
+
+    Modal -->|1. GET /api/v1/laws/search?q=...| DjangoProxy
+    DjangoProxy -->|2. Vérification Cache| RedisCache
+    RedisCache -.->|Si absent (Cache Miss)| DjangoProxy
+    DjangoProxy -->|3. Requête authentifiée (Bearer Token)| ApiDILA
+    DjangoProxy -->|OAuth2 Token Refresh| OAuthPISTE
+    ApiDILA -->> DjangoProxy: Réponse JSON (Articles, Statuts, LEGIARTI)
+    DjangoProxy -->> Modal: Données nettoyées & typées
+    Modal -->|4. Insertion du Bloc /loi| LocalYjs
+    LocalYjs <==>|5. Synchronisation CRDT WebSockets| YjsServer
+    YjsServer -.->|Persistance périodique| PostgresDB
+`} />
+
+---
+
+## 🔑 2. L'API Légifrance sur le Portail PISTE
+
+La **Direction de l'information légale et administrative (DILA)** expose l'ensemble des données juridiques françaises via des APIs REST hébergées sur **PISTE** (_Plateforme d'Intermédiation des Services pour la Transformation de l'État_).
+
+### A. Protocole d'Authentification OAuth2
+L'accès à l'API requiert une authentification **Client Credentials Flow** :
+
+```http
+POST https://oauth.piste.gouv.fr/api/oauth/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials&client_id=VOTRE_CLIENT_ID&client_secret=VOTRE_CLIENT_SECRET&scope=openid
+```
+
+Le serveur renvoie un `access_token` JWT avec une durée de validité (généralement 1 heure).
+
+### B. Principaux Endpoints Utilisés
+
+| Endpoint PISTE / DILA | Méthode | Rôle & Usage |
+| :--- | :--- | :--- |
+| `/dila/legifrance/lf-engine-app/consult/code` | `POST` | Récupère la table des matières ou l'arborescence d'un code (ex: Code de la commande publique). |
+| `/dila/legifrance/lf-engine-app/consult/getArticle` | `POST` | Récupère le texte intégral d'un article par son identifiant univoque (`LEGIARTI...`). |
+| `/dila/legifrance/lf-engine-app/search` | `POST` | Moteur de recherche multicritères (par mots-clés, numéros d'articles, dates d'effet). |
+| `/dila/legifrance/lf-engine-app/suggest` | `POST` | Autocomplétion dynamique pour assister la saisie dans le formulaire de recherche. |
+
+---
+
+## ⚡ 3. Pourquoi un Proxy Django & un Cache Redis ?
+
+Pour des raisons d'architecture, **le frontend Docs ne contacte jamais l'API PISTE directement** :
+
+1. **Sécurité des Secrets :** Les clés d'API `CLIENT_ID` et `CLIENT_SECRET` restent strictement confinées sur le serveur backend Django.
+2. **Gestion des Quotas & Rate-Limiting :** PISTE applique des limites de requêtes par seconde. Le proxy mutualise les requêtes pour l'ensemble des agents.
+3. **Mise en Cache Haute Performance (Redis) :** Les textes de lois consolidés ne changent pas d'une seconde à l'autre. Une mise en cache avec un **TTL de 24 heures** permet de servir 95% des requêtes en moins de **10 millisecondes**.
+4. **Normalisation des Réponses :** Le schéma de réponse brut de l'API DILA est particulièrement verbeux. Le proxy Django extrait uniquement les champs nécessaires au frontend pour alléger la charge réseau.
+
+---
+
+## 🤝 4. Modélisation CRDT dans l'Éditeur (Yjs)
+
+L'éditeur Docs s'appuie sur le framework **BlockNote**, lui-même construit sur **ProseMirror** et **Yjs**.
+
+Lorsqu'un bloc `/loi` est inséré par un utilisateur, ses données sont modélisées sous forme de propriétés immuables au sein d'un nœud `Y.XmlElement` :
+
+```typescript
+// Structure de données CRDT répliquée entre tous les pairs
+export interface LawBlockProps {
+  codeId: string;           // ex: "LEGITEXT000037701460"
+  codeTitle: string;        // ex: "Code de la commande publique"
+  articleNumber: string;    // ex: "Article L. 2122-1"
+  articleId: string;        // ex: "LEGIARTI000037728472"
+  content: string;          // Texte intégral certifié de l'article
+  status: "in_force" | "amended" | "abrogated" | "future";
+  versionDate: string;      // Date de consolidation (ex: "2026-09-14")
+  legifranceUrl: string;    // URL officielle vers le permalien Légifrance
+  hashVerification: string; // Empreinte SHA-256 pour vérifier l'intégrité
+}
+```
+
+### Mécanisme de Réconciliation
+Si deux utilisateurs ouvrent le même document :
+1. L'utilisateur A insère l'article via `/loi`.
+2. Yjs génère un ensemble d'updates binaires (`Uint8Array`) transmis par WebSocket.
+3. L'utilisateur B voit le bloc s'afficher en temps réel sur son écran, avec le rendu stylisé DSFR et les liens cliquables.
+4. Aucun conflit d'édition de texte interne n'est possible : le bloc est traité comme une entité atomique certifiée.
+
+---
+
+## 🔍 5. Veille & Détection d'Obsolescence Asynchrone
+
+Pour garantir la sécurité juridique dans la durée, le système intègre un mécanisme de **contrôle d'intégrité périodique** :
+
+<Mermaid chart={`sequenceDiagram
+    autonumber
+    participant UI as Frontend Docs
+    participant Proxy as Proxy Django
+    participant Redis as Cache Redis
+    participant PISTE as API Légifrance
+
+    UI->>Proxy: GET /api/v1/laws/check-status/?articles=LEGIARTI000037728472
+    Proxy->>Redis: Lecture statut actuel
+    alt Statut modifié ou article abrogé
+        Proxy-->>UI: { status: "abrogated", newArticleId: "LEGIARTI00004991823" }
+        UI->>UI: Affiche un badge d'avertissement "Article abrogé / Version obsolète"
+    else Toujours en vigueur
+        Proxy-->>UI: { status: "in_force" }
+        UI->>UI: Badge vert "En vigueur"
+    end
+`} />
+
+---
+
+## ➡️ Prochaine Étape
+
+Découvrez au chapitre 4 les spécifications détaillées de l'interface utilisateur, le code TypeScript complet du composant `LawBlock` et les maquettes d'intégration DSFR.
+
+👉 **[Chapitre 4 : Spécifications Fonctionnelles & Techniques de la Feature `/loi`](/08-slash/loi/04-specifications-techniques-feature)**

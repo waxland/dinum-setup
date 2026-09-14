@@ -1,0 +1,137 @@
+---
+title: Plan d'Action & Déploiement de la Feature /loi
+sidebar_label: 6. Plan d'Action & Roadmap
+description: Feuille de route par phases, découpage des tâches unitaires, stratégie de tests Playwright E2E des 3 modes et gestion des risques.
+---
+
+import { Mermaid } from "../../../src/components/Mermaid";
+
+Ce chapitre présente la **stratégie de déploiement opérationnelle** pour intégrer la commande slash `/loi` et ses 3 modes d'affichage dans le dépôt officiel `suitenumerique/docs`.
+
+---
+
+## 🗺️ 1. Feuille de Route en 4 Phases
+
+<Mermaid chart={`gantt
+    title Déploiement Progressif de la Feature /loi
+    dateFormat  YYYY-MM-DD
+    section Phase 1 (MVP Frontend & 3 Modes)
+    Menu contextuel /loi & Filtres        :done, p1_1, 2026-09-14, 2d
+    Mode Extrait (Bloc complet)           :done, p1_2, 2026-09-16, 2d
+    Modes Référence & Lien + Sélecteur    :active, p1_3, 2026-09-18, 3d
+    section Phase 2 (Backend & PISTE)
+    Client OAuth2 PISTE & Token Manager   :p2_1, 2026-09-21, 3d
+    Endpoints Django & Cache Redis        :p2_2, 2026-09-24, 3d
+    section Phase 3 (Temps Réel & Export)
+    Synchronisation CRDT Yjs              :p3_1, 2026-09-27, 2d
+    Export PDF Docspec & Markdown         :p3_2, 2026-09-29, 2d
+    Détection asynchrone d'abrogation     :p3_3, 2026-10-01, 3d
+    section Phase 4 (IA & Dossiers)
+    Synthèse IA souveraine (Albert)       :p4_1, 2026-10-04, 4d
+    Suivi de navette parlementaire        :p4_2, 2026-10-08, 4d
+`} />
+
+---
+
+## 📋 2. Découpage Détaillé des Tâches Unitaires
+
+### Phase 1 : MVP Frontend & Moteur de Rendu Multi-Modes (Sprint 1)
+
+| Réf. | Intitulé de la Tâche | Livrable Attendu | Critères d'Acceptation (DoD) |
+| :--- | :--- | :--- | :--- |
+| **T-001** | Menu flottant contextuel `/loi` | `src/components/LawSearchPopup.tsx` | Menu 340-380px, champ recherche, filtres Tout/Codes/Lois, navigation clavier. |
+| **T-002** | Composant `LawBlock` (Extrait & Référence) | `src/blocks/LawBlock.tsx` | Bascule instantanée entre le bloc complet et la ligne compacte de 48-56px. |
+| **T-003** | Composant `LawInline` (Mode Lien) | `src/blocks/LawInlineSpec.tsx` | Lien souligné fluide dans le paragraphe avec barre contextuelle flottante au clic. |
+| **T-004** | Sélecteur de mode d'affichage | `src/components/LawModeSelector.tsx` | Menu ancré 210px avec coche sur le mode actif, sans nouvelle requête réseau. |
+
+---
+
+### Phase 2 : Backend Django & Connecteur PISTE (Sprint 2)
+
+| Réf. | Intitulé de la Tâche | Livrable Attendu | Critères d'Acceptation (DoD) |
+| :--- | :--- | :--- | :--- |
+| **T-005** | Service OAuth2 PISTE | `backend/services/piste_auth.py` | Gestion automatique du cycle de vie des tokens JWT applicatifs. |
+| **T-006** | Endpoints de recherche & article | `backend/api/views/laws.py` | Routes `/api/v1/laws/search/` et `/api/v1/laws/articles/{id}/`. |
+| **T-007** | Couche de cache Redis | `backend/services/law_cache.py` | Cache Redis avec TTL 24h et clé composite `(code, article)`. |
+
+---
+
+### Phase 3 : Temps Réel, Exports & Veille Juridique (Sprint 3)
+
+| Réf. | Intitulé de la Tâche | Livrable Attendu | Critères d'Acceptation (DoD) |
+| :--- | :--- | :--- | :--- |
+| **T-008** | Validation multi-utilisateurs Yjs | Tests d'intégration CRDT | Réplication instantanée sans conflit ni perte du mode d'affichage choisi. |
+| **T-009** | Filtre d'export Docspec & PDF | `src/export/docspec-law.ts` | Rendu fidèle et vectoriel des 3 modes dans les PDF générés. |
+| **T-010** | Vérification d'obsolescence | `backend/tasks/check_laws.py` | Alerte visuelle non intrusive si un article cité est abrogé. |
+
+---
+
+## 🧪 3. Stratégie de Tests Automatisés E2E Playwright
+
+Le test valide l'ensemble du cycle : déclenchement, sélection, bascule de mode et réplication temps réel :
+
+```typescript
+import { test, expect } from "@playwright/test";
+
+test.describe("Fonctionnalité Commande Slash /loi & Modes d'Affichage", () => {
+  test("Insertion et bascule entre Extrait, Référence et Lien", async ({
+    page,
+    context,
+  }) => {
+    // 1. Ouvrir l'éditeur collaboratif
+    await page.goto("http://localhost:3000/doc/test-loi");
+    await page.locator(".bn-editor").click();
+
+    // 2. Déclencher la commande slash
+    await page.keyboard.type("/loi");
+
+    // 3. Vérifier l'ouverture du menu contextuel compact (max 380px)
+    const popup = page.locator("[data-law-popup]");
+    await expect(popup).toBeVisible();
+    await page.locator("input[placeholder*='Sujet, article']").fill("1240");
+    await page.keyboard.press("Enter");
+
+    // 4. Vérifier l'insertion en mode Extrait par défaut
+    const extraitBlock = page.locator("[data-law-article='LEGIARTI000032041571']");
+    await expect(extraitBlock).toBeVisible();
+    await expect(extraitBlock).toContainText("Article 1240 · Code civil");
+
+    // 5. Basculer en mode Référence
+    await page.locator("button:has-text('Extrait ▾')").click();
+    await page.locator("button:has-text('Référence')").click();
+    await expect(page.locator(".h-\\[52px\\]")).toBeVisible();
+
+    // 6. Basculer en mode Lien
+    await page.locator("button:has-text('Référence ▾')").click();
+    await page.locator("button:has-text('Lien')").click();
+    const inlineLink = page.locator("button:has-text('Article 1240 du Code civil')");
+    await expect(inlineLink).toBeVisible();
+
+    // 7. Clic sur le lien pour ouvrir la barre contextuelle
+    await inlineLink.click();
+    await expect(page.locator("a:has-text('Légifrance ↗')")).toBeVisible();
+  });
+});
+```
+
+---
+
+## 🛡️ 4. Matrice des Risques & Mesures de Mitigation
+
+| Risque Identifié | Probabilité | Impact | Stratégie de Mitigation |
+| :--- | :--- | :--- | :--- |
+| **Indisponibilité temporaire de l'API PISTE** | Moyenne | Élevé | Cache Redis 24h + base locale embarquée des 500 articles les plus cités en repli. |
+| **Changement de version de BlockNote** | Faible | Moyen | Utilisation exclusive des APIs publiques `createReactBlockSpec` sans forker le core. |
+| **Désynchronisation lors de grosses modifications** | Faible | Élevé | Propriétés atomiques immuables dans le CRDT Yjs ; interdiction de modifier le texte légal à la main. |
+| **Régression d'accessibilité (RGAA)** | Faible | Élevé | Intégration d'un audit automatisé `axe-core` dans la pipeline CI GitHub Actions. |
+
+---
+
+## 🏁 Conclusion
+
+L'intégration de la commande `/loi` avec ses **3 modes d'affichage (Extrait, Référence, Lien)** permet à **La Suite Docs** d'offrir une flexibilité inédite tout en garantissant l'authenticité et la sécurité juridique des écrits administratifs.
+
+Pour contribuer ou suivre les développements :
+- Rejoindre le salon Matrix [`#docs-official:matrix.org`](https://matrix.to/#/#docs-official:matrix.org)
+- Consulter le [Dossier Projet Docs](/03-projets/01-documents-et-contenus/docs)
+- Déposer une issue sur [`suitenumerique/docs`](https://github.com/suitenumerique/docs)
