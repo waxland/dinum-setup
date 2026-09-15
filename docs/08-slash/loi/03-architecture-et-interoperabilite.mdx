@@ -33,16 +33,16 @@ Ce chapitre détaille l'infrastructure technique, les flux d'échange avec la pl
         ApiDILA["API Légifrance / DILA<br/><i>(Base LEGI & JORF)</i>"]
     end
 
-    Modal -->|1. GET /api/v1/laws/search?q=...| DjangoProxy
-    DjangoProxy -->|2. Vérification Cache| RedisCache
-    RedisCache -.->|Si absent (Cache Miss)| DjangoProxy
-    DjangoProxy -->|3. Requête authentifiée (Bearer Token)| ApiDILA
-    DjangoProxy -->|OAuth2 Token Refresh| OAuthPISTE
-    ApiDILA -->> DjangoProxy: Réponse JSON (Articles, Statuts, LEGIARTI)
-    DjangoProxy -->> Modal: Données nettoyées & typées
-    Modal -->|4. Insertion du Bloc /loi| LocalYjs
-    LocalYjs <==>|5. Synchronisation CRDT WebSockets| YjsServer
-    YjsServer -.->|Persistance périodique| PostgresDB
+    Modal -->|Recherche API| DjangoProxy
+    DjangoProxy -->|Lecture du cache| RedisCache
+    RedisCache -.->|Cache absent| DjangoProxy
+    DjangoProxy -->|Requete authentifiee| ApiDILA
+    DjangoProxy -->|Rafraichissement OAuth2| OAuthPISTE
+    ApiDILA -->> DjangoProxy: Reponse JSON
+    DjangoProxy -->> Modal: Donnees nettoyees
+    Modal -->|Insertion du bloc loi| LocalYjs
+    LocalYjs <==>|Synchronisation WebSocket| YjsServer
+    YjsServer -.->|Persistance| PostgresDB
 `} />
 
 ---

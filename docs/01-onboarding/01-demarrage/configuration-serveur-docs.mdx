@@ -8,15 +8,18 @@ Ce tutoriel récapitule les fichiers à connaître lorsque **La Suite Docs** est
 
 > ⚠️ Ce guide distingue volontairement les fichiers versionnés du dépôt et les fichiers locaux propres au serveur. Les valeurs sensibles ne doivent jamais être ajoutées à Git.
 
+> ⚠️ **Point d'attention important :** si vous ne pouvez pas modifier directement le projet `src/docs`, faites toute la configuration depuis ce dépôt `dinum-setup` avec les fichiers locaux et les variables Docker décrits ci-dessous. Ne modifiez pas les fichiers générés ou les dépendances du projet Docs pour corriger une URL serveur.
+
 ---
 
-## 1. Les deux fichiers à connaître
+## 1. Les fichiers à connaître
 
 | Fichier | Où le trouver ou le créer | Rôle |
 | :--- | :--- | :--- |
 | `next.config.js` | `src/docs/src/frontend/apps/impress/next.config.js` | Configuration de construction et de développement Next.js. |
 | `.env.local` | `src/docs/src/frontend/apps/impress/.env.local` | Variables d'environnement propres à la machine ou au serveur. Ce fichier reste local. |
 | `common.local` | `src/docs/env.d/development/common.local` | Surcharges locales du backend Docker Docs : URLs publiques, OIDC, collaboration et services. |
+| `kc_auth.local` | `src/docs/env.d/development/kc_auth.local` | Hostname public généré par Keycloak pour éviter les redirections vers `localhost`. |
 
 Dans le dépôt actuel, l'option s'appelle **`allowedDevOrigins`**. Ce n'est pas `allowDevOrigin` : le nom est au pluriel, car plusieurs origines peuvent être autorisées.
 
@@ -186,7 +189,84 @@ Une ligne isolée sans `=` dans `common.local` provoque une erreur Docker du typ
 
 ---
 
-## 5. Procédure complète sur un serveur
+## 5. `kc_auth.local` : conserver Keycloak sur l'URL publique
+
+Keycloak construit les URLs de son formulaire de connexion à partir de son hostname. Si ce hostname reste configuré sur `localhost`, la page peut commencer sur l'adresse publique puis rediriger le navigateur vers `localhost:8083`. Le cookie de session n'est alors plus retrouvé et Keycloak affiche : **« Restart login cookie not found »**.
+
+Pour un accès depuis `207.175.155.66`, créez ou complétez :
+
+```dotenv
+# src/docs/env.d/development/kc_auth.local
+KC_HOSTNAME=http://207.175.155.66:8083
+KC_HOSTNAME_STRICT=false
+```
+
+Le fichier `kc_auth.local` est chargé par le service `keycloak` en complément de `kc_auth`. Il surcharge donc `KC_HOSTNAME=http://localhost:8083` défini dans le fichier commun.
+
+Après modification :
+
+```bash
+docker compose -f src/docs/compose.yml up -d --force-recreate keycloak nginx app-dev
+```
+
+Contrôle rapide : l'action du formulaire Keycloak doit commencer par :
+
+```text
+http://207.175.155.66:8083/realms/impress/login-actions/authenticate
+```
+
+Si l'ancienne URL `localhost` est encore ouverte dans le navigateur, supprimez les cookies de `localhost` et de `207.175.155.66`, puis relancez la connexion.
+
+Les identifiants de démonstration du realm importé sont `impress / impress`. Le compte `admin / admin` sert à administrer Keycloak, pas à se connecter à Docs.
+
+---
+
+## 6. Frontend Docker : remplacer l'API `localhost`
+
+Le service frontend de développement lit `.env.local`. Pour une image frontend de production ou le service `frontend` de `compose-e2e.yml`, l'URL de l'API est injectée par l'argument Docker `API_ORIGIN`. Cette valeur se configure depuis le setup : elle est transmise à Compose au moment du build et ne nécessite pas de modification directe dans le projet Docs.
+
+> ⚠️ **Attention à `localhost` :** dans une application exécutée dans le navigateur, `localhost` désigne l'ordinateur de l'utilisateur. Sur un serveur distant, utilisez toujours l'IP ou le domaine accessible depuis le navigateur, par exemple `http://207.175.155.66:8071`.
+
+Sur un serveur distant, utilisez l'URL accessible depuis le navigateur :
+
+```bash
+API_ORIGIN=http://207.175.155.66:8071 \
+  docker compose -f src/docs/compose-e2e.yml build frontend
+```
+
+Les fichiers Compose du setup utilisent cette valeur avec un repli local :
+
+```yaml
+API_ORIGIN: "${API_ORIGIN:-http://localhost:8071}"
+```
+
+Si votre serveur utilise l'IP publique `207.175.155.66`, vous pouvez aussi exporter la variable avant toutes les commandes Compose de la session :
+
+```bash
+export API_ORIGIN=http://207.175.155.66:8071
+docker compose -f src/docs/compose-e2e.yml build frontend
+docker compose -f src/docs/compose-e2e.yml up -d frontend
+```
+
+> ⚠️ **Après une modification de `API_ORIGIN`, reconstruisez l'image frontend.** Une variable `NEXT_PUBLIC_*` est intégrée au build : redémarrer uniquement le conteneur ne suffit pas.
+
+> ⚠️ **Ne mettez jamais `http://localhost:8071` dans une image destinée à être consultée depuis un autre ordinateur.** Le navigateur interpréterait `localhost` comme sa propre machine et les requêtes API échoueraient avec `ERR_CONNECTION_REFUSED`.
+
+### Contrôle depuis le setup
+
+Avant de lancer le build, vérifiez la valeur réellement transmise à Compose :
+
+```bash
+API_ORIGIN=http://207.175.155.66:8071 \
+  docker compose -f src/docs/compose-e2e.yml config \
+  | grep -A3 -B3 "API_ORIGIN"
+```
+
+Le résultat attendu contient `http://207.175.155.66:8071`, et non `http://localhost:8071`.
+
+---
+
+## 7. Procédure complète sur un serveur
 
 ### Étape 1 : Préparer le serveur
 
@@ -242,7 +322,7 @@ Vérifiez successivement :
 
 ---
 
-## 6. Développement distant et production : ne pas confondre
+## 8. Développement distant et production : ne pas confondre
 
 `allowedDevOrigins` et `.env.local` ne suffisent pas à sécuriser un déploiement de production :
 
@@ -251,9 +331,15 @@ Vérifiez successivement :
 - **Variables d'environnement :** avec `output: "export"`, les variables `NEXT_PUBLIC_*` sont intégrées au build. Toute modification nécessite généralement un nouveau build.
 - **Secrets :** ils doivent être fournis par le gestionnaire de secrets ou l'environnement du serveur, jamais par une valeur commitée dans le dépôt.
 
+> ⚠️ **Production :** l'exemple avec `207.175.155.66` est adapté à ce serveur de démonstration. Pour une vraie mise en production, utilisez HTTPS et un nom de domaine stable, puis remplacez cette IP dans `common.local`, `kc_auth.local`, `allowedDevOrigins` et `API_ORIGIN`.
+
+> ⚠️ **Authentification :** si Keycloak redirige vers `localhost:8083` ou affiche « Restart login cookie not found », vérifiez `kc_auth.local`, supprimez les anciens cookies du navigateur et recréez `keycloak`, `nginx` et `app-dev`.
+
+> ⚠️ **Réseau :** `API_ORIGIN`, `LOGIN_REDIRECT_URL`, `KC_HOSTNAME` et `OIDC_REDIRECT_ALLOWED_HOSTS` doivent correspondre au même domaine ou à la même IP publique. Une seule valeur restée sur `localhost` peut casser la connexion.
+
 ---
 
-## 7. Vérification finale
+## 9. Vérification finale
 
 ```bash
 # Depuis src/docs/src/frontend/apps/impress
@@ -261,6 +347,8 @@ pnpm build
 
 git status --short
 git check-ignore -v .env.local
+docker compose -f src/docs/compose.yml config >/dev/null
+docker compose -f src/docs/compose.yml config | grep -E "KC_HOSTNAME|LOGIN_REDIRECT_URL|OIDC_REDIRECT_ALLOWED_HOSTS|OIDC_OP_AUTHORIZATION_ENDPOINT"
 ```
 
 Le résultat attendu est :
@@ -268,6 +356,10 @@ Le résultat attendu est :
 - le build se termine sans erreur ;
 - `.env.local` n'apparaît pas dans `git status` ;
 - `git check-ignore` indique la règle qui ignore `.env.local` ;
+- `KC_HOSTNAME` utilise l'adresse publique et non `localhost` ;
+- les redirections OIDC utilisent `207.175.155.66:3000` et le callback API `207.175.155.66:8071` ;
+- l'URL API injectée dans une image frontend distante n'est pas `localhost:8071` ;
+- l'image frontend a été reconstruite après toute modification de `API_ORIGIN` ;
 - le domaine public correspond à une entrée de `allowedDevOrigins` uniquement lorsque le serveur Next.js est lancé en développement.
 
 ## Liens utiles
