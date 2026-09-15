@@ -80,6 +80,8 @@ function getDefaultIcon(name, depth) {
   const lower = name.toLowerCase();
 
   if (depth === 0) {
+    if (lower.includes("accueil") || lower.includes("home"))
+      return "home";
     if (lower.includes("onboarding") || lower.includes("demarrage"))
       return "compass";
     if (lower.includes("archi")) return "layers";
@@ -213,6 +215,12 @@ function scanDir(dir, baseDir, depth = 0) {
             label: "Accueil",
             icon: "home",
           });
+        } else if (path.dirname(relPath).replace(/^(\d+-)+/, "") === "accueil") {
+          items.push({
+            type: "doc",
+            file: relPath,
+            path: "/",
+          });
         } else {
           items.push({
             type: "doc",
@@ -248,6 +256,9 @@ function generateNavForTarget(target) {
   const redirects = [
     // Category aliases and root redirects
     { from: "/index", to: "/" },
+    { from: "/accueil", to: "/" },
+    { from: "/00-accueil", to: "/" },
+    { from: "/00-accueil/index", to: "/" },
     { from: "/05-ressources", to: "/05-ressources/communaute" },
     { from: "/onboarding", to: "/01-onboarding" },
     { from: "/architecture", to: "/02-architecture" },
@@ -266,26 +277,34 @@ function generateNavForTarget(target) {
     { from: "/ressources-juridiques", to: "/ressources-juridiques" },
     { from: "/guide", to: "/01-onboarding" },
 
-    // Flat to subfolder backwards compatibility: Onboarding
+    // Flat to subfolder backwards compatibility: Accueil / Onboarding
     {
       from: "/01-onboarding/challenge-42",
-      to: "/01-onboarding/01-demarrage/challenge-42",
+      to: "/00-accueil/challenge-42",
     },
     {
       from: "/challenge-42",
-      to: "/01-onboarding/01-demarrage/challenge-42",
+      to: "/00-accueil/challenge-42",
+    },
+    {
+      from: "/01-onboarding/01-demarrage/challenge-42",
+      to: "/00-accueil/challenge-42",
     },
     {
       from: "/01-onboarding/planning",
-      to: "/01-onboarding/01-demarrage/planning",
+      to: "/00-accueil/planning",
     },
     {
       from: "/planning",
-      to: "/01-onboarding/01-demarrage/planning",
+      to: "/00-accueil/planning",
     },
     {
       from: "/planning-42",
-      to: "/01-onboarding/01-demarrage/planning",
+      to: "/00-accueil/planning",
+    },
+    {
+      from: "/01-onboarding/01-demarrage/planning",
+      to: "/00-accueil/planning",
     },
     {
       from: "/01-onboarding/environnement-machine-hote",

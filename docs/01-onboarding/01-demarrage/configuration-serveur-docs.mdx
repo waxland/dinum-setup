@@ -88,11 +88,8 @@ chmod 600 .env.local
 Exemple de structure, à adapter aux variables réellement attendues par l'application :
 
 ```dotenv
-# URL publique de l'application Docs
-NEXT_PUBLIC_APP_URL=https://docs.example.gouv.fr
-
-# URL publique de l'API Docs
-NEXT_PUBLIC_API_URL=https://api.docs.example.gouv.fr
+# URL publique de l'API Docs utilisée par le navigateur
+NEXT_PUBLIC_API_ORIGIN=http://207.175.155.66:8071
 
 # Désactiver le service worker uniquement pour diagnostiquer un environnement local
 NEXT_PUBLIC_SW_DEACTIVATED=false
@@ -384,32 +381,143 @@ Le résultat attendu est :
 
 ---
 
-## 10. Diagnostic d'un build Zudoku long
+## 10. Configuration complète prête à copier-coller
 
-Le build complet du portail documentaire peut être long sur cette configuration. Il compile à la fois le bundle client, le bundle SSR, Mermaid, Shiki et les nombreux langages de coloration syntaxique. Le build observé ici prend environ **7 minutes 36 secondes** lorsqu'il s'exécute seul.
+Cette procédure utilise le chemin réel du serveur : `/home/deploy/dinum-setup`. Elle crée uniquement les fichiers locaux de configuration ; elle ne modifie pas le code source du projet Docs.
 
-Un build qui semble ne jamais finir peut aussi être causé par plusieurs commandes lancées en parallèle. Avant de relancer, vérifiez les processus actifs :
+> ⚠️ **Avant de commencer :** les fichiers `.local` et `.env.local` contiennent la configuration propre au serveur. Ne les commitez jamais. Les valeurs `CHANGE_ME_*` ci-dessous doivent être remplacées avant le démarrage.
 
-```bash
-ps -eo pid,etime,%cpu,cmd \
-  | grep -E "zudoku build|npm run docs:build" \
-  | grep -v grep
-```
-
-Lancez une seule validation à la fois :
+### Étape 1 : se placer dans le setup et préparer les fichiers
 
 ```bash
-npm run docs:nav
-npm run docs:build
+cd /home/deploy/dinum-setup
+make env-docs
 ```
 
-Les messages suivants ne sont pas nécessairement bloquants :
+### Étape 2 : créer `common.local`
 
-- l'avertissement Vite sur `optimizeDeps.esbuildOptions` déprécié ;
-- l'avertissement Shiki indiquant que le langage `http` n'est pas déclaré ;
-- la liste volumineuse des fichiers `dist/server/assets` générés.
+Copiez ce bloc tel quel. Il configure les redirections publiques, OIDC, les médias et la collaboration pour `207.175.155.66` :
 
-En revanche, une erreur SSR, une erreur Mermaid ou un processus qui consomme durablement le CPU sans progression doit être diagnostiqué avant déploiement. Évitez de lancer plusieurs `npm run docs:build` en même temps.
+```bash
+cat > /home/deploy/dinum-setup/src/docs/env.d/development/common.local <<'EOF'
+# Clef Fernet Django : générer une vraie valeur avec src/docs/bin/fernetkey
+OIDC_STORE_REFRESH_TOKEN_KEY=CHANGE_ME_GENERATE_FERNET_KEY
+
+# URLs publiques accessibles depuis le navigateur
+LOGIN_REDIRECT_URL=http://207.175.155.66:3000/
+LOGIN_REDIRECT_URL_FAILURE=http://207.175.155.66:3000/
+LOGOUT_REDIRECT_URL=http://207.175.155.66:3000/
+OIDC_REDIRECT_ALLOWED_HOSTS="207.175.155.66:3000,207.175.155.66:8071,207.175.155.66:8083"
+COLLABORATION_SERVER_ORIGIN=http://207.175.155.66:4444/
+MEDIA_BASE_URL=http://207.175.155.66:8083/
+IMPRESS_BASE_URL="http://207.175.155.66:8072/"
+
+# Endpoints OIDC publics utilisés pour le parcours navigateur
+OIDC_OP_JWKS_ENDPOINT=http://207.175.155.66:8083/realms/impress/protocol/openid-connect/certs
+OIDC_OP_AUTHORIZATION_ENDPOINT=http://207.175.155.66:8083/realms/impress/protocol/openid-connect/auth
+OIDC_OP_USER_ENDPOINT=http://207.175.155.66:8083/realms/impress/protocol/openid-connect/userinfo
+OIDC_OP_INTROSPECTION_ENDPOINT=http://207.175.155.66:8083/realms/impress/protocol/openid-connect/token/introspect
+EOF
+
+chmod 600 /home/deploy/dinum-setup/src/docs/env.d/development/common.local
+```
+
+> ⚠️ **Ne renseignez pas `OIDC_STORE_REFRESH_TOKEN_KEY` avec une valeur inventée.** Générez-la avec le script réellement présent dans le clone Docs :
+
+```bash
+cd /home/deploy/dinum-setup/src/docs
+./bin/generate-oidc-store-refresh-token-key.sh
+```
+
+Le script ajoute la clé dans `env.d/development/common.local`. Si vous avez déjà créé le fichier avec le bloc ci-dessus, supprimez d'abord la ligne `OIDC_STORE_REFRESH_TOKEN_KEY=CHANGE_ME_GENERATE_FERNET_KEY`, puis exécutez le script.
+
+### Étape 3 : créer `kc_auth.local`
+
+Ce fichier empêche Keycloak de générer des URLs `localhost:8083` après la saisie du compte `impress` :
+
+```bash
+cat > /home/deploy/dinum-setup/src/docs/env.d/development/kc_auth.local <<'EOF'
+KC_HOSTNAME=http://207.175.155.66:8083
+KC_HOSTNAME_STRICT=false
+EOF
+
+chmod 600 /home/deploy/dinum-setup/src/docs/env.d/development/kc_auth.local
+```
+
+> ⚠️ Si Keycloak affiche **« Restart login cookie not found »**, supprimez les cookies de `localhost` et `207.175.155.66`, puis recréez les services avec `make dev-docs`.
+
+### Étape 4 : créer le `.env.local` du frontend
+
+Ce fichier est lu par Next.js dans l'application frontend :
+
+```bash
+cat > /home/deploy/dinum-setup/src/docs/src/frontend/apps/impress/.env.local <<'EOF'
+NEXT_PUBLIC_API_ORIGIN=http://207.175.155.66:8071
+NEXT_PUBLIC_PUBLISH_AS_MIT=false
+NEXT_PUBLIC_SW_DEACTIVATED=true
+EOF
+
+chmod 600 /home/deploy/dinum-setup/src/docs/src/frontend/apps/impress/.env.local
+```
+
+> ⚠️ `NEXT_PUBLIC_API_ORIGIN` est exposée au navigateur. Elle ne doit contenir qu'une URL publique, jamais un mot de passe, une clé privée ou un token.
+
+### Étape 5 : vérifier les fichiers sans afficher les secrets
+
+```bash
+cd /home/deploy/dinum-setup
+test -s src/docs/env.d/development/common.local
+test -s src/docs/env.d/development/kc_auth.local
+test -s src/docs/src/frontend/apps/impress/.env.local
+grep -q '^NEXT_PUBLIC_API_ORIGIN=http://207.175.155.66:8071$' \
+  src/docs/src/frontend/apps/impress/.env.local
+grep -q '^KC_HOSTNAME=http://207.175.155.66:8083$' \
+  src/docs/env.d/development/kc_auth.local
+docker compose -f src/docs/compose.yml config >/dev/null
+echo "Configuration de fichiers valide"
+```
+
+> ⚠️ Ne faites pas `cat common.local` ou `docker compose config` sans filtre dans un terminal partagé : la sortie peut contenir des secrets.
+
+### Étape 6 : démarrer Docs avec les commandes du setup
+
+Pour une première installation :
+
+```bash
+cd /home/deploy/dinum-setup
+make bootstrap-docs
+```
+
+Après une modification de `common.local`, `kc_auth.local` ou `.env.local` :
+
+```bash
+cd /home/deploy/dinum-setup
+make dev-docs
+```
+
+Pour suivre le backend :
+
+```bash
+cd /home/deploy/dinum-setup
+make logs-docs
+```
+
+### Étape 7 : vérifier le parcours de connexion
+
+1. Ouvrir `http://207.175.155.66:3000/`.
+2. Être redirigé vers `http://207.175.155.66:8083/` et non vers `localhost`.
+3. Utiliser les identifiants de démonstration `impress / impress`.
+4. Revenir sur `http://207.175.155.66:3000/`.
+5. Vérifier que l'API répond depuis le navigateur :
+
+```bash
+curl -sS -o /dev/null -w "API config: HTTP %{http_code}\n" \
+  http://207.175.155.66:8071/api/v1.0/config/
+```
+
+Le résultat attendu est `API config: HTTP 200`. Un `401` sur `/api/v1.0/users/me/` avant connexion est normal ; après connexion, la session doit être reconnue.
+
+> ⚠️ Si une URL `localhost` apparaît encore, vérifiez dans cet ordre : `.env.local`, `common.local`, `kc_auth.local`, puis recréez les services avec `make dev-docs`. Ne relancez pas uniquement le frontend sans reconstruire lorsque `API_ORIGIN` a changé.
 
 ## Liens utiles
 

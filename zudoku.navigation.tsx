@@ -2,11 +2,19 @@ import type { ZudokuConfig } from "zudoku";
 
 export const docsNavigation: ZudokuConfig["navigation"] = [
   {
-    "type": "doc",
-    "file": "index.mdx",
-    "path": "/",
+    "type": "category",
     "label": "Accueil",
-    "icon": "home"
+    "icon": "home",
+    "collapsed": false,
+    "items": [
+      {
+        "type": "doc",
+        "file": "00-accueil/index.mdx",
+        "path": "/"
+      },
+      "/00-accueil/challenge-42",
+      "/00-accueil/planning"
+    ]
   },
   {
     "type": "category",
@@ -25,11 +33,9 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
         "icon": "rocket",
         "collapsed": false,
         "items": [
-          "/01-onboarding/01-demarrage/challenge-42",
           "/01-onboarding/01-demarrage/configuration-serveur-docs",
           "/01-onboarding/01-demarrage/environnement-machine-hote",
           "/01-onboarding/01-demarrage/git-ssh",
-          "/01-onboarding/01-demarrage/planning",
           "/01-onboarding/01-demarrage/urls-et-identifiants",
           "/01-onboarding/01-demarrage/vscode"
         ]
@@ -299,10 +305,13 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           "/08-slash/loi/04-interface-et-modes-affichage",
           "/08-slash/loi/05-specifications-techniques-feature",
           "/08-slash/loi/06-plan-action-et-deploiement",
+          "/08-slash/loi/07-cas-usage-metier",
+          "/08-slash/loi/08-user-stories-reponses-admin",
           "/08-slash/loi/comprendre-les-lois",
           "/08-slash/loi/ressources-juridiques"
         ]
-      }
+      },
+      "/08-slash/piste-2-doc-qui-se-remplit-tout-seul"
     ]
   }
 ];
@@ -310,6 +319,18 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
 export const docsRedirects: ZudokuConfig["redirects"] = [
   {
     "from": "/index",
+    "to": "/"
+  },
+  {
+    "from": "/accueil",
+    "to": "/"
+  },
+  {
+    "from": "/00-accueil",
+    "to": "/"
+  },
+  {
+    "from": "/00-accueil/index",
     "to": "/"
   },
   {
@@ -382,23 +403,31 @@ export const docsRedirects: ZudokuConfig["redirects"] = [
   },
   {
     "from": "/01-onboarding/challenge-42",
-    "to": "/01-onboarding/01-demarrage/challenge-42"
+    "to": "/00-accueil/challenge-42"
   },
   {
     "from": "/challenge-42",
-    "to": "/01-onboarding/01-demarrage/challenge-42"
+    "to": "/00-accueil/challenge-42"
+  },
+  {
+    "from": "/01-onboarding/01-demarrage/challenge-42",
+    "to": "/00-accueil/challenge-42"
   },
   {
     "from": "/01-onboarding/planning",
-    "to": "/01-onboarding/01-demarrage/planning"
+    "to": "/00-accueil/planning"
   },
   {
     "from": "/planning",
-    "to": "/01-onboarding/01-demarrage/planning"
+    "to": "/00-accueil/planning"
   },
   {
     "from": "/planning-42",
-    "to": "/01-onboarding/01-demarrage/planning"
+    "to": "/00-accueil/planning"
+  },
+  {
+    "from": "/01-onboarding/01-demarrage/planning",
+    "to": "/00-accueil/planning"
   },
   {
     "from": "/01-onboarding/environnement-machine-hote",
