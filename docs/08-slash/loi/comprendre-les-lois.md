@@ -1,6 +1,6 @@
 ---
-title: Comprendre l'Organisation des Lois en France
-sidebar_label: Comprendre les Lois (Débutant)
+title: Comprendre les Lois
+sidebar_label: Comprendre les Lois
 description: Guide pédagogique et accessible pour comprendre comment fonctionnent les lois, décrets, codes et articles de droit en France.
 ---
 

@@ -248,14 +248,14 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     "type": "category",
-    "label": "Commandes Slash (/)",
+    "label": "Commandes Slash",
     "icon": "terminal",
     "collapsed": false,
     "items": [
       "/08-slash/index",
       {
         "type": "category",
-        "label": "Projet de Loi & Légifrance (/loi)",
+        "label": "Projet de Loi (/loi)",
         "icon": "scale",
         "collapsed": false,
         "items": [
@@ -271,9 +271,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
         ]
       }
     ]
-  },
-  "/comprendre-les-lois",
-  "/ressources-juridiques"
+  }
 ];
 
 export const docsRedirects: ZudokuConfig["redirects"] = [
