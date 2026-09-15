@@ -151,10 +151,17 @@ OIDC_OP_TOKEN_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-connect/
 OIDC_OP_USER_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-connect/userinfo
 OIDC_OP_INTROSPECTION_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-connect/token/introspect
 
-# URL publique de collaboration et des médias
-COLLABORATION_SERVER_ORIGIN=http://207.175.155.66:4444/
+# URL publique de collaboration temps réel (Yjs WebSockets) et des médias
+COLLABORATION_SERVER_ORIGIN=http://207.175.155.66:3000,http://localhost:3000
+COLLABORATION_WS_URL=ws://207.175.155.66:4444/collaboration/ws/
 MEDIA_BASE_URL=http://207.175.155.66:8083/
+IMPRESS_BASE_URL="http://207.175.155.66:8072/"
+USER_RECONCILIATION_FORM_URL=http://207.175.155.66:3000
+DJANGO_EMAIL_URL_APP="http://207.175.155.66:3000"
 ```
+
+> ⚠️ **Configuration WebSocket de collaboration (`COLLABORATION_WS_URL`) :**
+> Si `COLLABORATION_WS_URL` reste sur `ws://localhost:4444/...`, le navigateur de l'agent tentera de se connecter au serveur Yjs sur sa propre machine locale et échouera, empêchant l'éditeur BlockNote de se charger ou de modifier les documents. Il **doit** pointer vers l'adresse IP publique : `ws://207.175.155.66:4444/collaboration/ws/`.
 
 > ⚠️ **Distinction cruciale entre endpoints publics et internes :**
 > - `OIDC_OP_AUTHORIZATION_ENDPOINT` est envoyé au **navigateur de l'utilisateur** (redirection 302) : il **doit** utiliser l'IP publique `207.175.155.66:8083`.
@@ -358,7 +365,6 @@ Vérifiez successivement :
 ---
 
 ## 9. Vérification finale
-
 ```bash
 # Depuis src/docs/src/frontend/apps/impress
 pnpm build
@@ -409,9 +415,12 @@ LOGIN_REDIRECT_URL=http://207.175.155.66:3000/
 LOGIN_REDIRECT_URL_FAILURE=http://207.175.155.66:3000/
 LOGOUT_REDIRECT_URL=http://207.175.155.66:3000/
 OIDC_REDIRECT_ALLOWED_HOSTS="207.175.155.66:3000,207.175.155.66:8071,207.175.155.66:8083"
-COLLABORATION_SERVER_ORIGIN=http://207.175.155.66:4444/
+COLLABORATION_SERVER_ORIGIN=http://207.175.155.66:3000,http://localhost:3000
+COLLABORATION_WS_URL=ws://207.175.155.66:4444/collaboration/ws/
 MEDIA_BASE_URL=http://207.175.155.66:8083/
 IMPRESS_BASE_URL="http://207.175.155.66:8072/"
+USER_RECONCILIATION_FORM_URL=http://207.175.155.66:3000
+DJANGO_EMAIL_URL_APP="http://207.175.155.66:3000"
 
 # Endpoints OIDC publics (navigateur)
 OIDC_OP_AUTHORIZATION_ENDPOINT=http://207.175.155.66:8083/realms/impress/protocol/openid-connect/auth
