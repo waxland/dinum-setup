@@ -16,6 +16,7 @@ Ce tutoriel récapitule les fichiers à connaître lorsque **La Suite Docs** est
 | :--- | :--- | :--- |
 | `next.config.js` | `src/docs/src/frontend/apps/impress/next.config.js` | Configuration de construction et de développement Next.js. |
 | `.env.local` | `src/docs/src/frontend/apps/impress/.env.local` | Variables d'environnement propres à la machine ou au serveur. Ce fichier reste local. |
+| `common.local` | `src/docs/env.d/development/common.local` | Surcharges locales du backend Docker Docs : URLs publiques, OIDC, collaboration et services. |
 
 Dans le dépôt actuel, l'option s'appelle **`allowedDevOrigins`**. Ce n'est pas `allowDevOrigin` : le nom est au pluriel, car plusieurs origines peuvent être autorisées.
 
@@ -114,7 +115,78 @@ Si Git ne retourne aucune règle, ajoutez l'entrée appropriée au `.gitignore` 
 
 ---
 
-## 4. Procédure complète sur un serveur
+## 4. `common.local` : la configuration Docker du backend Docs
+
+`common.local` est différent de `.env.local` :
+
+- `.env.local` configure principalement le frontend Next.js dans `apps/impress` ;
+- `common.local` est chargé par les services Docker `app-dev`, `celery-dev` et le fournisseur de collaboration ;
+- `common.local` surcharge les valeurs de développement définies dans `src/docs/env.d/development/common` sans modifier ce fichier partagé.
+
+Créez ou modifiez le fichier suivant sur le serveur :
+
+```bash
+cd /chemin/vers/dinum-setup
+touch src/docs/env.d/development/common.local
+chmod 600 src/docs/env.d/development/common.local
+```
+
+Pour un serveur accessible à l'adresse `207.175.155.66`, les variables essentielles sont notamment :
+
+```dotenv
+# URL après connexion et URL de retour en cas d'échec
+LOGIN_REDIRECT_URL=http://207.175.155.66:3000/
+LOGIN_REDIRECT_URL_FAILURE=http://207.175.155.66:3000/
+LOGOUT_REDIRECT_URL=http://207.175.155.66:3000/
+
+# Hôtes autorisés pour les redirections OIDC
+OIDC_REDIRECT_ALLOWED_HOSTS="207.175.155.66:3000,207.175.155.66:8071,207.175.155.66:8083"
+
+# URLs OIDC accessibles depuis le navigateur et les services publics
+OIDC_OP_JWKS_ENDPOINT=http://207.175.155.66:8083/realms/impress/protocol/openid-connect/certs
+OIDC_OP_AUTHORIZATION_ENDPOINT=http://207.175.155.66:8083/realms/impress/protocol/openid-connect/auth
+OIDC_OP_USER_ENDPOINT=http://207.175.155.66:8083/realms/impress/protocol/openid-connect/userinfo
+OIDC_OP_INTROSPECTION_ENDPOINT=http://207.175.155.66:8083/realms/impress/protocol/openid-connect/token/introspect
+
+# URL publique de collaboration et des médias
+COLLABORATION_SERVER_ORIGIN=http://207.175.155.66:4444/
+MEDIA_BASE_URL=http://207.175.155.66:8083/
+```
+
+Le endpoint de token peut rester interne au réseau Docker :
+
+```dotenv
+OIDC_OP_TOKEN_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-connect/token
+```
+
+Le backend réalise cet échange de token côté serveur ; le navigateur n'a pas besoin d'accéder directement à cette URL interne.
+
+### Ne pas mettre les mots de passe dans la documentation
+
+Les valeurs comme `OIDC_RP_CLIENT_SECRET`, `DJANGO_SECRET_KEY` et les mots de passe Keycloak doivent rester dans les fichiers locaux ou dans un gestionnaire de secrets. Ne les copiez jamais dans une page de documentation ni dans Git.
+
+### Recharger la configuration
+
+Après chaque modification de `common.local`, recréez les services qui utilisent ce fichier :
+
+```bash
+cd /chemin/vers/dinum-setup
+docker compose -f src/docs/compose.yml config
+docker compose -f src/docs/compose.yml up -d --force-recreate app-dev celery-dev nginx
+```
+
+Vérifiez ensuite la configuration chargée :
+
+```bash
+docker compose -f src/docs/compose.yml config \
+  | grep -E "LOGIN_REDIRECT_URL|OIDC_REDIRECT_ALLOWED_HOSTS|OIDC_OP_AUTHORIZATION_ENDPOINT"
+```
+
+Une ligne isolée sans `=` dans `common.local` provoque une erreur Docker du type `invalid environment variable: =...`. Le fichier doit contenir uniquement des lignes `NOM=VALEUR`, des commentaires et des lignes vides.
+
+---
+
+## 5. Procédure complète sur un serveur
 
 ### Étape 1 : Préparer le serveur
 
@@ -170,7 +242,7 @@ Vérifiez successivement :
 
 ---
 
-## 5. Développement distant et production : ne pas confondre
+## 6. Développement distant et production : ne pas confondre
 
 `allowedDevOrigins` et `.env.local` ne suffisent pas à sécuriser un déploiement de production :
 
@@ -181,7 +253,7 @@ Vérifiez successivement :
 
 ---
 
-## 6. Vérification finale
+## 7. Vérification finale
 
 ```bash
 # Depuis src/docs/src/frontend/apps/impress
