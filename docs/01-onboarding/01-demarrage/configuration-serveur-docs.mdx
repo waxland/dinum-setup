@@ -174,8 +174,21 @@ Après chaque modification de `common.local`, recréez les services qui utilisen
 
 ```bash
 cd /chemin/vers/dinum-setup
-docker compose -f src/docs/compose.yml config
-docker compose -f src/docs/compose.yml up -d --force-recreate app-dev celery-dev nginx
+make dev-docs
+```
+
+La cible `make dev-docs` appelle le `Makefile` du projet Docs et recrée les services de développement nécessaires. Si vous devez préparer le projet pour la première fois, utilisez plutôt :
+
+```bash
+make bootstrap-docs
+```
+
+> ⚠️ `make dev` lance plusieurs projets de La Suite. Pour travailler uniquement sur Docs, préférez `make dev-docs`.
+
+La commande Compose reste utile uniquement pour vérifier la configuration, sans démarrer de service :
+
+```bash
+docker compose -f src/docs/compose.yml config >/dev/null
 ```
 
 Vérifiez ensuite la configuration chargée :
@@ -206,7 +219,14 @@ Le fichier `kc_auth.local` est chargé par le service `keycloak` en complément 
 Après modification :
 
 ```bash
-docker compose -f src/docs/compose.yml up -d --force-recreate keycloak nginx app-dev
+make dev-docs
+```
+
+Cette commande recrée également Keycloak, Nginx et le backend via le `Makefile` du projet Docs. Pour contrôler explicitement les valeurs chargées sans afficher les secrets :
+
+```bash
+docker compose -f src/docs/compose.yml config \
+  | grep -E "KC_HOSTNAME|LOGIN_REDIRECT_URL|OIDC_REDIRECT_ALLOWED_HOSTS|OIDC_OP_AUTHORIZATION_ENDPOINT"
 ```
 
 Contrôle rapide : l'action du formulaire Keycloak doit commencer par :
@@ -245,7 +265,7 @@ Si votre serveur utilise l'IP publique `207.175.155.66`, vous pouvez aussi expor
 ```bash
 export API_ORIGIN=http://207.175.155.66:8071
 docker compose -f src/docs/compose-e2e.yml build frontend
-docker compose -f src/docs/compose-e2e.yml up -d frontend
+make -C src/docs run-e2e
 ```
 
 > ⚠️ **Après une modification de `API_ORIGIN`, reconstruisez l'image frontend.** Une variable `NEXT_PUBLIC_*` est intégrée au build : redémarrer uniquement le conteneur ne suffit pas.
@@ -361,6 +381,35 @@ Le résultat attendu est :
 - l'URL API injectée dans une image frontend distante n'est pas `localhost:8071` ;
 - l'image frontend a été reconstruite après toute modification de `API_ORIGIN` ;
 - le domaine public correspond à une entrée de `allowedDevOrigins` uniquement lorsque le serveur Next.js est lancé en développement.
+
+---
+
+## 10. Diagnostic d'un build Zudoku long
+
+Le build complet du portail documentaire peut être long sur cette configuration. Il compile à la fois le bundle client, le bundle SSR, Mermaid, Shiki et les nombreux langages de coloration syntaxique. Le build observé ici prend environ **7 minutes 36 secondes** lorsqu'il s'exécute seul.
+
+Un build qui semble ne jamais finir peut aussi être causé par plusieurs commandes lancées en parallèle. Avant de relancer, vérifiez les processus actifs :
+
+```bash
+ps -eo pid,etime,%cpu,cmd \
+  | grep -E "zudoku build|npm run docs:build" \
+  | grep -v grep
+```
+
+Lancez une seule validation à la fois :
+
+```bash
+npm run docs:nav
+npm run docs:build
+```
+
+Les messages suivants ne sont pas nécessairement bloquants :
+
+- l'avertissement Vite sur `optimizeDeps.esbuildOptions` déprécié ;
+- l'avertissement Shiki indiquant que le langage `http` n'est pas déclaré ;
+- la liste volumineuse des fichiers `dist/server/assets` générés.
+
+En revanche, une erreur SSR, une erreur Mermaid ou un processus qui consomme durablement le CPU sans progression doit être diagnostiqué avant déploiement. Évitez de lancer plusieurs `npm run docs:build` en même temps.
 
 ## Liens utiles
 
