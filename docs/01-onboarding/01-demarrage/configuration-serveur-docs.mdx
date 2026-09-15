@@ -1,0 +1,207 @@
+---
+title: Configurer Docs sur un Serveur
+sidebar_label: Configuration Serveur Docs
+description: Tutoriel de configuration de Next.js, allowedDevOrigins et .env.local pour lancer La Suite Docs sur un serveur.
+---
+
+Ce tutoriel récapitule les fichiers à connaître lorsque **La Suite Docs** est configurée sur un serveur de développement ou une machine distante.
+
+> ⚠️ Ce guide distingue volontairement les fichiers versionnés du dépôt et les fichiers locaux propres au serveur. Les valeurs sensibles ne doivent jamais être ajoutées à Git.
+
+---
+
+## 1. Les deux fichiers à connaître
+
+| Fichier | Où le trouver ou le créer | Rôle |
+| :--- | :--- | :--- |
+| `next.config.js` | `src/docs/src/frontend/apps/impress/next.config.js` | Configuration de construction et de développement Next.js. |
+| `.env.local` | `src/docs/src/frontend/apps/impress/.env.local` | Variables d'environnement propres à la machine ou au serveur. Ce fichier reste local. |
+
+Dans le dépôt actuel, l'option s'appelle **`allowedDevOrigins`**. Ce n'est pas `allowDevOrigin` : le nom est au pluriel, car plusieurs origines peuvent être autorisées.
+
+---
+
+## 2. `allowedDevOrigins` : autoriser l'origine du serveur
+
+Dans `next.config.js`, la configuration actuelle contient :
+
+```js
+const nextConfig = {
+  allowedDevOrigins: ["docs.127.0.0.1.nip.io", "207.175.155.66"],
+  output: "export",
+  trailingSlash: true,
+};
+```
+
+Cette option indique à Next.js quelles origines peuvent accéder au serveur de développement. Elle est utile lorsque l'application est ouverte depuis :
+
+- un nom de domaine local, ici `docs.127.0.0.1.nip.io` ;
+- l'adresse IP publique ou privée du serveur, ici `207.175.155.66`.
+
+### Ajouter une nouvelle origine
+
+Si le serveur est accessible avec un autre nom de domaine, ajoutez uniquement ce domaine dans la liste :
+
+```js
+allowedDevOrigins: [
+  "docs.127.0.0.1.nip.io",
+  "207.175.155.66",
+  "docs.example.gouv.fr",
+],
+```
+
+Utilisez l'origine réellement utilisée dans le navigateur. N'ajoutez pas `http://`, `https://`, un chemin ou un slash final dans cette liste :
+
+```text
+✅ docs.example.gouv.fr
+❌ https://docs.example.gouv.fr/docs
+❌ docs.example.gouv.fr/
+```
+
+Après toute modification de `next.config.js`, redémarrez le serveur Next.js :
+
+```bash
+cd src/docs/src/frontend/apps/impress
+pnpm dev
+```
+
+> Cette option concerne surtout le serveur de développement. Elle ne remplace pas la configuration du reverse proxy, du DNS, du TLS ou des règles de pare-feu en production.
+
+---
+
+## 3. `.env.local` : les variables propres au serveur
+
+Le fichier `.env.local` permet de définir les valeurs qui changent selon l'environnement : URL de l'API, adresse du serveur, activation d'une fonctionnalité ou identifiants non publics.
+
+Créez-le dans le dossier de l'application Next.js :
+
+```bash
+cd src/docs/src/frontend/apps/impress
+touch .env.local
+chmod 600 .env.local
+```
+
+Exemple de structure, à adapter aux variables réellement attendues par l'application :
+
+```dotenv
+# URL publique de l'application Docs
+NEXT_PUBLIC_APP_URL=https://docs.example.gouv.fr
+
+# URL publique de l'API Docs
+NEXT_PUBLIC_API_URL=https://api.docs.example.gouv.fr
+
+# Désactiver le service worker uniquement pour diagnostiquer un environnement local
+NEXT_PUBLIC_SW_DEACTIVATED=false
+```
+
+### Règles importantes
+
+- Les variables préfixées par `NEXT_PUBLIC_` peuvent être exposées au navigateur. N'y placez jamais de mot de passe, de clé privée ou de jeton.
+- Les secrets sans préfixe `NEXT_PUBLIC_` restent destinés au serveur, mais leur traitement dépend du code qui les lit.
+- Ne copiez pas de vraies valeurs sensibles dans la documentation ou dans un fichier `.env.example` public.
+- Vérifiez que `.env.local` est ignoré par Git avant d'y mettre une valeur privée :
+
+```bash
+git check-ignore -v src/docs/src/frontend/apps/impress/.env.local
+```
+
+Si Git ne retourne aucune règle, ajoutez l'entrée appropriée au `.gitignore` avant de continuer :
+
+```gitignore
+.env.local
+.env.*.local
+```
+
+---
+
+## 4. Procédure complète sur un serveur
+
+### Étape 1 : Préparer le serveur
+
+```bash
+git clone git@github.com:suitenumerique/dinum-setup.git
+cd dinum-setup
+
+# Vérifier les versions disponibles
+node --version
+pnpm --version
+docker compose version
+```
+
+### Étape 2 : Installer les dépendances de Docs
+
+```bash
+cd src/docs/src/frontend/apps/impress
+pnpm install
+```
+
+### Étape 3 : Configurer `.env.local`
+
+Créez le fichier local et renseignez les URLs correspondant à votre serveur :
+
+```bash
+cp .env.example .env.local
+chmod 600 .env.local
+```
+
+Si le projet ne fournit pas de `.env.example`, créez `.env.local` manuellement à partir de la liste des variables utilisées dans le code et dans la documentation du projet Docs.
+
+### Étape 4 : Vérifier `allowedDevOrigins`
+
+Adaptez `src/docs/src/frontend/apps/impress/next.config.js` uniquement si vous lancez le serveur Next.js en mode développement depuis un domaine ou une IP différente.
+
+### Étape 5 : Construire l'application
+
+```bash
+pnpm build
+```
+
+La configuration actuelle utilise `output: "export"` : la construction produit donc un site statique. Le déploiement doit servir le dossier de sortie avec un serveur web ou un reverse proxy configuré pour le domaine public.
+
+### Étape 6 : Tester depuis le navigateur
+
+Vérifiez successivement :
+
+1. que le domaine résout vers le bon serveur ;
+2. que HTTPS est actif si le domaine est public ;
+3. que l'application s'affiche sans erreur réseau ;
+4. que les appels vers l'API utilisent la bonne URL ;
+5. que les ressources statiques et les routes avec slash final sont servies correctement.
+
+---
+
+## 5. Développement distant et production : ne pas confondre
+
+`allowedDevOrigins` et `.env.local` ne suffisent pas à sécuriser un déploiement de production :
+
+- **Développement distant :** Next.js écoute souvent sur une adresse accessible depuis le réseau et `allowedDevOrigins` limite les origines autorisées.
+- **Production statique :** `pnpm build` génère les fichiers à servir ; le domaine et le TLS sont gérés par le serveur web ou le reverse proxy.
+- **Variables d'environnement :** avec `output: "export"`, les variables `NEXT_PUBLIC_*` sont intégrées au build. Toute modification nécessite généralement un nouveau build.
+- **Secrets :** ils doivent être fournis par le gestionnaire de secrets ou l'environnement du serveur, jamais par une valeur commitée dans le dépôt.
+
+---
+
+## 6. Vérification finale
+
+```bash
+# Depuis src/docs/src/frontend/apps/impress
+pnpm build
+
+git status --short
+git check-ignore -v .env.local
+```
+
+Le résultat attendu est :
+
+- le build se termine sans erreur ;
+- `.env.local` n'apparaît pas dans `git status` ;
+- `git check-ignore` indique la règle qui ignore `.env.local` ;
+- le domaine public correspond à une entrée de `allowedDevOrigins` uniquement lorsque le serveur Next.js est lancé en développement.
+
+## Liens utiles
+
+- [Configuration de la machine hôte](/01-onboarding/01-demarrage/environnement-machine-hote)
+- [Services, URLs et identifiants](/01-onboarding/01-demarrage/urls-et-identifiants)
+- [Configuration Git & SSH](/01-onboarding/01-demarrage/git-ssh)
+- [Documentation officielle de Next.js sur les variables d'environnement](https://nextjs.org/docs/app/building-your-application/configuring/environment-variables)
+- [Documentation officielle de Next.js sur `allowedDevOrigins`](https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins)

@@ -204,14 +204,22 @@ function scanDir(dir, baseDir, depth = 0) {
       entry.isFile() &&
       (entry.name.endsWith(".md") || entry.name.endsWith(".mdx"))
     ) {
-      if (depth === 0 && entry.name.startsWith("index.")) {
-        items.push({
-          type: "doc",
-          file: relPath,
-          path: "/",
-          label: "Accueil",
-          icon: "home",
-        });
+      if (entry.name.startsWith("index.")) {
+        if (depth === 0) {
+          items.push({
+            type: "doc",
+            file: relPath,
+            path: "/",
+            label: "Accueil",
+            icon: "home",
+          });
+        } else {
+          items.push({
+            type: "doc",
+            file: relPath,
+            path: `/${path.dirname(relPath)}`,
+          });
+        }
       } else {
         const route = "/" + relPath.replace(/\.mdx?$/, "");
         items.push(route);
@@ -250,6 +258,7 @@ function generateNavForTarget(target) {
     { from: "/tutoriels", to: "/06-tutoriels" },
     { from: "/skills", to: "/07-skills" },
     { from: "/slash", to: "/08-slash" },
+    { from: "/08-slash/index", to: "/08-slash" },
     { from: "/08-slash/loi", to: "/08-slash/loi" },
     { from: "/loi", to: "/08-slash/loi" },
     { from: "/law", to: "/08-slash/loi" },

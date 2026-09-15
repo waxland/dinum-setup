@@ -14,7 +14,11 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
     "icon": "compass",
     "collapsed": false,
     "items": [
-      "/01-onboarding/index",
+      {
+        "type": "doc",
+        "file": "01-onboarding/index.mdx",
+        "path": "/01-onboarding"
+      },
       {
         "type": "category",
         "label": "Demarrage",
@@ -22,6 +26,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
         "collapsed": false,
         "items": [
           "/01-onboarding/01-demarrage/challenge-42",
+          "/01-onboarding/01-demarrage/configuration-serveur-docs",
           "/01-onboarding/01-demarrage/environnement-machine-hote",
           "/01-onboarding/01-demarrage/git-ssh",
           "/01-onboarding/01-demarrage/planning",
@@ -59,7 +64,11 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
     "icon": "layers",
     "collapsed": false,
     "items": [
-      "/02-architecture/index",
+      {
+        "type": "doc",
+        "file": "02-architecture/index.mdx",
+        "path": "/02-architecture"
+      },
       {
         "type": "category",
         "label": "Securite Et Identite",
@@ -102,7 +111,11 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
     "icon": "boxes",
     "collapsed": false,
     "items": [
-      "/03-projets/index",
+      {
+        "type": "doc",
+        "file": "03-projets/index.mdx",
+        "path": "/03-projets"
+      },
       {
         "type": "category",
         "label": "Documents Et Contenus",
@@ -146,7 +159,11 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
     "icon": "palette",
     "collapsed": false,
     "items": [
-      "/04-design-system/index",
+      {
+        "type": "doc",
+        "file": "04-design-system/index.mdx",
+        "path": "/04-design-system"
+      },
       {
         "type": "category",
         "label": "Fondations",
@@ -206,7 +223,11 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
     "icon": "sparkles",
     "collapsed": false,
     "items": [
-      "/06-tutoriels/index",
+      {
+        "type": "doc",
+        "file": "06-tutoriels/index.mdx",
+        "path": "/06-tutoriels"
+      },
       {
         "type": "category",
         "label": "Developpement Applicatif",
@@ -236,7 +257,11 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
     "icon": "bot",
     "collapsed": false,
     "items": [
-      "/07-skills/index",
+      {
+        "type": "doc",
+        "file": "07-skills/index.mdx",
+        "path": "/07-skills"
+      },
       "/07-skills/architecture-review",
       "/07-skills/code-review",
       "/07-skills/design-change",
@@ -252,14 +277,22 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
     "icon": "terminal",
     "collapsed": false,
     "items": [
-      "/08-slash/index",
+      {
+        "type": "doc",
+        "file": "08-slash/index.mdx",
+        "path": "/08-slash"
+      },
       {
         "type": "category",
         "label": "Projet de Loi (/loi)",
         "icon": "scale",
         "collapsed": false,
         "items": [
-          "/08-slash/loi/index",
+          {
+            "type": "doc",
+            "file": "08-slash/loi/index.mdx",
+            "path": "/08-slash/loi"
+          },
           "/08-slash/loi/01-contexte-metier-et-juridique",
           "/08-slash/loi/02-besoins-agents-et-cas-usage",
           "/08-slash/loi/03-architecture-et-interoperabilite",
@@ -317,6 +350,10 @@ export const docsRedirects: ZudokuConfig["redirects"] = [
   },
   {
     "from": "/slash",
+    "to": "/08-slash"
+  },
+  {
+    "from": "/08-slash/index",
     "to": "/08-slash"
   },
   {
