@@ -142,24 +142,23 @@ LOGOUT_REDIRECT_URL=http://207.175.155.66:3000/
 # Hôtes autorisés pour les redirections OIDC
 OIDC_REDIRECT_ALLOWED_HOSTS="207.175.155.66:3000,207.175.155.66:8071,207.175.155.66:8083"
 
-# URLs OIDC accessibles depuis le navigateur et les services publics
-OIDC_OP_JWKS_ENDPOINT=http://207.175.155.66:8083/realms/impress/protocol/openid-connect/certs
+# Endpoint OIDC public pour la redirection du navigateur vers Keycloak
 OIDC_OP_AUTHORIZATION_ENDPOINT=http://207.175.155.66:8083/realms/impress/protocol/openid-connect/auth
-OIDC_OP_USER_ENDPOINT=http://207.175.155.66:8083/realms/impress/protocol/openid-connect/userinfo
-OIDC_OP_INTROSPECTION_ENDPOINT=http://207.175.155.66:8083/realms/impress/protocol/openid-connect/token/introspect
+
+# Endpoints OIDC internes (serveur-à-serveur dans le réseau Docker)
+OIDC_OP_JWKS_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-connect/certs
+OIDC_OP_TOKEN_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-connect/token
+OIDC_OP_USER_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-connect/userinfo
+OIDC_OP_INTROSPECTION_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-connect/token/introspect
 
 # URL publique de collaboration et des médias
 COLLABORATION_SERVER_ORIGIN=http://207.175.155.66:4444/
 MEDIA_BASE_URL=http://207.175.155.66:8083/
 ```
 
-Le endpoint de token peut rester interne au réseau Docker :
-
-```dotenv
-OIDC_OP_TOKEN_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-connect/token
-```
-
-Le backend réalise cet échange de token côté serveur ; le navigateur n'a pas besoin d'accéder directement à cette URL interne.
+> ⚠️ **Distinction cruciale entre endpoints publics et internes :**
+> - `OIDC_OP_AUTHORIZATION_ENDPOINT` est envoyé au **navigateur de l'utilisateur** (redirection 302) : il **doit** utiliser l'IP publique `207.175.155.66:8083`.
+> - `OIDC_OP_JWKS_ENDPOINT`, `OIDC_OP_TOKEN_ENDPOINT`, `OIDC_OP_USER_ENDPOINT` et `OIDC_OP_INTROSPECTION_ENDPOINT` sont appelés **côté serveur par Django** : ils **doivent** utiliser le nom de conteneur interne `http://nginx:8083/...` pour éviter un timeout réseau (hairpin NAT) lors du callback OIDC. Si ces endpoints pointent vers l'IP publique depuis le conteneur, Django subit un `ReadTimeout` puis lève une `SuspiciousOperation` (« OIDC callback state not found »).
 
 ### Ne pas mettre les mots de passe dans la documentation
 
@@ -352,6 +351,8 @@ Vérifiez successivement :
 
 > ⚠️ **Authentification :** si Keycloak redirige vers `localhost:8083` ou affiche « Restart login cookie not found », vérifiez `kc_auth.local`, supprimez les anciens cookies du navigateur et recréez `keycloak`, `nginx` et `app-dev`.
 
+> ⚠️ **Erreur « OIDC callback state not found in session » (`SuspiciousOperation`) :** cette erreur survient si vous rechargez la page de callback, si vous utilisez un lien de login obsolète ou si les endpoints OIDC internes (`JWKS`, `USER`, `TOKEN`) ont provoqué un timeout réseau. Assurez-vous que ces endpoints pointent vers `http://nginx:8083/...` dans `common.local` et initiez toujours la connexion depuis l'accueil `http://207.175.155.66:3000/`.
+
 > ⚠️ **Réseau :** `API_ORIGIN`, `LOGIN_REDIRECT_URL`, `KC_HOSTNAME` et `OIDC_REDIRECT_ALLOWED_HOSTS` doivent correspondre au même domaine ou à la même IP publique. Une seule valeur restée sur `localhost` peut casser la connexion.
 
 ---
@@ -412,11 +413,14 @@ COLLABORATION_SERVER_ORIGIN=http://207.175.155.66:4444/
 MEDIA_BASE_URL=http://207.175.155.66:8083/
 IMPRESS_BASE_URL="http://207.175.155.66:8072/"
 
-# Endpoints OIDC publics utilisés pour le parcours navigateur
-OIDC_OP_JWKS_ENDPOINT=http://207.175.155.66:8083/realms/impress/protocol/openid-connect/certs
+# Endpoints OIDC publics (navigateur)
 OIDC_OP_AUTHORIZATION_ENDPOINT=http://207.175.155.66:8083/realms/impress/protocol/openid-connect/auth
-OIDC_OP_USER_ENDPOINT=http://207.175.155.66:8083/realms/impress/protocol/openid-connect/userinfo
-OIDC_OP_INTROSPECTION_ENDPOINT=http://207.175.155.66:8083/realms/impress/protocol/openid-connect/token/introspect
+
+# Endpoints OIDC internes (Docker serveur-à-serveur)
+OIDC_OP_JWKS_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-connect/certs
+OIDC_OP_TOKEN_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-connect/token
+OIDC_OP_USER_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-connect/userinfo
+OIDC_OP_INTROSPECTION_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-connect/token/introspect
 EOF
 
 chmod 600 /home/deploy/dinum-setup/src/docs/env.d/development/common.local
