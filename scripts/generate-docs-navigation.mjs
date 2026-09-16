@@ -20,6 +20,10 @@ const CONFIGS = {
 function formatLabel(name) {
   const clean = name.replace(/^(\d+-)+/, "");
 
+  if (clean === "socle-technique") {
+    return "Socle Technique Unifié";
+  }
+
   const acronyms = {
     roi: "ROI",
     api: "API",
@@ -67,11 +71,11 @@ function formatLabel(name) {
     nat: "NAT",
     pappers: "Entreprises (/pappers)",
     assemblee: "Assemblée Nationale (/assemblee)",
-    remplir: "Document Auto-Rempli (/remplir)",
     siren: "SIREN",
     siret: "SIRET",
     django: "Django",
     redis: "Redis",
+    settings: "Activation & Settings",
   };
 
   return clean
@@ -145,6 +149,7 @@ function getDefaultIcon(name, depth) {
   if (lower.includes("donnees") || lower.includes("temps-reel"))
     return "database";
   if (lower.includes("devops") || lower.includes("deploiement")) return "cloud";
+  if (lower.includes("socle") || lower.includes("standard")) return "layers";
   if (lower.includes("loi") || lower.includes("juridique") || lower.includes("legal"))
     return "scale";
   if (lower.includes("pappers") || lower.includes("entreprise") || lower.includes("societe"))

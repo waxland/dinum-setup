@@ -59,7 +59,7 @@ L'API **`claire.vite`** est un service d'API moderne, rapide et normalisé index
 
 ## 📚 Sommaire du Dossier `/assemblee`
 
-<FeatureGrid cols={3}>
+<FeatureGrid cols={2}>
   <FeatureCard
     icon="🏛️"
     title="1. Spécifications API claire.vite"
@@ -68,17 +68,16 @@ L'API **`claire.vite`** est un service d'API moderne, rapide et normalisé index
     badge="API & Données"
   />
   <FeatureCard
-    icon="🧩"
-    title="2. Implémentation BlockNote"
-    description="Composant React ParliamentaryBlockSpec, badges de statut d'amendement et timeline de navette."
-    href="/08-slash/assemblee/02-implementation-bloc-parlementaire"
-    badge="Frontend & DSFR"
-  />
-  <FeatureCard
     icon="📜"
-    title="3. Cas d'Usage Veille & Banc"
+    title="2. Cas d'Usage Veille & Banc"
     description="Préparation des fiches de banc ministérielles, suivi des débats en direct et comptes-rendus de séance."
-    href="/08-slash/assemblee/03-cas-usage-veille-parlementaire"
+    href="/08-slash/assemblee/02-cas-usage-veille-parlementaire"
     badge="Cabinets & Métier"
   />
 </FeatureGrid>
+
+---
+
+## 🧩 Implémentation Frontend & Backend
+
+La commande `/assemblee` s'appuie directement sur le **[Socle Technique Unifié des Commandes Slash](/08-slash/socle-technique)** (CustomBlock `SourceBlockSpec` avec les 3 modes d'affichage **Callout**, **Carte** et **Lien**, et le `ParliamentSourceProvider` Django).

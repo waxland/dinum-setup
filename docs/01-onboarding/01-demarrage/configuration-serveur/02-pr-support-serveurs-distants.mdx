@@ -4,6 +4,8 @@ sidebar_label: Proposition PR DINUM
 description: Document complet et argumenté prêt à être partagé avec l'équipe de La Suite Numérique / DINUM pour rendre La Suite Docs nativement compatible avec les serveurs distants.
 ---
 
+import { Mermaid } from "../../../../src/components/Mermaid";
+
 Ce document constitue une proposition de **Pull Request** complète et structurée à destination des mainteneurs de **La Suite Numérique (DINUM)** pour le dépôt [`suitenumerique/docs`](https://github.com/suitenumerique/docs).
 
 Elle explique le contexte, le diagnostic technique, l'architecture cible et fournit l'ensemble des diffs et du texte de PR prêt à l'emploi.
@@ -43,8 +45,7 @@ Dans l'état actuel du dépôt, plusieurs endpoints et origines réseau sont cod
 
 Dès qu'un développeur exécute le projet sur un serveur distant et tente de s'y connecter depuis son navigateur web, **l'expérience utilisateur s'effondre** :
 
-```mermaid
-sequenceDiagram
+<Mermaid chart={`sequenceDiagram
     autonumber
     actor Dev as Navigateur Développeur
     participant VM as Serveur Distant (IP: 207.x.x.x)
@@ -60,7 +61,7 @@ sequenceDiagram
     Note over Django,KC: ❌ Échec 2 : Hairpin NAT Timeout si Django appelle l'IP publique
     Dev->>Yjs: Connexion WebSocket BlockNote
     Note over Dev,Yjs: ❌ Échec 3 : Connexion tente ws://localhost:4444<br/>(Bloqué sur le poste du dev, éditeur inutilisable)
-```
+`} />
 
 ---
 

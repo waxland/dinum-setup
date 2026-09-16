@@ -1,0 +1,95 @@
+---
+title: Cas d'Usage Métier — Commande /loi
+sidebar_label: 3. Cas d'Usage Métier
+description: "Situations réelles de travail où les agents publics utilisent la commande /loi : rédaction d'arrêtés, marchés publics, instruction, conformité et veille."
+---
+
+import { Mermaid } from "../../../src/components/Mermaid";
+
+La commande **`/loi`** répond aux besoins quotidiens des agents publics dans les ministères, préfectures, collectivités territoriales et établissements publics lorsqu'ils doivent fonder, vérifier ou sécuriser juridiquement leurs documents.
+
+---
+
+## 🧭 1. Les Quatre Grands Parcours Métier
+
+<Mermaid chart={`flowchart LR
+    Question["Question ou règle à citer"] --> Recherche["1. Recherche Légifrance (/loi)"]
+    Recherche --> Insertion["2. Insertion du bloc certifié"]
+    Insertion --> Verification["3. Contrôle de vigueur & version"]
+    Verification --> Veille["4. Alerte en cas de réforme"]
+    Veille --> Insertion
+`} />
+
+| Parcours | Question de l'agent | Valeur apportée par `/loi` |
+| :--- | :--- | :--- |
+| **Sécurisation d'un acte** | *« Quel est l'article exact qui fonde cet arrêté ou cette décision ? »* | Insertion du texte officiel in extenso avec mention de l'état de vigueur. |
+| **Contrôle de légalité** | *« Les visas et références cités sont-ils toujours applicables ? »* | Détection immédiate des articles abrogés ou modifiés. |
+| **Instruction de dossier** | *« Quelle est la condition réglementaire requise pour cette demande ? »* | Consultation de l'article officiel sans quitter le document ni ouvrir 5 onglets. |
+| **Veille et actualisation** | *« Quels documents internes sont impactés par la nouvelle loi ? »* | Traçabilité des identifiants `LEGIARTI...` pour les audits et mises à jour. |
+
+---
+
+## 🏢 2. Situations Réelles d'Utilisation
+
+### A. Rédaction des Visas dans les Arrêtés Municipaux & Préfectoraux
+- **Rôle :** Responsable des affaires juridiques / Secrétaire général de mairie.
+- **Contexte :** Rédaction d'un arrêté de police administrative, de délégation de signature ou de voirie.
+- **Problème sans `/loi` :** Recopie manuelle de vieux arrêtés comportant des articles abrogés ou renumérotés, entraînant un risque d'annulation au contrôle de légalité ou devant le tribunal administratif.
+- **Solution avec `/loi` :** L'agent tape `/loi` puis `L2212-2 CGCT`. Le bloc s'insère en **Mode Citation (Callout DSFR)** avec le texte officiel certifié et le badge `VIGUEUR`.
+
+---
+
+### B. Rédaction des CCTP & Règlements de Consultation (Marchés Publics)
+- **Rôle :** Acheteur public / Juriste marchés.
+- **Contexte :** Rédaction du Règlement de Consultation (RC) d'un appel d'offres de travaux ou de prestations informatiques.
+- **Problème sans `/loi` :** Risque de faire référence à une ancienne disposition du Code des marchés publics au lieu du **Code de la commande publique**.
+- **Solution avec `/loi` :** L'acheteur insère l'article `L. 2112-2` fixant les conditions d'exécution relatives aux critères environnementaux et sociaux en **Mode Carte** avec lien direct vers Légifrance.
+
+---
+
+### C. Instruction d'Autorisations d'Urbanisme (Permis de Construire)
+- **Rôle :** Agent instructeur au sein d'un service instructeur d'intercommunalité.
+- **Contexte :** Rédaction d'une décision d'accord ou de refus de permis de construire.
+- **Problème sans `/loi` :** Obligation de motiver précisément le refus en citant l'article exact du **Code de l'urbanisme** (ex: `Article R. 111-27` sur l'insertion paysagère) sous peine de vice de forme.
+- **Solution avec `/loi` :** L'agent sélectionne le mode **Lien Inline** pour intégrer la référence cliquable au sein du paragraphe explicatif.
+
+---
+
+### D. Notes de Cadrage & Conformité RGPD / Sécurité
+- **Rôle :** Délégué à la Protection des Données (DPO) / Responsable SSI.
+- **Contexte :** Rédaction d'une Analyse d'Impact relative à la Protection des Données (AIPD).
+- **Solution avec `/loi` :** Citation certifiée des dispositions de la **Loi n° 78-17 du 6 janvier 1978 modifiée** et du **Règlement (UE) 2016/679 (RGPD)**.
+
+---
+
+## 👥 3. Typologie des Utilisateurs Bénéficiaires
+
+<Mermaid chart={`mindmap
+  root((Bénéficiaires /loi))
+    Services Juridiques
+      Juristes marchés & contentieux
+      Délégués à la protection des données (DPO)
+      Chargés du contrôle de légalité
+    Services Opérationnels
+      Agents instructeurs (urbanisme, aides)
+      Rédacteurs de délibérations
+      Acheteurs publics & prescripteurs
+    Direction & Encadrement
+      Chefs de bureau & Directeurs de cabinet
+      Auditeurs & Contrôleurs internes
+      Nouveaux arrivants (Onboarding métier)
+`} />
+
+---
+
+## 📄 4. Exemple Concret dans une Délibération
+
+> ### EXTRAIT D'UNE DÉLIBÉRATION MUNICIPALE
+>
+> Le Conseil Municipal,
+>
+> ⚖️ **Article L. 2121-29 — Code général des collectivités territoriales** `VIGUEUR`  
+> *« Le conseil municipal règle par ses délibérations les affaires de la commune. »*  
+> [Consulter sur Légifrance ↗](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006389959)
+>
+> Après en avoir délibéré, décide de valider le projet d'aménagement...

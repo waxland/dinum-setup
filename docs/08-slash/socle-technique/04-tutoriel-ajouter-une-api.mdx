@@ -1,0 +1,113 @@
+---
+title: Tutoriel — Ajouter une Nouvelle API en 10 Minutes
+sidebar_label: 4. Ajouter une API
+description: "Guide pratique pas-à-pas pour brancher une nouvelle API souveraine (ex: Base Adresse Nationale) sur le socle technique unifié."
+---
+
+Grâce au **Socle Technique Unifié**, l'ajout d'une nouvelle commande slash de données (ex: **`/adresse`** branchée sur l'API de la Base Adresse Nationale) ne nécessite que **3 étapes simples**, sans toucher au moteur d'édition BlockNote ni au schéma CRDT Yjs.
+
+---
+
+## 🛠️ Étape 1 : Créer le Provider Python (`sources/providers/address.py`)
+
+Créez une classe héritant de `BaseSourceProvider` pour dialoguer avec l'API externe et mapper ses réponses vers le format universel :
+
+```python
+import requests
+from ..base import BaseSourceProvider, SourceSearchResult
+
+class AddressSourceProvider(BaseSourceProvider):
+    provider_id = "ban"
+    source_type = "address"
+    API_URL = "https://api-adresse.data.gouv.fr/search"
+
+    def is_enabled(self) -> bool:
+        return True  # L'API BAN est publique et sans clé obligatoire
+
+    def search(self, query: str, limit: int = 5) -> list[SourceSearchResult]:
+        resp = requests.get(self.API_URL, params={"q": query, "limit": limit}, timeout=2.5)
+        resp.raise_for_status()
+        features = resp.json().get("features", [])
+
+        results: list[SourceSearchResult] = []
+        for feat in features:
+            props = feat.get("properties", {})
+            results.append({
+                "source_id": props.get("id", ""),
+                "source_type": "address",
+                "provider": "Base Adresse Nationale",
+                "title": props.get("label", ""),
+                "subtitle": f"Code Postal : {props.get('postcode', '')} — Commune : {props.get('city', '')}",
+                "status": "CERTIFIÉE BAN",
+                "status_badge_color": "info",
+                "contentHtml": f"<p><strong>Coordonnées GPS :</strong> {feat.get('geometry', {}).get('coordinates', [])}</p>",
+                "summary": f"Adresse officielle référencée par la commune de {props.get('city', '')}.",
+                "meta_field_1_label": "Code INSEE",
+                "meta_field_1_value": props.get("citycode", ""),
+                "meta_field_2_label": "Type",
+                "meta_field_2_value": props.get("type", "housenumber"),
+                "meta_field_3_label": "Score",
+                "meta_field_3_value": f"{round(props.get('score', 0) * 100)}%",
+                "url": f"https://adresse.data.gouv.fr/base-adresse-nationale/{props.get('id', '')}",
+            })
+        return results
+```
+
+---
+
+## 🔌 Étape 2 : Enregistrer le Provider dans le Registry Backend
+
+```python
+# src/backend/core/sources/registry.py
+from .providers.law import LawSourceProvider
+from .providers.company import CompanySourceProvider
+from .providers.parliament import ParliamentSourceProvider
+from .providers.address import AddressSourceProvider
+
+class ProviderRegistry:
+    def __init__(self):
+        self._providers = {}
+
+    def register(self, provider):
+        self._providers[provider.source_type] = provider
+
+    def get_provider(self, source_type):
+        return self._providers.get(source_type)
+
+source_provider_registry = ProviderRegistry()
+source_provider_registry.register(LawSourceProvider())
+source_provider_registry.register(CompanySourceProvider())
+source_provider_registry.register(ParliamentSourceProvider())
+source_provider_registry.register(AddressSourceProvider())  # ✅ Nouvelle commande !
+```
+
+---
+
+## ⌨️ Étape 3 : Déclarer la Commande Slash dans BlockNote
+
+Dans le frontend Next.js, déclarez la nouvelle commande dans la liste d'autocomplétion :
+
+```tsx
+// src/frontend/apps/impress/.../useSlashMenuItems.ts
+export function getAddressSlashMenuItem(editor: BlockNoteEditor, openSearchPopover: (type: string) => void) {
+  return {
+    key: "slash-address",
+    name: "Adresse BAN (Base Adresse Nationale)",
+    execute: () => openSearchPopover("address"),
+    aliases: ["adresse", "address", "ban", "geo", "rue"],
+    group: "Données Souveraines",
+    icon: <span>📍</span>,
+    hint: "Insérer une adresse certifiée par la Base Adresse Nationale",
+  };
+}
+```
+
+---
+
+## 🎉 Résultat Immédiat
+
+L'agent public peut dès lors :
+1. Taper `/adresse` dans son document ;
+2. Rechercher n'importe quelle adresse française dans le popover inline ;
+3. Choisir le format d'affichage souhaité : **Callout** (mise en avant de l'adresse), **Carte** (avec code INSEE et coordonnées) ou **Lien** (badge inline cliquable).
+4. Le bloc est synchronisé en temps réel via **CRDT Yjs** avec tous les coauteurs.

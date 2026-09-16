@@ -309,8 +309,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "path": "/08-slash/assemblee"
           },
           "/08-slash/assemblee/01-api-claire-vite-assemblee",
-          "/08-slash/assemblee/02-implementation-bloc-parlementaire",
-          "/08-slash/assemblee/03-cas-usage-veille-parlementaire"
+          "/08-slash/assemblee/02-cas-usage-veille-parlementaire"
         ]
       },
       {
@@ -346,27 +345,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
               "/08-slash/loi/02-api-legifrance-piste/03-mapping-fonds-et-collections"
             ]
           },
-          {
-            "type": "category",
-            "label": "Backend Django",
-            "icon": "server",
-            "collapsed": false,
-            "items": [
-              "/08-slash/loi/03-backend-django/01-proxy-api-django",
-              "/08-slash/loi/03-backend-django/02-cache-redis-et-resilience"
-            ]
-          },
-          {
-            "type": "category",
-            "label": "Frontend BlockNote",
-            "icon": "monitor",
-            "collapsed": false,
-            "items": [
-              "/08-slash/loi/04-frontend-blocknote/01-custom-block-react",
-              "/08-slash/loi/04-frontend-blocknote/02-modal-recherche-dsfr",
-              "/08-slash/loi/04-frontend-blocknote/03-synchronisation-crdt-yjs"
-            ]
-          }
+          "/08-slash/loi/03-cas-usage-metier",
+          "/08-slash/loi/settings"
         ]
       },
       {
@@ -381,24 +361,27 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "path": "/08-slash/pappers"
           },
           "/08-slash/pappers/01-api-entreprises-pappers",
-          "/08-slash/pappers/02-implementation-bloc-entreprise",
-          "/08-slash/pappers/03-cas-usage-marches-publics"
+          "/08-slash/pappers/02-cas-usage-marches-publics"
         ]
       },
+      "/08-slash/roadmap",
       {
         "type": "category",
-        "label": "Document Auto-Rempli (/remplir)",
-        "icon": "sparkles",
+        "label": "Socle Technique Unifié",
+        "icon": "layers",
         "collapsed": false,
         "items": [
           {
             "type": "doc",
-            "file": "08-slash/remplir/index.mdx",
-            "path": "/08-slash/remplir"
-          }
+            "file": "08-slash/socle-technique/index.mdx",
+            "path": "/08-slash/socle-technique"
+          },
+          "/08-slash/socle-technique/01-architecture-standardisee",
+          "/08-slash/socle-technique/02-composant-customblock-unique",
+          "/08-slash/socle-technique/03-proxy-backend-et-cache",
+          "/08-slash/socle-technique/04-tutoriel-ajouter-une-api"
         ]
-      },
-      "/08-slash/roadmap"
+      }
     ]
   }
 ];

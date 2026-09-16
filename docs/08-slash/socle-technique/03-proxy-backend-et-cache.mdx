@@ -1,0 +1,155 @@
+---
+title: Proxy Backend Django 5 & Provider Registry
+sidebar_label: 3. Backend & Provider Registry
+description: Architecture backend unifiée, classe abstraite BaseSourceProvider, cache Redis générique et gestion des quotas.
+---
+
+import { Mermaid } from "../../../src/components/Mermaid";
+
+Côté serveur, le **Socle Technique Unifié** s'appuie sur le patron de conception **Provider Registry** au sein du backend Django 5. Il centralise la sécurité des clés d'API, le cache Redis partagé et la résilience réseau.
+
+---
+
+## 🏛️ 1. Architecture du Provider Registry
+
+Au lieu de créer des vues Django séparées pour chaque API, une vue unique générique `SourceSearchView` interroge le provider enregistré correspondant au paramètre `type` :
+
+<Mermaid chart={`flowchart TD
+    Client["Frontend BlockNote (/api/v1/sources/search?type=law&q=prefet)"] --> View["SourceSearchView (Vue DRF Unique)"]
+    View --> CacheCheck{"Clé en Cache Redis ?"}
+    CacheCheck -->|"Hit (< 5ms)"| ReturnCache["Réponse JSON normalisée"]
+    
+    CacheCheck -->|"Miss"| Registry["Provider Registry"]
+    Registry --> LawP["LawSourceProvider (Légifrance / PISTE)"]
+    Registry --> CompP["CompanySourceProvider (Pappers / API Entreprise)"]
+    Registry --> ParlP["ParliamentSourceProvider (claire.vite)"]
+    Registry --> AddrP["AddressSourceProvider (Base Adresse Nationale)"]
+
+    LawP --> SaveCache["Sauvegarde Cache Redis (TTL 24h)"] --> ReturnCache
+    CompP --> SaveCache
+    ParlP --> SaveCache
+    AddrP --> SaveCache
+`} />
+
+---
+
+## 🐍 2. L'Interface Abstraite `BaseSourceProvider` (`sources/base.py`)
+
+Tous les providers implémentent un contrat strict garantissant que les données retournées sont immédiatement compatibles avec le composant React `SourceBlockSpec` :
+
+```python
+from abc import ABC, abstractmethod
+from typing import TypedDict, Optional
+
+class SourceSearchResult(TypedDict):
+    source_id: str
+    source_type: str        # 'law' | 'company' | 'parliament' | 'address'
+    provider: str
+    title: str
+    subtitle: Optional[str]
+    status: str
+    status_badge_color: str # 'info' | 'success' | 'warning' | 'error'
+    content_html: Optional[str]
+    summary: Optional[str]
+    meta_field_1_label: Optional[str]
+    meta_field_1_value: Optional[str]
+    meta_field_2_label: Optional[str]
+    meta_field_2_value: Optional[str]
+    meta_field_3_label: Optional[str]
+    meta_field_3_value: Optional[str]
+    url: str
+
+class BaseSourceProvider(ABC):
+    provider_id: str = ""
+    source_type: str = ""
+
+    @abstractmethod
+    def is_enabled(self) -> bool:
+        """Vérifie si le provider est activé (clés API présentes dans .env ou Mock)."""
+        pass
+
+    @abstractmethod
+    def suggest(self, query: str, limit: int = 5) -> list[dict]:
+        """Autocomplétion rapide pendant la frappe (< 100ms)."""
+        pass
+
+    @abstractmethod
+    def search(self, query: str, limit: int = 10) -> list[SourceSearchResult]:
+        """Recherche complète retournant des entités normalisées."""
+        pass
+
+    @abstractmethod
+    def get_detail(self, source_id: str) -> Optional[SourceSearchResult]:
+        """Récupère le détail complet d'une entité par son identifiant unique."""
+        pass
+```
+
+---
+
+## 🛣️ 3. La Vue DRF Générique (`sources/views.py`)
+
+```python
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from django.core.cache import cache
+import hashlib
+from .registry import source_provider_registry
+
+class SourceSearchView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        source_type = request.query_params.get("type", "law")
+        query = request.query_params.get("q", "").strip()
+
+        if len(query) < 2:
+            return Response({"results": []})
+
+        provider = source_provider_registry.get_provider(source_type)
+        if not provider or not provider.is_enabled():
+            return Response(
+                {"error": f"Le provider pour '{source_type}' n'est pas activé sur ce serveur."},
+                status=404,
+            )
+
+        # Hash unique de la requête pour la clé Redis
+        query_hash = hashlib.md5(f"{source_type}:{query}".encode()).hexdigest()
+        cache_key = f"source:search:{query_hash}"
+
+        cached_results = cache.get(cache_key)
+        if cached_results is not None:
+            return Response({"results": cached_results, "from_cache": True})
+
+        try:
+            results = provider.search(query)
+            cache.set(cache_key, results, timeout=86400)  # 24h
+            return Response({"results": results, "from_cache": False})
+        except Exception as exc:
+            return Response(
+                {"error": "Erreur lors de l'interrogation de la source.", "details": str(exc)},
+                status=502,
+            )
+```
+
+---
+
+## ⚡ 4. Feature Flagging Centralisé
+
+L'endpoint `/api/v1/config/features/` liste dynamiquement les providers actifs à destination du frontend :
+
+```python
+class FeatureFlagsConfigView(APIView):
+    permission_classes = []
+
+    def get(self, request):
+        active_providers = source_provider_registry.get_enabled_source_types()
+        return Response({
+            "features": {
+                "slash_sources": {
+                    "enabled": len(active_providers) > 0,
+                    "active_types": active_providers,  # ['law', 'company', 'parliament']
+                }
+            }
+        })
+```

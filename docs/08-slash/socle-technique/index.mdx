@@ -1,0 +1,107 @@
+---
+title: Socle Technique Unifié des Commandes Slash
+sidebar_label: Socle Technique
+description: Architecture standardisée, composant BlockNote universel à 3 modes d'affichage (Callout, Carte, Lien) et proxy Django générique pour toutes les commandes slash.
+---
+
+import { Mermaid } from "../../../src/components/Mermaid";
+
+Pour garantir l'évolutivité, la cohérence graphique et la simplicité de maintenance de **La Suite Docs**, l'ensemble des commandes slash connectées à des sources de données externes (**`/loi`**, **`/pappers`**, **`/assemblee`**, **`/adresse`**, etc.) reposent sur un **Socle Technique Unifié**.
+
+Inspiré de l'architecture native de **`/link-doc` (`Interlinking`)**, ce socle abstrait la complexité technique et permet de brancher n'importe quelle nouvelle API en quelques minutes avec un rendu 100% conforme au **Design System de l'État (DSFR)** et aux normes d'accessibilité **RGAA v4.1**.
+
+---
+
+## 🎯 Les 3 Principes Directeurs du Socle Unifié
+
+1. **Composant CustomBlock Unique (`SourceBlockSpec` / `SourceInlineSpec`) :**  
+   Une structure de données universelle dans l'arbre **CRDT Yjs** capable de représenter n'importe quelle entité (loi, entreprise, amendement, adresse, marché public).
+2. **Exactement 3 Formats d'Affichage Standards :**  
+   Chaque source peut être affichée selon 3 formats interchangeables au choix de l'utilisateur :
+   - 📢 **Format Callout (Encadré DSFR)** : Mise en valeur officielle avec citation, texte intégral et statut.
+   - 🗂️ **Format Carte (Card DSFR)** : Encart de synthèse avec grille de métadonnées clés (3 colonnes).
+   - 🔗 **Format Lien / Inline (Badge & Popover)** : Pastille compacte au fil du texte avec popover de prévisualisation au survol/clic (comme `/link-doc`).
+3. **Moteur Backend Unifié (Provider Registry & Cache Redis) :**  
+   Un proxy Django générique qui délègue à des *Providers* spécialisés avec mise en cache unifiée, gestion des quotas et activation conditionnelle par Feature Flagging.
+
+---
+
+## 🏗️ Architecture Globale du Socle Unifié
+
+<Mermaid chart={`flowchart TD
+    subgraph UI["1. Moteur d'Édition BlockNote (React 19 / Next.js)"]
+        SlashInput["Saisie Clavier (/loi, /pappers, /assemblee...)"]
+        SearchPalette["SearchPage Inline (Inspiré de /link-doc & cmdk)"]
+        UnifiedBlock["Composant Unique : SourceBlockSpec"]
+        
+        SlashInput --> SearchPalette
+        SearchPalette -->|Sélection de l'entité| UnifiedBlock
+    end
+
+    subgraph Modes["2. Les 3 Formats d'Affichage DSFR"]
+        CalloutMode["Mode Callout (Encadré officiel & texte complet)"]
+        CardMode["Mode Carte (Synthèse multi-critères & statut)"]
+        LinkMode["Mode Lien (Badge inline + Popover au survol)"]
+
+        UnifiedBlock --> CalloutMode
+        UnifiedBlock --> CardMode
+        UnifiedBlock --> LinkMode
+    end
+
+    subgraph Back["3. Socle Backend Django 5 Unifié"]
+        UnifiedEndpoint["GET /api/v1/sources/search?type=...&q=..."]
+        Registry["Provider Registry (Légifrance, Pappers, claire.vite)"]
+        RedisCache[("Cache Redis Partagé (TTL 24h)")]
+        
+        SearchPalette -->|Recherche asynchrone| UnifiedEndpoint
+        UnifiedEndpoint --> RedisCache
+        RedisCache -.->|Miss| Registry
+    end
+
+    subgraph External["4. Écosystème des APIs Souveraines"]
+        PisteAPI["Légifrance / PISTE"]
+        PappersAPI["Pappers / API Entreprise"]
+        ClaireAPI["Assemblée / claire.vite"]
+        BANAPI["Base Adresse Nationale"]
+        
+        Registry --> PisteAPI
+        Registry --> PappersAPI
+        Registry --> ClaireAPI
+        Registry --> BANAPI
+    end
+`} />
+
+---
+
+## 📚 Modules du Socle Technique
+
+<FeatureGrid cols={2}>
+  <FeatureCard
+    icon="🧩"
+    title="1. Architecture & Inspiration /link-doc"
+    description="Cycle de vie du composant (état recherche -> état sélectionné), synchronisation CRDT Yjs et focus trap."
+    href="/08-slash/socle-technique/01-architecture-standardisee"
+    badge="Conception"
+  />
+  <FeatureCard
+    icon="🎨"
+    title="2. CustomBlock Unique & 3 Modes DSFR"
+    description="Code TypeScript du composant BlockNote universel, modes Callout, Carte et Lien avec prévisualisation."
+    href="/08-slash/socle-technique/02-composant-customblock-unique"
+    badge="Frontend React"
+  />
+  <FeatureCard
+    icon="🐍"
+    title="3. Proxy Django & Provider Registry"
+    description="Architecture backend unifiée, interface BaseSourceProvider, cache Redis 24h et rate limiting."
+    href="/08-slash/socle-technique/03-proxy-backend-et-cache"
+    badge="Backend Django"
+  />
+  <FeatureCard
+    icon="⚡"
+    title="4. Tutoriel : Ajouter une API en 10 min"
+    description="Guide pas-à-pas pour brancher une nouvelle source externe sans toucher au cœur de l'éditeur."
+    href="/08-slash/socle-technique/04-tutoriel-ajouter-une-api"
+    badge="Guide Dev"
+  />
+</FeatureGrid>

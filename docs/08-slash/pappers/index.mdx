@@ -59,26 +59,25 @@ Dans la gestion administrative quotidienne (passation de marchés publics, instr
 
 ## 📚 Sommaire du Dossier `/pappers`
 
-<FeatureGrid cols={3}>
+<FeatureGrid cols={2}>
   <FeatureCard
     icon="🏢"
     title="1. Spécifications API Pappers"
-    description="Endpoints de recherche, données SIRENE, RNCS, bénéficiaires effectifs et structure des payloads JSON."
+    description="Endpoints de recherche, données SIRENE, RNCS, bénéficiaires effectifs, mode Mock et API Entreprise."
     href="/08-slash/pappers/01-api-entreprises-pappers"
     badge="API & Données"
   />
   <FeatureCard
-    icon="🧩"
-    title="2. Implémentation BlockNote"
-    description="Composant React CompanyBlockSpec, 4 modes d'affichage (Badge, Fiche, Financier, Kbis) et cache."
-    href="/08-slash/pappers/02-implementation-bloc-entreprise"
-    badge="Frontend & DSFR"
-  />
-  <FeatureCard
     icon="📋"
-    title="3. Cas d'Usage Marchés & Achats"
+    title="2. Cas d'Usage Marchés & Achats"
     description="Guide pratique d'instruction de marchés publics, vérification DUME et contrôle des délégations de signature."
-    href="/08-slash/pappers/03-cas-usage-marches-publics"
+    href="/08-slash/pappers/02-cas-usage-marches-publics"
     badge="Métier & Achats"
   />
 </FeatureGrid>
+
+---
+
+## 🧩 Implémentation Frontend & Backend
+
+La commande `/pappers` s'appuie directement sur le **[Socle Technique Unifié des Commandes Slash](/08-slash/socle-technique)** (CustomBlock `SourceBlockSpec` avec les 3 modes d'affichage **Callout**, **Carte** et **Lien**, et le `CompanySourceProvider` Django).
