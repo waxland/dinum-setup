@@ -1,0 +1,122 @@
+---
+title: Implémentation du Bloc Parlementaire (/assemblee)
+sidebar_label: 2. Implémentation BlockNote
+description: Conception du composant React ParliamentaryBlockSpec, badges de statut d'amendement, timeline de navette et proxy Django.
+---
+
+Ce document détaille l'implémentation du composant BlockNote permettant d'intégrer des fiches amendements et dossiers législatifs dans **La Suite Docs**.
+
+---
+
+## 💻 1. Composant React (`ParliamentaryBlockSpec.tsx`)
+
+```tsx
+import { createReactBlockSpec } from "@blocknote/react";
+
+export const ParliamentaryBlockSpec = createReactBlockSpec(
+  {
+    type: "parliamentaryAmendment",
+    propSchema: {
+      amendmentNum: { default: "" },
+      billTitle: { default: "" },
+      targetArticle: { default: "" },
+      authors: { default: "" },
+      groupName: { default: "" },
+      sort: { default: "En attente" }, // 'Adopte' | 'Rejete' | 'Retire' | 'Tombe' | 'En attente'
+      bodyText: { default: "" },
+      summary: { default: "" },
+      govOpinion: { default: "Favorable" }, // 'Favorable' | 'Defavorable' | 'Sagesse'
+      displayMode: { default: "card" }, // 'badge' | 'card' | 'banc'
+    },
+    content: "none",
+  },
+  {
+    render: (props) => {
+      const { amendmentNum, billTitle, targetArticle, authors, groupName, sort, bodyText, summary, govOpinion, displayMode } = props.block.props;
+
+      // Badge de statut du sort de l'amendement
+      const sortBadgeClass =
+        sort === "Adopte"
+          ? "fr-badge--success"
+          : sort === "Rejete"
+            ? "fr-badge--error"
+            : sort === "Retire" || sort === "Tombe"
+              ? "fr-badge--warning"
+              : "fr-badge--info";
+
+      // Mode Badge Compact
+      if (displayMode === "badge") {
+        return (
+          <span className={`fr-badge fr-badge--sm ${sortBadgeClass}`}>
+            🏛️ Amdt n°{amendmentNum} ({targetArticle}) — {sort}
+          </span>
+        );
+      }
+
+      // Mode Fiche de Banc Ministérielle
+      return (
+        <div className="fr-callout fr-callout--blue-france my-4 p-4 border border-gray-200 dark:border-gray-800 rounded-xl bg-white dark:bg-gray-900 shadow-xs">
+          <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-2 mb-3">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">🏛️</span>
+              <h4 className="text-sm font-bold m-0">
+                Amendement n°{amendmentNum} sur {targetArticle}
+              </h4>
+              <span className="fr-badge fr-badge--sm fr-badge--new">{groupName}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-semibold text-gray-500">Avis Gouv : <strong>{govOpinion}</strong></span>
+              <span className={`fr-badge fr-badge--sm ${sortBadgeClass}`}>{sort}</span>
+            </div>
+          </div>
+
+          <p className="text-xs font-medium text-gray-700 dark:text-gray-300 italic mb-2">
+            Projet : {billTitle} (Déposé par {authors})
+          </p>
+
+          <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg text-xs font-mono mb-2 border border-gray-200 dark:border-gray-700">
+            {bodyText}
+          </div>
+
+          {summary && (
+            <p className="text-xs text-gray-600 dark:text-gray-400 m-0 leading-relaxed">
+              <strong>Exposé sommaire :</strong> {summary}
+            </p>
+          )}
+        </div>
+      );
+    },
+  }
+);
+```
+
+---
+
+## 🐍 2. Proxy Django (`parliament/views.py`)
+
+```python
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.core.cache import cache
+import requests
+from django.conf import settings
+
+class ParliamentAmendmentView(APIView):
+    def get(self, request):
+        dossier_id = request.query_params.get("dossier_id")
+        num = request.query_params.get("num")
+        
+        cache_key = f"an:amdt:{dossier_id}:{num}"
+        cached = cache.get(cache_key)
+        if cached:
+            return Response(cached)
+
+        resp = requests.get(
+            f"{settings.CLAIRE_VITE_API_URL}/amendements",
+            params={"dossier_id": dossier_id, "num": num},
+            timeout=3.0,
+        )
+        data = resp.json()
+        cache.set(cache_key, data, timeout=300) # Cache 5 min pendant la séance
+        return Response(data)
+```

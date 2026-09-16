@@ -1,0 +1,84 @@
+---
+title: Commande Slash /pappers — Fiches Entreprises & Registre Légal
+sidebar_label: Commande /pappers
+description: Spécification complète et intégration de la commande slash /pappers pour insérer des fiches d'entreprises certifiées (SIREN, dirigeants, bilans, procédures).
+---
+
+import { Mermaid } from "../../../src/components/Mermaid";
+
+La commande **`/pappers`** permet aux acheteurs publics, juristes, instructeurs de subventions et agents territoriaux de rechercher et d'insérer des fiches d'entreprises certifiées directement au cœur de leurs documents **La Suite Docs**.
+
+---
+
+## 🎯 Pourquoi la Commande `/pappers` ?
+
+Dans la gestion administrative quotidienne (passation de marchés publics, instruction de subventions aux associations et entreprises, contrôle de légalité, partenariats économiques), les agents doivent vérifier en permanence :
+1. **L'existence légale et l'immatriculation :** Numéro SIREN / SIRET, raison sociale, siège social et code NAF/APE.
+2. **La gouvernance et les dirigeants :** Représentants légaux, gérants, présidents habilités à signer les conventions.
+3. **La santé financière & solvabilité :** Chiffre d'affaires, résultat net, effectifs et date de clôture du dernier exercice.
+4. **L'absence de procédures collectives :** Vérification immédiate que l'entreprise n'est ni en redressement ni en liquidation judiciaire (critère d'exclusion des marchés publics).
+
+---
+
+## 🏗️ Architecture Technique de la Commande `/pappers`
+
+<Mermaid chart={`flowchart TD
+    subgraph Client["Poste Client (Navigateur Agent)"]
+        Slash["Saisie /pappers au clavier"] --> Modal["Modale de Recherche SIREN / Dénomination (DSFR)"]
+        Modal --> CompanyBlock["Composant BlockNote CompanyBlockSpec (React 19)"]
+        CompanyBlock --> YDoc["Arbre CRDT Yjs (Y.Doc)"]
+    end
+
+    subgraph Backend["Infrastructure La Suite Docs"]
+        DjangoProxy["API Django 5 (/api/v1/companies/search)"]
+        RedisCache[("Cache Redis 7 (TTL 24h & Invalidation)")]
+        YjsServer["Serveur WebSockets Hocuspocus"]
+    end
+
+    subgraph External["Sources Officielles & API Pappers / API Entreprise"]
+        PappersAPI["API Pappers Entreprises (api.pappers.fr)"]
+        INPI["Registre National des Entreprises (INPI / RNE)"]
+        INSEE["Répertoire SIRENE (INSEE)"]
+        BODACC["Annonces Légales BODACC / Infogreffe"]
+    end
+
+    Modal -->|1. Recherche par SIREN ou Nom| DjangoProxy
+    DjangoProxy -->|2. Vérification Cache| RedisCache
+    RedisCache -.->|Miss| DjangoProxy
+    DjangoProxy -->|3. Requête API sécurisée| PappersAPI
+    PappersAPI <--> INPI
+    PappersAPI <--> INSEE
+    PappersAPI <--> BODACC
+    PappersAPI -.->|4. JSON structuré certifié| DjangoProxy
+    DjangoProxy -.->|5. DTO épuré| Modal
+    Modal -->|6. Insertion Bloc Entreprise| YDoc
+    YDoc <==>|7. Synchronisation Temps Réel| YjsServer
+`} />
+
+---
+
+## 📚 Sommaire du Dossier `/pappers`
+
+<FeatureGrid cols={3}>
+  <FeatureCard
+    icon="🏢"
+    title="1. Spécifications API Pappers"
+    description="Endpoints de recherche, données SIRENE, RNCS, bénéficiaires effectifs et structure des payloads JSON."
+    href="/08-slash/pappers/01-api-entreprises-pappers"
+    badge="API & Données"
+  />
+  <FeatureCard
+    icon="🧩"
+    title="2. Implémentation BlockNote"
+    description="Composant React CompanyBlockSpec, 4 modes d'affichage (Badge, Fiche, Financier, Kbis) et cache."
+    href="/08-slash/pappers/02-implementation-bloc-entreprise"
+    badge="Frontend & DSFR"
+  />
+  <FeatureCard
+    icon="📋"
+    title="3. Cas d'Usage Marchés & Achats"
+    description="Guide pratique d'instruction de marchés publics, vérification DUME et contrôle des délégations de signature."
+    href="/08-slash/pappers/03-cas-usage-marches-publics"
+    badge="Métier & Achats"
+  />
+</FeatureGrid>

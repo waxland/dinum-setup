@@ -1,0 +1,69 @@
+---
+title: Comprendre la Structure des Lois & des Codes
+sidebar_label: 2. Codes, Lois & Articles
+description: Guide de lecture et compréhension des codes juridiques français, de la numérotation des articles et des identifiants légaux (NOR, ECLI, CID).
+---
+
+import { Mermaid } from "../../../../src/components/Mermaid";
+
+Les textes juridiques français sont organisés selon une codification stricte et une structure arborescente normalisée.
+
+---
+
+## 📖 1. Organisation d'un Code Juridique
+
+Les grands codes de droit français (Code civil, Code du travail, Code de la commande publique, Code des relations entre le public et l'administration - CRPA) sont généralement divisés en deux parties distinctes :
+
+```mermaid
+flowchart LR
+    Code["Code Juridique Français"] --> L["Partie Législative (Articles 'L.')"]
+    Code --> R["Partie Réglementaire (Articles 'R.' et 'D.')"]
+
+    L --> L1["Délibérée et votée par le Parlement"]
+    R --> R1["Décrets en Conseil d'État ('R.')"]
+    R --> R2["Décrets simples ('D.')"]
+    R --> R3["Arrêtés ministériels ('A.')"]
+```
+
+### Signification des préfixes d'articles
+
+- **`L.`** : Article d'origine **législative** (adopté par le Parlement).
+- **`R.`** : Article d'origine **réglementaire** (décret en Conseil d'État).
+- **`D.`** : Article d'origine **décrétale simple** (décret du Premier ministre).
+- **`A.`** : Article issu d'un **arrêté ministériel**.
+
+### Découpage d'un numéro d'article (Ex: `L. 2122-1`)
+- **`L.`** : Partie législative.
+- **`2`** : Livre 2.
+- **`1`** : Titre 1.
+- **`2`** : Chapitre 2.
+- **`2`** : Section 2.
+- **`-1`** : Premier article de la section.
+
+---
+
+## 🆔 2. Les Identifiants Juridiques Uniques
+
+### Le numéro NOR
+Le numéro **NOR** est l'identifiant unique à 12 caractères attribué à chaque texte dès son élaboration par un ministère :
+- Exemple : `PRMX1928374A`
+  - `PRM` : Ministère émetteur (Premier ministre).
+  - `X` : Direction ou service.
+  - `19` : Année 2019.
+  - `28374` : Numéro d'ordre chrono.
+  - `A` : Nature de l'acte (Arrêté).
+
+### Le numéro CID / ELI / ECLI
+- **`CID` (Légifrance)** : Identifiant interne Légifrance (ex: `LEGITEXT000006070721` pour le Code civil).
+- **`ELI` (European Legislation Identifier)** : Identifiant pérenne européen pour les textes de lois.
+- **`ECLI` (European Case Law Identifier)** : Identifiant européen standardisé pour les décisions de jurisprudence.
+
+---
+
+## ⚖️ 3. États de Vigueur
+
+Dans la base Légifrance, chaque disposition juridique possède un état temporel précis :
+
+1. **`VIGUEUR`** : Le texte est actuellement applicable et produit tous ses effets de droit.
+2. **`ABROGE`** : Le texte a été annulé ou remplacé par une loi ultérieure et n'est plus applicable.
+3. **`VIGUEUR_DIFF`** : Le texte a été promulgué mais son entrée en vigueur est fixée à une date future (souvent en attente d'un décret d'application).

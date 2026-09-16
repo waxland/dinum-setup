@@ -1,0 +1,69 @@
+---
+title: Roadmap des Commandes Slash (/)
+sidebar_label: Roadmap & Jalons
+description: Feuille de route interactive, tableau Kanban des étapes clés, priorités interministérielles et jalons de livraison des commandes slash dans La Suite Docs.
+---
+
+import { Kanban } from "../../src/components/Kanban";
+
+L'écosystème des commandes slash (`/`) dans **La Suite Docs** suit une démarche de co-construction agile impliquant les équipes de la DINUM, de l'ANCT, des ministères partenaires et de l'École 42.
+
+Ce tableau interactif résume l'état d'avancement des fonctionnalités, des spécifications et des intégrations prévues.
+
+---
+
+## 📊 Tableau Kanban des Commandes & Évolutions
+
+<Kanban
+  title="Tableau de Bord des Commandes Slash"
+  description="Suivi en temps réel de l'idéation, de la spécification, du développement et de la mise en production des commandes."
+/>
+
+---
+
+## 🎯 Jalons & Calendrier de Livraison
+
+### 🏁 Jalon 1 : Hackathon 42 x DINUM (Sprint Immédiat)
+*Objectif : Démontrer la puissance des commandes slash métier avec la commande juridique `/loi`.*
+
+- [x] Spécification complète du bloc BlockNote et du proxy Django.
+- [x] Intégration de l'authentification OAuth2 PISTE / DILA.
+- [x] Cache Redis 24h avec gestion des quotas et résilience.
+- [x] Composant React BlockNote avec 4 modes d'affichage (Badge, Fiche, Citation, Article complet).
+- [ ] Finalisation des tests E2E Playwright et validation du contraste DSFR (RGAA AA).
+
+---
+
+### 🚀 Jalon 2 : Enrichissement des Données Administratives (Q3 2026)
+*Objectif : Outiller les acheteurs publics, juristes et chargés de mission parlementaires.*
+
+- **Commande `/pappers` :**
+  - Fiche d'entreprise certifiée à partir d'un SIREN / SIRET ou raison sociale.
+  - Données financières de synthèse, dirigeants légaux, code NAF et alertes procédures collectives.
+- **Commande `/assemblee` (via `claire.vite`) :**
+  - Suivi en temps réel des projets et propositions de loi en discussion.
+  - Insertion de fiches amendements avec texte comparatif et résultat des scrutins publics.
+  - Cartographie des députés et groupes politiques pour les fiches de banc en cabinet.
+
+---
+
+### 🌐 Jalon 3 : Déploiement Socle Interministériel (Q4 2026)
+*Objectif : Généraliser l'ouverture et standardiser les commandes slash dans le Core de Docs.*
+
+- **Commande `/adresse` (Base Adresse Nationale - BAN) :**
+  - Autocomplétion officielle et géocodage certifié pour les formulaires et comptes-rendus territoriaux.
+- **Commande `/marche` (BOAMP & DAE) :**
+  - Consultation des avis de marché public et critères de sélection.
+- **SDK Développeur pour Commandes Tiers :**
+  - API standardisée pour permettre aux ministères de déclarer leurs propres commandes slash métier sans forker l'application.
+
+---
+
+## 📝 Comment Proposer une Nouvelle Commande ?
+
+Toute proposition de commande slash doit suivre la procédure d'architecture définie dans le **Design Change Skill** :
+
+1. **Rédiger une fiche de cadrage :** Expliquer le cas d'usage métier pour les agents de l'État (gain de temps, réduction d'erreurs).
+2. **Identifier la source de données souveraine :** Privilégier les API de l'État (PISTE, data.gouv.fr, API Entreprise, BAN, Légifrance).
+3. **Respecter la conformité DSFR & RGAA v4.1 :** Tout composant inséré doit être 100% accessible au clavier et aux lecteurs d'écran.
+4. **Garantir la compatibilité CRDT Yjs :** Les données du bloc doivent être sérialisables sous forme de propriétés simples dans l'arbre partagé.

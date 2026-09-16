@@ -1,0 +1,84 @@
+---
+title: Commande Slash /assemblee — Travail Parlementaire (claire.vite)
+sidebar_label: Commande /assemblee
+description: Spécification et intégration de la commande slash /assemblee basée sur l'API claire.vite et l'Open Data de l'Assemblée Nationale (projets de loi, amendements, députés, scrutins).
+---
+
+import { Mermaid } from "../../../src/components/Mermaid";
+
+La commande **`/assemblee`** (ou **`/assemble`**) permet aux conseillers parlementaires en cabinets ministériels, chargés de mission législatifs et directions d'administration centrale d'insérer en temps réel le suivi des projets de loi, les fiches amendements, les profils des députés et les résultats des scrutins publics dans **La Suite Docs**.
+
+---
+
+## 🎯 Pourquoi la Commande `/assemblee` ?
+
+Lors de l'examen des textes de loi au Parlement (commission et séance publique dans l'hémicycle), le travail des équipes ministérielles et parlementaires est intense et chronométré :
+1. **Suivi des amendements en direct :** Vérifier le sort d'un amendement (*Adopté*, *Rejeté*, *Retiré*, *Tombé*, *Non soutenu*).
+2. **Rédaction des fiches de banc :** Argumentaires du ministre et avis du gouvernement (*Favorable*, *Défavorable*, *Sagesse*) associés au texte exact de l'amendement.
+3. **Cartographie des votes & groupes :** Décompte nominatif des scrutins solennels par groupe politique.
+4. **Timeline de la navette parlementaire :** Étapes franchies par le texte entre l'Assemblée nationale, le Sénat et la Commission Mixte Paritaire (CMP).
+
+---
+
+## 🏛️ Architecture Technique & API `claire.vite`
+
+L'API **`claire.vite`** est un service d'API moderne, rapide et normalisé indexant en temps réel les flux Open Data officiels de l'Assemblée nationale.
+
+<Mermaid chart={`flowchart TD
+    subgraph Client["Poste Client (Conseiller Parlementaire)"]
+        Slash["Saisie /assemblee ou /assemble"] --> Modal["Modale de Recherche Parlementaire (DSFR)"]
+        Modal --> BlockSpec["Composant BlockNote ParliamentaryBlockSpec (React 19)"]
+        BlockSpec --> YDoc["Arbre CRDT Yjs (Y.Doc)"]
+    end
+
+    subgraph Backend["Infrastructure La Suite Docs"]
+        DjangoProxy["API Django 5 (/api/v1/parliament/...)"]
+        RedisCache[("Cache Redis 7 (TTL 5 min en séance)")]
+        YjsServer["Serveur WebSockets Hocuspocus"]
+    end
+
+    subgraph OpenData["Écosystème Parlementaire Souverain"]
+        ClaireAPI["API claire.vite (claire.vite.fr / AN API)"]
+        AssembleeData["Open Data Assemblée Nationale (data.assemblee-nationale.fr)"]
+        SenatData["Open Data Sénat (senat.fr)"]
+    end
+
+    Modal -->|1. Recherche par mot-clé, n° amendement ou texte| DjangoProxy
+    DjangoProxy -->|2. Lecture Cache Redis| RedisCache
+    RedisCache -.->|Miss| DjangoProxy
+    DjangoProxy -->|3. Requête API haute performance| ClaireAPI
+    ClaireAPI <--> AssembleeData
+    ClaireAPI <--> SenatData
+    ClaireAPI -.->|4. Flux JSON structuré| DjangoProxy
+    DjangoProxy -.->|5. DTO épuré| Modal
+    Modal -->|6. Insertion Bloc Parlementaire| YDoc
+    YDoc <==>|7. Synchronisation Temps Réel| YjsServer
+`} />
+
+---
+
+## 📚 Sommaire du Dossier `/assemblee`
+
+<FeatureGrid cols={3}>
+  <FeatureCard
+    icon="🏛️"
+    title="1. Spécifications API claire.vite"
+    description="Endpoints de recherche de dossiers législatifs, amendements, députés et résultats de scrutins."
+    href="/08-slash/assemblee/01-api-claire-vite-assemblee"
+    badge="API & Données"
+  />
+  <FeatureCard
+    icon="🧩"
+    title="2. Implémentation BlockNote"
+    description="Composant React ParliamentaryBlockSpec, badges de statut d'amendement et timeline de navette."
+    href="/08-slash/assemblee/02-implementation-bloc-parlementaire"
+    badge="Frontend & DSFR"
+  />
+  <FeatureCard
+    icon="📜"
+    title="3. Cas d'Usage Veille & Banc"
+    description="Préparation des fiches de banc ministérielles, suivi des débats en direct et comptes-rendus de séance."
+    href="/08-slash/assemblee/03-cas-usage-veille-parlementaire"
+    badge="Cabinets & Métier"
+  />
+</FeatureGrid>

@@ -1,0 +1,55 @@
+---
+title: Synchronisation Temps Réel & CRDT Yjs
+sidebar_label: 3. Synchronisation Yjs
+description: Comment les blocs de loi personnalisés sont sérialisés dans l'arbre CRDT Yjs et synchronisés sans conflit entre coauteurs.
+---
+
+import { Mermaid } from "../../../../src/components/Mermaid";
+
+Dans **La Suite Docs**, tous les documents sont représentés sous la forme d'un document **Yjs (`Y.Doc`)**.
+
+---
+
+## ⚡ 1. Modèle de Synchronisation CRDT
+
+<Mermaid chart={`sequenceDiagram
+    autonumber
+    actor A as 🧑‍💻 Agent A (Rédacteur)
+    participant YDocA as Y.Doc (Poste A)
+    participant WS as Serveur WebSocket Yjs
+    participant YDocB as Y.Doc (Poste B)
+    actor B as 👩‍💼 Agent B (Relecteur)
+
+    A->>YDocA: 1. Insère le bloc /loi (Article L111-1)
+    YDocA->>WS: 2. Envoi du delta binaire (Yjs update)
+    WS->>YDocB: 3. Diffusion du delta temps réel
+    YDocB-->>B: 4. Le bloc s'affiche instantanément sur l'écran B
+    Note over A,B: Synchronisation garantie sans conflit (CRDT)
+`} />
+
+---
+
+## 📦 2. Structure JSON Sérialisée dans Yjs
+
+Lorsqu'un bloc de loi est créé, BlockNote le sérialise dans le fragment XML partagé sous forme d'objet structuré :
+
+```json
+{
+  "id": "block-law-9821a",
+  "type": "lawArticle",
+  "props": {
+    "articleId": "LEGIARTI000038814944",
+    "articleNum": "Article L. 111-1",
+    "codeTitle": "Code de la commande publique",
+    "status": "VIGUEUR",
+    "displayMode": "citation",
+    "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000038814944",
+    "contentHtml": "Un acheteur ou une autorité concédante est un pouvoir adjudicateur..."
+  },
+  "content": []
+}
+```
+
+Cette structure garantit :
+1. **L'indépendance réseau :** Même hors-ligne ou si PISTE est inaccessible, les coauteurs peuvent lire et modifier le document avec le texte conservé dans l'arbre Yjs.
+2. **L'intégrité collaborative :** Les modifications du mode d'affichage (`displayMode`) sont propagées instantanément à tous les participants.

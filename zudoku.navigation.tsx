@@ -33,7 +33,16 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
         "icon": "rocket",
         "collapsed": false,
         "items": [
-          "/01-onboarding/01-demarrage/configuration-serveur-docs",
+          {
+            "type": "category",
+            "label": "Configuration Serveur",
+            "icon": "server",
+            "collapsed": false,
+            "items": [
+              "/01-onboarding/01-demarrage/configuration-serveur/01-guide-configuration-serveur",
+              "/01-onboarding/01-demarrage/configuration-serveur/02-pr-support-serveurs-distants"
+            ]
+          },
           "/01-onboarding/01-demarrage/environnement-machine-hote",
           "/01-onboarding/01-demarrage/git-ssh",
           "/01-onboarding/01-demarrage/urls-et-identifiants",
@@ -290,6 +299,22 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         "type": "category",
+        "label": "Assemblée Nationale (/assemblee)",
+        "icon": "landmark",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "08-slash/assemblee/index.mdx",
+            "path": "/08-slash/assemblee"
+          },
+          "/08-slash/assemblee/01-api-claire-vite-assemblee",
+          "/08-slash/assemblee/02-implementation-bloc-parlementaire",
+          "/08-slash/assemblee/03-cas-usage-veille-parlementaire"
+        ]
+      },
+      {
+        "type": "category",
         "label": "Projet de Loi (/loi)",
         "icon": "scale",
         "collapsed": false,
@@ -299,19 +324,81 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "file": "08-slash/loi/index.mdx",
             "path": "/08-slash/loi"
           },
-          "/08-slash/loi/01-contexte-metier-et-juridique",
-          "/08-slash/loi/02-besoins-agents-et-cas-usage",
-          "/08-slash/loi/03-architecture-et-interoperabilite",
-          "/08-slash/loi/04-interface-et-modes-affichage",
-          "/08-slash/loi/05-specifications-techniques-feature",
-          "/08-slash/loi/06-plan-action-et-deploiement",
-          "/08-slash/loi/07-cas-usage-metier",
-          "/08-slash/loi/08-user-stories-reponses-admin",
-          "/08-slash/loi/comprendre-les-lois",
-          "/08-slash/loi/ressources-juridiques"
+          {
+            "type": "category",
+            "label": "Fondations Juridiques",
+            "icon": "sliders",
+            "collapsed": false,
+            "items": [
+              "/08-slash/loi/01-fondations-juridiques/01-hierarchie-des-normes",
+              "/08-slash/loi/01-fondations-juridiques/02-comprendre-la-loi",
+              "/08-slash/loi/01-fondations-juridiques/03-guide-des-citations"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "API Légifrance PISTE",
+            "icon": "code",
+            "collapsed": false,
+            "items": [
+              "/08-slash/loi/02-api-legifrance-piste/01-authentification-oauth2",
+              "/08-slash/loi/02-api-legifrance-piste/02-endpoints-suggest-et-search",
+              "/08-slash/loi/02-api-legifrance-piste/03-mapping-fonds-et-collections"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Backend Django",
+            "icon": "server",
+            "collapsed": false,
+            "items": [
+              "/08-slash/loi/03-backend-django/01-proxy-api-django",
+              "/08-slash/loi/03-backend-django/02-cache-redis-et-resilience"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Frontend BlockNote",
+            "icon": "monitor",
+            "collapsed": false,
+            "items": [
+              "/08-slash/loi/04-frontend-blocknote/01-custom-block-react",
+              "/08-slash/loi/04-frontend-blocknote/02-modal-recherche-dsfr",
+              "/08-slash/loi/04-frontend-blocknote/03-synchronisation-crdt-yjs"
+            ]
+          }
         ]
       },
-      "/08-slash/piste-2-doc-qui-se-remplit-tout-seul"
+      {
+        "type": "category",
+        "label": "Entreprises (/pappers)",
+        "icon": "building-2",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "08-slash/pappers/index.mdx",
+            "path": "/08-slash/pappers"
+          },
+          "/08-slash/pappers/01-api-entreprises-pappers",
+          "/08-slash/pappers/02-implementation-bloc-entreprise",
+          "/08-slash/pappers/03-cas-usage-marches-publics"
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Document Auto-Rempli (/remplir)",
+        "icon": "sparkles",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "08-slash/remplir/index.mdx",
+            "path": "/08-slash/remplir"
+          }
+        ]
+      },
+      "/08-slash/roadmap"
     ]
   }
 ];

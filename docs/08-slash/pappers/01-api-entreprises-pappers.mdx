@@ -1,0 +1,102 @@
+---
+title: Spécifications de l'API Pappers Entreprises
+sidebar_label: 1. API Pappers
+description: Endpoints REST, authentification par jeton API, modèles de données SIREN, dirigeants, bilans et procédures collectives.
+---
+
+L'API **Pappers Entreprises** agrège les bases publiques officielles (INSEE / SIRENE, INPI / RNE, BODACC, Greffes des Tribunaux de Commerce) en une API REST unifiée et haute performance.
+
+---
+
+## 🔑 1. Authentification & Endpoints
+
+L'authentification s'effectue via un jeton secret transmis en header ou paramètre :
+
+- **Base URL :** `https://api.pappers.fr/v2`
+- **Header :** `X-API-Key: <VOTRE_API_KEY_PAPPERS>`
+
+### Endpoints Principaux
+
+| Endpoint | Méthode | Usage |
+| :--- | :--- | :--- |
+| **`/recherche`** | `GET` | Recherche textuelle par dénomination, mot-clé, ville ou code postal |
+| **`/entreprise`** | `GET` | Fiche complète d'une entreprise via son numéro SIREN (9 chiffres) |
+| **`/suggestions`** | `GET` | Autocomplétion ultra-rapide pour le champ de recherche |
+| **`/document/telechargement`** | `GET` | Téléchargement des statuts ou extrait Kbis |
+
+---
+
+## 📡 2. Exemple de Requête & Réponse
+
+### Requête de Recherche par SIREN (`/entreprise?siren=443061841`)
+
+```http
+GET https://api.pappers.fr/v2/entreprise?siren=443061841
+X-API-Key: VOTRE_CLE_API
+Accept: application/json
+```
+
+### Extrait du Payload JSON Retourné
+
+```json
+{
+  "siren": "443061841",
+  "siren_formate": "443 061 841",
+  "nom_entreprise": "EXEMPLE SERVICES PUBLICS SAS",
+  "forme_juridique": "Société par actions simplifiée",
+  "capital": 100000.0,
+  "statut_rcs": "Inscrit",
+  "siege": {
+    "siret": "44306184100025",
+    "adresse_ligne_1": "20 AVENUE DE SEGUR",
+    "code_postal": "75007",
+    "ville": "PARIS",
+    "code_naf": "62.01Z",
+    "libelle_code_naf": "Programmation informatique"
+  },
+  "dirigeants": [
+    {
+      "nom": "DUPONT",
+      "prenom": "ALICE",
+      "qualite": "Président",
+      "nationalite": "Française"
+    }
+  ],
+  "finances": [
+    {
+      "annee": 2024,
+      "chiffre_affaires": 4200000,
+      "resultat": 380000,
+      "effectif": 24
+    }
+  ],
+  "procedures_collectives_en_cours": false
+}
+```
+
+---
+
+## 🧪 3. Mode Mock pour le Développement Local
+
+Pour permettre à n'importe quel développeur ou contributeur de tester la commande `/pappers` sans souscrire de clé API commerciale payante, le backend Django intègre un **mode Mock activable par variable d'environnement** :
+
+```dotenv
+# .env.local ou common.local
+PAPPERS_MOCK_ENABLED=true
+```
+
+Lorsque ce mode est activé :
+- Les recherches retournent des fixtures d'entreprises réalistes pré-enregistrées (SASU d'ingénierie, ETI industrielle, entreprise en redressement pour tester les alertes).
+- Aucun appel réseau sortant n'est émis vers l'extérieur.
+- Les tests automatisés et scénarios E2E Playwright s'exécutent sans latence ni dépendance réseau.
+
+---
+
+## 🏛️ 4. Alternative Souveraine : API Entreprise (DINUM)
+
+Pour les déploiements officiels en production au sein des ministères et collectivités, la commande `/pappers` peut être basculée sur l'**API Entreprise** opérée par la DINUM :
+
+- **Accès réservé aux administrations :** Gratuit pour les personnes morales de droit public habilitées.
+- **Données certifiées de l'État :** Flux directs DGFiP (liasses fiscales), Urssaf (attestations de vigilance), Infogreffe et RNE.
+- **Principe « Dites-le-nous une fois » :** Dispense les entreprises candidates aux marchés publics de fournir leurs bilans et extraits Kbis.
+

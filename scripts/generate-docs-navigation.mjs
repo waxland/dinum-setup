@@ -61,6 +61,17 @@ function formatLabel(name) {
     ux: "UX",
     ia: "IA",
     jwt: "JWT",
+    pr: "PR",
+    ip: "IP",
+    vm: "VM",
+    nat: "NAT",
+    pappers: "Entreprises (/pappers)",
+    assemblee: "Assemblée Nationale (/assemblee)",
+    remplir: "Document Auto-Rempli (/remplir)",
+    siren: "SIREN",
+    siret: "SIRET",
+    django: "Django",
+    redis: "Redis",
   };
 
   return clean
@@ -136,6 +147,12 @@ function getDefaultIcon(name, depth) {
   if (lower.includes("devops") || lower.includes("deploiement")) return "cloud";
   if (lower.includes("loi") || lower.includes("juridique") || lower.includes("legal"))
     return "scale";
+  if (lower.includes("pappers") || lower.includes("entreprise") || lower.includes("societe"))
+    return "building-2";
+  if (lower.includes("assemblee") || lower.includes("parlement") || lower.includes("claire"))
+    return "landmark";
+  if (lower.includes("remplir") || lower.includes("auto"))
+    return "sparkles";
   if (lower.includes("document") || lower.includes("contenu"))
     return "file-text";
   if (lower.includes("communication") || lower.includes("echange"))
@@ -145,10 +162,12 @@ function getDefaultIcon(name, depth) {
   if (lower.includes("developpement")) return "code";
   if (lower.includes("integration") || lower.includes("test"))
     return "check-circle";
+  if (lower.includes("serveur") || lower.includes("server")) return "server";
+  if (lower.includes("pr-") || lower.includes("pull-request")) return "git-pull-request";
 
-  if (lower === "backend") return "server";
-  if (lower === "frontend") return "monitor";
-  if (lower === "components") return "box";
+  if (lower.includes("backend") || lower.includes("django")) return "server";
+  if (lower.includes("frontend") || lower.includes("blocknote") || lower.includes("react")) return "monitor";
+  if (lower.includes("components")) return "box";
   if (lower.includes("sdk") || lower.includes("api")) return "code";
 
   return "folder";

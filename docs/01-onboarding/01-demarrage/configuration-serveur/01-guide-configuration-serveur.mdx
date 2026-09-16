@@ -1,0 +1,192 @@
+---
+title: Configurer Docs sur un Serveur Distant
+sidebar_label: Guide Configuration Serveur
+description: Guide complet pour configurer La Suite Docs sur une machine distante, une VM ou un serveur cloud avec IP publique ou nom de domaine.
+---
+
+Ce guide détaille la configuration complète et les bonnes pratiques pour exécuter **La Suite Docs** (`impress`, Keycloak, API Django, collaboration Yjs) sur un serveur distant ou une machine de développement hébergée.
+
+> ⚠️ **Séparation des configurations :** Ce guide distingue strictement les fichiers versionnés dans Git des fichiers `.local` propres à votre machine. Ne commitez jamais d'adresses IP privées, de mots de passe ou de secrets dans le dépôt.
+
+---
+
+## ⚡ Automatisation : Prompt pour l'Agent IA
+
+👋 **Hello l'équipe !**
+
+Pour configurer automatiquement votre serveur distant avec votre IP publique et faire tourner **La Suite Docs** (Keycloak, API, OIDC, Frontend) sans soucis :
+
+### 1️⃣ Mettez à jour votre dépôt local
+
+```bash
+git pull origin main
+```
+
+---
+
+### 2️⃣ Demandez directement à l'agent IA (Copilot / Gemini)
+
+Une fois le `git pull` fait, ouvrez le chat dans VS Code (en mode **Agent**) et copiez-collez ce prompt en remplaçant par votre IP :
+
+```text
+Voici l'IP de mon serveur : <VOTRE_IP_ICI>
+Suis le guide dans docs/01-onboarding/01-demarrage/configuration-serveur/01-guide-configuration-serveur.mdx afin de configurer mon IP de dev correctement sur le setup du projet Docs (common.local, kc_auth.local, .env.local et allowedDevOrigins).
+```
+
+L'agent va générer et positionner automatiquement tous les fichiers `.local` requis avec les bons endpoints internes et externes.
+
+---
+
+## 📁 1. Les fichiers de configuration à connaître
+
+| Fichier | Emplacement | Rôle |
+| :--- | :--- | :--- |
+| `next.config.js` | `src/docs/src/frontend/apps/impress/next.config.js` | Configuration Next.js (notamment `allowedDevOrigins`). |
+| `.env.local` | `src/docs/src/frontend/apps/impress/.env.local` | Variables du frontend Next.js (URL de l'API Docs). |
+| `common.local` | `src/docs/env.d/development/common.local` | Surcharges du backend Docker Docs (URLs publiques, OIDC, collaboration Yjs). |
+| `kc_auth.local` | `src/docs/env.d/development/kc_auth.local` | Hostname public Keycloak pour éviter les redirections vers `localhost`. |
+
+---
+
+## 🌐 2. `allowedDevOrigins` : autoriser l'origine du serveur (Next.js)
+
+Dans `src/docs/src/frontend/apps/impress/next.config.js`, l'option `allowedDevOrigins` autorise les domaines ou IPs qui interrogent le serveur de développement :
+
+```js
+const nextConfig = {
+  allowedDevOrigins: [
+    "docs.127.0.0.1.nip.io",
+    "207.175.155.66",
+    "<VOTRE_IP_OU_DOMAINE>",
+  ],
+  output: "export",
+  trailingSlash: true,
+};
+```
+
+> 💡 **Règle de format :** Indiquez uniquement le hostname ou l'IP sans protocole (`http://`), sans port et sans slash final.
+
+---
+
+## 🔐 3. `.env.local` : Variables du Frontend Next.js
+
+Créez le fichier local dans le dossier de l'application frontend :
+
+```bash
+cd src/docs/src/frontend/apps/impress
+touch .env.local
+chmod 600 .env.local
+```
+
+Contenu type pour une IP de serveur `<VOTRE_IP>` :
+
+```dotenv
+# URL publique de l'API Docs appelée par le navigateur du client
+NEXT_PUBLIC_API_ORIGIN=http://<VOTRE_IP>:8071
+
+# Désactiver le service worker en cas de diagnostic local
+NEXT_PUBLIC_SW_DEACTIVATED=false
+```
+
+Vérifiez que le fichier est bien ignoré par Git :
+
+```bash
+git check-ignore -v src/docs/src/frontend/apps/impress/.env.local
+```
+
+---
+
+## 🐳 4. `common.local` : Configuration Docker du Backend Docs
+
+Le fichier `common.local` surcharge les variables de `src/docs/env.d/development/common` pour les conteneurs `app-dev`, `celery-dev` et le serveur de collaboration Yjs.
+
+Créez ou éditez le fichier `src/docs/env.d/development/common.local` :
+
+```dotenv
+# URL après connexion et retours de redirection
+LOGIN_REDIRECT_URL=http://<VOTRE_IP>:3000/
+LOGIN_REDIRECT_URL_FAILURE=http://<VOTRE_IP>:3000/
+LOGOUT_REDIRECT_URL=http://<VOTRE_IP>:3000/
+
+# Hôtes autorisés pour les redirections OIDC
+OIDC_REDIRECT_ALLOWED_HOSTS="<VOTRE_IP>:3000,<VOTRE_IP>:8071,<VOTRE_IP>:8083"
+
+# Endpoint OIDC public pour la redirection du navigateur vers Keycloak (302)
+OIDC_OP_AUTHORIZATION_ENDPOINT=http://<VOTRE_IP>:8083/realms/impress/protocol/openid-connect/auth
+
+# Endpoints OIDC internes (serveur-à-serveur dans le réseau Docker)
+OIDC_OP_JWKS_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-connect/certs
+OIDC_OP_TOKEN_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-connect/token
+OIDC_OP_USER_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-connect/userinfo
+OIDC_OP_INTROSPECTION_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-connect/token/introspect
+
+# URL publique de collaboration temps réel (Yjs WebSockets) et des médias
+COLLABORATION_SERVER_ORIGIN=http://<VOTRE_IP>:3000,http://localhost:3000
+COLLABORATION_WS_URL=ws://<VOTRE_IP>:4444/collaboration/ws/
+MEDIA_BASE_URL=http://<VOTRE_IP>:8083/
+IMPRESS_BASE_URL="http://<VOTRE_IP>:8072/"
+USER_RECONCILIATION_FORM_URL=http://<VOTRE_IP>:3000
+DJANGO_EMAIL_URL_APP="http://<VOTRE_IP>:3000"
+```
+
+### 🔍 Points d'attention critiques
+
+1. **WebSocket de collaboration (`COLLABORATION_WS_URL`) :**
+   Si cette variable reste sur `ws://localhost:4444/...`, le navigateur tente d'ouvrir la WebSocket sur son propre poste local, ce qui empêche l'éditeur BlockNote de s'initialiser.
+2. **Endpoints OIDC Publics vs Internes :**
+   - `OIDC_OP_AUTHORIZATION_ENDPOINT` est envoyé au **navigateur** : il **doit** utiliser l'IP publique (`http://<VOTRE_IP>:8083/...`).
+   - `OIDC_OP_JWKS_ENDPOINT`, `OIDC_OP_TOKEN_ENDPOINT`, etc. sont appelés **côté serveur par Django** : ils **doivent** pointer vers `http://nginx:8083/...` au sein du réseau Docker. Pointer vers l'IP publique depuis le conteneur provoque un timeout réseau (problème de hairpin NAT) suivi d'une exception `SuspiciousOperation` (« OIDC callback state not found »).
+
+---
+
+## 🔑 5. `kc_auth.local` : Hostname public Keycloak
+
+Keycloak génère les actions de formulaire et les redirections à partir de son hostname configuré. S'il reste sur `localhost`, le navigateur est renvoyé vers `localhost:8083` et perd le cookie de session, générant l'erreur **« Restart login cookie not found »**.
+
+Créez ou éditez `src/docs/env.d/development/kc_auth.local` :
+
+```dotenv
+# src/docs/env.d/development/kc_auth.local
+KC_HOSTNAME=http://<VOTRE_IP>:8083
+KC_HOSTNAME_STRICT=false
+```
+
+---
+
+## 🚀 6. Démarrage et Rechargement des Services
+
+Après avoir configuré les fichiers `.local` :
+
+```bash
+# Vérifier la configuration Docker sans démarrer
+docker compose -f src/docs/compose.yml config \
+  | grep -E "KC_HOSTNAME|LOGIN_REDIRECT_URL|OIDC_REDIRECT_ALLOWED_HOSTS|OIDC_OP_AUTHORIZATION_ENDPOINT"
+
+# Lancer ou recréer les conteneurs Docs
+make dev-docs
+```
+
+> ℹ️ Les identifiants de démonstration du realm Docs sont **`impress / impress`**. Le compte `admin / admin` est réservé à la console d'administration de Keycloak.
+
+---
+
+## 🛠️ 7. Diagnostic & Résolution de Problèmes
+
+### Erreur « Restart login cookie not found »
+- **Cause :** `KC_HOSTNAME` est resté sur `localhost` ou le navigateur mélange des cookies provenant de `localhost:8083` et de l'IP distante.
+- **Solution :** Vérifier `kc_auth.local`, vider les cookies du navigateur pour l'IP du serveur, et redémarrer Keycloak avec `make dev-docs`.
+
+### Erreur « OIDC callback state not found in session » (`SuspiciousOperation`)
+- **Cause :** Django n'a pas pu contacter Keycloak en arrière-plan pour échanger le code OIDC contre un jeton (timeout sur l'IP publique).
+- **Solution :** S'assurer que `OIDC_OP_JWKS_ENDPOINT`, `OIDC_OP_TOKEN_ENDPOINT` et `OIDC_OP_USER_ENDPOINT` pointent vers `http://nginx:8083/...` dans `common.local`.
+
+### L'éditeur BlockNote reste vide ou affiche un avertissement WebSocket
+- **Cause :** `COLLABORATION_WS_URL` n'est pas accessible depuis le navigateur client.
+- **Solution :** S'assurer que le port `4444` est ouvert sur le pare-feu du serveur et que `COLLABORATION_WS_URL=ws://<VOTRE_IP>:4444/collaboration/ws/`.
+
+---
+
+## 📖 8. Pour aller plus loin
+
+Pour découvrir la proposition d'amélioration officielle destinée au dépôt `suitenumerique/docs` afin de standardiser ces variables en amont :
+👉 Consultez la **[Proposition de PR DINUM](./02-pr-support-serveurs-distants.mdx)**.

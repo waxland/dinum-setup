@@ -1,0 +1,54 @@
+---
+title: Hiérarchie des Normes & Ordre Juridique Français
+sidebar_label: 1. Hiérarchie des Normes
+description: Comprendre la pyramide de Kelsen, la hiérarchie des textes juridiques en France et leur application dans les documents administratifs.
+---
+
+import { Mermaid } from "../../../../src/components/Mermaid";
+
+Pour tout développeur ou agent public intégrant des textes de loi dans **La Suite Docs**, il est indispensable de comprendre la **hiérarchie des normes**. Ce principe fondamental, théorisé par Hans Kelsen, stipule qu'une norme juridique inférieure doit obligatoirement respecter les normes de rang supérieur.
+
+---
+
+## 🏛️ 1. La Pyramide des Normes en Droit Français
+
+<Mermaid chart={`flowchart TD
+    subgraph Pyramide["Hiérarchie des Normes (Droit Français)"]
+        direction TB
+        C["1. Bloc de Constitutionnalité (Constitution de 1958, DDHC 1789, Charte de l'environnement)"]
+        T["2. Bloc de Conventionnalité (Traités internationaux, Droit de l'Union Européenne - RGPD)"]
+        L["3. Bloc de Légalité (Lois organiques, Lois ordinaires, Ordonnances ratifiées)"]
+        R["4. Bloc Réglementaire (Décrets d'application du Premier ministre / Président)"]
+        A["5. Actes Administratifs (Arrêtés ministériels, préfectoraux, municipaux)"]
+        Ci["6. Circulaires & Directives (Instructions internes d'application)"]
+
+        C --> T
+        T --> L
+        L --> R
+        R --> A
+        A --> Ci
+    end
+`} />
+
+---
+
+## 📚 2. Typologie des Textes Juridiques
+
+| Niveau | Type de texte | Auteur / Émetteur | Force juridique | Exemple |
+| :--- | :--- | :--- | :--- | :--- |
+| **Constitutionnel** | Constitution, DDHC, Préambule 1946 | Peuple français / Référendum / Congrès | Suprême | *Art. 34 de la Constitution (domaine de la loi)* |
+| **International** | Règlements & Directives UE, Traités | Union Européenne, ONU, Traités bilatéraux | Supérieure à la loi nationale | *Règlement (UE) 2016/679 (RGPD)* |
+| **Législatif** | Lois ordinaires, Lois de finances, Ordonnances | Parlement (Assemblée nationale + Sénat) | Obligatoire pour tous | *Loi n° 78-17 du 6 janvier 1978 (Informatique et Libertés)* |
+| **Réglementaire** | Décrets simples et décrets en Conseil d'État | Président de la République, Premier ministre | Application de la loi | *Décret n° 2019-1088 du 23 octobre 2019 (ProConnect)* |
+| **Arrêtés** | Arrêtés ministériels, préfectoraux, municipaux | Ministres, Préfets, Maires | Portée locale ou sectorielle | *Arrêté portant nomination ou délégation de signature* |
+| **Circulaires** | Circulaires, notes de service, instructions | Ministres, Secrétaires généraux | Interne à l'administration | *Circulaire relative à l'usage des logiciels libres dans l'État* |
+
+---
+
+## 🔍 3. Impact pour la Commande `/loi`
+
+Lorsqu'un agent public recherche et insère un texte via `/loi` :
+
+1. **Précision du texte :** La commande doit afficher clairement le type de texte (Code, Loi, Décret, Arrêté) pour que le rédacteur connaisse immédiatement sa portée juridique.
+2. **État de vigueur :** Un texte peut être *En vigueur*, *Abrogé* ou *À vigueur différée*. Le bloc `/loi` signale visuellement cet état via un badge DSFR dédié.
+3. **Traçabilité :** Le lien vers la publication officielle au **Journal Officiel (JORF)** ou sur **Légifrance** garantit l'opposabilité juridique de la citation.

@@ -1,0 +1,54 @@
+---
+title: Cache Redis, Résilience & Gestion des Quotas
+sidebar_label: 2. Cache Redis & Résilience
+description: Stratégie de mise en cache Redis, invalidation, rate limiting et gestion des pannes réseau pour l'API Légifrance.
+---
+
+import { Mermaid } from "../../../../src/components/Mermaid";
+
+L'interconnexion avec une API externe d'État requiert une stratégie de tolérance aux pannes pour garantir que l'éditeur Docs ne subit aucun ralentissement.
+
+---
+
+## ⚡ 1. Stratégie de Cache Redis à Deux Niveaux
+
+<Mermaid chart={`flowchart TD
+    Req["Requête de recherche /loi"] --> CheckCache{"Clé présente dans Redis ?"}
+    CheckCache -->|"Oui (Hit)"| ReturnCache["Réponse instantanée rapide"]
+    CheckCache -->|"Non (Miss)"| CallPISTE["Appel HTTP PISTE (~200ms)"]
+    
+    CallPISTE --> Success{"Statut HTTP 200 ?"}
+    Success -->|Oui| SaveRedis["Sauvegarde dans Redis (TTL 24h)"] --> ReturnResult["Renvoi au Frontend"]
+    Success -->|"Non / Timeout"| Fallback{"Ancien cache disponible ?"}
+    Fallback -->|Oui| ReturnStale["Renvoi des données périmées (Stale)"]
+    Fallback -->|Non| ReturnDegraded["Message d'alerte non bloquant"]
+`} />
+
+---
+
+## 🛡️ 2. Gestion des Pannes Réseau (Circuit Breaker)
+
+Si l'API PISTE subit un incident technique ou une coupure réseau :
+
+1. **Timeout strict :** Tous les appels HTTP backend vers PISTE sont limités à un timeout maximal de **3,5 secondes**.
+2. **Dégradation gracieuse :** Si l'API ne répond pas, le backend renvoie un code `200` avec un avertissement `"service_status": "degraded"`.
+3. **Zéro blocage de l'éditeur :** L'agent public peut continuer à écrire, modifier et collaborer sur son document sans interruption.
+
+---
+
+## 📈 3. Rate Limiting Utilisateur
+
+Pour éviter qu'un utilisateur ou un bot n'épuise le quota global de l'organisation sur PISTE :
+
+```python
+# settings.py
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '60/minute',
+        'laws_search': '30/minute',
+    }
+}
+```
