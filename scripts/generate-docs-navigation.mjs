@@ -70,7 +70,18 @@ function formatLabel(name) {
     vm: "VM",
     nat: "NAT",
     pappers: "Entreprises (/pappers)",
+    entreprise: "Entreprises (/entreprise)",
     assemblee: "Assemblée Nationale (/assemblee)",
+    adresse: "Base Adresse Nationale (/adresse)",
+    ban: "BAN",
+    marche: "Marchés Publics (/marche)",
+    cadastre: "Cadastre (/cadastre)",
+    subvention: "Subventions (/subvention)",
+    insee: "INSEE",
+    tchap: "Tchap",
+    demarche: "Démarches Simplifiées",
+    opendata: "Open Data",
+    parapheur: "Parapheur Électronique",
     siren: "SIREN",
     siret: "SIRET",
     django: "Django",
@@ -149,13 +160,17 @@ function getDefaultIcon(name, depth) {
   if (lower.includes("donnees") || lower.includes("temps-reel"))
     return "database";
   if (lower.includes("devops") || lower.includes("deploiement")) return "cloud";
-  if (lower.includes("socle") || lower.includes("standard")) return "layers";
+  if (lower.includes("socle") || lower.includes("standard") || lower.includes("technique")) return "layers";
   if (lower.includes("loi") || lower.includes("juridique") || lower.includes("legal"))
     return "scale";
   if (lower.includes("pappers") || lower.includes("entreprise") || lower.includes("societe"))
     return "building-2";
   if (lower.includes("assemblee") || lower.includes("parlement") || lower.includes("claire"))
     return "landmark";
+  if (lower.includes("adresse") || lower.includes("ban") || lower.includes("geo"))
+    return "map-pin";
+  if (lower.includes("proposition") || lower.includes("idee"))
+    return "lightbulb";
   if (lower.includes("remplir") || lower.includes("auto"))
     return "sparkles";
   if (lower.includes("document") || lower.includes("contenu"))

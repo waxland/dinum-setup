@@ -297,21 +297,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
         "file": "08-slash/index.mdx",
         "path": "/08-slash"
       },
-      {
-        "type": "category",
-        "label": "Assemblée Nationale (/assemblee)",
-        "icon": "landmark",
-        "collapsed": false,
-        "items": [
-          {
-            "type": "doc",
-            "file": "08-slash/assemblee/index.mdx",
-            "path": "/08-slash/assemblee"
-          },
-          "/08-slash/assemblee/01-api-claire-vite-assemblee",
-          "/08-slash/assemblee/02-cas-usage-veille-parlementaire"
-        ]
-      },
+      "/08-slash/00-socle-technique",
+      "/08-slash/01-architecture-standardisee",
       {
         "type": "category",
         "label": "Projet de Loi (/loi)",
@@ -320,8 +307,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
         "items": [
           {
             "type": "doc",
-            "file": "08-slash/loi/index.mdx",
-            "path": "/08-slash/loi"
+            "file": "08-slash/01-loi/index.mdx",
+            "path": "/08-slash/01-loi"
           },
           {
             "type": "category",
@@ -329,9 +316,9 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "icon": "sliders",
             "collapsed": false,
             "items": [
-              "/08-slash/loi/01-fondations-juridiques/01-hierarchie-des-normes",
-              "/08-slash/loi/01-fondations-juridiques/02-comprendre-la-loi",
-              "/08-slash/loi/01-fondations-juridiques/03-guide-des-citations"
+              "/08-slash/01-loi/01-fondations-juridiques/01-hierarchie-des-normes",
+              "/08-slash/01-loi/01-fondations-juridiques/02-comprendre-la-loi",
+              "/08-slash/01-loi/01-fondations-juridiques/03-guide-des-citations"
             ]
           },
           {
@@ -340,48 +327,66 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "icon": "code",
             "collapsed": false,
             "items": [
-              "/08-slash/loi/02-api-legifrance-piste/01-authentification-oauth2",
-              "/08-slash/loi/02-api-legifrance-piste/02-endpoints-suggest-et-search",
-              "/08-slash/loi/02-api-legifrance-piste/03-mapping-fonds-et-collections"
+              "/08-slash/01-loi/02-api-legifrance-piste/01-authentification-oauth2",
+              "/08-slash/01-loi/02-api-legifrance-piste/02-endpoints-suggest-et-search",
+              "/08-slash/01-loi/02-api-legifrance-piste/03-mapping-fonds-et-collections"
             ]
           },
-          "/08-slash/loi/03-cas-usage-metier",
-          "/08-slash/loi/settings"
+          "/08-slash/01-loi/03-cas-usage-metier",
+          "/08-slash/01-loi/settings"
         ]
       },
       {
         "type": "category",
-        "label": "Entreprises (/pappers)",
+        "label": "Assemblée Nationale (/assemblee)",
+        "icon": "landmark",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "08-slash/02-assemblee/index.mdx",
+            "path": "/08-slash/02-assemblee"
+          },
+          "/08-slash/02-assemblee/01-api-claire-vite-assemblee",
+          "/08-slash/02-assemblee/02-cas-usage-veille-parlementaire"
+        ]
+      },
+      "/08-slash/02-composant-customblock-unique",
+      {
+        "type": "category",
+        "label": "Entreprises (/entreprise)",
         "icon": "building-2",
         "collapsed": false,
         "items": [
           {
             "type": "doc",
-            "file": "08-slash/pappers/index.mdx",
-            "path": "/08-slash/pappers"
+            "file": "08-slash/03-entreprise/index.mdx",
+            "path": "/08-slash/03-entreprise"
           },
-          "/08-slash/pappers/01-api-entreprises-pappers",
-          "/08-slash/pappers/02-cas-usage-marches-publics"
+          "/08-slash/03-entreprise/01-api-entreprises-pappers",
+          "/08-slash/03-entreprise/02-cas-usage-marches-publics"
         ]
       },
-      "/08-slash/roadmap",
+      "/08-slash/03-proxy-backend-et-cache",
       {
         "type": "category",
-        "label": "Socle Technique Unifié",
-        "icon": "layers",
+        "label": "Base Adresse Nationale (/adresse)",
+        "icon": "map-pin",
         "collapsed": false,
         "items": [
           {
             "type": "doc",
-            "file": "08-slash/socle-technique/index.mdx",
-            "path": "/08-slash/socle-technique"
+            "file": "08-slash/04-adresse/index.mdx",
+            "path": "/08-slash/04-adresse"
           },
-          "/08-slash/socle-technique/01-architecture-standardisee",
-          "/08-slash/socle-technique/02-composant-customblock-unique",
-          "/08-slash/socle-technique/03-proxy-backend-et-cache",
-          "/08-slash/socle-technique/04-tutoriel-ajouter-une-api"
+          "/08-slash/04-adresse/01-api-base-adresse-nationale",
+          "/08-slash/04-adresse/02-cas-usage-territoriaux-et-courriers",
+          "/08-slash/04-adresse/settings"
         ]
-      }
+      },
+      "/08-slash/04-tutoriel-ajouter-une-api",
+      "/08-slash/proposition",
+      "/08-slash/roadmap"
     ]
   }
 ];

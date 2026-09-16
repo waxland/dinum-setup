@@ -4,7 +4,7 @@ sidebar_label: Socle Technique
 description: Architecture standardisée, composant BlockNote universel à 3 modes d'affichage (Callout, Carte, Lien) et proxy Django générique pour toutes les commandes slash.
 ---
 
-import { Mermaid } from "../../../src/components/Mermaid";
+import { Mermaid } from "../../src/components/Mermaid";
 
 Pour garantir l'évolutivité, la cohérence graphique et la simplicité de maintenance de **La Suite Docs**, l'ensemble des commandes slash connectées à des sources de données externes (**`/loi`**, **`/pappers`**, **`/assemblee`**, **`/adresse`**, etc.) reposent sur un **Socle Technique Unifié**.
 
@@ -80,28 +80,28 @@ Inspiré de l'architecture native de **`/link-doc` (`Interlinking`)**, ce socle 
     icon="🧩"
     title="1. Architecture & Inspiration /link-doc"
     description="Cycle de vie du composant (état recherche -> état sélectionné), synchronisation CRDT Yjs et focus trap."
-    href="/08-slash/socle-technique/01-architecture-standardisee"
+    href="/08-slash/01-architecture-standardisee"
     badge="Conception"
   />
   <FeatureCard
     icon="🎨"
     title="2. CustomBlock Unique & 3 Modes DSFR"
     description="Code TypeScript du composant BlockNote universel, modes Callout, Carte et Lien avec prévisualisation."
-    href="/08-slash/socle-technique/02-composant-customblock-unique"
+    href="/08-slash/02-composant-customblock-unique"
     badge="Frontend React"
   />
   <FeatureCard
     icon="🐍"
     title="3. Proxy Django & Provider Registry"
     description="Architecture backend unifiée, interface BaseSourceProvider, cache Redis 24h et rate limiting."
-    href="/08-slash/socle-technique/03-proxy-backend-et-cache"
+    href="/08-slash/03-proxy-backend-et-cache"
     badge="Backend Django"
   />
   <FeatureCard
     icon="⚡"
     title="4. Tutoriel : Ajouter une API en 10 min"
     description="Guide pas-à-pas pour brancher une nouvelle source externe sans toucher au cœur de l'éditeur."
-    href="/08-slash/socle-technique/04-tutoriel-ajouter-une-api"
+    href="/08-slash/04-tutoriel-ajouter-une-api"
     badge="Guide Dev"
   />
 </FeatureGrid>

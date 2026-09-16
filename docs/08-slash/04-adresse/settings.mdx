@@ -1,0 +1,49 @@
+---
+title: Configuration & Activation de la Commande /adresse
+sidebar_label: 3. Activation & Settings
+description: "Configuration du connecteur Base Adresse Nationale, gestion des quotas, cache Redis 24h et options de géocodage par défaut."
+---
+
+La commande **`/adresse`** repose sur l'API publique ouverte de la Base Adresse Nationale (`api-adresse.data.gouv.fr`).
+
+---
+
+## ⚙️ 1. Configuration des Variables d'Environnement
+
+L'API BAN étant un service public ouvert sans clé obligatoire, la commande est **activée par défaut** sur toutes les instances de La Suite Docs :
+
+```dotenv
+# src/docs/env.d/development/common.local
+
+# URL de l'API Base Adresse Nationale
+BAN_API_BASE_URL=https://api-adresse.data.gouv.fr
+
+# Activation explicite (true par défaut)
+DOCS_ENABLE_FEATURE_ADDRESS=true
+
+# Quota d'appels par utilisateur (rate limiting)
+BAN_RATE_LIMIT_PER_MINUTE=60
+```
+
+---
+
+## ⚡ 2. Stratégie de Cache Redis (TTL 24h)
+
+Les adresses certifiées par les communes étant stables dans le temps, chaque recherche est mise en cache dans Redis :
+
+```python
+cache_key = f"address:search:{query_hash}"
+# Mise en cache 24 heures (86400 secondes)
+cache.set(cache_key, results, timeout=86400)
+```
+
+- **Avantage :** Réduction de la charge sur l'infrastructure nationale Etalab / IGN.
+- **Performance :** Temps de réponse inférieur à 5 ms lors d'une recherche déjà effectuée par un collègue.
+
+---
+
+## 🛡️ 3. Gestion du Mode Hors-Ligne & Réseau Déconnecté
+
+Pour les déploiements sur des réseaux ministériels isolés sans accès Internet :
+- Si `api-adresse.data.gouv.fr` n'est pas joignable, le backend renvoie gracieusement une liste vide sans bloquer la saisie de texte dans l'éditeur.
+- Possibilité de pointer `BAN_API_BASE_URL` vers une instance locale de l'API Adresse hébergée sur Docker en intranet via l'image officielle `etalab/addok`.

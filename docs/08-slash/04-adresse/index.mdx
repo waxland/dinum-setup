@@ -1,0 +1,94 @@
+---
+title: Commande Slash /adresse — Base Adresse Nationale (BAN)
+sidebar_label: Commande /adresse
+description: "Spécification et intégration de la commande slash /adresse pour rechercher, certifier et insérer des adresses postales officielles de la Base Adresse Nationale (BAN) dans La Suite Docs."
+---
+
+import { Mermaid } from "../../../src/components/Mermaid";
+
+La commande **`/adresse`** (alias **`/ban`**, **`/address`**, **`/geo`**, **`/rue`**) permet aux agents territoriaux, instructeurs d'urbanisme, secrétaires de mairie et rédacteurs administratifs de rechercher et d'insérer des adresses postales françaises certifiées issues de la **Base Adresse Nationale (BAN)** directement au sein de leurs documents **La Suite Docs**.
+
+---
+
+## 🎯 Pourquoi la Commande `/adresse` ?
+
+Dans la gestion publique quotidienne (rédaction d'arrêtés municipaux de voirie ou de stationnement, courriers de notification, autorisations d'urbanisme, déclarations ERP, convocations administratives), l'exactitude de l'adresse est un enjeu juridique et opérationnel majeur :
+
+1. **Opposabilité juridique des notifications :** Une coquille dans le nom de la voie ou le code postal peut vicier la notification d'une décision administrative ou d'un recours contentieux.
+2. **Standardisation nationale (BAN) :** La loi 3DS impose à toutes les communes de France de certifier et de transmettre leurs adresses dans la Base Adresse Nationale.
+3. **Géolocalisation & Interopérabilité :** Rattacher automatiquement à chaque adresse son code INSEE communal, son identifiant BAN pérenne et ses coordonnées GPS (WGS84).
+4. **Gain de temps au clavier :** Autocomplétion tolérante aux fautes d'orthographe (fuzzy search) sans quitter son document ni ouvrir un outil cartographique externe.
+
+---
+
+## 🏗️ Architecture Technique de la Commande `/adresse`
+
+<Mermaid chart={`flowchart TD
+    subgraph Client["Poste Client (Navigateur Agent)"]
+        Slash["Saisie /adresse au clavier"] --> SearchPopover["Popover Inline de Recherche (QuickSearch DSFR)"]
+        SearchPopover --> BlockSpec["Composant Universel SourceBlockSpec (React 19)"]
+        BlockSpec --> YDoc["Arbre CRDT Yjs (Y.Doc)"]
+    end
+
+    subgraph Backend["Infrastructure La Suite Docs"]
+        DjangoProxy["API Django 5 (/api/v1/sources/search?type=address)"]
+        RedisCache[("Cache Redis 7 (TTL 24h)")]
+        YjsServer["Serveur WebSockets Hocuspocus"]
+    end
+
+    subgraph SovereignAPI["Infrastructure Nationale BAN (Etalab / IGN / ANCT)"]
+        API_BAN["API Adresse (api-adresse.data.gouv.fr/search)"]
+        BaseBAN["Base Adresse Nationale (50+ millions d'adresses certifiées)"]
+    end
+
+    SearchPopover -->|"1. Requête autocomplétion (Debounce 200ms)"| DjangoProxy
+    DjangoProxy -->|2. Lecture Cache Redis| RedisCache
+    RedisCache -.->|Miss| DjangoProxy
+    DjangoProxy -->|3. Appel API Adresse souveraine| API_BAN
+    API_BAN <--> BaseBAN
+    API_BAN -.->|4. GeoJSON structuré| DjangoProxy
+    DjangoProxy -.->|5. DTO normalisé SourceSearchResult| SearchPopover
+    SearchPopover -->|"6. Insertion en 1 clic"| YDoc
+    YDoc <==>|7. Synchronisation Temps Réel| YjsServer
+`} />
+
+---
+
+## 📚 Sommaire du Dossier `/adresse`
+
+<FeatureGrid cols={3}>
+  <FeatureCard
+    icon="📍"
+    title="1. Spécifications API BAN"
+    description="Endpoints /search et /reverse, autocomplétion fuzzy, GeoJSON, coordonnées GPS et gratuité sans clé."
+    href="/08-slash/04-adresse/01-api-base-adresse-nationale"
+    badge="API & Données"
+  />
+  <FeatureCard
+    icon="🏛️"
+    title="2. Cas d'Usage Territoriaux"
+    description="Arrêtés de voirie, courriers officiels, autorisations d'urbanisme, ERP et interventions de terrain."
+    href="/08-slash/04-adresse/02-cas-usage-territoriaux-et-courriers"
+    badge="Métier & Terrain"
+  />
+  <FeatureCard
+    icon="⚙️"
+    title="3. Activation & Settings"
+    description="Configuration du connecteur BAN, gestion du rate limit (50 req/s), cache et options de géocodage."
+    href="/08-slash/04-adresse/settings"
+    badge="Configuration"
+  />
+</FeatureGrid>
+
+---
+
+## 🧩 Les 3 Formats d'Affichage DSFR
+
+Comme toutes les commandes basées sur le **[Socle Technique Unifié](/08-slash/00-socle-technique)**, l'adresse peut être affichée selon 3 formats :
+
+1. 📢 **Format Callout (Encadré DSFR)** :  
+   `fr-callout fr-callout--blue-france` mettant en avant l'adresse complète avec mention de la certification BAN et lien vers la fiche nationale.
+2. 🗂️ **Format Carte (Card DSFR)** :  
+   Encart synthétique avec **grille de métadonnées à 3 colonnes** : Code INSEE (`75107`), Type (`Numéro et Voie`), et Coordonnées GPS (`48.8512, 2.3087`).
+3. 🔗 **Format Lien (Inline Badge & Popover)** :  
+   Pastille compacte `📍 20 Avenue de Ségur, 75007 Paris` au sein du paragraphe, avec mini-carte au survol.

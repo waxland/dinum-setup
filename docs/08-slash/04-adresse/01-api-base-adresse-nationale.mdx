@@ -1,0 +1,110 @@
+---
+title: Spécifications de l'API Base Adresse Nationale (BAN)
+sidebar_label: 1. API BAN & Géocodage
+description: "Documentation technique de l'API Adresse officielle (api-adresse.data.gouv.fr), géocodage direct et inverse, structure GeoJSON et performance."
+---
+
+L'**API Adresse** est le service national officiel de géocodage et d'autocomplétion des adresses françaises. Co-pilotée par la **DINUM (Etalab)**, l'**ANCT** et l'**IGN**, elle est **100% ouverte, gratuite, souveraine et accessible sans clé d'API obligatoire**.
+
+---
+
+## 📡 1. Endpoints Principaux de l'API Adresse
+
+- **URL de Base :** `https://api-adresse.data.gouv.fr`
+- **Format d'Échange :** GeoJSON standard (RFC 7946)
+- **Authentification :** Aucune clé requise (service public ouvert)
+
+### Tableau des Endpoints
+
+| Endpoint | Méthode | Usage Principal | Temps de Réponse |
+| :--- | :--- | :--- | :--- |
+| **`/search/`** | `GET` | Géocodage direct et autocomplétion par texte | ~30 à 60 ms |
+| **`/reverse/`** | `GET` | Géocodage inverse (retrouver l'adresse à partir de coordonnées GPS) | ~40 ms |
+| **`/search/csv/`** | `POST` | Géocodage en masse de fichiers de données tabulaires | Batch |
+
+---
+
+## 🔍 2. Requête d'Autocomplétion & Paramètres (`/search/`)
+
+### Exemple de Requête HTTP
+
+```http
+GET https://api-adresse.data.gouv.fr/search/?q=20+avenue+de+segur+paris&limit=5&autocomplete=1
+Accept: application/json
+```
+
+### Paramètres Utiles
+
+- **`q`** *(string, obligatoire)* : Texte saisi par l'agent dans l'éditeur (ex: *« 20 avenue de segur »*).
+- **`limit`** *(entier, défaut 5)* : Nombre maximal de suggestions retournées.
+- **`autocomplete`** *(0 ou 1, défaut 1)* : Active le mode autocomplétion rapide (recherche préfixée et tolérance aux fautes).
+- **`type`** *(string, optionnel)* : Filtre par type d'entité : `housenumber` (numéro avec voie), `street` (voie seule), `locality` (lieu-dit), `municipality` (commune).
+- **`postcode`** *(string, optionnel)* : Filtre sur un code postal précis (ex: `75007`).
+- **`citycode`** *(string, optionnel)* : Filtre sur un code commune INSEE (ex: `75107`).
+
+---
+
+## 📦 3. Structure du Payload GeoJSON Retourné
+
+```json
+{
+  "type": "FeatureCollection",
+  "version": "draft",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.308722, 48.851214]
+      },
+      "properties": {
+        "label": "20 Avenue de Ségur 75007 Paris",
+        "score": 0.98,
+        "housenumber": "20",
+        "id": "75107_8863_00020",
+        "banId": "75107_8863_00020",
+        "type": "housenumber",
+        "name": "20 Avenue de Ségur",
+        "postcode": "75007",
+        "citycode": "75107",
+        "city": "Paris",
+        "district": "Paris 7e Arrondissement",
+        "context": "75, Paris, Île-de-France",
+        "importance": 0.74,
+        "street": "Avenue de Ségur"
+      }
+    }
+  ],
+  "attribution": "BAN",
+  "licence": "ETALAB-2.0",
+  "query": "20 avenue de segur paris",
+  "limit": 5
+}
+```
+
+---
+
+## 🐍 4. Normalisation vers le Socle Commun (`AddressSourceProvider`)
+
+Le provider Django `AddressSourceProvider` extrait ces données et les mappe vers l'interface `SourceSearchResult` :
+
+```python
+results.append({
+    "source_id": props.get("id", ""),
+    "source_type": "address",
+    "provider": "Base Adresse Nationale",
+    "title": props.get("label", ""),
+    "subtitle": f"Code Postal : {props.get('postcode', '')} — Commune : {props.get('city', '')}",
+    "status": "CERTIFIÉE BAN",
+    "status_badge_color": "info",
+    "contentHtml": f"<p><strong>Adresse officielle :</strong> {props.get('label', '')}</p><p>Coordonnées GPS : {coords[1]}, {coords[0]}</p>",
+    "summary": f"Adresse certifiée par la mairie ({props.get('city', '')}).",
+    "meta_field_1_label": "Code INSEE",
+    "meta_field_1_value": props.get("citycode", ""),
+    "meta_field_2_label": "Type",
+    "meta_field_2_value": "Numéro et voie" if props.get("type") == "housenumber" else "Voie",
+    "meta_field_3_label": "Score",
+    "meta_field_3_value": f"{round(props.get('score', 0) * 100)}%",
+    "url": f"https://adresse.data.gouv.fr/base-adresse-nationale/{props.get('id', '')}",
+})
+```
