@@ -137,9 +137,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
         "icon": "file-text",
         "collapsed": false,
         "items": [
-          "/03-projets/01-documents-et-contenus/blocknote",
           "/03-projets/01-documents-et-contenus/docs",
-          "/03-projets/01-documents-et-contenus/docspec",
           "/03-projets/01-documents-et-contenus/fichiers-drive",
           "/03-projets/01-documents-et-contenus/grist"
         ]

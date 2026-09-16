@@ -1,73 +1,92 @@
 ---
-title: Kits Figma & UI Kit La Suite
-sidebar_label: Figma & UI Kit
-description: Librairies de composants Figma officielles de La Suite numérique, UI Kit Storybook et kits graphiques de l'État.
+title: Kits Figma, Cunningham & UI Kit La Suite
+sidebar_label: Figma & Cunningham
+description: "Librairies de composants Figma officielles de La Suite numérique, Design System Cunningham, Storybook et maquettes officielles de Docs."
 ---
 
-Pour concevoir des maquettes et des interfaces parfaitement alignées avec l'identité visuelle de **La Suite numérique**, les équipes de design mettent à disposition un ensemble de ressources et librairies officielles sur **Figma** et **Storybook**.
+Pour concevoir des maquettes et des interfaces parfaitement alignées avec l'identité visuelle de **La Suite numérique**, les équipes de design et de développement s'appuient sur le design system **Cunningham** et sur l'écosystème officiel **Figma** et **Storybook**.
 
 ---
 
-## 🎨 1. Les Librairies Officielles
+## 🎨 Les Librairies Officielles de Design
 
-<FeatureGrid cols={2}>
+<FeatureGrid cols={3}>
+  <FeatureCard
+    icon="📄"
+    title="Figma Docs (La Suite)"
+    description="Maquettes complètes et composants UI de l'application officielle La Suite Docs sur Figma."
+    href="https://www.figma.com/design/qdCWR4tTUr7vQSecEjCyqO/Docs?node-id=9722-19469&p=f&t=r1O6Np4JgTbRWrCR-0"
+    badge="Figma Officiel"
+  />
   <FeatureCard
     icon="🎨"
-    title="Figma UI Kit La Suite"
-    description="Librairie officielle de composants Figma de La Suite numérique publiée sur la communauté Figma."
+    title="Figma La Suite UI Kit"
+    description="Librairie officielle de composants Figma de La Suite numérique (Cunningham / DSFR)."
     href="https://www.figma.com/community/file/1562860630562131728/lasuite-ui-kit"
     badge="Figma Community"
   />
   <FeatureCard
     icon="📖"
-    title="Storybook UI Kit"
-    description="Visualiseur interactif des composants d'interface (@gouvfr-lasuite/ui-components / Cunningham)."
+    title="Storybook Cunningham"
+    description="Documentation et démonstrateur interactif du Design System Cunningham de La Suite Docs."
+    href="https://suitenumerique.github.io/cunningham/storybook/?path=/story/components-loader-wip--medium"
+    badge="Cunningham Storybook"
+  />
+  <FeatureCard
+    icon="📖"
+    title="Storybook UI Kit La Suite"
+    description="Visualiseur interactif des composants d'interface (@gouvfr-lasuite/ui-components)."
     href="https://suitenumerique.github.io/ui-kit/?path=/docs/components-button--docs"
     badge="Live Storybook"
   />
   <FeatureCard
     icon="🐙"
-    title="GitHub suitenumerique/ui-kit"
-    description="Code source du kit de composants React de La Suite avec thémage, tokens et typographie."
-    href="https://github.com/suitenumerique/ui-kit"
+    title="GitHub Cunningham"
+    description="Code source officiel du Design System Cunningham (générateur de tokens CSS/TS et composants React)."
+    href="https://github.com/openfun/cunningham"
     badge="Open Source"
   />
   <FeatureCard
-    icon="🏛️"
-    title="Kits Figma DSFR de l'État"
-    description="Kits de composants officiels de l'État (Design System du Gouvernement) pour Figma et Sketch."
-    href="https://www.systeme-de-design.gouv.fr/version-courante/fr/premiers-pas/vous-etes-designer/premiers-pas-sur-figma"
-    badge="Gouv.fr"
+    icon="🐙"
+    title="GitHub UI Kit La Suite"
+    description="Code source du package de composants partagés de La Suite numérique."
+    href="https://github.com/suitenumerique/ui-kit"
+    badge="Open Source"
   />
 </FeatureGrid>
 
 ---
 
-## 🛠️ 2. Utilisation de la Librairie Figma La Suite
+## 🛠️ Le Design System Cunningham dans La Suite Docs
 
-### Accéder au kit communautaire
+L'application **Docs** (`impress`) s'appuie fondamentalement sur **Cunningham** pour l'ensemble de son interface :
 
-1. Ouvrez le fichier communautaire : **[La Suite UI Kit sur Figma Community](https://www.figma.com/community/file/1562860630562131728/lasuite-ui-kit)**.
-2. Cliquez sur **Open in Figma** pour dupliquer le fichier dans votre espace de travail.
-3. Activez la librairie dans vos projets pour accéder à l'ensemble des composants :
-   - Boutons & Variantes (Primary, Secondary, Tertiary, Bordered)
-   - Bouton d'authentification **ProConnect**
-   - Badges, Tags et Puces de statut
-   - Modales, Toasts et Bannières d'alerte
-   - Grilles et tokens d'espacement
+1. **Génération de Tokens CSS & TypeScript :**  
+   Les tokens de couleurs, typographie, espacements et formes sont compilés via la CLI Cunningham :
+   ```bash
+   cunningham -g css,ts -o src/cunningham --utility-classes
+   ```
+2. **Tokens de Design Universels :**  
+   Toutes les valeurs de style utilisent les CSS Custom Properties standardisées :
+   - `--c--globals--colors--brand-primary` / `--c--globals--colors--gray-700`
+   - `--c--globals--spacings--3xs` / `--c--globals--spacings--md`
+   - `--c--globals--font--sizes--sm` / `--c--globals--font--sizes--md`
+3. **Composant Conteneur `<Box>` (`src/components/Box.tsx`) :**  
+   Pratique standard dans l'éditeur pour construire toutes les cartes, modales, boutons et barres d'outils avec `styled-components`.
 
 ---
 
-## 💻 3. Correspondance entre Figma et Code React
+## 💻 Correspondance entre Figma, Cunningham et Code React
 
 Le kit de composants Figma correspond directement aux packages React développés par l'équipe :
 
-| Composant Figma       | Package React Officiel                                            | Visualisation Storybook                                                                                        |
-| --------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| **Buttons**           | `@gouvfr-lasuite/ui-components` / `@codegouvfr/react-dsfr/Button` | [Voir la démo Storybook](https://suitenumerique.github.io/ui-kit/?path=/docs/components-button--docs)          |
-| **ProConnect Button** | `@gouvfr-lasuite/ui-components`                                   | [Voir la démo ProConnect](https://suitenumerique.github.io/ui-kit/?path=/story/components-button--pro-connect) |
-| **Typography**        | Police Marianne (`@gouvfr/dsfr/dist/fonts/`)                      | [Guide Typographie](/04-design-system/01-fondations/typographie)                                               |
-| **Tokens & Couleurs** | Variables CSS `--blue-france-sun-113`, etc.                       | [Guide Couleurs](/04-design-system/01-fondations/couleurs-et-themes)                                           |
+| Composant Figma | Package & Implémentation Docs | Visualisation Storybook |
+| :--- | :--- | :--- |
+| **Maquettes Docs** | `apps/impress` (`src/features/docs/doc-editor/`) | [Figma Docs Officiel](https://www.figma.com/design/qdCWR4tTUr7vQSecEjCyqO/Docs?node-id=9722-19469&p=f&t=r1O6Np4JgTbRWrCR-0) |
+| **Tokens & Theming** | `@openfun/cunningham-tokens` / `useCunninghamTheme` | [Storybook Cunningham](https://suitenumerique.github.io/cunningham/storybook/?path=/story/components-loader-wip--medium) |
+| **Buttons & Actions** | `@gouvfr-lasuite/ui-components` / `<BoxButton>` | [Storybook UI Kit](https://suitenumerique.github.io/ui-kit/?path=/docs/components-button--docs) |
+| **ProConnect Button** | `@gouvfr-lasuite/ui-components` | [Démo ProConnect](https://suitenumerique.github.io/ui-kit/?path=/story/components-button--pro-connect) |
+| **Typography & Fonts** | Police Marianne & Inter | [Guide Typographie](/04-design-system/01-fondations/typographie) |
 
 ---
 
