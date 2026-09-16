@@ -10,7 +10,7 @@ REPOS ?= docs projects meet transfers people accounts
 
 DOCKER_COMPOSE ?= $(shell if docker compose version >/dev/null 2>&1; then echo "docker compose"; elif command -v docker-compose >/dev/null 2>&1; then echo "docker-compose"; fi)
 
-export docs_URL ?= https://github.com/suitenumerique/docs.git
+export docs_URL?="https://github.com/42xDinum-Law/docs.git"
 export projects_URL ?= https://github.com/suitenumerique/projects.git
 export meet_URL ?= https://github.com/suitenumerique/meet.git
 export transfers_URL ?= https://github.com/suitenumerique/transfers.git
@@ -29,6 +29,7 @@ help:
 	@printf "  make env                Prepare les fichiers .env locaux connus\n"
 	@printf "  make bootstrap          Prepare les projets supportes\n"
 	@printf "  make dev                Lance les projets supportes en mode dev\n"
+	@printf "  make dev-docs           Lance la stack Docs (Keycloak inclus)\n"
 	@printf "  make stop               Stoppe les stacks Docker connues\n"
 	@printf "  make status             Affiche les containers Docker actifs\n"
 	@printf "  make logs-docs          Suit les logs Docs\n"
@@ -163,9 +164,13 @@ bootstrap-projects:
 dev: clone env prepare-docker dev-docs dev-projects dev-meet dev-transfers dev-people dev-accounts
 
 .PHONY: dev-docs
-dev-docs:
+dev-docs: check-tools env-docs
 	@if [ -d "$(SRC_DIR)/docs" ]; then \
 		echo "Lancement Docs..."; \
+		if ! (cd "$(SRC_DIR)/docs" && $(DOCKER_COMPOSE) -f compose.yml config >/dev/null); then \
+			echo "Erreur: la configuration Compose de Docs est invalide." >&2; \
+			exit 1; \
+		fi; \
 		$(MAKE) -C "$(SRC_DIR)/docs" run; \
 	fi
 
