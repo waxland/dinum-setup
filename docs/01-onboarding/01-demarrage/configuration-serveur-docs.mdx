@@ -388,7 +388,121 @@ Le résultat attendu est :
 
 ---
 
-## 10. Configuration complète prête à copier-coller
+## 10. PR à proposer à la DINUM : support du développement sur serveur distant
+
+La configuration décrite dans ce guide permet déjà de faire fonctionner Docs sur un serveur distant, mais elle repose encore sur des fichiers `.local` et des adaptations propres à chaque installation. Pour rendre cette configuration maintenable dans le projet officiel `suitenumerique/docs`, il est pertinent de proposer une PR dédiée.
+
+### Objectif de la PR
+
+Rendre les URLs d'environnement configurables sans modifier le code source pour chaque serveur :
+
+- URL publique du frontend Docs ;
+- URL publique de l'API ;
+- URL publique de Keycloak ;
+- URL publique du serveur WebSocket Yjs ;
+- hostname autorisé par Next.js ;
+- endpoints OIDC publics et internes au réseau Docker.
+
+Cette évolution permettrait de lancer **La Suite Docs en mode développement sur une VM, un serveur de test ou une machine distante**, tout en conservant les valeurs `localhost` par défaut pour un développement local.
+
+### Fichiers concernés dans le projet Docs
+
+La PR pourrait notamment porter sur :
+
+| Fichier | Évolution proposée |
+| :--- | :--- |
+| `compose.yml` | Remplacer les URLs codées en dur par des variables Compose avec des valeurs par défaut locales, par exemple `API_ORIGIN: "${API_ORIGIN:-http://localhost:8071}"`. |
+| `compose-e2e.yml` | Appliquer la même configuration à l'image frontend de production utilisée par les tests ou une démonstration distante. |
+| `src/frontend/apps/impress/next.config.js` | Documenter ou rendre configurable `allowedDevOrigins` pour accepter le domaine fourni par l'environnement. |
+| `env.d/development/common` | Garder les valeurs locales par défaut et documenter les variables publiques à surcharger dans `common.local`. |
+| `env.d/development/kc_auth` | Garder un hostname local par défaut et permettre sa surcharge dans `kc_auth.local`. |
+| Documentation du projet | Ajouter un exemple de configuration pour serveur distant, sans publier de secret. |
+
+### Variables à standardiser
+
+La PR devrait privilégier des variables explicites et documentées, par exemple :
+
+```dotenv
+# Valeurs propres à la machine ou au serveur
+DOCS_PUBLIC_ORIGIN=http://localhost:3000
+API_ORIGIN=http://localhost:8071
+KEYCLOAK_PUBLIC_ORIGIN=http://localhost:8083
+COLLABORATION_WS_URL=ws://localhost:4444/collaboration/ws/
+```
+
+Sur un serveur distant, elles pourraient être surchargées sans modifier le code :
+
+```bash
+DOCS_PUBLIC_ORIGIN=http://207.175.155.66:3000 \
+API_ORIGIN=http://207.175.155.66:8071 \
+KEYCLOAK_PUBLIC_ORIGIN=http://207.175.155.66:8083 \
+COLLABORATION_WS_URL=ws://207.175.155.66:4444/collaboration/ws/ \
+make -C src/docs run
+```
+
+> ⚠️ Les endpoints OIDC appelés par Django doivent rester internes au réseau Docker (`http://nginx:8083/...`). Seul l'endpoint d'autorisation envoyé au navigateur doit utiliser l'origine publique.
+
+### Ce qui ne doit pas être ajouté dans la PR
+
+- aucun mot de passe Keycloak ;
+- aucune clé `OIDC_RP_CLIENT_SECRET` réelle ;
+- aucune clé Fernet réelle ;
+- aucune IP personnelle obligatoire dans les valeurs par défaut ;
+- aucun fichier `.local` ;
+- aucune désactivation globale des contrôles de sécurité.
+
+Les valeurs serveur restent dans un fichier local ignoré par Git ou dans le gestionnaire de secrets de l'environnement.
+
+### Validation attendue de la PR
+
+La PR peut être validée avec deux scénarios documentés :
+
+1. **Développement local par défaut**
+  - les services démarrent avec `make bootstrap` puis `make run` ;
+  - les URLs restent en `localhost` ;
+  - la connexion OIDC et la collaboration fonctionnent.
+2. **Développement distant**
+  - les variables publiques sont surchargées avec l'adresse du serveur ;
+  - le frontend appelle l'API distante et non le `localhost` du navigateur ;
+  - Keycloak conserve l'hostname public pendant tout le parcours de connexion ;
+  - le WebSocket Yjs utilise l'adresse publique ;
+  - la création, l'édition et la collaboration sur un document fonctionnent.
+
+### Proposition de titre et de description de PR
+
+```text
+feat(dev): make Docs development URLs configurable for remote servers
+```
+
+```text
+## Objectif
+
+Permettre de lancer Docs en développement sur une VM ou un serveur distant
+sans modifier le code source ni remplacer manuellement les URLs localhost.
+
+## Changements
+
+- rend l'origine API du frontend configurable via Compose ;
+- documente les origines publiques frontend, API, Keycloak et WebSocket ;
+- conserve localhost comme valeur par défaut pour le développement local ;
+- sépare les endpoints OIDC navigateur des endpoints internes Docker ;
+- ajoute une procédure de validation locale et distante.
+
+## Validation
+
+- scénario local validé ;
+- scénario serveur distant validé ;
+- connexion OIDC validée ;
+- création et édition d'un document validées ;
+- collaboration WebSocket validée ;
+- aucun secret ajouté au dépôt.
+```
+
+Cette PR transformerait les adaptations actuellement nécessaires sur un serveur en fonctionnalité officiellement supportée et réutilisable par les équipes DINUM, les contributeurs et les environnements de démonstration.
+
+---
+
+## 11. Configuration complète prête à copier-coller
 
 Cette procédure utilise le chemin réel du serveur : `/home/deploy/dinum-setup`. Elle crée uniquement les fichiers locaux de configuration ; elle ne modifie pas le code source du projet Docs.
 
