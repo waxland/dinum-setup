@@ -1,6 +1,6 @@
 ---
 title: Spécifications Techniques — Endpoints PISTE & Contrats de Données
-sidebar_label: 2. Spécifications & OAuth2
+sidebar_label: Spécifications & OAuth2
 description: "Protocole OAuth2 Client Credentials PISTE, endpoints /suggest et /search, mapping des fonds (LODA, CODE, JORF) et payloads JSON."
 ---
 
@@ -10,7 +10,7 @@ L'API Légifrance officielle est hébergée sur la plateforme interministériell
 
 ---
 
-## 🔐 1. Flux OAuth2 Client Credentials (RFC 6749)
+## 🔐 Flux OAuth2 Client Credentials (RFC 6749)
 
 <Mermaid chart={`sequenceDiagram
     autonumber
@@ -34,9 +34,9 @@ L'API Légifrance officielle est hébergée sur la plateforme interministériell
 
 ---
 
-## 📡 2. Endpoints & Requêtes Types
+## 📡 Endpoints & Requêtes Types
 
-### A. Endpoint `/suggest` (Autocomplétion pendant la saisie)
+### Endpoint `/suggest` (Autocomplétion pendant la saisie)
 
 ```http
 POST https://api.piste.gouv.fr/dila/legifrance/lf-engine-app/suggest
@@ -49,7 +49,7 @@ Content-Type: application/json
 }
 ```
 
-### B. Endpoint `/search` (Recherche Structurée & Filtres)
+### Endpoint `/search` (Recherche Structurée & Filtres)
 
 ```http
 POST https://api.piste.gouv.fr/dila/legifrance/lf-engine-app/search
@@ -81,7 +81,7 @@ Content-Type: application/json
 
 ---
 
-## 🗺️ 3. Mapping des Fonds Documentaires
+## 🗺️ Mapping des Fonds Documentaires
 
 | Filtre UI | `supplies` (`/suggest`) | `fond` (`/search`) | Description |
 | :--- | :--- | :--- | :--- |

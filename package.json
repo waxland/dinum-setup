@@ -11,6 +11,9 @@
     "build": "node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku build"
   },
   "dependencies": {
+    "@blocknote/core": "^0.54.2",
+    "@blocknote/mantine": "^0.54.2",
+    "@blocknote/react": "^0.54.2",
     "@codegouvfr/react-dsfr": "^1.35.0",
     "@types/node": "^22.20.2",
     "@types/react": "^19.3.0",

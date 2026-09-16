@@ -1,6 +1,6 @@
 ---
 title: Benchmark des APIs Géographiques — BAN vs Addok Local vs IGN vs OSM
-sidebar_label: 1. Benchmark des APIs
+sidebar_label: Benchmark des APIs
 description: "Comparatif technique entre l'API Adresse publique d'Etalab, l'instance Addok auto-hébergée, la Géoplateforme IGN et OpenStreetMap."
 ---
 
@@ -10,7 +10,7 @@ Pour intégrer le géocodage et la recherche d'adresses postales dans La Suite D
 
 ---
 
-## 📊 1. Matrice Comparative des Solutions de Géocodage
+## 📊 Matrice Comparative des Solutions de Géocodage
 
 | Critère | 1. API Adresse BAN (`api-adresse.data.gouv.fr`) | 2. Moteur Addok Local (`etalab/addok`) | 3. Géoplateforme IGN | 4. OpenStreetMap / Nominatim |
 | :--- | :--- | :--- | :--- | :--- |
@@ -23,7 +23,7 @@ Pour intégrer le géocodage et la recherche d'adresses postales dans La Suite D
 
 ---
 
-## 🏗️ 2. Architecture & Stratégie Multi-Environnements
+## 🏗️ Architecture & Stratégie Multi-Environnements
 
 <Mermaid chart={`flowchart TD
     subgraph DocsBack["Backend Docs (AddressSourceProvider)"]
@@ -43,7 +43,7 @@ Pour intégrer le géocodage et la recherche d'adresses postales dans La Suite D
 
 ---
 
-## 🎯 3. Recommandation pour La Suite Docs
+## 🎯 Recommandation pour La Suite Docs
 
 1. **Usage Standard :** Utilisation de l'API publique ouverte `https://api-adresse.data.gouv.fr/search` (0 configuration requise, activé d'office).
 2. **Usage Haute Sécurité / Intranet :** Possibilité d'activer l'image Docker `etalab/addok` dans `compose.yml` pour un géocodage instantané en réseau fermé sans sortie Internet.

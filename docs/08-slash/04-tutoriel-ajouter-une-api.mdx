@@ -1,6 +1,6 @@
 ---
 title: Tutoriel — Ajouter une Nouvelle API en 10 Minutes
-sidebar_label: 4. Ajouter une API
+sidebar_label: Ajouter une API
 description: "Guide pratique pas-à-pas pour brancher une nouvelle API souveraine (ex: Base Adresse Nationale) sur le socle technique unifié."
 ---
 
@@ -8,7 +8,7 @@ Grâce au **Socle Technique Unifié**, l'ajout d'une nouvelle commande slash de 
 
 ---
 
-## 🛠️ Étape 1 : Créer le Provider Python (`sources/providers/address.py`)
+## 🛠️ Créer le Provider Python (`sources/providers/address.py`)
 
 Créez une classe héritant de `BaseSourceProvider` pour dialoguer avec l'API externe et mapper ses réponses vers le format universel :
 
@@ -55,7 +55,7 @@ class AddressSourceProvider(BaseSourceProvider):
 
 ---
 
-## 🔌 Étape 2 : Enregistrer le Provider dans le Registry Backend
+## 🔌 Enregistrer le Provider dans le Registry Backend
 
 ```python
 # src/backend/core/sources/registry.py
@@ -83,7 +83,7 @@ source_provider_registry.register(AddressSourceProvider())  # ✅ Nouvelle comma
 
 ---
 
-## ⌨️ Étape 3 : Déclarer la Commande Slash dans BlockNote
+## ⌨️ Déclarer la Commande Slash dans BlockNote
 
 Dans le frontend Next.js, déclarez la nouvelle commande dans la liste d'autocomplétion :
 

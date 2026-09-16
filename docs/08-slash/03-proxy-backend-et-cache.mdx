@@ -1,6 +1,6 @@
 ---
 title: Proxy Backend Django 5 & Provider Registry
-sidebar_label: 3. Backend & Provider Registry
+sidebar_label: Backend & Provider Registry
 description: Architecture backend unifiée, classe abstraite BaseSourceProvider, cache Redis générique et gestion des quotas.
 ---
 
@@ -10,7 +10,7 @@ Côté serveur, le **Socle Technique Unifié** s'appuie sur le patron de concept
 
 ---
 
-## 🏛️ 1. Architecture du Provider Registry
+## 🏛️ Architecture du Provider Registry
 
 Au lieu de créer des vues Django séparées pour chaque API, une vue unique générique `SourceSearchView` interroge le provider enregistré correspondant au paramètre `type` :
 
@@ -33,7 +33,7 @@ Au lieu de créer des vues Django séparées pour chaque API, une vue unique gé
 
 ---
 
-## 🐍 2. L'Interface Abstraite `BaseSourceProvider` (`sources/base.py`)
+## 🐍 L'Interface Abstraite `BaseSourceProvider` (`sources/base.py`)
 
 Tous les providers implémentent un contrat strict garantissant que les données retournées sont immédiatement compatibles avec le composant React `SourceBlockSpec` :
 
@@ -86,7 +86,7 @@ class BaseSourceProvider(ABC):
 
 ---
 
-## 🛣️ 3. La Vue DRF Générique (`sources/views.py`)
+## 🛣️ La Vue DRF Générique (`sources/views.py`)
 
 ```python
 from rest_framework.views import APIView
@@ -134,7 +134,7 @@ class SourceSearchView(APIView):
 
 ---
 
-## ⚡ 4. Feature Flagging Centralisé
+## ⚡ Feature Flagging Centralisé
 
 L'endpoint `/api/v1/config/features/` liste dynamiquement les providers actifs à destination du frontend :
 

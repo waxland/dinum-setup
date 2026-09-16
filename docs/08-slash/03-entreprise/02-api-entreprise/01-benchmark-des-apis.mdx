@@ -1,6 +1,6 @@
 ---
 title: Benchmark des APIs Entreprises — Pappers vs API Entreprise vs RNE
-sidebar_label: 1. Benchmark des APIs
+sidebar_label: Benchmark des APIs
 description: "Comparatif technique entre le connecteur Pappers, l'API Entreprise d'État (DINUM) et l'Open Data du Registre National des Entreprises."
 ---
 
@@ -10,7 +10,7 @@ L'accès aux données légales et financières des entreprises françaises peut 
 
 ---
 
-## 📊 1. Matrice Comparative des Sources Entreprises
+## 📊 Matrice Comparative des Sources Entreprises
 
 | Critère | 1. API Pappers Entreprises | 2. API Entreprise (DINUM) | 3. Annuaire RNE / INPI |
 | :--- | :--- | :--- | :--- |
@@ -22,7 +22,7 @@ L'accès aux données légales et financières des entreprises françaises peut 
 
 ---
 
-## 🏗️ 2. Architecture Multi-Sources
+## 🏗️ Architecture Multi-Sources
 
 <Mermaid chart={`flowchart TD
     subgraph DocsProxy["CompanySourceProvider (Django Backend)"]
@@ -42,7 +42,7 @@ L'accès aux données légales et financières des entreprises françaises peut 
 
 ---
 
-## 🎯 3. Recommandation pour La Suite Docs
+## 🎯 Recommandation pour La Suite Docs
 
 - **Pour les contributeurs et développeurs en local :** Utiliser `PAPPERS_MOCK_ENABLED=true` pour tester l'ensemble du parcours sans clé d'API.
 - **Pour les instances de production ministérielles :** Basculer sur **API Entreprise (DINUM)** pour bénéficier de la gratuité totale et des attestations fiscales et sociales certifiées de l'État.

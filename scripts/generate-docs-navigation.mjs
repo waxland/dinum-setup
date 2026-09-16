@@ -24,13 +24,13 @@ function formatLabel(name) {
     return "Socle Technique Unifié";
   }
   if (clean.startsWith("metier")) {
-    return "1. Pôle Métier & Usages";
+    return "Pôle Métier & Usages";
   }
   if (clean.startsWith("api")) {
-    return "2. Pôle API & Veille";
+    return "Pôle API & Veille";
   }
   if (clean.startsWith("implementation")) {
-    return "3. Pôle Implémentation";
+    return "Pôle Implémentation";
   }
 
   const acronyms = {

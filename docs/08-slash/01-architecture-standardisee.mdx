@@ -1,6 +1,6 @@
 ---
 title: Architecture Standardisée & Inspiration /link-doc
-sidebar_label: 1. Architecture Standardisée
+sidebar_label: Architecture Standardisée
 description: Conception du cycle de vie unifié des commandes slash de données externes, inspiré de l'architecture native de /link-doc (Interlinking).
 ---
 
@@ -10,7 +10,7 @@ Dans **La Suite Docs**, la commande `/link-doc` (`Interlinking`) représente le 
 
 ---
 
-## 💡 1. Le Modèle `/link-doc` (`Interlinking`)
+## 💡 Le Modèle `/link-doc` (`Interlinking`)
 
 L'implémentation de `/link-doc` dans `src/docs/src/frontend/apps/impress/.../Interlinking` s'appuie sur un composant **`createReactInlineContentSpec`** à 3 états de rendu conditionnels :
 
@@ -27,7 +27,7 @@ L'implémentation de `/link-doc` dans `src/docs/src/frontend/apps/impress/.../In
 
 ---
 
-## 🌐 2. Généralisation : Le Cycle de Vie des Commandes Slash
+## 🌐 Généralisation : Le Cycle de Vie des Commandes Slash
 
 Le **Socle Technique Unifié** applique ce même cycle de vie à toutes les commandes de recherche externes (`/loi`, `/pappers`, `/assemblee`, `/adresse`, etc.) :
 
@@ -53,7 +53,7 @@ Le **Socle Technique Unifié** applique ce même cycle de vie à toutes les comm
 
 ---
 
-## 📦 3. Schéma de Données Universel (`SourceEntityProps`)
+## 📦 Schéma de Données Universel (`SourceEntityProps`)
 
 Toutes les entités provenant d'APIs externes sont normalisées selon une interface TypeScript unique sérialisée dans l'arbre **CRDT Yjs** :
 
@@ -103,7 +103,7 @@ export interface SourceEntityProps {
 
 ---
 
-## 🎯 4. Bénéfices pour l'Écosystème La Suite
+## 🎯 Bénéfices pour l'Écosystème La Suite
 
 - **Uniformité graphique totale :** Aucun composant tiers disparate n'est ajouté ; chaque bloc adopte exactement les mêmes tokens Marianne et les mêmes contrastes DSFR.
 - **Maintenance simplifiée :** Une amélioration d'accessibilité (contraste, focus trap, ARIA) apportée au composant `SourceBlock` profite instantanément à **toutes** les commandes slash.

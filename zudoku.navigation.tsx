@@ -302,8 +302,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       "/08-slash/02-composant-customblock-unique",
       "/08-slash/03-proxy-backend-et-cache",
       "/08-slash/04-tutoriel-ajouter-une-api",
-      "/08-slash/proposition",
-      "/08-slash/roadmap",
+      "/08-slash/05-proposition",
+      "/08-slash/06-roadmap",
       {
         "type": "category",
         "label": "Projet de Loi (/loi)",
@@ -317,7 +317,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "1. Pôle Métier & Usages",
+            "label": "Pôle Métier & Usages",
             "icon": "briefcase",
             "collapsed": false,
             "items": [
@@ -327,7 +327,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "2. Pôle API & Veille",
+            "label": "Pôle API & Veille",
             "icon": "code",
             "collapsed": false,
             "items": [
@@ -337,7 +337,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "3. Pôle Implémentation",
+            "label": "Pôle Implémentation",
             "icon": "terminal",
             "collapsed": false,
             "items": [
@@ -360,7 +360,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "1. Pôle Métier & Usages",
+            "label": "Pôle Métier & Usages",
             "icon": "briefcase",
             "collapsed": false,
             "items": [
@@ -370,7 +370,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "2. Pôle API & Veille",
+            "label": "Pôle API & Veille",
             "icon": "code",
             "collapsed": false,
             "items": [
@@ -380,7 +380,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "3. Pôle Implémentation",
+            "label": "Pôle Implémentation",
             "icon": "terminal",
             "collapsed": false,
             "items": [
@@ -403,7 +403,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "1. Pôle Métier & Usages",
+            "label": "Pôle Métier & Usages",
             "icon": "briefcase",
             "collapsed": false,
             "items": [
@@ -413,7 +413,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "2. Pôle API & Veille",
+            "label": "Pôle API & Veille",
             "icon": "code",
             "collapsed": false,
             "items": [
@@ -423,7 +423,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "3. Pôle Implémentation",
+            "label": "Pôle Implémentation",
             "icon": "terminal",
             "collapsed": false,
             "items": [
@@ -446,7 +446,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "1. Pôle Métier & Usages",
+            "label": "Pôle Métier & Usages",
             "icon": "briefcase",
             "collapsed": false,
             "items": [
@@ -456,7 +456,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "2. Pôle API & Veille",
+            "label": "Pôle API & Veille",
             "icon": "code",
             "collapsed": false,
             "items": [
@@ -466,7 +466,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "3. Pôle Implémentation",
+            "label": "Pôle Implémentation",
             "icon": "terminal",
             "collapsed": false,
             "items": [

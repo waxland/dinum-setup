@@ -1,6 +1,6 @@
 ---
 title: Composant CustomBlock Unique & 3 Formats DSFR
-sidebar_label: 2. CustomBlock & 3 Formats
+sidebar_label: CustomBlock & 3 Formats
 description: Spécification et code du composant BlockNote universel décliné en 3 formats d'affichage DSFR (Callout, Carte, Lien).
 ---
 
@@ -11,7 +11,7 @@ Le composant **`SourceBlockSpec`** constitue le bloc visuel universel partagé p
 
 ---
 
-## 🎨 1. Les 3 Formats d'Affichage Standards
+## 🎨 Les 3 Formats d'Affichage Standards
 
 L'utilisateur peut basculer à tout moment entre les **3 formats d'affichage** via la barre d'outils contextuelle du bloc :
 
@@ -25,7 +25,7 @@ L'utilisateur peut basculer à tout moment entre les **3 formats d'affichage** v
 
 ---
 
-### A. Format 1 : `Callout` (Encadré Mis en Exergue DSFR)
+### Format 1 : `Callout` (Encadré Mis en Exergue DSFR)
 *Cas d'usage : Citation obligatoire d'un article de loi, reproduction intégrale d'un texte légal ou dispositif d'un amendement parlementaire.*
 
 - **Rendu :** Classe DSFR `fr-callout fr-callout--blue-france`.
@@ -46,7 +46,7 @@ L'utilisateur peut basculer à tout moment entre les **3 formats d'affichage** v
 
 ---
 
-### B. Format 2 : `Carte` (Card Horizontale DSFR)
+### Format 2 : `Carte` (Card Horizontale DSFR)
 *Cas d'usage : Fiche entreprise synthétique, analyse d'une offre de marché public, profil d'un député ou fiche de dossier législatif.*
 
 - **Rendu :** Classe DSFR `fr-card fr-card--horizontal fr-card--grey`.
@@ -73,7 +73,7 @@ L'utilisateur peut basculer à tout moment entre les **3 formats d'affichage** v
 
 ---
 
-### C. Format 3 : `Lien` (Inline Badge & Popover Flottant)
+### Format 3 : `Lien` (Inline Badge & Popover Flottant)
 *Cas d'usage : Mention fluide au milieu d'un paragraphe (ex: « Conformément à [Art. L. 111-1]... »).*
 
 - **Rendu :** Badge compact cliquable `fr-badge fr-badge--info fr-badge--sm` inséré directement dans le texte (comme `LinkSelected` de `/link-doc`).
@@ -81,7 +81,7 @@ L'utilisateur peut basculer à tout moment entre les **3 formats d'affichage** v
 
 ---
 
-## 💻 2. Code TypeScript du Composant (`SourceBlockSpec.tsx`)
+## 💻 Code TypeScript du Composant (`SourceBlockSpec.tsx`)
 
 ```tsx
 import { createReactBlockSpec } from "@blocknote/react";
@@ -224,6 +224,6 @@ function getProviderIcon(type: string): string {
 
 ---
 
-## 🔍 3. Démonstrateur Interactif des 3 Formats
+## 🔍 Démonstrateur Interactif des 3 Formats
 
 <LawSlashPreview />

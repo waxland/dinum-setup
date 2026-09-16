@@ -1,6 +1,6 @@
 ---
 title: Hiérarchie des Normes & Structure des Textes Juridiques
-sidebar_label: 1. Hiérarchie & Structure
+sidebar_label: Hiérarchie & Structure
 description: "Pyramide de Kelsen, structure des codes (parties législative et réglementaire), numérotation des articles et règles de citation administrative."
 ---
 
@@ -10,7 +10,7 @@ Pour tout développeur ou agent public intégrant des textes de loi dans **La Su
 
 ---
 
-## 🏛️ 1. La Pyramide des Normes en Droit Français
+## 🏛️ La Pyramide des Normes en Droit Français
 
 <Mermaid chart={`flowchart TD
     subgraph Pyramide["Hiérarchie des Normes (Droit Français)"]
@@ -32,7 +32,7 @@ Pour tout développeur ou agent public intégrant des textes de loi dans **La Su
 
 ---
 
-## 📖 2. Organisation d'un Code Juridique Français
+## 📖 Organisation d'un Code Juridique Français
 
 Les grands codes de droit français (Code civil, Code du travail, Code de la commande publique, CGCT, Code de justice administrative) sont divisés en deux parties distinctes :
 
@@ -63,11 +63,11 @@ La numérotation des codes modernes suit une logique arborescente normalisée :
 
 ---
 
-## 🆔 3. Les Identifiants Juridiques Uniques de l'État
+## 🆔 Les Identifiants Juridiques Uniques de l'État
 
 Pour garantir l'interopérabilité et la traçabilité des données juridiques dans **La Suite Docs**, l'API Légifrance et la DILA utilisent plusieurs identifiants univoques :
 
-### A. Le Numéro NOR (Numéro d'Ordre Réglementaire)
+### Le Numéro NOR (Numéro d'Ordre Réglementaire)
 Attribué dès la rédaction initiale d'un texte par le ministère porteur, le numéro NOR comporte **12 caractères alphanumériques** :
 - **`PRM`** (3 lettres) : Ministère émetteur (*Premier ministre* — ex: `JUS` pour la Justice, `ECO` pour l'Économie).
 - **`X`** (1 lettre) : Direction ou cabinet rédacteur.
@@ -75,7 +75,7 @@ Attribué dès la rédaction initiale d'un texte par le ministère porteur, le n
 - **`14820`** (5 chiffres) : Numéro d'ordre chronologique.
 - **`A`** (1 lettre) : Nature de l'acte (*A = Arrêté, D = Décret, L = Loi, C = Circulaire, R = Rapport*).
 
-### B. Les Identifiants Techniques Légifrance
+### Les Identifiants Techniques Légifrance
 - **`CID` (Conteneur ID)** : Identifiant unique d'un texte ou d'un code dans sa globalité (ex: `LEGITEXT000006070721` pour le Code civil).
 - **`LEGIARTI...`** : Identifiant univoque d'une version précise d'un article consolidé (ex: `LEGIARTI000038814944` pour l'article L. 111-1 du Code de la commande publique).
 - **`JORFTEXT...`** : Identifiant de la publication brute au Journal Officiel d'origine.
@@ -84,7 +84,7 @@ Attribué dès la rédaction initiale d'un texte par le ministère porteur, le n
 
 ---
 
-## 🔄 4. La Consolidation des Textes dans le Temps
+## 🔄 La Consolidation des Textes dans le Temps
 
 Une loi promulguée ne remplace pas directement les codes : elle fait l'objet d'un travail d'orfèvre de **consolidation juridique** opéré quotidiennement par les juristes de la **DILA** :
 
@@ -99,7 +99,7 @@ Une loi promulguée ne remplace pas directement les codes : elle fait l'objet d'
 
 ---
 
-## ⚖️ 5. États de Vigueur dans le Temps
+## ⚖️ États de Vigueur dans le Temps
 
 Dans la base officielle Légifrance, chaque disposition juridique possède un état temporel précis :
 1. **`VIGUEUR`** : Le texte est actuellement applicable et produit tous ses effets de droit.
@@ -108,7 +108,7 @@ Dans la base officielle Légifrance, chaque disposition juridique possède un é
 
 ---
 
-## ✍️ 6. Règles de Citation Administrative
+## ✍️ Règles de Citation Administrative
 
 - **Article de code :** Indiquer le numéro suivi du nom complet (*« Conformément à l'article L. 111-1 du Code de la commande publique... »*).
 - **Loi ou décret :** Indiquer la nature, le numéro officiel, la date et le titre (*« Vu la loi n° 78-17 du 6 janvier 1978 modifiée... »*).

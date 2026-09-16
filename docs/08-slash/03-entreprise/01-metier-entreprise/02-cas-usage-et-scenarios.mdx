@@ -1,6 +1,6 @@
 ---
 title: Cas d'Usage — Marchés Publics & Instruction de Subventions
-sidebar_label: 2. Marchés & Subventions
+sidebar_label: Marchés & Subventions
 description: "Rédaction des Rapports d'Analyse des Offres (RAO), contrôle de solvabilité, vérification des signatures et octroi de subventions."
 ---
 
@@ -10,7 +10,7 @@ La commande **`/entreprise`** accélère et sécurise les vérifications juridiq
 
 ---
 
-## 🧭 1. Le Parcours d'Instruction dans les Marchés Publics
+## 🧭 Le Parcours d'Instruction dans les Marchés Publics
 
 <Mermaid chart={`flowchart LR
     Offre["Dépôt de l'offre par le candidat"] --> Search["1. Saisie /entreprise (SIREN)"]
@@ -21,22 +21,22 @@ La commande **`/entreprise`** accélère et sécurise les vérifications juridiq
 
 ---
 
-## 🏢 2. Scénarios Réels d'Utilisation
+## 🏢 Scénarios Réels d'Utilisation
 
-### A. Rédaction des Rapports d'Analyse des Offres (RAO)
+### Rédaction des Rapports d'Analyse des Offres (RAO)
 - **Acteurs :** Acheteur public / Membres de la commission d'appel d'offres (CAO).
 - **Problème sans `/entreprise` :** Risque d'attribuer un marché à une filiale sans vérifier la dénomination exacte ou le signataire habilité.
 - **Solution avec `/entreprise` :** L'acheteur tape `/entreprise 849201928` et insère la fiche en **Format Carte** avec le nom du président et le statut *In Bonis*.
 
 ---
 
-### B. Instruction des Subventions aux Associations & Entreprises
+### Instruction des Subventions aux Associations & Entreprises
 - **Acteurs :** Service instructeur des aides économiques en région ou département.
 - **Problème sans `/entreprise` :** Multiples pièces justificatives demandées à l'usager (Kbis, statuts, bilans).
 - **Solution avec `/entreprise` :** Application du principe régalien *« Dites-le-nous une fois »* : l'agent consulte et intègre directement les chiffres d'affaires et effectifs certifiés.
 
 ---
 
-### C. Rédaction des Délibérations d'Attribution
+### Rédaction des Délibérations d'Attribution
 - **Acteurs :** Secrétariat général de mairie / Conseil d'administration.
 - **Solution avec `/entreprise` :** Insertion de la pastille en **Format Lien Inline** : *« Le Conseil Municipal décide d'attribuer le lot n° 1 à la société [DINUM PARTNERS SAS (SIREN : 849 201 928)] pour un montant de... »*.

@@ -31,7 +31,7 @@ Chaque proposition est conçue selon le **Socle Technique Unifié** (Architectur
 
 ---
 
-## 📋 1. Commande `/marche` — Avis de Marchés Publics & BOAMP
+## 📋 Commande `/marche` — Avis de Marchés Publics & BOAMP
 
 ### 🎯 Problématique Métier
 Lors de la passation ou du suivi d'un marché public, les acheteurs doivent consigner les références de l'avis de publicité, les critères d'attribution pondérés et le montant estimé dans leurs rapports de présentation.
@@ -47,7 +47,7 @@ Lors de la passation ou du suivi d'un marché public, les acheteurs doivent cons
 
 ---
 
-## 💰 2. Commande `/subvention` — Dispositifs d'Aides Financières aux Territoires
+## 💰 Commande `/subvention` — Dispositifs d'Aides Financières aux Territoires
 
 ### 🎯 Problématique Métier
 Les collectivités territoriales rédigent des dossiers de demande de subventions (Fonds Vert, DETR, DSIL, France 2030, FEDER) et doivent justifier de l'éligibilité de leur projet en citant le bon dispositif.
@@ -63,7 +63,7 @@ Les collectivités territoriales rédigent des dossiers de demande de subvention
 
 ---
 
-## 👤 3. Commande `/agent` — Annuaire du Service Public & Contacts Certifiés
+## 👤 Commande `/agent` — Annuaire du Service Public & Contacts Certifiés
 
 ### 🎯 Problématique Métier
 Indiquer précisément dans les notes administratives, arrêtés et comptes-rendus les coordonnées, le service compétent et la fonction des agents interlocuteurs, sans erreurs de frappe.
@@ -78,7 +78,7 @@ Indiquer précisément dans les notes administratives, arrêtés et comptes-rend
 
 ---
 
-## 🗺️ 4. Commande `/cadastre` — Référentiel Foncier & Parcelles
+## 🗺️ Commande `/cadastre` — Référentiel Foncier & Parcelles
 
 ### 🎯 Problématique Métier
 Dans les permis de construire, déclarations préalables, cessions foncières et arrêtés d'alignement, le numéro de section et de parcelle cadastrale est indispensable.
@@ -94,7 +94,7 @@ Dans les permis de construire, déclarations préalables, cessions foncières et
 
 ---
 
-## 📊 5. Commande `/insee` — Données Démographiques & Économiques Locales
+## 📊 Commande `/insee` — Données Démographiques & Économiques Locales
 
 ### 🎯 Problématique Métier
 Les diagnostics territoriaux, bilans de mandat et rapports d'orientation budgétaire nécessitent de citer les chiffres officiels de population légale et de tissu économique.
@@ -109,7 +109,7 @@ Les diagnostics territoriaux, bilans de mandat et rapports d'orientation budgét
 
 ---
 
-## 💬 6. Commande `/tchap` — Salon de Discussion Sécurisé Associé
+## 💬 Commande `/tchap` — Salon de Discussion Sécurisé Associé
 
 ### 🎯 Problématique Métier
 Permettre aux coauteurs d'un document Docs d'ouvrir ou de relier un salon de messagerie instantanée souverain **Tchap** pour échanger rapidement en marge du document.
@@ -124,7 +124,7 @@ Permettre aux coauteurs d'un document Docs d'ouvrir ou de relier un salon de mes
 
 ---
 
-## ✍️ 7. Commande `/parapheur` — Circuit de Visa & Signature Électronique
+## ✍️ Commande `/parapheur` — Circuit de Visa & Signature Électronique
 
 ### 🎯 Problématique Métier
 Tracer directement dans le document l'état d'avancement des visas hiérarchiques (Chef de bureau -> Sous-directeur -> Directeur) avant transmission au parapheur électronique pour signature qualifiée eIDAS.
@@ -138,7 +138,7 @@ Tracer directement dans le document l'état d'avancement des visas hiérarchique
 
 ---
 
-## 📂 8. Commande `/demarche` — Dossier Démarches-Simplifiées
+## 📂 Commande `/demarche` — Dossier Démarches-Simplifiées
 
 ### 🎯 Problématique Métier
 Dans les comptes-rendus d'instruction ou notes de synthèse, relier un document interne à la demande initiale déposée en ligne par le citoyen ou l'entreprise.
@@ -153,7 +153,7 @@ Dans les comptes-rendus d'instruction ou notes de synthèse, relier un document 
 
 ---
 
-## 🌐 9. Commande `/opendata` — Jeux de Données data.gouv.fr
+## 🌐 Commande `/opendata` — Jeux de Données data.gouv.fr
 
 ### 🎯 Problématique Métier
 Citer et sourcer un jeu de données public ouvert déposé sur data.gouv.fr (fréquentation touristique, subventions attribuées, inventaire du patrimoine).
