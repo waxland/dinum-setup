@@ -4,6 +4,7 @@ sidebar_label: Socle Technique
 description: Architecture standardisée, composant BlockNote universel à 3 modes d'affichage (Callout, Carte, Lien) et proxy Django générique pour toutes les commandes slash.
 ---
 
+import { BlockNoteSlashPlayground } from "../../src/components/slash-preview/BlockNoteSlashPlayground";
 import { Mermaid } from "../../src/components/Mermaid";
 
 Pour garantir l'évolutivité, la cohérence graphique et la simplicité de maintenance de **La Suite Docs**, l'ensemble des commandes slash connectées à des sources de données externes (**`/loi`**, **`/entreprise`**, **`/assemblee`**, **`/adresse`**, etc.) reposent sur un **Socle Technique Unifié**.
@@ -105,3 +106,11 @@ Inspiré de l'architecture native de **`/link-doc` (`Interlinking`)**, ce socle 
     badge="Guide Dev"
   />
 </FeatureGrid>
+
+---
+
+## 🚀 Démonstrateur Interactif BlockNote.js en Direct
+
+Testez ci-dessous l'éditeur BlockNote.js connecté aux 4 commandes souveraines (`/loi`, `/entreprise`, `/assemblee`, `/adresse`) avec les 3 formats d'affichage interchangeables :
+
+<BlockNoteSlashPlayground />

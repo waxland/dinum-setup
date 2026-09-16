@@ -1,10 +1,10 @@
 ---
 title: Composant CustomBlock Unique & 3 Formats DSFR
 sidebar_label: CustomBlock & 3 Formats
-description: Spécification et code du composant BlockNote universel décliné en 3 formats d'affichage DSFR (Callout, Carte, Lien).
+description: Spécification et rendu interactif du composant BlockNote universel décliné en 3 formats d'affichage DSFR (Callout, Carte, Lien).
 ---
 
-import { LawSlashPreview } from "../../src/components/LawSlashPreview";
+import { BlockNoteSlashPlayground } from "../../src/components/slash-preview/BlockNoteSlashPlayground";
 import { Mermaid } from "../../src/components/Mermaid";
 
 Le composant **`SourceBlockSpec`** constitue le bloc visuel universel partagé par l'ensemble des commandes slash de données externes dans **La Suite Docs**. Il garantit une ergonomie homogène quel que soit le type de données insérées.
@@ -27,203 +27,32 @@ L'utilisateur peut basculer à tout moment entre les **3 formats d'affichage** v
 
 ### Format 1 : `Callout` (Encadré Mis en Exergue DSFR)
 *Cas d'usage : Citation obligatoire d'un article de loi, reproduction intégrale d'un texte légal ou dispositif d'un amendement parlementaire.*
-
 - **Rendu :** Classe DSFR `fr-callout fr-callout--blue-france`.
-- **Éléments :** Titre en Marianne Bold, badge d'état de vigueur (`VIGUEUR`, `ABROGÉ`, `ADOPTÉ`), texte intégral en typographie serif/sans-serif et lien source officiel.
-
-```html
-<div class="fr-callout fr-callout--blue-france">
-  <div class="flex items-center justify-between">
-    <h4 class="fr-callout__title">Article L. 111-1 — Code de la commande publique</h4>
-    <span class="fr-badge fr-badge--success fr-badge--sm">VIGUEUR</span>
-  </div>
-  <p class="fr-callout__text italic">
-    Un acheteur ou une autorité concédante est un pouvoir adjudicateur ou une entité adjudicatrice...
-  </p>
-  <a href="https://www.legifrance.gouv.fr/..." class="fr-link text-xs">Consulter la source officielle ↗</a>
-</div>
-```
+- **Éléments :** Titre en Marianne Bold, badge d'état de vigueur (`VIGUEUR`, `ABROGÉ`, `ADOPTÉ`), texte intégral en typographie Marianne et lien source officiel.
 
 ---
 
 ### Format 2 : `Carte` (Card Horizontale DSFR)
 *Cas d'usage : Fiche entreprise synthétique, analyse d'une offre de marché public, profil d'un député ou fiche de dossier législatif.*
-
 - **Rendu :** Classe DSFR `fr-card fr-card--horizontal fr-card--grey`.
 - **Éléments :** En-tête avec icône provider (`⚖️`, `🏢`, `🏛️`, `📍`), titre principal, badge de statut, et **grille responsive à 3 colonnes de métadonnées clés**.
-
-```html
-<div class="fr-card fr-card--horizontal fr-card--grey p-4 rounded-xl">
-  <div class="flex items-center justify-between">
-    <div class="flex items-center gap-2">
-      <span class="text-xl">🏢</span>
-      <h4 class="font-bold">DINUM PARTNERS SAS</h4>
-      <span class="fr-badge fr-badge--info fr-badge--sm">SAS</span>
-    </div>
-    <span class="fr-badge fr-badge--success fr-badge--sm">IN BONIS</span>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs mt-3">
-    <div><strong>SIREN :</strong> 849 201 928</div>
-    <div><strong>Activité :</strong> 62.02A (Conseil informatique)</div>
-    <div><strong>Dirigeant :</strong> M. Jean Dupont</div>
-  </div>
-</div>
-```
 
 ---
 
 ### Format 3 : `Lien` (Inline Badge & Popover Flottant)
 *Cas d'usage : Mention fluide au milieu d'un paragraphe (ex: « Conformément à [Art. L. 111-1]... »).*
-
-- **Rendu :** Badge compact cliquable `fr-badge fr-badge--info fr-badge--sm` inséré directement dans le texte (comme `LinkSelected` de `/link-doc`).
+- **Rendu :** Badge compact cliquable `fr-badge fr-badge--info fr-badge--sm` inséré directement dans le texte (inspiré de `LinkSelected` de `/link-doc`).
 - **Popover flottant au survol / clic :** Affiche une carte miniature avec le résumé et un bouton pour ouvrir la source officielle dans un nouvel onglet.
 
 ---
 
-## 💻 Code TypeScript du Composant (`SourceBlockSpec.tsx`)
+## 🚀 Démonstrateur Interactif BlockNote.js en Direct
 
-```tsx
-import { createReactBlockSpec } from "@blocknote/react";
-import { SourceEntityProps } from "./types";
+Testez ci-dessous le **véritable éditeur BlockNote.js** configuré avec le composant universel `SourceBlockSpec` et les données mockées souveraines.
 
-export const SourceBlockSpec = createReactBlockSpec(
-  {
-    type: "externalSource",
-    propSchema: {
-      sourceType: { default: "law" },
-      sourceId: { default: "" },
-      provider: { default: "piste" },
-      title: { default: "" },
-      subtitle: { default: "" },
-      status: { default: "VIGUEUR" },
-      statusBadgeColor: { default: "success" },
-      contentHtml: { default: "" },
-      summary: { default: "" },
-      metaField1Label: { default: "" },
-      metaField1Value: { default: "" },
-      metaField2Label: { default: "" },
-      metaField2Value: { default: "" },
-      metaField3Label: { default: "" },
-      metaField3Value: { default: "" },
-      displayMode: { default: "callout" }, // 'callout' | 'card' | 'link'
-      url: { default: "" },
-      lastSyncAt: { default: "" },
-    },
-    content: "none",
-  },
-  {
-    render: (props) => {
-      const p = props.block.props as unknown as SourceEntityProps;
+> 💡 **Instructions d'interaction :**
+> - **Changer de format :** Survolez n'importe quel bloc inséré et cliquez sur les boutons **📢 Callout**, **🗂️ Carte** ou **🔗 Lien** dans la barre flottante en haut à droite.
+> - **Ajouter une commande au clavier :** Placez votre curseur dans le texte et tapez `/loi`, `/entreprise`, `/assemblee` ou `/adresse` puis appuyez sur `Entrée`.
+> - **Recherche instantanée :** Tapez un mot-clé dans la modale inline et naviguez avec les flèches `↑` `↓` du clavier.
 
-      // 1. Rendu Format Lien (Inline Badge)
-      if (p.displayMode === "link") {
-        return (
-          <a
-            href={p.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="fr-badge fr-badge--info fr-badge--sm no-underline inline-flex items-center gap-1 my-1"
-          >
-            <span>{getProviderIcon(p.sourceType)}</span>
-            <span>{p.title}</span>
-            {p.subtitle && <span className="opacity-75">({p.subtitle})</span>}
-          </a>
-        );
-      }
-
-      // 2. Rendu Format Carte (Card DSFR)
-      if (p.displayMode === "card") {
-        return (
-          <div className="fr-card fr-card--horizontal fr-card--grey my-3 p-4 border border-gray-200 dark:border-gray-800 rounded-xl bg-white dark:bg-gray-900 shadow-xs">
-            <div className="flex flex-col gap-2 w-full">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-xl">{getProviderIcon(p.sourceType)}</span>
-                  <h4 className="text-sm font-bold m-0">{p.title}</h4>
-                  {p.subtitle && (
-                    <span className="fr-badge fr-badge--sm fr-badge--info">{p.subtitle}</span>
-                  )}
-                </div>
-                <span className={`fr-badge fr-badge--sm fr-badge--${p.statusBadgeColor || "success"}`}>
-                  {p.status}
-                </span>
-              </div>
-
-              {(p.metaField1Label || p.metaField2Label || p.metaField3Label) && (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-gray-600 dark:text-gray-400 mt-2">
-                  {p.metaField1Label && (
-                    <div><strong>{p.metaField1Label} :</strong> {p.metaField1Value}</div>
-                  )}
-                  {p.metaField2Label && (
-                    <div><strong>{p.metaField2Label} :</strong> {p.metaField2Value}</div>
-                  )}
-                  {p.metaField3Label && (
-                    <div><strong>{p.metaField3Label} :</strong> {p.metaField3Value}</div>
-                  )}
-                </div>
-              )}
-
-              <div className="flex items-center justify-between text-xs text-gray-500 mt-2 pt-2 border-t border-gray-100 dark:border-gray-800">
-                <span className="truncate max-w-[70%]">{p.summary || p.subtitle}</span>
-                <a href={p.url} target="_blank" rel="noopener noreferrer" className="fr-link text-xs">
-                  Source {p.provider} ↗
-                </a>
-              </div>
-            </div>
-          </div>
-        );
-      }
-
-      // 3. Rendu Format Callout (Encadré DSFR par défaut)
-      return (
-        <div className="fr-callout fr-callout--blue-france my-4">
-          <div className="flex items-center justify-between mb-2">
-            <h4 className="fr-callout__title text-base font-bold m-0">
-              {getProviderIcon(p.sourceType)} {p.title} {p.subtitle ? `— ${p.subtitle}` : ""}
-            </h4>
-            <span className={`fr-badge fr-badge--sm fr-badge--${p.statusBadgeColor || "success"}`}>
-              {p.status}
-            </span>
-          </div>
-
-          {p.contentHtml && (
-            <div
-              className="fr-callout__text text-sm italic my-2"
-              dangerouslySetInnerHTML={{ __html: p.contentHtml }}
-            />
-          )}
-
-          {p.summary && !p.contentHtml && (
-            <p className="fr-callout__text text-sm italic my-2">{p.summary}</p>
-          )}
-
-          <div className="mt-3 flex items-center justify-between text-xs text-gray-500">
-            <span>Certifié via {p.provider}</span>
-            <a href={p.url} target="_blank" rel="noopener noreferrer" className="fr-link">
-              Consulter le texte officiel ↗
-            </a>
-          </div>
-        </div>
-      );
-    },
-  }
-);
-
-function getProviderIcon(type: string): string {
-  switch (type) {
-    case "law": return "⚖️";
-    case "company": return "🏢";
-    case "parliament": return "🏛️";
-    case "address": return "📍";
-    case "procurement": return "📋";
-    default: return "📄";
-  }
-}
-```
-
----
-
-## 🔍 Démonstrateur Interactif des 3 Formats
-
-<LawSlashPreview />
+<BlockNoteSlashPlayground />
