@@ -1,0 +1,50 @@
+---
+title: Spécifications de l'API Base Adresse Nationale (BAN)
+sidebar_label: 2. Spécifications & GeoJSON
+description: "Endpoints /search et /reverse, format GeoJSON RFC 7946, filtres par type housenumber/street et scores de pertinence."
+---
+
+L'API Adresse officielle d'Etalab / IGN expose des endpoints performants au format standard **GeoJSON**.
+
+---
+
+## 📡 1. Endpoints Principaux
+
+| Endpoint | Méthode | Rôle | Paramètres Clés |
+| :--- | :--- | :--- | :--- |
+| **`/search/`** | `GET` | Autocomplétion et géocodage texte | `q`, `limit`, `autocomplete`, `type`, `postcode`, `citycode` |
+| **`/reverse/`** | `GET` | Géocodage inverse (coordonnées GPS $\rightarrow$ adresse) | `lat`, `lon`, `type` |
+
+---
+
+## 📦 2. Exemple de Payload GeoJSON (`/search/?q=20+avenue+de+segur+paris`)
+
+```json
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.308722, 48.851214]
+      },
+      "properties": {
+        "label": "20 Avenue de Ségur 75007 Paris",
+        "score": 0.98,
+        "housenumber": "20",
+        "id": "75107_8863_00020",
+        "type": "housenumber",
+        "name": "20 Avenue de Ségur",
+        "postcode": "75007",
+        "citycode": "75107",
+        "city": "Paris",
+        "context": "75, Paris, Île-de-France",
+        "street": "Avenue de Ségur"
+      }
+    }
+  ],
+  "attribution": "BAN",
+  "licence": "ETALAB-2.0"
+}
+```

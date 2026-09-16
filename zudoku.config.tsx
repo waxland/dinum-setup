@@ -56,7 +56,7 @@ const config: ZudokuConfig = {
     navigation: [
       {
         label: "GitHub dinum-setup",
-        to: "https://github.com/suitenumerique/dinum-setup",
+        to: "https://github.com/waxland/dinum-setup",
         target: "_blank",
         icon: "folder-git-2",
       },

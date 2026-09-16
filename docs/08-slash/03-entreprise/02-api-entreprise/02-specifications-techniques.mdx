@@ -1,0 +1,54 @@
+---
+title: Spécifications Techniques — API Pappers & Schémas JSON
+sidebar_label: 2. Spécifications & Mode Mock
+description: "Endpoints /recherche et /entreprise, structure des données retournées, mode Mock local sans clé payante et quotas."
+---
+
+L'API Pappers centralise les informations légales des entreprises dans des schémas JSON standardisés.
+
+---
+
+## 📡 1. Endpoints Principaux
+
+| Endpoint | Méthode | Rôle | Paramètres Clés |
+| :--- | :--- | :--- | :--- |
+| **`/v2/recherche`** | `GET` | Recherche par dénomination, mot-clé ou SIREN | `q`, `par_page`, `code_postal` |
+| **`/v2/entreprise`** | `GET` | Fiche complète détaillée | `siren` (9 chiffres) |
+| **`/v2/suggestions`** | `GET` | Autocomplétion ultra-rapide | `q`, `cibles` |
+
+---
+
+## 📦 2. Exemple de Payload JSON (`/v2/entreprise`)
+
+```json
+{
+  "siren": "849201928",
+  "nom_entreprise": "DINUM PARTNERS SAS",
+  "forme_juridique": "Société par actions simplifiée",
+  "capital": 50000.0,
+  "statut_rcs": "Inscrit",
+  "siege": {
+    "siret": "84920192800014",
+    "adresse_ligne_1": "20 AVENUE DE SEGUR",
+    "code_postal": "75007",
+    "ville": "PARIS",
+    "code_naf": "62.02A",
+    "libelle_code_naf": "Conseil en systèmes et logiciels informatiques"
+  },
+  "dirigeants": [
+    {
+      "nom": "MARTIN",
+      "prenom": "Jean",
+      "qualite": "Président"
+    }
+  ],
+  "finances": [
+    {
+      "annee": 2024,
+      "chiffre_affaires": 3400000,
+      "resultat": 290000
+    }
+  ],
+  "procedures_collectives_en_cours": false
+}
+```

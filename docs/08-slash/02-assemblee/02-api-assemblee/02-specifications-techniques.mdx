@@ -1,0 +1,48 @@
+---
+title: Spécifications Techniques — Endpoints Parlementaires & DTOs
+sidebar_label: 2. Spécifications Techniques
+description: "Modèles JSON des dossiers législatifs, amendements (numéro, article visé, sort), députés et résultats de scrutins."
+---
+
+L'API parlementaire expose les endpoints nécessaires pour rechercher et afficher les textes en cours d'examen à l'Assemblée nationale.
+
+---
+
+## 📡 1. Endpoints Principaux
+
+| Endpoint | Méthode | Rôle | Paramètres Clés |
+| :--- | :--- | :--- | :--- |
+| **`/v1/amendements`** | `GET` | Recherche et détail des amendements déposés | `dossier_id`, `num`, `article`, `legislature` |
+| **`/v1/dossiers-legislatifs`** | `GET` | Liste des projets et propositions de loi | `q`, `statut`, `legislature` |
+| **`/v1/deputes`** | `GET` | Fiches des députés et groupes politiques | `q`, `groupe`, `circonscription` |
+| **`/v1/scrutins`** | `GET` | Résultats des votes solennels publics | `dossier_id`, `date` |
+
+---
+
+## 📦 2. Exemple de Payload JSON (Détail d'un Amendement)
+
+### Requête
+
+```http
+GET https://api.claire.vite/v1/amendements?dossier_id=DLR5L17N120&num=142
+Accept: application/json
+```
+
+### Réponse
+
+```json
+{
+  "numero": "142",
+  "dossier_id": "DLR5L17N120",
+  "dossier_titre": "Projet de loi relatif à la simplification de la vie économique",
+  "legislature": 17,
+  "article_vise": "Article 4",
+  "auteurs": "Mme Dupont et les membres du groupe Ensemble",
+  "groupe": "EPR",
+  "dispositif": "<p>À l'alinéa 2, substituer aux mots 'logiciels propriétaires' les mots 'logiciels libres et souverains'.</p>",
+  "expose_sommaire": "Cet amendement vise à conforter la souveraineté numérique publique...",
+  "sort": "Adopte",
+  "date_vote": "2026-09-15T18:42:00Z",
+  "url": "https://www.assemblee-nationale.fr/dyn/17/amendements/120/AN/142"
+}
+```

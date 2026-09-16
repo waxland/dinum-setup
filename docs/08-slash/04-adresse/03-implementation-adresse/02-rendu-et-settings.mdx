@@ -1,0 +1,29 @@
+---
+title: Rendu DSFR d'Adresse & Configuration
+sidebar_label: 2. Rendu & Settings
+description: "Affichage en modes Callout (certifié BAN), Carte (grille INSEE/GPS) et Lien, activation par défaut."
+---
+
+La commande `/adresse` s'appuie sur le composant BlockNote universel **`SourceBlockSpec`** et le Provider Registry Django.
+
+---
+
+## 🎨 1. Les 3 Formats d'Affichage DSFR
+
+1. 📢 **Format Callout (Certification BAN)** : Adresse officielle mise en avant avec coordonnées et lien BAN.
+2. 🗂️ **Format Carte (Synthèse ERP / Arrêté)** : Grille responsive Code INSEE • Type • Coordonnées GPS.
+3. 🔗 **Format Lien (Inline Badge)** : `📍 20 Avenue de Ségur, 75007 Paris`.
+
+---
+
+## ⚙️ 2. Configuration d'Environnement
+
+```dotenv
+# .env.local ou common.local
+
+# URL de l'API Base Adresse Nationale (ouverte, gratuite et sans clé)
+BAN_API_BASE_URL=https://api-adresse.data.gouv.fr
+
+# Activé par défaut
+DOCS_ENABLE_FEATURE_ADDRESS=true
+```

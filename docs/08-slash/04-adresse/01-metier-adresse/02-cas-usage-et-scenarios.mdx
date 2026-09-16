@@ -1,10 +1,10 @@
 ---
 title: Cas d'Usage Territoriaux & Courriers Administratifs (/adresse)
-sidebar_label: 2. Cas d'Usage Territoriaux
-description: "Applications concrètes de la commande /adresse : arrêtés municipaux de voirie, courriers recommandés officiels, ERP et autorisations d'urbanisme."
+sidebar_label: 2. Arrêtés & Courriers
+description: "Arrêtés de voirie, courriers recommandés sans NPAI, fiches ERP et autorisations d'urbanisme."
 ---
 
-import { Mermaid } from "../../../src/components/Mermaid";
+import { Mermaid } from "../../../../src/components/Mermaid";
 
 L'insertion d'adresses postales certifiées résout des problématiques récurrentes dans les collectivités territoriales, préfectures et services déconcentrés de l'État.
 
@@ -21,13 +21,13 @@ L'insertion d'adresses postales certifiées résout des problématiques récurre
 
 ---
 
-## 🏢 2. Situations Réelles d'Utilisation
+## 🏢 2. Scénarios Réels d'Utilisation
 
 ### A. Arrêtés Municipaux de Voirie, Circulation & Stationnement
 - **Acteurs :** Direction des services techniques municipaux / Police municipale.
 - **Contexte :** Prise d'un arrêté temporaire interdisant le stationnement pour déménagement ou travaux de voirie.
-- **Problème sans `/adresse` :** Saisie approximative de l'adresse (ex: *« rue de la république »* sans préciser le tronçon ou le numéro exact), créant une insécurité juridique en cas de mise en fourrière contestée.
-- **Solution avec `/adresse` :** L'agent insère en **Mode Carte** l'adresse officielle `12 Rue de la République, 69002 Lyon` avec son code BAN unique, éliminant toute ambiguïté sur le périmètre d'application de l'arrêté.
+- **Problème sans `/adresse` :** Saisie approximative de l'adresse (ex: *« rue de la république »* sans préciser le tronçon ou le numéro exact), créant une insécurité juridique en cas de contestation.
+- **Solution avec `/adresse` :** L'agent insère en **Format Carte** l'adresse officielle `12 Rue de la République, 69002 Lyon` avec son code BAN unique, éliminant toute ambiguïté.
 
 ---
 
@@ -35,35 +35,18 @@ L'insertion d'adresses postales certifiées résout des problématiques récurre
 - **Acteurs :** Secrétariat général / Service du courrier / Agents instructeurs.
 - **Contexte :** Envoi d'une mise en demeure, notification d'une décision défavorable ou convocation à un entretien.
 - **Problème sans `/adresse` :** Retours de plis avec la mention NPAI (*N'habite Pas à l'Adresse Indiquée*) en raison d'une faute de frappe dans le libellé de la voie ou le code postal.
-- **Solution avec `/adresse` :** L'autocomplétion BAN garantit que la voie et le numéro existent officiellement dans le référentiel de La Poste et de la commune.
+- **Solution avec `/adresse` :** L'autocomplétion BAN garantit que la voie et le numéro existent officiellement dans le référentiel national.
 
 ---
 
 ### C. Fiches d'Établissements Recevant du Public (ERP) & Sécurité
 - **Acteurs :** Commission communale de sécurité / Services de prévention incendie (SDIS).
 - **Contexte :** Rédaction des procès-verbaux de visite périodique de sécurité d'un ERP.
-- **Solution avec `/adresse` :** Insertion de la fiche en **Mode Callout** avec coordonnées GPS exactes permettant aux services de secours (SDIS / SAMU) d'intervenir sans délai.
+- **Solution avec `/adresse` :** Insertion de la fiche en **Format Callout** avec coordonnées GPS exactes permettant aux services de secours (SDIS / SAMU) d'intervenir sans délai.
 
 ---
 
 ### D. Autorisations d'Urbanisme & Déclarations Préalables
 - **Acteurs :** Service instructeur du Droit des Sols (ADS) / Cadastre.
 - **Contexte :** Rédaction d'un arrêté d'octroi de permis d'aménager ou de construire.
-- **Solution avec `/adresse` :** Association directe de l'adresse postale BAN au numéro de parcelle cadastrale et à la section dans le corps de l'arrêté.
-
----
-
-## 📄 3. Exemple de Rendu dans un Arrêté Municipal
-
-> ### EXTRAIT D'UN ARRÊTÉ DE VOIRIE
->
-> Le Maire de la Commune,
->
-> Vu le Code général des collectivités territoriales,  
-> Vu la demande présentée pour des travaux de réfection de façade situés :
->
-> 📍 **14 Rue des Lilas, 44000 Nantes** `CERTIFIÉE BAN`  
-> *Code INSEE : 44109 • Type : Numéro et voie • Coordonnées : 47.2184, -1.5536*  
-> [Consulter sur la Base Adresse Nationale ↗](https://adresse.data.gouv.fr)
->
-> **ARRÊTE :** Le stationnement sera interdit au droit du n° 14 du 1er au 15 octobre...
+- **Solution avec `/adresse` :** Association directe de l'adresse postale BAN au numéro de parcelle cadastrale dans le corps de l'arrêté.

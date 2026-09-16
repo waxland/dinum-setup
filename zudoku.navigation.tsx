@@ -33,6 +33,10 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
         "icon": "rocket",
         "collapsed": false,
         "items": [
+          "/01-onboarding/01-demarrage/environnement-machine-hote",
+          "/01-onboarding/01-demarrage/git-ssh",
+          "/01-onboarding/01-demarrage/urls-et-identifiants",
+          "/01-onboarding/01-demarrage/vscode",
           {
             "type": "category",
             "label": "Configuration Serveur",
@@ -42,11 +46,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
               "/01-onboarding/01-demarrage/configuration-serveur/01-guide-configuration-serveur",
               "/01-onboarding/01-demarrage/configuration-serveur/02-pr-support-serveurs-distants"
             ]
-          },
-          "/01-onboarding/01-demarrage/environnement-machine-hote",
-          "/01-onboarding/01-demarrage/git-ssh",
-          "/01-onboarding/01-demarrage/urls-et-identifiants",
-          "/01-onboarding/01-demarrage/vscode"
+          }
         ]
       },
       {
@@ -299,6 +299,11 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       "/08-slash/00-socle-technique",
       "/08-slash/01-architecture-standardisee",
+      "/08-slash/02-composant-customblock-unique",
+      "/08-slash/03-proxy-backend-et-cache",
+      "/08-slash/04-tutoriel-ajouter-une-api",
+      "/08-slash/proposition",
+      "/08-slash/roadmap",
       {
         "type": "category",
         "label": "Projet de Loi (/loi)",
@@ -312,28 +317,34 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Fondations Juridiques",
-            "icon": "sliders",
+            "label": "1. Pôle Métier & Usages",
+            "icon": "briefcase",
             "collapsed": false,
             "items": [
-              "/08-slash/01-loi/01-fondations-juridiques/01-hierarchie-des-normes",
-              "/08-slash/01-loi/01-fondations-juridiques/02-comprendre-la-loi",
-              "/08-slash/01-loi/01-fondations-juridiques/03-guide-des-citations"
+              "/08-slash/01-loi/01-metier-loi/01-fondations-et-cadre",
+              "/08-slash/01-loi/01-metier-loi/02-cas-usage-et-scenarios"
             ]
           },
           {
             "type": "category",
-            "label": "API Légifrance PISTE",
+            "label": "2. Pôle API & Veille",
             "icon": "code",
             "collapsed": false,
             "items": [
-              "/08-slash/01-loi/02-api-legifrance-piste/01-authentification-oauth2",
-              "/08-slash/01-loi/02-api-legifrance-piste/02-endpoints-suggest-et-search",
-              "/08-slash/01-loi/02-api-legifrance-piste/03-mapping-fonds-et-collections"
+              "/08-slash/01-loi/02-api-loi/01-benchmark-des-apis",
+              "/08-slash/01-loi/02-api-loi/02-specifications-techniques"
             ]
           },
-          "/08-slash/01-loi/03-cas-usage-metier",
-          "/08-slash/01-loi/settings"
+          {
+            "type": "category",
+            "label": "3. Pôle Implémentation",
+            "icon": "terminal",
+            "collapsed": false,
+            "items": [
+              "/08-slash/01-loi/03-implementation-loi/01-provider-django",
+              "/08-slash/01-loi/03-implementation-loi/02-rendu-et-settings"
+            ]
+          }
         ]
       },
       {
@@ -347,11 +358,38 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "file": "08-slash/02-assemblee/index.mdx",
             "path": "/08-slash/02-assemblee"
           },
-          "/08-slash/02-assemblee/01-api-claire-vite-assemblee",
-          "/08-slash/02-assemblee/02-cas-usage-veille-parlementaire"
+          {
+            "type": "category",
+            "label": "1. Pôle Métier & Usages",
+            "icon": "briefcase",
+            "collapsed": false,
+            "items": [
+              "/08-slash/02-assemblee/01-metier-assemblee/01-fondations-et-cadre",
+              "/08-slash/02-assemblee/01-metier-assemblee/02-cas-usage-et-scenarios"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "2. Pôle API & Veille",
+            "icon": "code",
+            "collapsed": false,
+            "items": [
+              "/08-slash/02-assemblee/02-api-assemblee/01-benchmark-des-apis",
+              "/08-slash/02-assemblee/02-api-assemblee/02-specifications-techniques"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "3. Pôle Implémentation",
+            "icon": "terminal",
+            "collapsed": false,
+            "items": [
+              "/08-slash/02-assemblee/03-implementation-assemblee/01-provider-django",
+              "/08-slash/02-assemblee/03-implementation-assemblee/02-rendu-et-settings"
+            ]
+          }
         ]
       },
-      "/08-slash/02-composant-customblock-unique",
       {
         "type": "category",
         "label": "Entreprises (/entreprise)",
@@ -363,11 +401,38 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "file": "08-slash/03-entreprise/index.mdx",
             "path": "/08-slash/03-entreprise"
           },
-          "/08-slash/03-entreprise/01-api-entreprises-pappers",
-          "/08-slash/03-entreprise/02-cas-usage-marches-publics"
+          {
+            "type": "category",
+            "label": "1. Pôle Métier & Usages",
+            "icon": "briefcase",
+            "collapsed": false,
+            "items": [
+              "/08-slash/03-entreprise/01-metier-entreprise/01-fondations-et-cadre",
+              "/08-slash/03-entreprise/01-metier-entreprise/02-cas-usage-et-scenarios"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "2. Pôle API & Veille",
+            "icon": "code",
+            "collapsed": false,
+            "items": [
+              "/08-slash/03-entreprise/02-api-entreprise/01-benchmark-des-apis",
+              "/08-slash/03-entreprise/02-api-entreprise/02-specifications-techniques"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "3. Pôle Implémentation",
+            "icon": "terminal",
+            "collapsed": false,
+            "items": [
+              "/08-slash/03-entreprise/03-implementation-entreprise/01-provider-django",
+              "/08-slash/03-entreprise/03-implementation-entreprise/02-rendu-et-settings"
+            ]
+          }
         ]
       },
-      "/08-slash/03-proxy-backend-et-cache",
       {
         "type": "category",
         "label": "Base Adresse Nationale (/adresse)",
@@ -379,14 +444,38 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "file": "08-slash/04-adresse/index.mdx",
             "path": "/08-slash/04-adresse"
           },
-          "/08-slash/04-adresse/01-api-base-adresse-nationale",
-          "/08-slash/04-adresse/02-cas-usage-territoriaux-et-courriers",
-          "/08-slash/04-adresse/settings"
+          {
+            "type": "category",
+            "label": "1. Pôle Métier & Usages",
+            "icon": "briefcase",
+            "collapsed": false,
+            "items": [
+              "/08-slash/04-adresse/01-metier-adresse/01-fondations-et-cadre",
+              "/08-slash/04-adresse/01-metier-adresse/02-cas-usage-et-scenarios"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "2. Pôle API & Veille",
+            "icon": "code",
+            "collapsed": false,
+            "items": [
+              "/08-slash/04-adresse/02-api-adresse/01-benchmark-des-apis",
+              "/08-slash/04-adresse/02-api-adresse/02-specifications-techniques"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "3. Pôle Implémentation",
+            "icon": "terminal",
+            "collapsed": false,
+            "items": [
+              "/08-slash/04-adresse/03-implementation-adresse/01-provider-django",
+              "/08-slash/04-adresse/03-implementation-adresse/02-rendu-et-settings"
+            ]
+          }
         ]
-      },
-      "/08-slash/04-tutoriel-ajouter-une-api",
-      "/08-slash/proposition",
-      "/08-slash/roadmap"
+      }
     ]
   }
 ];

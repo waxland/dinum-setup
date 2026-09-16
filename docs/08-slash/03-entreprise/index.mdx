@@ -1,85 +1,85 @@
 ---
 title: Commande Slash /entreprise — Fiches Entreprises & Registre Légal
-sidebar_label: Commande /entreprise
-description: Spécification complète et intégration de la commande slash /entreprise (alias /pappers, /siren) pour insérer des fiches d'entreprises certifiées (SIREN, dirigeants, bilans, procédures).
+sidebar_label: Vue d'Ensemble
+description: "Hub de la commande /entreprise (alias /pappers, /siren) : consultation de fiches d'entreprises, dirigeants, bilans et benchmark Pappers vs API Entreprise."
 ---
 
 import { Mermaid } from "../../../src/components/Mermaid";
 
-La commande **`/entreprise`** (alias **`/pappers`**, **`/siren`**, **`/siret`**, **`/societe`**) permet aux acheteurs publics, juristes, instructeurs de subventions et agents territoriaux de rechercher et d'insérer des fiches d'entreprises certifiées directement au cœur de leurs documents **La Suite Docs**.
+La commande **`/entreprise`** (alias **`/pappers`**, **`/siren`**, **`/siret`**, **`/societe`**, **`/kbis`**) permet aux acheteurs publics, juristes marchés, instructeurs de subventions et agents territoriaux de rechercher et d'insérer des fiches d'entreprises certifiées directement dans **La Suite Docs**.
+
+Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le cadrage métier de l'achat et de l'instruction, la veille sur les APIs entreprises et le raccordement au socle commun.
 
 ---
 
-## 🎯 Pourquoi la Commande `/entreprise` ?
+## 🎯 Organisation du Dossier `/entreprise`
 
-Dans la gestion administrative quotidienne (passation de marchés publics, instruction de subventions aux associations et entreprises, contrôle de légalité, partenariats économiques), les agents doivent vérifier en permanence :
-1. **L'existence légale et l'immatriculation :** Numéro SIREN / SIRET, raison sociale, siège social et code NAF/APE.
-2. **La gouvernance et les dirigeants :** Représentants légaux, gérants, présidents habilités à signer les conventions.
-3. **La santé financière & solvabilité :** Chiffre d'affaires, résultat net, effectifs et date de clôture du dernier exercice.
-4. **L'absence de procédures collectives :** Vérification immédiate que l'entreprise n'est ni en redressement ni en liquidation judiciaire (critère d'exclusion des marchés publics).
-
----
-
-## 🏗️ Architecture Technique de la Commande `/entreprise`
-
-<Mermaid chart={`flowchart TD
-    subgraph Client["Poste Client (Navigateur Agent)"]
-        Slash["Saisie /entreprise ou /pappers au clavier"] --> Modal["Modale de Recherche SIREN / Dénomination (DSFR)"]
-        Modal --> CompanyBlock["Composant BlockNote SourceBlockSpec (React 19)"]
-        CompanyBlock --> YDoc["Arbre CRDT Yjs (Y.Doc)"]
-    end
-
-    subgraph Backend["Infrastructure La Suite Docs"]
-        DjangoProxy["API Django 5 (/api/v1/sources/search?type=company)"]
-        RedisCache[("Cache Redis 7 (TTL 24h & Invalidation)")]
-        YjsServer["Serveur WebSockets Hocuspocus"]
-    end
-
-    subgraph External["Sources Officielles & API Pappers / API Entreprise"]
-        PappersAPI["API Pappers Entreprises (api.pappers.fr)"]
-        ApiEntreprise["API Entreprise DINUM (api.gouv.fr)"]
-        INPI["Registre National des Entreprises (INPI / RNE)"]
-        INSEE["Répertoire SIRENE (INSEE)"]
-        BODACC["Annonces Légales BODACC / Infogreffe"]
-    end
-
-    Modal -->|1. Recherche par SIREN ou Nom| DjangoProxy
-    DjangoProxy -->|2. Vérification Cache| RedisCache
-    RedisCache -.->|Miss| DjangoProxy
-    DjangoProxy -->|3. Requête API sécurisée| PappersAPI
-    DjangoProxy -.->|Alternative souveraine| ApiEntreprise
-    PappersAPI <--> INPI
-    PappersAPI <--> INSEE
-    PappersAPI <--> BODACC
-    PappersAPI -.->|4. JSON structuré certifié| DjangoProxy
-    DjangoProxy -.->|5. DTO épuré| Modal
-    Modal -->|6. Insertion Bloc Entreprise| YDoc
-    YDoc <==>|7. Synchronisation Temps Réel| YjsServer
-`} />
-
----
-
-## 📚 Sommaire du Dossier `/entreprise`
-
-<FeatureGrid cols={2}>
+<FeatureGrid cols={3}>
   <FeatureCard
     icon="🏢"
-    title="1. Spécifications des APIs Entreprises"
-    description="Endpoints de recherche, données SIRENE, RNCS, bénéficiaires effectifs, mode Mock et API Entreprise."
-    href="/08-slash/03-entreprise/01-api-entreprises-pappers"
-    badge="API & Données"
+    title="1. Pôle Métier & Cas d'Usage"
+    description="Immatriculation légale (SIREN, SIRET, NAF, RNE/INPI), vérification des signataires et marchés publics."
+    href="/08-slash/03-entreprise/01-metier-entreprise/01-fondations-et-cadre"
+    badge="01 • Métier"
   />
   <FeatureCard
-    icon="📋"
-    title="2. Cas d'Usage Marchés & Achats"
-    description="Guide pratique d'instruction de marchés publics, vérification DUME et contrôle des délégations de signature."
-    href="/08-slash/03-entreprise/02-cas-usage-marches-publics"
-    badge="Métier & Achats"
+    icon="📡"
+    title="2. Pôle API & Veille Technique"
+    description="Benchmark comparatif Pappers vs API Entreprise (DINUM) vs RNE (INPI), mode Mock et contrats de données."
+    href="/08-slash/03-entreprise/02-api-entreprise/01-benchmark-des-apis"
+    badge="02 • API"
+  />
+  <FeatureCard
+    icon="💻"
+    title="3. Pôle Implémentation Socle"
+    description="CompanySourceProvider Django, cache Redis 24h, alertes procédures collectives et rendu DSFR."
+    href="/08-slash/03-entreprise/03-implementation-entreprise/01-provider-django"
+    badge="03 • Code & Socle"
   />
 </FeatureGrid>
 
 ---
 
-## 🧩 Implémentation Frontend & Backend
+## 🏗️ Architecture Globale de la Commande `/entreprise`
 
-La commande `/entreprise` s'appuie directement sur le **[Socle Technique Unifié des Commandes Slash](/08-slash/00-socle-technique)** (CustomBlock `SourceBlockSpec` avec les 3 modes d'affichage **Callout**, **Carte** et **Lien**, et le `CompanySourceProvider` Django).
+<Mermaid chart={`flowchart TD
+    subgraph Client["Poste Client (Acheteur / Instructeur)"]
+        Slash["Saisie /entreprise ou /siren au clavier"] --> SearchPopover["Popover Inline de Recherche (QuickSearch DSFR)"]
+        SearchPopover --> BlockSpec["Composant Universel SourceBlockSpec (React 19)"]
+        BlockSpec --> YDoc["Arbre CRDT Yjs (Y.Doc)"]
+    end
+
+    subgraph Backend["Infrastructure La Suite Docs"]
+        DjangoProxy["API Django 5 (/api/v1/sources/search?type=company)"]
+        RedisCache[("Cache Redis 7 (TTL 24h)")]
+        ProviderRegistry["Provider Registry (CompanySourceProvider)"]
+        YjsServer["Serveur WebSockets Hocuspocus"]
+    end
+
+    subgraph Sources["Écosystème Entreprises Souverain"]
+        Pappers["API Pappers Entreprises (api.pappers.fr)"]
+        ApiEntreprise["API Entreprise DINUM (api.gouv.fr)"]
+        RNE["Registre National des Entreprises (INPI / RNE)"]
+    end
+
+    SearchPopover -->|"1. Recherche par SIREN ou Dénomination"| DjangoProxy
+    DjangoProxy -->|2. Lecture Cache Redis| RedisCache
+    RedisCache -.->|Miss| DjangoProxy
+    DjangoProxy --> ProviderRegistry
+    ProviderRegistry -->|"3. Requête API sécurisée"| Pappers
+    ProviderRegistry -.->|"Option Souveraine Régalienne"| ApiEntreprise
+    Pappers <--> RNE
+    Pappers -.->|4. Données structurées certifiées| DjangoProxy
+    DjangoProxy -.->|5. DTO normalisé SourceSearchResult| SearchPopover
+    SearchPopover -->|"6. Insertion du bloc"| YDoc
+    YDoc <==>|7. Synchronisation Temps Réel| YjsServer
+`} />
+
+---
+
+## 🧩 Formats d'Affichage Disponibles
+
+Conformément au **[Socle Technique Unifié](/08-slash/00-socle-technique)** :
+- 📢 **Format Callout** : Fiche complète avec synthèse légale, extrait Kbis et alerte de solvabilité.
+- 🗂️ **Format Carte** : Encart avec grille à 3 colonnes : SIREN • Activité NAF • Dirigeant légal.
+- 🔗 **Format Lien** : Mention inline `🏢 DINUM PARTNERS SAS (SIREN : 849 201 928)`.

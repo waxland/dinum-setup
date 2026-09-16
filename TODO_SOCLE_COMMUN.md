@@ -406,24 +406,24 @@ Le fichier [`docs/08-slash/proposition.md`](docs/08-slash/proposition.md) formal
 
 ## 📝 7. Checklist d'Exécution Structurée par Commande
 
-- [ ] **Phase 1 — Structuration `docs/08-slash/01-loi/` :**
-  - [ ] Créer `01-metier-loi/01-fondations-et-cadre.mdx` et `01-metier-loi/02-cas-usage-et-scenarios.mdx`.
-  - [ ] Créer `02-api-loi/01-benchmark-des-apis.mdx` (*PISTE vs Albert API vs Judilibre*) et `02-api-loi/02-specifications-techniques.mdx`.
-  - [ ] Créer `03-implementation-loi/01-provider-django.mdx` et `03-implementation-loi/02-rendu-et-settings.mdx`.
-- [ ] **Phase 2 — Structuration `docs/08-slash/02-assemblee/` :**
-  - [ ] Créer `01-metier-assemblee/01-fondations-et-cadre.mdx` et `01-metier-assemblee/02-cas-usage-et-scenarios.mdx`.
-  - [ ] Créer `02-api-assemblee/01-benchmark-des-apis.mdx` (*claire.vite vs Tricoteuse vs Open Data AN*) et `02-api-assemblee/02-specifications-techniques.mdx`.
-  - [ ] Créer `03-implementation-assemblee/01-provider-django.mdx` et `03-implementation-assemblee/02-rendu-et-settings.mdx`.
-- [ ] **Phase 3 — Structuration `docs/08-slash/03-entreprise/` :**
-  - [ ] Créer `01-metier-entreprise/01-fondations-et-cadre.mdx` et `01-metier-entreprise/02-cas-usage-et-scenarios.mdx`.
-  - [ ] Créer `02-api-entreprise/01-benchmark-des-apis.mdx` (*Pappers vs API Entreprise vs RNE*) et `02-api-entreprise/02-specifications-techniques.mdx`.
-  - [ ] Créer `03-implementation-entreprise/01-provider-django.mdx` et `03-implementation-entreprise/02-rendu-et-settings.mdx`.
-- [ ] **Phase 4 — Structuration `docs/08-slash/04-adresse/` :**
-  - [ ] Créer `01-metier-adresse/01-fondations-et-cadre.mdx` et `01-metier-adresse/02-cas-usage-et-scenarios.mdx`.
-  - [ ] Créer `02-api-adresse/01-benchmark-des-apis.mdx` (*BAN vs Addok vs IGN vs OSM*) et `02-api-adresse/02-specifications-techniques.mdx`.
-  - [ ] Créer `03-implementation-adresse/01-provider-django.mdx` et `03-implementation-adresse/02-rendu-et-settings.mdx`.
-- [ ] **Phase 5 — Navigation & Validation Globale :**
-  - [ ] Adapter `scripts/generate-docs-navigation.mjs` pour formater automatiquement les libellés `metier-XX`, `api-XX` et `implementation-XX`.
-  - [ ] Exécuter `npm run docs:nav` pour régénérer `zudoku.navigation.tsx`.
-  - [ ] Auditer 100% des diagrammes pour s'assurer de l'utilisation uniforme du composant `<Mermaid />`.
-  - [ ] Valider avec `npm run docs:build` (0 erreur tolérée).
+- [x] **Phase 1 — Structuration `docs/08-slash/01-loi/` :**
+  - [x] Créer `01-metier-loi/01-fondations-et-cadre.mdx` et `01-metier-loi/02-cas-usage-et-scenarios.mdx`.
+  - [x] Créer `02-api-loi/01-benchmark-des-apis.mdx` (*PISTE vs Albert API vs Judilibre*) et `02-api-loi/02-specifications-techniques.mdx`.
+  - [x] Créer `03-implementation-loi/01-provider-django.mdx` et `03-implementation-loi/02-rendu-et-settings.mdx`.
+- [x] **Phase 2 — Structuration `docs/08-slash/02-assemblee/` :**
+  - [x] Créer `01-metier-assemblee/01-fondations-et-cadre.mdx` et `01-metier-assemblee/02-cas-usage-et-scenarios.mdx`.
+  - [x] Créer `02-api-assemblee/01-benchmark-des-apis.mdx` (*claire.vite vs Tricoteuse vs Open Data AN*) et `02-api-assemblee/02-specifications-techniques.mdx`.
+  - [x] Créer `03-implementation-assemblee/01-provider-django.mdx` et `03-implementation-assemblee/02-rendu-et-settings.mdx`.
+- [x] **Phase 3 — Structuration `docs/08-slash/03-entreprise/` :**
+  - [x] Créer `01-metier-entreprise/01-fondations-et-cadre.mdx` et `01-metier-entreprise/02-cas-usage-et-scenarios.mdx`.
+  - [x] Créer `02-api-entreprise/01-benchmark-des-apis.mdx` (*Pappers vs API Entreprise vs RNE*) et `02-api-entreprise/02-specifications-techniques.mdx`.
+  - [x] Créer `03-implementation-entreprise/01-provider-django.mdx` et `03-implementation-entreprise/02-rendu-et-settings.mdx`.
+- [x] **Phase 4 — Structuration `docs/08-slash/04-adresse/` :**
+  - [x] Créer `01-metier-adresse/01-fondations-et-cadre.mdx` et `01-metier-adresse/02-cas-usage-et-scenarios.mdx`.
+  - [x] Créer `02-api-adresse/01-benchmark-des-apis.mdx` (*BAN vs Addok vs IGN vs OSM*) et `02-api-adresse/02-specifications-techniques.mdx`.
+  - [x] Créer `03-implementation-adresse/01-provider-django.mdx` et `03-implementation-adresse/02-rendu-et-settings.mdx`.
+- [x] **Phase 5 — Navigation & Validation Globale :**
+  - [x] Adapter `scripts/generate-docs-navigation.mjs` pour formater automatiquement les libellés `metier-XX`, `api-XX` et `implementation-XX`.
+  - [x] Exécuter `npm run docs:nav` pour régénérer `zudoku.navigation.tsx`.
+  - [x] Auditer 100% des diagrammes pour s'assurer de l'utilisation uniforme du composant `<Mermaid />`.
+  - [x] Valider avec `npm run docs:build` (0 erreur tolérée, 223 routes pré-rendues).

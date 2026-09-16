@@ -1,66 +1,83 @@
 ---
-title: Dossier Loi & Légifrance (/loi)
+title: Commande Slash /loi — Légifrance & Droit Français
 sidebar_label: Vue d'Ensemble
-description: Sommaire complet, objectifs métier et plan d'action technique pour l'intégration de la commande slash /loi et du référentiel Légifrance dans La Suite Docs.
+description: "Hub complet de la commande /loi : accès au droit officiel, hiérarchie des normes, benchmark API PISTE vs Albert et implémentation sur le socle commun."
 ---
 
 import { Mermaid } from "../../../src/components/Mermaid";
 
-Bienvenue dans le dossier technique et pédagogique dédié à **l'intégration du droit public, des projets de loi et de la commande slash `/loi`** au sein de **La Suite Docs**.
+La commande **`/loi`** (alias **`/law`**, **`/legifrance`**, **`/code`**, **`/article`**, **`/decret`**) permet aux agents publics d'accéder au droit positif français directement au fil de leur rédaction dans **La Suite Docs**.
 
-Ce dossier fait le pont entre la **réalité métier des administrations françaises** (hiérarchie des normes, cycle de vie législatif, sécurité juridique des actes) et la **conception logicielle moderne** (moteur d'édition BlockNote, réplication temps réel Yjs/CRDT, API officielle DILA/PISTE Légifrance et composants DSFR).
+Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le cadrage métier, la veille sur les APIs juridiques et le raccordement au socle technique unifié.
 
 ---
 
-## 🎯 Organisation du Dossier Juridique
+## 🎯 Organisation du Dossier `/loi`
 
-Ce dossier rassemble l'ensemble de la doctrine juridique, la méthodologie de citation administrative, les spécifications officielles de l'API Légifrance sur PISTE, les cas d'usage réels et les règles d'activation :
-
-<FeatureGrid cols={2}>
+<FeatureGrid cols={3}>
   <FeatureCard
-    icon="⚖️"
-    title="1. Fondations Juridiques"
-    description="Hiérarchie des normes, compréhension des codes et lois, et règles de citation administrative officielle."
-    href="/08-slash/loi/01-fondations-juridiques/01-hierarchie-des-normes"
-    badge="Droit & Méthode"
+    icon="🏢"
+    title="1. Pôle Métier & Cas d'Usage"
+    description="Hiérarchie des normes (Kelsen), compréhension des codes et lois, règles de citation et situations de travail réelles."
+    href="/08-slash/01-loi/01-metier-loi/01-fondations-et-cadre"
+    badge="01 • Métier"
   />
   <FeatureCard
     icon="📡"
-    title="2. API Légifrance sur PISTE"
-    description="Authentification OAuth2 Client Credentials, endpoints /suggest, /search, /consult et mapping des fonds."
-    href="/08-slash/loi/02-api-legifrance-piste/01-authentification-oauth2"
-    badge="API DILA"
+    title="2. Pôle API & Veille Technique"
+    description="Benchmark comparatif PISTE / DILA vs IA Albert vs Judilibre, authentification OAuth2 et contrats de données."
+    href="/08-slash/01-loi/02-api-loi/01-benchmark-des-apis"
+    badge="02 • API"
   />
   <FeatureCard
-    icon="🏢"
-    title="3. Cas d'Usage Métier"
-    description="Situations réelles : arrêtés municipaux, marchés publics, instruction d'urbanisme, DPO et contrôle de légalité."
-    href="/08-slash/loi/03-cas-usage-metier"
-    badge="Métier & Terrain"
-  />
-  <FeatureCard
-    icon="⚙️"
-    title="4. Activation & Settings"
-    description="Réflexion sur l'activation conditionnelle, détection des variables PISTE et Feature Flagging."
-    href="/08-slash/loi/settings"
-    badge="Configuration"
+    icon="💻"
+    title="3. Pôle Implémentation Socle"
+    description="LawSourceProvider Django, mapping vers SourceBlockSpec (Callout, Carte, Lien) et activation conditionnelle."
+    href="/08-slash/01-loi/03-implementation-loi/01-provider-django"
+    badge="03 • Code & Socle"
   />
 </FeatureGrid>
 
 ---
 
-## 🧩 Implémentation Frontend & Backend
+## 🏗️ Architecture Globale de la Commande `/loi`
 
-L'affichage visuel et le relais serveur de la commande `/loi` s'appuient sur le **[Socle Technique Unifié des Commandes Slash](/08-slash/socle-technique)** :
-- **Frontend :** Composant BlockNote universel `SourceBlockSpec` décliné en 3 modes : **Callout** (citation en exergue), **Carte** (synthèse multi-critères) et **Lien** (badge inline cliquable).
-- **Backend :** Provider Python `LawSourceProvider` dans le Provider Registry Django avec cache Redis 24h.
+<Mermaid chart={`flowchart TD
+    subgraph Client["Navigateur Agent (Poste Client)"]
+        Slash["Saisie /loi au clavier"] --> SearchPopover["Popover Inline de Recherche (QuickSearch DSFR)"]
+        SearchPopover --> BlockSpec["Composant Universel SourceBlockSpec (React 19)"]
+        BlockSpec --> YDoc["Arbre CRDT Yjs (Y.Doc)"]
+    end
+
+    subgraph Backend["Infrastructure La Suite Docs"]
+        DjangoProxy["API Django 5 (/api/v1/sources/search?type=law)"]
+        RedisCache[("Cache Redis 7 (TTL 24h)")]
+        ProviderRegistry["Provider Registry (LawSourceProvider)"]
+        YjsServer["Serveur WebSockets Hocuspocus"]
+    end
+
+    subgraph Sources["Écosystème Juridique Souverain"]
+        PISTE["Plateforme PISTE / DILA (Légifrance Engine)"]
+        AlbertAPI["Albert API (IA Souveraine DINUM / Etalab)"]
+    end
+
+    SearchPopover -->|"1. Recherche asynchrone"| DjangoProxy
+    DjangoProxy -->|2. Lecture Cache| RedisCache
+    RedisCache -.->|Miss| DjangoProxy
+    DjangoProxy --> ProviderRegistry
+    ProviderRegistry -->|"3. Requête OAuth2"| PISTE
+    ProviderRegistry -.->|"Option RAG Sémantique"| AlbertAPI
+    PISTE -.->|4. JSON structuré certifié| DjangoProxy
+    DjangoProxy -.->|5. DTO normalisé SourceSearchResult| SearchPopover
+    SearchPopover -->|"6. Insertion du bloc"| YDoc
+    YDoc <==>|7. Synchronisation Temps Réel| YjsServer
+`} />
 
 ---
 
-## 🚀 Accès Rapide aux Guides
+## 🧩 Formats d'Affichage Disponibles
 
-- 👉 **[1. Hiérarchie des Normes & Ordre Juridique](/08-slash/loi/01-fondations-juridiques/01-hierarchie-des-normes)**
-- 👉 **[2. Authentification OAuth2 PISTE](/08-slash/loi/02-api-legifrance-piste/01-authentification-oauth2)**
-- 👉 **[3. Cas d'Usage Métier & Exemples Concrets](/08-slash/loi/03-cas-usage-metier)**
-- 👉 **[4. Activation, Feature Flagging & Settings PISTE](/08-slash/loi/settings)**
-- 👉 **[5. Socle Technique Unifié & CustomBlock BlockNote](/08-slash/socle-technique)**
+Conformément au **[Socle Technique Unifié](/08-slash/00-socle-technique)**, les articles insérés sont déclinables en :
+- 📢 **Format Callout (Encadré DSFR)** : Reproduction intégrale du texte légal certifié avec badge `VIGUEUR`.
+- 🗂️ **Format Carte (Card DSFR)** : Synthèse avec code, article, date d'effet et lien officiel.
+- 🔗 **Format Lien (Inline Badge)** : Pastille compacte cliquable dans la phrase avec popover au survol.

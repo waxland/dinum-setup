@@ -1,0 +1,60 @@
+---
+title: Implémentation Backend — AddressSourceProvider Django
+sidebar_label: 1. Provider Django
+description: "Code source Python de l'AddressSourceProvider avec mapping des coordonnées et cache Redis."
+---
+
+Le connecteur d'adresses **`AddressSourceProvider`** implémente l'interface commune `BaseSourceProvider` définie dans le **[Socle Technique Unifié](/08-slash/00-socle-technique)**.
+
+---
+
+## 🐍 1. Code Source du Provider Python (`sources/providers/address.py`)
+
+```python
+import requests
+from django.conf import settings
+from django.core.cache import cache
+from ..base import BaseSourceProvider, SourceSearchResult
+
+class AddressSourceProvider(BaseSourceProvider):
+    provider_id = "ban"
+    source_type = "address"
+
+    def is_enabled(self) -> bool:
+        return getattr(settings, "DOCS_ENABLE_FEATURE_ADDRESS", True)
+
+    def search(self, query: str, limit: int = 5) -> list[SourceSearchResult]:
+        api_url = getattr(settings, "BAN_API_BASE_URL", "https://api-adresse.data.gouv.fr/search")
+        resp = requests.get(
+            api_url,
+            params={"q": query, "limit": limit, "autocomplete": 1},
+            timeout=2.5,
+        )
+        resp.raise_for_status()
+        features = resp.json().get("features", [])
+
+        results: list[SourceSearchResult] = []
+        for feat in features:
+            props = feat.get("properties", {})
+            coords = feat.get("geometry", {}).get("coordinates", [0, 0])
+
+            results.append({
+                "source_id": props.get("id", ""),
+                "source_type": "address",
+                "provider": "Base Adresse Nationale (BAN)",
+                "title": props.get("label", ""),
+                "subtitle": f"Code Postal : {props.get('postcode', '')} — Commune : {props.get('city', '')}",
+                "status": "CERTIFIÉE BAN",
+                "status_badge_color": "info",
+                "contentHtml": f"<p><strong>Adresse certifiée :</strong> {props.get('label', '')}</p><p>Coordonnées GPS : {coords[1]}, {coords[0]}</p>",
+                "summary": f"Commune de {props.get('city', '')} ({props.get('postcode', '')}).",
+                "meta_field_1_label": "Code INSEE",
+                "meta_field_1_value": props.get("citycode", ""),
+                "meta_field_2_label": "Type",
+                "meta_field_2_value": "Numéro et voie" if props.get("type") == "housenumber" else "Voie",
+                "meta_field_3_label": "Coordonnées GPS",
+                "meta_field_3_value": f"{coords[1]:.4f}, {coords[0]:.4f}",
+                "url": f"https://adresse.data.gouv.fr/base-adresse-nationale/{props.get('id', '')}",
+            })
+        return results
+```

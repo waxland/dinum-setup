@@ -1,0 +1,85 @@
+---
+title: Implémentation Backend — ParliamentSourceProvider Django
+sidebar_label: 1. Provider Django
+description: "Implémentation Python du ParliamentSourceProvider, cache court (5 min en séance) et gestion du fallback local."
+---
+
+Le connecteur parlementaire **`ParliamentSourceProvider`** implémente l'interface commune `BaseSourceProvider` définie dans le **[Socle Technique Unifié](/08-slash/00-socle-technique)**.
+
+---
+
+## 🐍 1. Code Source du Provider Python (`sources/providers/parliament.py`)
+
+```python
+import requests
+from django.conf import settings
+from django.core.cache import cache
+from ..base import BaseSourceProvider, SourceSearchResult
+
+class ParliamentSourceProvider(BaseSourceProvider):
+    provider_id = "claire.vite"
+    source_type = "parliament"
+
+    def is_enabled(self) -> bool:
+        return bool(
+            getattr(settings, "CLAIRE_VITE_API_URL", None)
+            or getattr(settings, "TRICOTEUSE_API_URL", None)
+            or getattr(settings, "PARLIAMENT_MOCK_ENABLED", False)
+        )
+
+    def search(self, query: str, limit: int = 5) -> list[SourceSearchResult]:
+        if getattr(settings, "PARLIAMENT_MOCK_ENABLED", False):
+            return self._get_mock_results(query)
+
+        api_url = getattr(settings, "CLAIRE_VITE_API_URL", "https://api.claire.vite/v1")
+        resp = requests.get(f"{api_url}/amendements", params={"q": query, "limit": limit}, timeout=3.0)
+        resp.raise_for_status()
+        amendements = resp.json().get("results", [])
+
+        results: list[SourceSearchResult] = []
+        for amdt in amendements:
+            sort = amdt.get("sort", "En attente")
+            badge_color = "success" if sort == "Adopte" else "error" if sort == "Rejete" else "info"
+
+            results.append({
+                "source_id": f"{amdt.get('dossier_id')}:{amdt.get('numero')}",
+                "source_type": "parliament",
+                "provider": "Assemblée nationale (claire.vite)",
+                "title": f"Amendement n° {amdt.get('numero')} ({amdt.get('article_vise', 'Article')})",
+                "subtitle": f"{amdt.get('dossier_titre', '')} — Groupe {amdt.get('groupe', '')}",
+                "status": sort.upper(),
+                "status_badge_color": badge_color,
+                "contentHtml": amdt.get("dispositif", ""),
+                "summary": amdt.get("expose_sommaire", ""),
+                "meta_field_1_label": "Groupe",
+                "meta_field_1_value": amdt.get("groupe", "Non inscrit"),
+                "meta_field_2_label": "Auteur",
+                "meta_field_2_value": amdt.get("auteurs", ""),
+                "meta_field_3_label": "Sort",
+                "meta_field_3_value": sort,
+                "url": amdt.get("url", "https://www.assemblee-nationale.fr"),
+            })
+        return results
+
+    def _get_mock_results(self, query: str) -> list[SourceSearchResult]:
+        return [
+            {
+                "source_id": "DLR5L17N120:142",
+                "source_type": "parliament",
+                "provider": "Assemblée Mock",
+                "title": "Amendement n° 142 (Article 4)",
+                "subtitle": "Projet de loi souveraineté numérique — Groupe EPR",
+                "status": "ADOPTÉ",
+                "status_badge_color": "success",
+                "contentHtml": "<p>À l'alinéa 2, privilégier les logiciels libres et souverains.</p>",
+                "summary": "Préférence souveraine pour les logiciels libres dans l'État.",
+                "meta_field_1_label": "Groupe",
+                "meta_field_1_value": "EPR",
+                "meta_field_2_label": "Auteur",
+                "meta_field_2_value": "Mme Dupont",
+                "meta_field_3_label": "Sort",
+                "meta_field_3_value": "Adopté",
+                "url": "https://www.assemblee-nationale.fr",
+            }
+        ]
+```

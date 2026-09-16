@@ -6,7 +6,7 @@ description: Architecture standardisée, composant BlockNote universel à 3 mode
 
 import { Mermaid } from "../../src/components/Mermaid";
 
-Pour garantir l'évolutivité, la cohérence graphique et la simplicité de maintenance de **La Suite Docs**, l'ensemble des commandes slash connectées à des sources de données externes (**`/loi`**, **`/pappers`**, **`/assemblee`**, **`/adresse`**, etc.) reposent sur un **Socle Technique Unifié**.
+Pour garantir l'évolutivité, la cohérence graphique et la simplicité de maintenance de **La Suite Docs**, l'ensemble des commandes slash connectées à des sources de données externes (**`/loi`**, **`/entreprise`**, **`/assemblee`**, **`/adresse`**, etc.) reposent sur un **Socle Technique Unifié**.
 
 Inspiré de l'architecture native de **`/link-doc` (`Interlinking`)**, ce socle abstrait la complexité technique et permet de brancher n'importe quelle nouvelle API en quelques minutes avec un rendu 100% conforme au **Design System de l'État (DSFR)** et aux normes d'accessibilité **RGAA v4.1**.
 
@@ -30,7 +30,7 @@ Inspiré de l'architecture native de **`/link-doc` (`Interlinking`)**, ce socle 
 
 <Mermaid chart={`flowchart TD
     subgraph UI["1. Moteur d'Édition BlockNote (React 19 / Next.js)"]
-        SlashInput["Saisie Clavier (/loi, /pappers, /assemblee...)"]
+        SlashInput["Saisie Clavier (/loi, /entreprise, /assemblee...)"]
         SearchPalette["SearchPage Inline (Inspiré de /link-doc & cmdk)"]
         UnifiedBlock["Composant Unique : SourceBlockSpec"]
         

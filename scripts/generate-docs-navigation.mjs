@@ -23,6 +23,15 @@ function formatLabel(name) {
   if (clean === "socle-technique") {
     return "Socle Technique Unifié";
   }
+  if (clean.startsWith("metier")) {
+    return "1. Pôle Métier & Usages";
+  }
+  if (clean.startsWith("api")) {
+    return "2. Pôle API & Veille";
+  }
+  if (clean.startsWith("implementation")) {
+    return "3. Pôle Implémentation";
+  }
 
   const acronyms = {
     roi: "ROI",
@@ -147,6 +156,9 @@ function getDefaultIcon(name, depth) {
   }
 
   // Depth > 0 (Sub-categories)
+  if (lower.includes("metier")) return "briefcase";
+  if (lower.includes("api") || lower.includes("sdk")) return "code";
+  if (lower.includes("implementation")) return "terminal";
   if (lower.includes("fondation")) return "sliders";
   if (lower.includes("composant")) return "box";
   if (lower.includes("layout") || lower.includes("structure"))
@@ -210,12 +222,16 @@ function scanDir(dir, baseDir, depth = 0) {
     return true;
   });
 
-  // Sort entries: index first, then natural sorting
+  // Sort entries: index first, then files before directories, then natural sorting
   validEntries.sort((a, b) => {
     const aIsIndex = a.name.startsWith("index.");
     const bIsIndex = b.name.startsWith("index.");
     if (aIsIndex && !bIsIndex) return -1;
     if (!aIsIndex && bIsIndex) return 1;
+
+    // Place files before directories so root documents appear above sub-categories
+    if (a.isFile() && b.isDirectory()) return -1;
+    if (a.isDirectory() && b.isFile()) return 1;
 
     return a.name.localeCompare(b.name, undefined, {
       numeric: true,

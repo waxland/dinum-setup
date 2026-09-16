@@ -1,10 +1,10 @@
 ---
 title: Cas d'Usage Métier — Commande /loi
-sidebar_label: 3. Cas d'Usage Métier
-description: "Situations réelles de travail où les agents publics utilisent la commande /loi : rédaction d'arrêtés, marchés publics, instruction, conformité et veille."
+sidebar_label: 2. Cas d'Usage Métier
+description: "Situations réelles de travail où les agents publics utilisent la commande /loi : visas d'arrêtés, CCTP de marchés publics, urbanisme et RGPD."
 ---
 
-import { Mermaid } from "../../../src/components/Mermaid";
+import { Mermaid } from "../../../../src/components/Mermaid";
 
 La commande **`/loi`** répond aux besoins quotidiens des agents publics dans les ministères, préfectures, collectivités territoriales et établissements publics lorsqu'ils doivent fonder, vérifier ou sécuriser juridiquement leurs documents.
 
@@ -34,31 +34,22 @@ La commande **`/loi`** répond aux besoins quotidiens des agents publics dans le
 ### A. Rédaction des Visas dans les Arrêtés Municipaux & Préfectoraux
 - **Rôle :** Responsable des affaires juridiques / Secrétaire général de mairie.
 - **Contexte :** Rédaction d'un arrêté de police administrative, de délégation de signature ou de voirie.
-- **Problème sans `/loi` :** Recopie manuelle de vieux arrêtés comportant des articles abrogés ou renumérotés, entraînant un risque d'annulation au contrôle de légalité ou devant le tribunal administratif.
-- **Solution avec `/loi` :** L'agent tape `/loi` puis `L2212-2 CGCT`. Le bloc s'insère en **Mode Citation (Callout DSFR)** avec le texte officiel certifié et le badge `VIGUEUR`.
+- **Problème sans `/loi` :** Recopie manuelle de vieux arrêtés comportant des articles abrogés ou renumérotés, entraînant un risque d'annulation au contrôle de légalité en préfecture.
+- **Solution avec `/loi` :** L'agent tape `/loi` puis `L2212-2 CGCT`. Le bloc s'insère en **Format Callout DSFR** avec le texte certifié et le badge `VIGUEUR`.
 
 ---
 
 ### B. Rédaction des CCTP & Règlements de Consultation (Marchés Publics)
 - **Rôle :** Acheteur public / Juriste marchés.
-- **Contexte :** Rédaction du Règlement de Consultation (RC) d'un appel d'offres de travaux ou de prestations informatiques.
-- **Problème sans `/loi` :** Risque de faire référence à une ancienne disposition du Code des marchés publics au lieu du **Code de la commande publique**.
-- **Solution avec `/loi` :** L'acheteur insère l'article `L. 2112-2` fixant les conditions d'exécution relatives aux critères environnementaux et sociaux en **Mode Carte** avec lien direct vers Légifrance.
+- **Contexte :** Rédaction du Règlement de Consultation (RC) d'un appel d'offres.
+- **Solution avec `/loi` :** L'acheteur insère l'article `L. 2112-2` du Code de la commande publique fixant les conditions d'exécution relatives aux critères environnementaux et sociaux en **Format Carte** avec lien direct vers Légifrance.
 
 ---
 
 ### C. Instruction d'Autorisations d'Urbanisme (Permis de Construire)
 - **Rôle :** Agent instructeur au sein d'un service instructeur d'intercommunalité.
 - **Contexte :** Rédaction d'une décision d'accord ou de refus de permis de construire.
-- **Problème sans `/loi` :** Obligation de motiver précisément le refus en citant l'article exact du **Code de l'urbanisme** (ex: `Article R. 111-27` sur l'insertion paysagère) sous peine de vice de forme.
-- **Solution avec `/loi` :** L'agent sélectionne le mode **Lien Inline** pour intégrer la référence cliquable au sein du paragraphe explicatif.
-
----
-
-### D. Notes de Cadrage & Conformité RGPD / Sécurité
-- **Rôle :** Délégué à la Protection des Données (DPO) / Responsable SSI.
-- **Contexte :** Rédaction d'une Analyse d'Impact relative à la Protection des Données (AIPD).
-- **Solution avec `/loi` :** Citation certifiée des dispositions de la **Loi n° 78-17 du 6 janvier 1978 modifiée** et du **Règlement (UE) 2016/679 (RGPD)**.
+- **Solution avec `/loi` :** L'agent sélectionne le **Format Lien Inline** pour intégrer la référence cliquable au sein du paragraphe explicatif.
 
 ---
 
@@ -79,17 +70,3 @@ La commande **`/loi`** répond aux besoins quotidiens des agents publics dans le
       Auditeurs & Contrôleurs internes
       Nouveaux arrivants (Onboarding métier)
 `} />
-
----
-
-## 📄 4. Exemple Concret dans une Délibération
-
-> ### EXTRAIT D'UNE DÉLIBÉRATION MUNICIPALE
->
-> Le Conseil Municipal,
->
-> ⚖️ **Article L. 2121-29 — Code général des collectivités territoriales** `VIGUEUR`  
-> *« Le conseil municipal règle par ses délibérations les affaires de la commune. »*  
-> [Consulter sur Légifrance ↗](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006389959)
->
-> Après en avoir délibéré, décide de valider le projet d'aménagement...

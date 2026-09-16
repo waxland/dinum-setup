@@ -1,0 +1,32 @@
+---
+title: Rendu DSFR Entreprise & Configuration
+sidebar_label: 2. Rendu & Settings
+description: "Affichage en 3 modes DSFR, alertes procédures collectives et configuration .env."
+---
+
+La commande `/entreprise` s'appuie sur le composant BlockNote universel **`SourceBlockSpec`** et le Provider Registry Django.
+
+---
+
+## 🎨 1. Les 3 Modes d'Affichage DSFR
+
+1. 📢 **Format Callout (Extrait & Kbis)** : Idéal pour les dossiers d'instruction avec récapitulatif complet et mention de solvabilité.
+2. 🗂️ **Format Carte (Synthèse RAO)** : Grille responsive SIREN • Code NAF • Dirigeant légal.
+3. 🔗 **Format Lien (Inline Badge)** : `🏢 DINUM PARTNERS SAS (SIREN : 849 201 928)`.
+
+---
+
+## ⚙️ 2. Configuration d'Environnement
+
+```dotenv
+# .env.local ou common.local
+
+# Clé API Pappers (freemium ou commerciale)
+PAPPERS_API_KEY=votre_cle_pappers
+
+# Ou jeton API Entreprise DINUM (réservé administrations)
+# API_ENTREPRISE_TOKEN=votre_jeton_api_entreprise
+
+# Mode Mock pour tests locaux sans clé
+PAPPERS_MOCK_ENABLED=false
+```

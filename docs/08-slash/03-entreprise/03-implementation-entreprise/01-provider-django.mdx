@@ -1,0 +1,86 @@
+---
+title: Implémentation Backend — CompanySourceProvider Django
+sidebar_label: 1. Provider Django
+description: "Code source du CompanySourceProvider Python avec normalisation vers SourceSearchResult et cache Redis 24h."
+---
+
+Le connecteur d'entreprises **`CompanySourceProvider`** implémente l'interface commune `BaseSourceProvider` définie dans le **[Socle Technique Unifié](/08-slash/00-socle-technique)**.
+
+---
+
+## 🐍 1. Code Source du Provider Python (`sources/providers/company.py`)
+
+```python
+import requests
+from django.conf import settings
+from django.core.cache import cache
+from ..base import BaseSourceProvider, SourceSearchResult
+
+class CompanySourceProvider(BaseSourceProvider):
+    provider_id = "pappers"
+    source_type = "company"
+
+    def is_enabled(self) -> bool:
+        return bool(
+            getattr(settings, "PAPPERS_API_KEY", None)
+            or getattr(settings, "API_ENTREPRISE_TOKEN", None)
+            or getattr(settings, "PAPPERS_MOCK_ENABLED", False)
+        )
+
+    def search(self, query: str, limit: int = 5) -> list[SourceSearchResult]:
+        if getattr(settings, "PAPPERS_MOCK_ENABLED", False):
+            return self._get_mock_results(query)
+
+        api_key = getattr(settings, "PAPPERS_API_KEY", "")
+        url = "https://api.pappers.fr/v2/recherche"
+        resp = requests.get(url, params={"q": query, "api_token": api_key, "par_page": limit}, timeout=3.0)
+        resp.raise_for_status()
+        entreprises = resp.json().get("resultats", [])
+
+        results: list[SourceSearchResult] = []
+        for ent in entreprises:
+            in_solvency = not ent.get("procedures_collectives_en_cours", False)
+            siege = ent.get("siege", {})
+
+            results.append({
+                "source_id": ent.get("siren", ""),
+                "source_type": "company",
+                "provider": "Pappers / RNE",
+                "title": ent.get("nom_entreprise", ""),
+                "subtitle": ent.get("forme_juridique", "Société"),
+                "status": "IN BONIS" if in_solvency else "PROCÉDURE COLLECTIVE",
+                "status_badge_color": "success" if in_solvency else "error",
+                "contentHtml": f"<p><strong>Dirigeant :</strong> {ent.get('dirigeants', [{}])[0].get('nom', 'Non renseigné')}</p>",
+                "summary": f"Activité : {siege.get('libelle_code_naf', 'Non renseignée')}",
+                "meta_field_1_label": "SIREN",
+                "meta_field_1_value": ent.get("siren", ""),
+                "meta_field_2_label": "Code NAF",
+                "meta_field_2_value": siege.get("code_naf", ""),
+                "meta_field_3_label": "Ville",
+                "meta_field_3_value": siege.get("ville", ""),
+                "url": f"https://www.pappers.fr/entreprise/{ent.get('siren', '')}",
+            })
+        return results
+
+    def _get_mock_results(self, query: str) -> list[SourceSearchResult]:
+        return [
+            {
+                "source_id": "849201928",
+                "source_type": "company",
+                "provider": "Entreprise Mock",
+                "title": "DINUM PARTNERS SAS",
+                "subtitle": "Société par actions simplifiée",
+                "status": "IN BONIS",
+                "status_badge_color": "success",
+                "contentHtml": "<p>Président : M. Jean Martin. Siège : 20 avenue de Ségur, 75007 Paris.</p>",
+                "summary": "Activité : Conseil en systèmes et logiciels informatiques (62.02A).",
+                "meta_field_1_label": "SIREN",
+                "meta_field_1_value": "849 201 928",
+                "meta_field_2_label": "Code NAF",
+                "meta_field_2_value": "62.02A",
+                "meta_field_3_label": "Ville",
+                "meta_field_3_value": "Paris (75007)",
+                "url": "https://annuaire-entreprises.data.gouv.fr/entreprise/849201928",
+            }
+        ]
+```

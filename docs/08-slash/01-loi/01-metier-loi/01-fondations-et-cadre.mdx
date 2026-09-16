@@ -1,0 +1,115 @@
+---
+title: Hiérarchie des Normes & Structure des Textes Juridiques
+sidebar_label: 1. Hiérarchie & Structure
+description: "Pyramide de Kelsen, structure des codes (parties législative et réglementaire), numérotation des articles et règles de citation administrative."
+---
+
+import { Mermaid } from "../../../../src/components/Mermaid";
+
+Pour tout développeur ou agent public intégrant des textes de loi dans **La Suite Docs**, il est indispensable de comprendre la **hiérarchie des normes**. Ce principe fondamental, théorisé par Hans Kelsen, stipule qu'une norme juridique inférieure doit obligatoirement respecter les normes de rang supérieur.
+
+---
+
+## 🏛️ 1. La Pyramide des Normes en Droit Français
+
+<Mermaid chart={`flowchart TD
+    subgraph Pyramide["Hiérarchie des Normes (Droit Français)"]
+        direction TB
+        C["1. Bloc de Constitutionnalité (Constitution de 1958, DDHC 1789)"]
+        T["2. Bloc de Conventionnalité (Traités internationaux, Droit de l'Union Européenne - RGPD)"]
+        L["3. Bloc de Légalité (Lois organiques, Lois ordinaires, Ordonnances ratifiées)"]
+        R["4. Bloc Réglementaire (Décrets d'application du Premier ministre / Président)"]
+        A["5. Actes Administratifs (Arrêtés ministériels, préfectoraux, municipaux)"]
+        Ci["6. Circulaires & Directives (Instructions internes d'application)"]
+
+        C --> T
+        T --> L
+        L --> R
+        R --> A
+        A --> Ci
+    end
+`} />
+
+---
+
+## 📖 2. Organisation d'un Code Juridique Français
+
+Les grands codes de droit français (Code civil, Code du travail, Code de la commande publique, CGCT, Code de justice administrative) sont divisés en deux parties distinctes :
+
+<Mermaid chart={`flowchart LR
+    Code["Code Juridique Français"] --> L["Partie Législative (Articles 'L.')"]
+    Code --> R["Partie Réglementaire (Articles 'R.' et 'D.')"]
+
+    L --> L1["Délibérée et votée par le Parlement"]
+    R --> R1["Décrets en Conseil d'État ('R.')"]
+    R --> R2["Décrets simples ('D.')"]
+    R --> R3["Arrêtés ministériels ('A.')"]
+`} />
+
+### Signification des préfixes d'articles
+- **`L.`** : Article d'origine **législative** (adopté par le Parlement).
+- **`R.`** : Article d'origine **réglementaire** (décret en Conseil d'État).
+- **`D.`** : Article d'origine **décrétale simple** (décret du Premier ministre).
+- **`A.`** : Article issu d'un **arrêté ministériel**.
+
+### Décodage du plan décimal d'un article (Exemple : `Article L. 2122-1`)
+La numérotation des codes modernes suit une logique arborescente normalisée :
+- **`L.`** : Partie législative.
+- **`2`** : **Livre II** (Grand thème du code).
+- **`1`** : **Titre Ier** (Sous-thème).
+- **`2`** : **Chapitre II** (Section thématique).
+- **`2`** : **Section 2** (Paragraphe réglementaire).
+- **`-1`** : **Article 1er** de la section.
+
+---
+
+## 🆔 3. Les Identifiants Juridiques Uniques de l'État
+
+Pour garantir l'interopérabilité et la traçabilité des données juridiques dans **La Suite Docs**, l'API Légifrance et la DILA utilisent plusieurs identifiants univoques :
+
+### A. Le Numéro NOR (Numéro d'Ordre Réglementaire)
+Attribué dès la rédaction initiale d'un texte par le ministère porteur, le numéro NOR comporte **12 caractères alphanumériques** :
+- **`PRM`** (3 lettres) : Ministère émetteur (*Premier ministre* — ex: `JUS` pour la Justice, `ECO` pour l'Économie).
+- **`X`** (1 lettre) : Direction ou cabinet rédacteur.
+- **`24`** (2 chiffres) : Année d'élaboration (*2024*).
+- **`14820`** (5 chiffres) : Numéro d'ordre chronologique.
+- **`A`** (1 lettre) : Nature de l'acte (*A = Arrêté, D = Décret, L = Loi, C = Circulaire, R = Rapport*).
+
+### B. Les Identifiants Techniques Légifrance
+- **`CID` (Conteneur ID)** : Identifiant unique d'un texte ou d'un code dans sa globalité (ex: `LEGITEXT000006070721` pour le Code civil).
+- **`LEGIARTI...`** : Identifiant univoque d'une version précise d'un article consolidé (ex: `LEGIARTI000038814944` pour l'article L. 111-1 du Code de la commande publique).
+- **`JORFTEXT...`** : Identifiant de la publication brute au Journal Officiel d'origine.
+- **`ELI` (European Legislation Identifier)** : URI pérenne normalisée au niveau de l'Union européenne.
+- **`ECLI` (European Case Law Identifier)** : Identifiant européen standardisé des décisions de jurisprudence (Conseil d'État, Cour de cassation, Conseil constitutionnel).
+
+---
+
+## 🔄 4. La Consolidation des Textes dans le Temps
+
+Une loi promulguée ne remplace pas directement les codes : elle fait l'objet d'un travail d'orfèvre de **consolidation juridique** opéré quotidiennement par les juristes de la **DILA** :
+
+<Mermaid chart={`flowchart LR
+    JO["1. Publication brute au Journal Officiel (JORFTEXT)"] --> Consolidation["2. Travail de consolidation DILA"]
+    Consolidation --> BaseLEGI["3. Base LEGI consolidée dans le temps"]
+    BaseLEGI --> Docs["4. Insertion certifiée dans La Suite Docs"]
+`} />
+
+- **Texte initial (JORF) :** Version brute telle que votée et promulguée à une date donnée.
+- **Texte consolidé (LEGI) :** Version intégrant l'ensemble des modifications, ajouts et abrogations successifs survenus depuis la création du texte.
+
+---
+
+## ⚖️ 5. États de Vigueur dans le Temps
+
+Dans la base officielle Légifrance, chaque disposition juridique possède un état temporel précis :
+1. **`VIGUEUR`** : Le texte est actuellement applicable et produit tous ses effets de droit.
+2. **`ABROGE`** : Le texte a été annulé ou remplacé par une loi ultérieure et n'est plus applicable.
+3. **`VIGUEUR_DIFF`** : Le texte a été promulgué mais son entrée en vigueur est fixée à une date future (ex: subordonnée à la parution d'un décret d'application).
+
+---
+
+## ✍️ 6. Règles de Citation Administrative
+
+- **Article de code :** Indiquer le numéro suivi du nom complet (*« Conformément à l'article L. 111-1 du Code de la commande publique... »*).
+- **Loi ou décret :** Indiquer la nature, le numéro officiel, la date et le titre (*« Vu la loi n° 78-17 du 6 janvier 1978 modifiée... »*).
+- **Jurisprudence :** Mentionner la juridiction, la date et le numéro (*« Conseil d'État, Assemblée, 26 octobre 1945, Aramu, Rec. p. 213 »*).
