@@ -8,7 +8,9 @@
     "docs:dev": "node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku dev --host 0.0.0.0",
     "docs:build": "node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku build",
     "docs:preview": "ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku preview --host 0.0.0.0",
-    "build": "node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku build"
+    "build": "node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku build",
+    "packages:build": "npm --prefix packages/slash-sources-sdk run build && npm --prefix packages/blocknote-sources run build",
+    "packages:test": "npm --prefix packages/slash-sources-sdk test && npm --prefix packages/blocknote-sources test"
   },
   "dependencies": {
     "@blocknote/core": "^0.54.2",

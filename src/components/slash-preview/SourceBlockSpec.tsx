@@ -1,59 +1,78 @@
+import {
+  BlockConfig,
+  BlockNoDefaults,
+  BlockNoteEditor,
+  InlineContentSchema,
+  StyleSchema,
+} from "@blocknote/core";
 import { createReactBlockSpec } from "@blocknote/react";
 import React, { useEffect, useRef, useState } from "react";
 import { searchMockSources } from "./mockData";
 import { DisplayMode, SourceEntityProps, SourceEntityType } from "./types";
 
-export const SourceBlock = createReactBlockSpec(
+export type PlaygroundSourceBlockConfig = BlockConfig<
+  "sourceBlock",
   {
-    type: "sourceBlock",
-    propSchema: {
-      sourceType: { default: "law" },
-      sourceId: { default: "" },
-      provider: { default: "" },
-      title: { default: "" },
-      subtitle: { default: "" },
-      status: { default: "VIGUEUR" },
-      statusBadgeColor: { default: "success" },
-      contentHtml: { default: "" },
-      summary: { default: "" },
-      metaField1Label: { default: "" },
-      metaField1Value: { default: "" },
-      metaField2Label: { default: "" },
-      metaField2Value: { default: "" },
-      metaField3Label: { default: "" },
-      metaField3Value: { default: "" },
-      displayMode: { default: "callout" },
-      url: { default: "" },
-      lastSyncAt: { default: "" },
-    },
-    content: "none",
+    sourceType: { default: "law" };
+    sourceId: { default: "" };
+    provider: { default: "" };
+    title: { default: "" };
+    subtitle: { default: "" };
+    status: { default: "VIGUEUR" };
+    statusBadgeColor: { default: "success" };
+    contentHtml: { default: "" };
+    summary: { default: "" };
+    metaField1Label: { default: "" };
+    metaField1Value: { default: "" };
+    metaField2Label: { default: "" };
+    metaField2Value: { default: "" };
+    metaField3Label: { default: "" };
+    metaField3Value: { default: "" };
+    displayMode: { default: "callout" };
+    url: { default: "" };
+    lastSyncAt: { default: "" };
   },
-  {
-    render: (props: any) => {
-      return <SourceBlockComponent {...props} />;
-    },
-  }
-);
-
-export const createSourceBlockSpec = () => SourceBlock();
-export const SourceBlockSpec = SourceBlock;
+  "none"
+>;
 
 interface SourceBlockComponentProps {
-  block: any;
-  editor: any;
+  block: BlockNoDefaults<
+    Record<"sourceBlock", PlaygroundSourceBlockConfig>,
+    InlineContentSchema,
+    StyleSchema
+  >;
+  editor: BlockNoteEditor<
+    Record<"sourceBlock", PlaygroundSourceBlockConfig>,
+    InlineContentSchema,
+    StyleSchema
+  >;
 }
+
+const CATEGORY_TABS: { type: SourceEntityType; label: string; icon: string }[] = [
+  { type: "law", label: "Loi", icon: "⚖️" },
+  { type: "company", label: "Entreprise", icon: "🏢" },
+  { type: "parliament", label: "Assemblée", icon: "🏛️" },
+  { type: "address", label: "Adresse", icon: "📍" },
+  { type: "procurement", label: "Marché", icon: "🛍️" },
+  { type: "grant", label: "Subvention", icon: "💶" },
+  { type: "insee", label: "Stats", icon: "📊" },
+  { type: "agent", label: "Annuaire", icon: "👤" },
+  { type: "cadastre", label: "Cadastre", icon: "🗺️" },
+  { type: "demarche", label: "Démarche", icon: "📝" },
+  { type: "opendata", label: "OpenData", icon: "🌐" },
+  { type: "custom", label: "Albert IA", icon: "🧠" },
+];
 
 const SourceBlockComponent: React.FC<SourceBlockComponentProps> = ({
   block,
   editor,
 }) => {
-  const p = block.props as SourceEntityProps;
-  const isSelected = Boolean(p.sourceId && p.title);
+  const isSelected = Boolean(block.props.sourceId && block.props.title);
 
   // Search state
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState<SourceEntityType>(
-    (p.sourceType as SourceEntityType) || "law"
+    block.props.sourceType || "law"
   );
   const [highlightIndex, setHighlightIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -70,8 +89,24 @@ const SourceBlockComponent: React.FC<SourceBlockComponentProps> = ({
     editor.updateBlock(block, {
       type: "sourceBlock",
       props: {
-        ...item,
-        displayMode: p.displayMode || item.displayMode || "callout",
+        sourceType: item.sourceType,
+        sourceId: item.sourceId,
+        provider: item.provider,
+        title: item.title,
+        subtitle: item.subtitle || "",
+        status: item.status || "VIGUEUR",
+        statusBadgeColor: item.statusBadgeColor || "success",
+        contentHtml: item.contentHtml || "",
+        summary: item.summary || "",
+        metaField1Label: item.metaField1Label || "",
+        metaField1Value: item.metaField1Value || "",
+        metaField2Label: item.metaField2Label || "",
+        metaField2Value: item.metaField2Value || "",
+        metaField3Label: item.metaField3Label || "",
+        metaField3Value: item.metaField3Value || "",
+        displayMode: block.props.displayMode || item.displayMode || "callout",
+        url: item.url || "",
+        lastSyncAt: new Date().toLocaleDateString("fr-FR"),
       },
     });
   };
@@ -97,7 +132,7 @@ const SourceBlockComponent: React.FC<SourceBlockComponentProps> = ({
     editor.removeBlocks([block]);
   };
 
-  const getProviderIcon = (type: string) => {
+  const getProviderIcon = (type: SourceEntityType) => {
     switch (type) {
       case "law":
         return "⚖️";
@@ -113,6 +148,14 @@ const SourceBlockComponent: React.FC<SourceBlockComponentProps> = ({
         return "💶";
       case "insee":
         return "📊";
+      case "agent":
+        return "👤";
+      case "cadastre":
+        return "🗺️";
+      case "demarche":
+        return "📝";
+      case "opendata":
+        return "🌐";
       case "custom":
         return "🧠";
       default:
@@ -123,151 +166,83 @@ const SourceBlockComponent: React.FC<SourceBlockComponentProps> = ({
   // 1. SEARCH STATE (When no source is selected yet)
   if (!isSelected) {
     return (
-      <div className="my-3 p-3.5 rounded-xl border-2 border-blue-500/80 bg-white dark:bg-gray-900 shadow-lg text-gray-900 dark:text-gray-100 font-sans not-prose">
-        <div className="flex items-center justify-between gap-2 pb-2 border-b border-gray-100 dark:border-gray-800">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-blue-700 dark:text-blue-400">
+      <div
+        contentEditable={false}
+        style={{
+          margin: "12px 0",
+          padding: "14px",
+          borderRadius: "8px",
+          border: "2px solid #000091",
+          background: "var(--background-alt-grey, #f6f6f6)",
+          boxShadow: "0 6px 18px rgba(0, 0, 145, 0.1)",
+          userSelect: "none",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "8px",
+            paddingBottom: "8px",
+            borderBottom: "1px solid #e5e5e5",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              fontSize: "12px",
+              fontWeight: 700,
+              color: "#000091",
+            }}
+          >
             <span>{getProviderIcon(selectedType)}</span>
             <span>Recherche Souveraine ({selectedType.toUpperCase()})</span>
           </div>
+
           {/* Category Tabs */}
-          <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 p-0.5 rounded-lg text-[11px] overflow-x-auto">
-            <button
-              type="button"
-              onClick={() => setSelectedType("law")}
-              className={`cursor-pointer px-2 py-0.5 rounded-md font-medium transition-all ${
-                selectedType === "law"
-                  ? "bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold"
-                  : "text-gray-600 dark:text-gray-400"
-              }`}
-            >
-              ⚖️ Loi
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedType("company")}
-              className={`cursor-pointer px-2 py-0.5 rounded-md font-medium transition-all ${
-                selectedType === "company"
-                  ? "bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold"
-                  : "text-gray-600 dark:text-gray-400"
-              }`}
-            >
-              🏢 Entreprise
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedType("parliament")}
-              className={`cursor-pointer px-2 py-0.5 rounded-md font-medium transition-all ${
-                selectedType === "parliament"
-                  ? "bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold"
-                  : "text-gray-600 dark:text-gray-400"
-              }`}
-            >
-              🏛️ Assemblée
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedType("address")}
-              className={`cursor-pointer px-2 py-0.5 rounded-md font-medium transition-all ${
-                selectedType === "address"
-                  ? "bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold"
-                  : "text-gray-600 dark:text-gray-400"
-              }`}
-            >
-              📍 Adresse
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedType("procurement")}
-              className={`cursor-pointer px-2 py-0.5 rounded-md font-medium transition-all ${
-                selectedType === "procurement"
-                  ? "bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold"
-                  : "text-gray-600 dark:text-gray-400"
-              }`}
-            >
-              🛍️ Marché
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedType("grant")}
-              className={`cursor-pointer px-2 py-0.5 rounded-md font-medium transition-all ${
-                selectedType === "grant"
-                  ? "bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold"
-                  : "text-gray-600 dark:text-gray-400"
-              }`}
-            >
-              💶 Subvention
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedType("insee")}
-              className={`cursor-pointer px-2 py-0.5 rounded-md font-medium transition-all ${
-                selectedType === "insee"
-                  ? "bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold"
-                  : "text-gray-600 dark:text-gray-400"
-              }`}
-            >
-              📊 Stats
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedType("agent")}
-              className={`cursor-pointer px-2 py-0.5 rounded-md font-medium transition-all ${
-                selectedType === "agent"
-                  ? "bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold"
-                  : "text-gray-600 dark:text-gray-400"
-              }`}
-            >
-              👤 Agent
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedType("cadastre")}
-              className={`cursor-pointer px-2 py-0.5 rounded-md font-medium transition-all ${
-                selectedType === "cadastre"
-                  ? "bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold"
-                  : "text-gray-600 dark:text-gray-400"
-              }`}
-            >
-              🗺️ Cadastre
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedType("demarche")}
-              className={`cursor-pointer px-2 py-0.5 rounded-md font-medium transition-all ${
-                selectedType === "demarche"
-                  ? "bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold"
-                  : "text-gray-600 dark:text-gray-400"
-              }`}
-            >
-              📝 Démarche
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedType("opendata")}
-              className={`cursor-pointer px-2 py-0.5 rounded-md font-medium transition-all ${
-                selectedType === "opendata"
-                  ? "bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold"
-                  : "text-gray-600 dark:text-gray-400"
-              }`}
-            >
-              🌐 OpenData
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedType("custom")}
-              className={`cursor-pointer px-2 py-0.5 rounded-md font-medium transition-all ${
-                selectedType === "custom"
-                  ? "bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold"
-                  : "text-gray-600 dark:text-gray-400"
-              }`}
-            >
-              🧠 Albert IA
-            </button>
+          <div
+            style={{
+              display: "flex",
+              gap: "4px",
+              background: "#e8edff",
+              padding: "2px",
+              borderRadius: "6px",
+              overflowX: "auto",
+              maxWidth: "70%",
+            }}
+          >
+            {CATEGORY_TABS.map((cat) => {
+              const isActive = selectedType === cat.type;
+              return (
+                <button
+                  key={cat.type}
+                  type="button"
+                  onClick={() => setSelectedType(cat.type)}
+                  style={{
+                    padding: "3px 8px",
+                    fontSize: "11px",
+                    fontWeight: isActive ? 700 : 500,
+                    borderRadius: "4px",
+                    border: "none",
+                    background: isActive ? "#000091" : "transparent",
+                    color: isActive ? "#ffffff" : "#000091",
+                    cursor: "pointer",
+                    whiteSpace: "nowrap",
+                    transition: "all 0.15s ease",
+                  }}
+                >
+                  {cat.icon} {cat.label}
+                </button>
+              );
+            })}
           </div>
         </div>
 
         {/* Input box */}
-        <div className="mt-2.5 relative">
+        <div style={{ marginTop: "10px", position: "relative" }}>
           <input
             ref={inputRef}
             type="text"
@@ -293,68 +268,140 @@ const SourceBlockComponent: React.FC<SourceBlockComponentProps> = ({
                 handleDelete();
               }
             }}
-            placeholder={`Rechercher ${
-              selectedType === "law"
-                ? "un article, code, décret (ex: commande publique, CGCT)..."
-                : selectedType === "company"
-                ? "une entreprise ou un SIREN (ex: DINUM, Scaleway, 849201928)..."
-                : selectedType === "parliament"
-                ? "un amendement ou dossier (ex: 142, souveraineté)..."
-                : "une adresse certifiée BAN (ex: 20 avenue de ségur)..."
-            }`}
-            className="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-gray-800 focus:ring-2 focus:ring-blue-500/20"
+            placeholder={`Rechercher dans ${
+              CATEGORY_TABS.find((c) => c.type === selectedType)?.label || "la source"
+            }... (ex: commande publique, DINUM, Paris)`}
+            style={{
+              width: "100%",
+              fontSize: "13px",
+              padding: "8px 12px",
+              borderRadius: "4px",
+              border: "1px solid #ccc",
+              background: "#ffffff",
+              color: "#1e1e1e",
+              outline: "none",
+              boxSizing: "border-box",
+            }}
           />
         </div>
 
         {/* Search Results List */}
-        <div className="mt-2 flex flex-col gap-1 max-h-56 overflow-y-auto">
+        <div
+          style={{
+            marginTop: "8px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "4px",
+            maxHeight: "220px",
+            overflowY: "auto",
+          }}
+        >
           {results.length === 0 ? (
-            <div className="py-4 text-center text-xs text-gray-400 italic">
-              Aucun résultat pour "{searchQuery}". Essayez un autre mot-clé.
+            <div
+              style={{
+                padding: "16px",
+                textAlign: "center",
+                fontSize: "12px",
+                color: "#666666",
+                fontStyle: "italic",
+              }}
+            >
+              Aucun résultat pour « {searchQuery} ». Essayez un autre mot-clé.
             </div>
           ) : (
-            results.map((item, idx) => (
-              <button
-                key={item.sourceId}
-                type="button"
-                onClick={() => handleSelectSource(item)}
-                onMouseEnter={() => setHighlightIndex(idx)}
-                className={`cursor-pointer w-full text-left p-2 rounded-lg text-xs transition-colors flex items-center justify-between gap-2 ${
-                  highlightIndex === idx
-                    ? "bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-blue-900 dark:text-blue-200"
-                    : "hover:bg-gray-50 dark:hover:bg-gray-800 border border-transparent"
-                }`}
-              >
-                <div className="flex flex-col truncate">
-                  <div className="font-bold flex items-center gap-1.5 truncate">
-                    <span>{getProviderIcon(item.sourceType)}</span>
-                    <span>{item.title}</span>
-                    {item.subtitle && (
-                      <span className="text-[11px] font-normal text-gray-500 dark:text-gray-400 truncate">
-                        — {item.subtitle}
-                      </span>
+            results.map((item, idx) => {
+              const isItemHighlighted = highlightIndex === idx;
+              return (
+                <button
+                  key={item.sourceId}
+                  type="button"
+                  onClick={() => handleSelectSource(item)}
+                  onMouseEnter={() => setHighlightIndex(idx)}
+                  style={{
+                    width: "100%",
+                    textAlign: "left",
+                    padding: "8px 10px",
+                    borderRadius: "4px",
+                    fontSize: "12px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: "8px",
+                    cursor: "pointer",
+                    border: isItemHighlighted ? "1px solid #000091" : "1px solid #eeeeee",
+                    background: isItemHighlighted ? "#e8edff" : "#ffffff",
+                    color: isItemHighlighted ? "#000091" : "#1e1e1e",
+                    transition: "all 0.1s ease",
+                  }}
+                >
+                  <div style={{ overflow: "hidden", textOverflow: "ellipsis" }}>
+                    <div style={{ fontWeight: 700, display: "flex", alignItems: "center", gap: "6px" }}>
+                      <span>{getProviderIcon(item.sourceType)}</span>
+                      <span>{item.title}</span>
+                      {item.subtitle && (
+                        <span style={{ fontSize: "11px", fontWeight: 400, color: "#666666" }}>
+                          — {item.subtitle}
+                        </span>
+                      )}
+                    </div>
+                    {item.summary && (
+                      <div
+                        style={{
+                          fontSize: "11px",
+                          color: "#666666",
+                          marginTop: "2px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {item.summary}
+                      </div>
                     )}
                   </div>
-                  {item.summary && (
-                    <span className="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">
-                      {item.summary}
-                    </span>
-                  )}
-                </div>
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300 font-semibold shrink-0">
-                  Insérer ↵
-                </span>
-              </button>
-            ))
+                  <span
+                    style={{
+                      fontSize: "10px",
+                      padding: "2px 6px",
+                      borderRadius: "4px",
+                      background: "#000091",
+                      color: "#ffffff",
+                      fontWeight: 600,
+                      flexShrink: 0,
+                    }}
+                  >
+                    Insérer ↵
+                  </span>
+                </button>
+              );
+            })
           )}
         </div>
 
-        <div className="mt-2 pt-2 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between text-[10px] text-gray-400">
+        <div
+          style={{
+            marginTop: "8px",
+            paddingTop: "6px",
+            borderTop: "1px solid #e5e5e5",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            fontSize: "11px",
+            color: "#666666",
+          }}
+        >
           <span>Navigation : ↑ ↓ Flèches • ↵ Entrée pour valider</span>
           <button
             type="button"
             onClick={handleDelete}
-            className="cursor-pointer text-red-500 hover:underline"
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "#c9191e",
+              cursor: "pointer",
+              textDecoration: "underline",
+              fontSize: "11px",
+            }}
           >
             Annuler (Échap)
           </button>
@@ -364,190 +411,397 @@ const SourceBlockComponent: React.FC<SourceBlockComponentProps> = ({
   }
 
   // 2. RENDERED STATE (When source is selected and active)
+  const mode = block.props.displayMode || "callout";
+
   return (
-    <div className="source-block-container not-prose my-3 relative group font-sans">
-      {/* Hover Floating Action Bar to Switch Modes */}
-      <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity flex items-center gap-1 p-1 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xs border border-gray-200 dark:border-gray-700 rounded-lg shadow-md z-10 text-[11px]">
-        <button
-          type="button"
-          onClick={() => handleSwitchMode("callout")}
-          className={`cursor-pointer px-2 py-0.5 rounded font-medium transition-colors ${
-            p.displayMode === "callout"
-              ? "bg-blue-600 text-white font-bold"
-              : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-          }`}
-          title="Format Callout (Encadré officiel)"
-        >
-          📢 Callout
-        </button>
-        <button
-          type="button"
-          onClick={() => handleSwitchMode("card")}
-          className={`cursor-pointer px-2 py-0.5 rounded font-medium transition-colors ${
-            p.displayMode === "card"
-              ? "bg-blue-600 text-white font-bold"
-              : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-          }`}
-          title="Format Carte (Synthèse multi-colonnes)"
-        >
-          🗂️ Carte
-        </button>
-        <button
-          type="button"
-          onClick={() => handleSwitchMode("link")}
-          className={`cursor-pointer px-2 py-0.5 rounded font-medium transition-colors ${
-            p.displayMode === "link"
-              ? "bg-blue-600 text-white font-bold"
-              : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-          }`}
-          title="Format Lien (Badge compact inline)"
-        >
-          🔗 Lien
-        </button>
-        <div className="w-[1px] h-3 bg-gray-200 dark:bg-gray-700 mx-0.5" />
-        <button
-          type="button"
-          onClick={handleReset}
-          className="cursor-pointer px-1.5 py-0.5 rounded text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700"
-          title="Modifier la recherche"
-        >
-          🔄
-        </button>
-        <button
-          type="button"
-          onClick={handleDelete}
-          className="cursor-pointer px-1.5 py-0.5 rounded text-red-500 hover:bg-red-50 dark:hover:bg-red-950/50"
-          title="Supprimer ce bloc"
-        >
-          🗑️
-        </button>
+    <div
+      contentEditable={false}
+      style={{
+        margin: "12px 0",
+        position: "relative",
+        userSelect: "none",
+      }}
+    >
+      {/* Floating Action Bar to Switch Modes */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "6px",
+          padding: "4px 8px",
+          background: "#f5f5fe",
+          border: "1px solid #e5e5e5",
+          borderRadius: "4px",
+          marginBottom: "6px",
+          fontSize: "11px",
+        }}
+      >
+        <span style={{ fontWeight: 700, color: "#000091", textTransform: "uppercase" }}>
+          {block.props.provider || "Source Souveraine"}
+        </span>
+
+        <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
+          <button
+            type="button"
+            onClick={() => handleSwitchMode("callout")}
+            style={{
+              padding: "2px 8px",
+              borderRadius: "3px",
+              border: mode === "callout" ? "1px solid #000091" : "1px solid #ccc",
+              background: mode === "callout" ? "#000091" : "#ffffff",
+              color: mode === "callout" ? "#ffffff" : "#1e1e1e",
+              cursor: "pointer",
+              fontWeight: mode === "callout" ? 700 : 500,
+              fontSize: "11px",
+            }}
+            title="Format Encadré / Callout"
+          >
+            📢 Encadré
+          </button>
+          <button
+            type="button"
+            onClick={() => handleSwitchMode("card")}
+            style={{
+              padding: "2px 8px",
+              borderRadius: "3px",
+              border: mode === "card" ? "1px solid #000091" : "1px solid #ccc",
+              background: mode === "card" ? "#000091" : "#ffffff",
+              color: mode === "card" ? "#ffffff" : "#1e1e1e",
+              cursor: "pointer",
+              fontWeight: mode === "card" ? 700 : 500,
+              fontSize: "11px",
+            }}
+            title="Format Carte (3 colonnes)"
+          >
+            🗂️ Carte
+          </button>
+          <button
+            type="button"
+            onClick={() => handleSwitchMode("link")}
+            style={{
+              padding: "2px 8px",
+              borderRadius: "3px",
+              border: mode === "link" ? "1px solid #000091" : "1px solid #ccc",
+              background: mode === "link" ? "#000091" : "#ffffff",
+              color: mode === "link" ? "#ffffff" : "#1e1e1e",
+              cursor: "pointer",
+              fontWeight: mode === "link" ? 700 : 500,
+              fontSize: "11px",
+            }}
+            title="Format Pastille / Lien"
+          >
+            🔗 Lien
+          </button>
+          <div style={{ width: "1px", height: "12px", background: "#cccccc", margin: "0 2px" }} />
+          <button
+            type="button"
+            onClick={handleReset}
+            style={{
+              padding: "2px 6px",
+              borderRadius: "3px",
+              border: "1px solid #ccc",
+              background: "#ffffff",
+              cursor: "pointer",
+              fontSize: "11px",
+            }}
+            title="Modifier la recherche"
+          >
+            🔍 Modifier
+          </button>
+          <button
+            type="button"
+            onClick={handleDelete}
+            style={{
+              padding: "2px 6px",
+              borderRadius: "3px",
+              border: "1px solid #f5a3a3",
+              background: "#fbe8e8",
+              color: "#c9191e",
+              cursor: "pointer",
+              fontSize: "11px",
+            }}
+            title="Supprimer ce bloc"
+          >
+            🗑️
+          </button>
+        </div>
       </div>
 
       {/* A. FORMAT CALLOUT */}
-      {p.displayMode === "callout" && (
-        <div className="p-4 rounded-xl border-l-4 border-l-[#000091] border-y border-r border-gray-200 dark:border-gray-800 bg-[#F5F5FE] dark:bg-[#0F172A] shadow-xs">
-          <div className="flex items-center justify-between gap-2 mb-2">
-            <div className="flex items-center gap-2">
-              <span className="text-lg">{getProviderIcon(p.sourceType)}</span>
-              <h4 className="text-sm font-bold text-[#000091] dark:text-[#8585f6] m-0">
-                {p.title} {p.subtitle ? `— ${p.subtitle}` : ""}
+      {mode === "callout" && (
+        <div
+          style={{
+            padding: "16px",
+            borderRadius: "4px",
+            borderLeft: "4px solid #000091",
+            borderTop: "1px solid #e5e5e5",
+            borderRight: "1px solid #e5e5e5",
+            borderBottom: "1px solid #e5e5e5",
+            background: "#f8f8fb",
+            boxShadow: "0 1px 3px rgba(0, 0, 145, 0.05)",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: "8px",
+              marginBottom: "8px",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <span style={{ fontSize: "18px" }}>{getProviderIcon(block.props.sourceType)}</span>
+              <h4 style={{ margin: 0, fontSize: "15px", fontWeight: 700, color: "#000091" }}>
+                {block.props.title} {block.props.subtitle ? `— ${block.props.subtitle}` : ""}
               </h4>
             </div>
-            <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-              {p.status}
-            </span>
+            {block.props.status && (
+              <span
+                style={{
+                  fontSize: "11px",
+                  fontWeight: 700,
+                  padding: "2px 8px",
+                  borderRadius: "10px",
+                  background: "#e8f7ee",
+                  color: "#0e793c",
+                  border: "1px solid #9de2b8",
+                }}
+              >
+                {block.props.status}
+              </span>
+            )}
           </div>
 
-          {p.contentHtml && (
+          {block.props.contentHtml && (
             <div
-              className="text-xs text-gray-800 dark:text-gray-200 italic my-2.5 leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: p.contentHtml }}
+              style={{
+                fontSize: "13px",
+                fontStyle: "italic",
+                lineHeight: 1.5,
+                color: "#1e1e1e",
+                background: "#ffffff",
+                padding: "8px 12px",
+                borderRadius: "3px",
+                border: "1px solid #e5e5e5",
+                margin: "8px 0",
+              }}
+              dangerouslySetInnerHTML={{ __html: block.props.contentHtml }}
             />
           )}
 
-          {p.summary && !p.contentHtml && (
-            <p className="text-xs text-gray-700 dark:text-gray-300 italic my-2">
-              {p.summary}
+          {block.props.summary && !block.props.contentHtml && (
+            <p style={{ fontSize: "13px", color: "#444444", margin: "6px 0", lineHeight: 1.4 }}>
+              {block.props.summary}
             </p>
           )}
 
-          <div className="mt-3 pt-2 border-t border-blue-100 dark:border-gray-800 flex items-center justify-between text-[11px] text-gray-500 dark:text-gray-400">
-            <span>Certifié via {p.provider}</span>
-            <a
-              href={p.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 dark:text-blue-400 font-semibold hover:underline"
-            >
-              Consulter la source officielle ↗
-            </a>
+          <div
+            style={{
+              marginTop: "8px",
+              paddingTop: "6px",
+              borderTop: "1px solid #e5e5e5",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              fontSize: "11px",
+              color: "#666666",
+            }}
+          >
+            <span>
+              {block.props.metaField1Label ? `${block.props.metaField1Label} : ${block.props.metaField1Value} ` : ""}
+              {block.props.metaField2Label ? `• ${block.props.metaField2Label} : ${block.props.metaField2Value}` : ""}
+            </span>
+            {block.props.url && (
+              <a
+                href={block.props.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "#000091", fontWeight: 600, textDecoration: "none" }}
+              >
+                Consulter sur la source officielle ↗
+              </a>
+            )}
           </div>
         </div>
       )}
 
       {/* B. FORMAT CARTE */}
-      {p.displayMode === "card" && (
-        <div className="p-3.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-xs hover:shadow-sm transition-all">
-          <div className="flex items-center justify-between gap-2 mb-2.5">
-            <div className="flex items-center gap-2">
-              <span className="text-lg">{getProviderIcon(p.sourceType)}</span>
-              <h4 className="text-sm font-bold text-gray-900 dark:text-gray-100 m-0">
-                {p.title}
-              </h4>
-              {p.subtitle && (
-                <span className="text-[11px] px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 font-medium truncate max-w-[200px]">
-                  {p.subtitle}
-                </span>
-              )}
+      {mode === "card" && (
+        <div
+          style={{
+            padding: "16px",
+            borderRadius: "4px",
+            border: "1px solid #e5e5e5",
+            background: "#ffffff",
+            boxShadow: "0 1px 4px rgba(0, 0, 145, 0.08)",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: "8px",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <span style={{ fontSize: "18px" }}>{getProviderIcon(block.props.sourceType)}</span>
+              <div>
+                <div style={{ fontSize: "14px", fontWeight: 700, color: "#1e1e1e" }}>
+                  {block.props.title}
+                </div>
+                {block.props.subtitle && (
+                  <div style={{ fontSize: "11px", color: "#666666" }}>
+                    {block.props.subtitle}
+                  </div>
+                )}
+              </div>
             </div>
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-              {p.status}
-            </span>
+            {block.props.status && (
+              <span
+                style={{
+                  fontSize: "11px",
+                  fontWeight: 700,
+                  padding: "2px 8px",
+                  borderRadius: "10px",
+                  background: "#e8f7ee",
+                  color: "#0e793c",
+                  border: "1px solid #9de2b8",
+                }}
+              >
+                {block.props.status}
+              </span>
+            )}
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 p-2.5 rounded-lg bg-gray-50 dark:bg-gray-800/60 border border-gray-100 dark:border-gray-800 text-xs">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: "8px",
+              padding: "8px",
+              borderRadius: "4px",
+              background: "#f8f8fb",
+              fontSize: "11px",
+              margin: "8px 0",
+            }}
+          >
             <div>
-              <span className="text-gray-400 text-[10px] block">
-                {p.metaField1Label || "Identifiant"}
-              </span>
-              <strong className="text-gray-800 dark:text-gray-200 truncate block">
-                {p.metaField1Value || p.sourceId}
-              </strong>
+              <div style={{ color: "#666666", fontWeight: 600 }}>
+                {block.props.metaField1Label || "Réf"}
+              </div>
+              <div style={{ fontWeight: 700, color: "#1e1e1e" }}>
+                {block.props.metaField1Value || "—"}
+              </div>
             </div>
             <div>
-              <span className="text-gray-400 text-[10px] block">
-                {p.metaField2Label || "Type"}
-              </span>
-              <strong className="text-gray-800 dark:text-gray-200 truncate block">
-                {p.metaField2Value || "Officiel"}
-              </strong>
+              <div style={{ color: "#666666", fontWeight: 600 }}>
+                {block.props.metaField2Label || "Info"}
+              </div>
+              <div style={{ fontWeight: 700, color: "#1e1e1e" }}>
+                {block.props.metaField2Value || "—"}
+              </div>
             </div>
             <div>
-              <span className="text-gray-400 text-[10px] block">
-                {p.metaField3Label || "Référence"}
-              </span>
-              <strong className="text-gray-800 dark:text-gray-200 truncate block">
-                {p.metaField3Value || p.provider}
-              </strong>
+              <div style={{ color: "#666666", fontWeight: 600 }}>
+                {block.props.metaField3Label || "Validité"}
+              </div>
+              <div style={{ fontWeight: 700, color: "#1e1e1e" }}>
+                {block.props.metaField3Value || "—"}
+              </div>
             </div>
           </div>
 
-          <div className="mt-2.5 flex items-center justify-between text-[11px] text-gray-500 dark:text-gray-400">
-            <span className="truncate max-w-[65%]">{p.summary || p.subtitle}</span>
-            <a
-              href={p.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 dark:text-blue-400 font-semibold hover:underline"
-            >
-              Ouvrir ↗
-            </a>
-          </div>
+          {block.props.summary && (
+            <p style={{ fontSize: "12px", color: "#444444", margin: "6px 0 8px 0", lineHeight: 1.4 }}>
+              {block.props.summary}
+            </p>
+          )}
+
+          {block.props.url && (
+            <div style={{ textAlign: "right", marginTop: "4px" }}>
+              <a
+                href={block.props.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "#000091", fontWeight: 600, fontSize: "11px", textDecoration: "none" }}
+              >
+                Ouvrir la fiche officielle ↗
+              </a>
+            </div>
+          )}
         </div>
       )}
 
-      {/* C. FORMAT LIEN INLINE */}
-      {p.displayMode === "link" && (
-        <div className="inline-block my-1">
+      {/* C. FORMAT LIEN */}
+      {mode === "link" && (
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "4px",
+            padding: "2px 8px",
+            borderRadius: "4px",
+            background: "#e8edff",
+            border: "1px solid #000091",
+            color: "#000091",
+            fontSize: "12px",
+            fontWeight: 600,
+          }}
+        >
+          <span>{getProviderIcon(block.props.sourceType)}</span>
           <a
-            href={p.url}
+            href={block.props.url || "#"}
             target="_blank"
             rel="noopener noreferrer"
-            className="no-underline inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 text-xs font-semibold hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors shadow-2xs"
+            style={{ color: "#000091", textDecoration: "none" }}
           >
-            <span>{getProviderIcon(p.sourceType)}</span>
-            <span>{p.title}</span>
-            {p.subtitle && (
-              <span className="text-[11px] font-normal text-blue-600/80 dark:text-blue-400/80">
-                ({p.subtitle})
-              </span>
-            )}
-            <span className="text-[9px] uppercase px-1 py-0.2 rounded bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-300 font-bold">
-              {p.status}
-            </span>
+            {block.props.title}
           </a>
-        </div>
+          {block.props.status && (
+            <span style={{ fontSize: "10px", opacity: 0.85 }}>({block.props.status})</span>
+          )}
+        </span>
       )}
     </div>
   );
 };
+
+export const SourceBlock = () =>
+  createReactBlockSpec(
+    {
+      type: "sourceBlock",
+      propSchema: {
+        sourceType: { default: "law" },
+        sourceId: { default: "" },
+        provider: { default: "" },
+        title: { default: "" },
+        subtitle: { default: "" },
+        status: { default: "VIGUEUR" },
+        statusBadgeColor: { default: "success" },
+        contentHtml: { default: "" },
+        summary: { default: "" },
+        metaField1Label: { default: "" },
+        metaField1Value: { default: "" },
+        metaField2Label: { default: "" },
+        metaField2Value: { default: "" },
+        metaField3Label: { default: "" },
+        metaField3Value: { default: "" },
+        displayMode: { default: "callout" },
+        url: { default: "" },
+        lastSyncAt: { default: "" },
+      },
+      content: "none",
+    },
+    {
+      render: ({ block, editor }) => (
+        <SourceBlockComponent block={block} editor={editor} />
+      ),
+    }
+  );
+
+export const createSourceBlockSpec = SourceBlock;
+export const SourceBlockSpec = SourceBlock;
+

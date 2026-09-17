@@ -32,9 +32,18 @@ export const BlockNoteSlashPlayground: React.FC = () => {
 
   if (!mounted) {
     return (
-      <div className="my-6 p-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/40 text-center font-sans">
-        <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
-          <span className="h-3 w-3 rounded-full border-2 border-blue-600 border-t-transparent animate-spin" />
+      <div
+        style={{
+          margin: "24px 0",
+          padding: "32px",
+          borderRadius: "12px",
+          border: "1px solid #e5e5e5",
+          background: "var(--background-alt-grey, #f6f6f6)",
+          textAlign: "center",
+          fontFamily: "var(--font-family-base, sans-serif)",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", fontSize: "12px", color: "#666666" }}>
           <span>Initialisation de l'éditeur interactif BlockNote.js...</span>
         </div>
       </div>
@@ -43,6 +52,30 @@ export const BlockNoteSlashPlayground: React.FC = () => {
 
   return <BlockNoteSlashEditorInner isDark={isDark} />;
 };
+
+const createEmptySourceBlock = (sourceType: SourceEntityType) => ({
+  type: "sourceBlock" as const,
+  props: {
+    sourceType,
+    sourceId: "",
+    provider: "",
+    title: "",
+    subtitle: "",
+    status: "VIGUEUR",
+    statusBadgeColor: "success" as const,
+    contentHtml: "",
+    summary: "",
+    metaField1Label: "",
+    metaField1Value: "",
+    metaField2Label: "",
+    metaField2Value: "",
+    metaField3Label: "",
+    metaField3Value: "",
+    displayMode: "callout" as const,
+    url: "",
+    lastSyncAt: "",
+  },
+});
 
 const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) => {
   const playgroundSchema = useMemo(() => {
@@ -56,7 +89,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
 
   // Initialize editor
   const editor = useCreateBlockNote({
-    schema: playgroundSchema as any,
+    schema: playgroundSchema,
     initialContent: [
       {
         type: "paragraph",
@@ -130,17 +163,8 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       {
         title: "Texte de Loi (Légifrance)",
         onItemClick: () => {
-          (editor as any).insertBlocks(
-            [
-              {
-                type: "sourceBlock",
-                props: {
-                  sourceType: "law",
-                  sourceId: "",
-                  title: "",
-                },
-              } as any,
-            ],
+          editor.insertBlocks(
+            [createEmptySourceBlock("law")],
             editor.getTextCursorPosition().block,
             "after"
           );
@@ -153,17 +177,8 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       {
         title: "Fiche Entreprise & SIREN",
         onItemClick: () => {
-          (editor as any).insertBlocks(
-            [
-              {
-                type: "sourceBlock",
-                props: {
-                  sourceType: "company",
-                  sourceId: "",
-                  title: "",
-                },
-              } as any,
-            ],
+          editor.insertBlocks(
+            [createEmptySourceBlock("company")],
             editor.getTextCursorPosition().block,
             "after"
           );
@@ -176,17 +191,8 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       {
         title: "Amendement Parlementaire",
         onItemClick: () => {
-          (editor as any).insertBlocks(
-            [
-              {
-                type: "sourceBlock",
-                props: {
-                  sourceType: "parliament",
-                  sourceId: "",
-                  title: "",
-                },
-              } as any,
-            ],
+          editor.insertBlocks(
+            [createEmptySourceBlock("parliament")],
             editor.getTextCursorPosition().block,
             "after"
           );
@@ -199,17 +205,8 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       {
         title: "Adresse Postale (BAN)",
         onItemClick: () => {
-          (editor as any).insertBlocks(
-            [
-              {
-                type: "sourceBlock",
-                props: {
-                  sourceType: "address",
-                  sourceId: "",
-                  title: "",
-                },
-              } as any,
-            ],
+          editor.insertBlocks(
+            [createEmptySourceBlock("address")],
             editor.getTextCursorPosition().block,
             "after"
           );
@@ -222,17 +219,8 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       {
         title: "Avis de Marché Public (BOAMP)",
         onItemClick: () => {
-          (editor as any).insertBlocks(
-            [
-              {
-                type: "sourceBlock",
-                props: {
-                  sourceType: "procurement",
-                  sourceId: "",
-                  title: "",
-                },
-              } as any,
-            ],
+          editor.insertBlocks(
+            [createEmptySourceBlock("procurement")],
             editor.getTextCursorPosition().block,
             "after"
           );
@@ -245,17 +233,8 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       {
         title: "Dispositif d'Aide & Subvention",
         onItemClick: () => {
-          (editor as any).insertBlocks(
-            [
-              {
-                type: "sourceBlock",
-                props: {
-                  sourceType: "grant",
-                  sourceId: "",
-                  title: "",
-                },
-              } as any,
-            ],
+          editor.insertBlocks(
+            [createEmptySourceBlock("grant")],
             editor.getTextCursorPosition().block,
             "after"
           );
@@ -268,17 +247,8 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       {
         title: "Statistiques Territoriales INSEE",
         onItemClick: () => {
-          (editor as any).insertBlocks(
-            [
-              {
-                type: "sourceBlock",
-                props: {
-                  sourceType: "insee",
-                  sourceId: "",
-                  title: "",
-                },
-              } as any,
-            ],
+          editor.insertBlocks(
+            [createEmptySourceBlock("insee")],
             editor.getTextCursorPosition().block,
             "after"
           );
@@ -291,17 +261,8 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       {
         title: "Annuaire du Service Public",
         onItemClick: () => {
-          (editor as any).insertBlocks(
-            [
-              {
-                type: "sourceBlock",
-                props: {
-                  sourceType: "agent",
-                  sourceId: "",
-                  title: "",
-                },
-              } as any,
-            ],
+          editor.insertBlocks(
+            [createEmptySourceBlock("agent")],
             editor.getTextCursorPosition().block,
             "after"
           );
@@ -314,17 +275,8 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       {
         title: "Cadastre & Parcelles (DGFiP)",
         onItemClick: () => {
-          (editor as any).insertBlocks(
-            [
-              {
-                type: "sourceBlock",
-                props: {
-                  sourceType: "cadastre",
-                  sourceId: "",
-                  title: "",
-                },
-              } as any,
-            ],
+          editor.insertBlocks(
+            [createEmptySourceBlock("cadastre")],
             editor.getTextCursorPosition().block,
             "after"
           );
@@ -337,17 +289,8 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       {
         title: "Démarches-Simplifiées.fr",
         onItemClick: () => {
-          (editor as any).insertBlocks(
-            [
-              {
-                type: "sourceBlock",
-                props: {
-                  sourceType: "demarche",
-                  sourceId: "",
-                  title: "",
-                },
-              } as any,
-            ],
+          editor.insertBlocks(
+            [createEmptySourceBlock("demarche")],
             editor.getTextCursorPosition().block,
             "after"
           );
@@ -360,17 +303,8 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       {
         title: "data.gouv.fr / Open Data",
         onItemClick: () => {
-          (editor as any).insertBlocks(
-            [
-              {
-                type: "sourceBlock",
-                props: {
-                  sourceType: "opendata",
-                  sourceId: "",
-                  title: "",
-                },
-              } as any,
-            ],
+          editor.insertBlocks(
+            [createEmptySourceBlock("opendata")],
             editor.getTextCursorPosition().block,
             "after"
           );
@@ -383,17 +317,8 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       {
         title: "Albert IA Souveraine & RAG",
         onItemClick: () => {
-          (editor as any).insertBlocks(
-            [
-              {
-                type: "sourceBlock",
-                props: {
-                  sourceType: "custom",
-                  sourceId: "",
-                  title: "",
-                },
-              } as any,
-            ],
+          editor.insertBlocks(
+            [createEmptySourceBlock("custom")],
             editor.getTextCursorPosition().block,
             "after"
           );
@@ -411,20 +336,10 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
   // Insert helper from toolbar buttons
   const handleInsert = (type: SourceEntityType) => {
     if (!editor) return;
-    (editor as any).insertBlocks(
-      [
-        {
-          type: "sourceBlock",
-          props: {
-            sourceType: type,
-            sourceId: "",
-            title: "",
-          },
-        } as any,
-      ],
-      editor.getTextCursorPosition()?.block || editor.document[editor.document.length - 1],
-      "after"
-    );
+    const currentBlock =
+      editor.getTextCursorPosition()?.block ||
+      editor.document[editor.document.length - 1];
+    editor.insertBlocks([createEmptySourceBlock(type)], currentBlock, "after");
   };
 
   const handleReset = () => {
@@ -443,114 +358,103 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
     ]);
   };
 
+  const FAST_BUTTONS: { type: SourceEntityType; label: string; icon: string }[] = [
+    { type: "law", label: "/loi", icon: "⚖️" },
+    { type: "company", label: "/entreprise", icon: "🏢" },
+    { type: "parliament", label: "/assemblee", icon: "🏛️" },
+    { type: "address", label: "/adresse", icon: "📍" },
+    { type: "procurement", label: "/marche", icon: "🛍️" },
+    { type: "grant", label: "/subvention", icon: "💶" },
+    { type: "insee", label: "/stats", icon: "📊" },
+    { type: "agent", label: "/agent", icon: "👤" },
+    { type: "cadastre", label: "/cadastre", icon: "🗺️" },
+    { type: "demarche", label: "/demarche", icon: "📝" },
+    { type: "opendata", label: "/opendata", icon: "🌐" },
+    { type: "custom", label: "/albert", icon: "🧠" },
+  ];
+
   return (
-    <div className="not-prose my-6 w-full rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 shadow-md overflow-hidden font-sans">
+    <div
+      style={{
+        margin: "24px 0",
+        width: "100%",
+        borderRadius: "12px",
+        border: "1px solid #e5e5e5",
+        background: isDark ? "#0f172a" : "#ffffff",
+        boxShadow: "0 4px 16px rgba(0, 0, 145, 0.06)",
+        overflow: "hidden",
+        fontFamily: "var(--font-family-base, sans-serif)",
+      }}
+    >
       {/* Playground Header Bar */}
-      <div className="p-3.5 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="text-xs font-bold text-gray-900 dark:text-gray-100">
+      <div
+        style={{
+          padding: "12px 16px",
+          background: isDark ? "#1e293b" : "#f8f8fb",
+          borderBottom: "1px solid #e5e5e5",
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "10px",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <span style={{ fontSize: "13px", fontWeight: 700, color: isDark ? "#8585f6" : "#000091" }}>
             Démonstrateur Interactif BlockNote.js
           </span>
-          <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 font-bold border border-blue-200 dark:border-blue-800">
+          <span
+            style={{
+              fontSize: "10px",
+              padding: "2px 8px",
+              borderRadius: "10px",
+              background: isDark ? "#172554" : "#e8edff",
+              color: isDark ? "#93c5fd" : "#000091",
+              fontWeight: 700,
+              border: "1px solid #b8c5ff",
+            }}
+          >
             Socle Commun
           </span>
         </div>
 
         {/* Quick Insert Buttons */}
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-[11px] text-gray-400 dark:text-gray-500 mr-1">
+        <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
+          <span style={{ fontSize: "11px", color: "#666666", marginRight: "4px" }}>
             Insertion rapide :
           </span>
-          <button
-            type="button"
-            onClick={() => handleInsert("law")}
-            className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
-          >
-            ⚖️ /loi
-          </button>
-          <button
-            type="button"
-            onClick={() => handleInsert("company")}
-            className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
-          >
-            🏢 /entreprise
-          </button>
-          <button
-            type="button"
-            onClick={() => handleInsert("parliament")}
-            className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
-          >
-            🏛️ /assemblee
-          </button>
-          <button
-            type="button"
-            onClick={() => handleInsert("address")}
-            className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
-          >
-            📍 /adresse
-          </button>
-          <button
-            type="button"
-            onClick={() => handleInsert("procurement")}
-            className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
-          >
-            🛍️ /marche
-          </button>
-          <button
-            type="button"
-            onClick={() => handleInsert("grant")}
-            className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
-          >
-            💶 /subvention
-          </button>
-          <button
-            type="button"
-            onClick={() => handleInsert("insee")}
-            className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
-          >
-            📊 /stats
-          </button>
-          <button
-            type="button"
-            onClick={() => handleInsert("agent")}
-            className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
-          >
-            👤 /agent
-          </button>
-          <button
-            type="button"
-            onClick={() => handleInsert("cadastre")}
-            className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
-          >
-            🗺️ /cadastre
-          </button>
-          <button
-            type="button"
-            onClick={() => handleInsert("demarche")}
-            className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
-          >
-            📝 /demarche
-          </button>
-          <button
-            type="button"
-            onClick={() => handleInsert("opendata")}
-            className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
-          >
-            🌐 /opendata
-          </button>
-          <button
-            type="button"
-            onClick={() => handleInsert("custom")}
-            className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
-          >
-            🧠 /albert
-          </button>
-          <div className="w-[1px] h-4 bg-gray-300 dark:bg-gray-700 mx-1" />
+          {FAST_BUTTONS.map((btn) => (
+            <button
+              key={btn.type}
+              type="button"
+              onClick={() => handleInsert(btn.type)}
+              style={{
+                fontSize: "11px",
+                fontWeight: 600,
+                padding: "3px 8px",
+                borderRadius: "4px",
+                border: "1px solid #e5e5e5",
+                background: isDark ? "#334155" : "#ffffff",
+                color: isDark ? "#f8fafc" : "#1e1e1e",
+                cursor: "pointer",
+                transition: "all 0.15s ease",
+              }}
+            >
+              {btn.icon} {btn.label}
+            </button>
+          ))}
+          <div style={{ width: "1px", height: "16px", background: "#cccccc", margin: "0 4px" }} />
           <button
             type="button"
             onClick={handleReset}
-            className="cursor-pointer text-xs text-gray-400 hover:text-red-500 px-1.5 py-1 rounded transition-colors"
+            style={{
+              fontSize: "11px",
+              color: "#c9191e",
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+              padding: "3px 6px",
+            }}
             title="Réinitialiser l'éditeur"
           >
             🗑️ Vider
@@ -559,7 +463,14 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       </div>
 
       {/* Editor Surface */}
-      <div className="p-4 sm:p-6 min-h-[380px] bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+      <div
+        style={{
+          padding: "16px 24px",
+          minHeight: "380px",
+          background: isDark ? "#0f172a" : "#ffffff",
+          color: isDark ? "#f8fafc" : "#1e1e1e",
+        }}
+      >
         <BlockNoteView
           editor={editor}
           theme={isDark ? "dark" : "light"}
@@ -581,7 +492,18 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       </div>
 
       {/* Playground Footer Info */}
-      <div className="px-4 py-2 bg-gray-50/80 dark:bg-gray-900/60 border-t border-gray-100 dark:border-gray-800 text-[11px] text-gray-500 dark:text-gray-400 flex items-center justify-between">
+      <div
+        style={{
+          padding: "8px 16px",
+          background: isDark ? "#1e293b" : "#f8f8fb",
+          borderTop: "1px solid #e5e5e5",
+          fontSize: "11px",
+          color: "#666666",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
         <span>💡 Astuce : Tapez <strong>/</strong> n'importe où dans le texte pour ouvrir le menu d'autocomplétion.</span>
         <span>Moteur BlockNote 0.54 • Design System de l'État (DSFR)</span>
       </div>

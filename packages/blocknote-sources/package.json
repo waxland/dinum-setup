@@ -1,0 +1,64 @@
+{
+  "name": "@suitenumerique/blocknote-sources",
+  "version": "1.0.0",
+  "description": "Extension BlockNote.js officielle pour connecter La Suite Docs aux sources souveraines de données publiques (Légifrance, BAN, BOAMP, Aides-Territoires, INSEE, Albert RAG, etc.) avec rendu 100% Cunningham et DSFR.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./exporters": {
+      "import": "./dist/exporters/index.js",
+      "require": "./dist/exporters/index.js",
+      "types": "./dist/exporters/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "DINUM",
+  "license": "MIT",
+  "repository": "https://github.com/suitenumerique/docs",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "npx vitest run tests/unit/",
+    "test:e2e": "playwright test"
+  },
+  "keywords": [
+    "blocknote",
+    "custom-block",
+    "lasuite",
+    "dinum",
+    "cunningham",
+    "dsfr",
+    "sources-souveraines",
+    "legifrance",
+    "ban",
+    "boamp",
+    "insee",
+    "albert"
+  ],
+  "peerDependencies": {
+    "@blocknote/core": ">=0.54.0",
+    "@blocknote/react": ">=0.54.0",
+    "react": ">=18.0.0 || >=19.0.0",
+    "react-dom": ">=18.0.0 || >=19.0.0",
+    "styled-components": ">=6.0.0"
+  },
+  "devDependencies": {
+    "@blocknote/core": "^0.54.2",
+    "@blocknote/react": "^0.54.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "styled-components": "^6.1.15",
+    "tsup": "^8.3.6",
+    "typescript": "^5.9.2"
+  }
+}

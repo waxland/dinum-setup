@@ -23,6 +23,18 @@ function formatLabel(name) {
   if (clean === "socle-technique") {
     return "Socle Technique Unifié";
   }
+  if (clean.toLowerCase() === "pr") {
+    return "Stratégies de Pull Requests (PR)";
+  }
+  if (clean === "pr-interne-monolithique") {
+    return "Typologie 1 : PR Interne In-Tree";
+  }
+  if (clean === "pr-externe-packagee") {
+    return "Typologie 2 : PR Externe Packagée";
+  }
+  if (clean === "guide-d-arbitrage-et-migration") {
+    return "Guide d'Arbitrage & Décision";
+  }
   if (clean.startsWith("metier")) {
     return "Pôle Métier & Usages";
   }

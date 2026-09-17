@@ -1,0 +1,167 @@
+---
+title: "Typologie 1 : Pull Request Interne Directe (In-Tree / Monolithique)"
+sidebar_label: "PR 1 : Interne Monolithique"
+description: Spécification détaillée, manifeste exhaustif des fichiers créés et diffs de la Pull Request interne directement intégrée au cœur du dépôt suitenumerique/docs.
+---
+
+import { Mermaid } from "../../../src/components/Mermaid";
+
+La **Typologie 1** consiste à intégrer l'intégralité du socle des sources souveraines directement dans l'arborescence du dépôt officiel [`suitenumerique/docs`](https://github.com/suitenumerique/docs).
+
+Cette approche « in-tree » ne dépend d'aucun registre externe (npm ou PyPI). L'ensemble des 12 connecteurs, des vues REST, du composant `SourceBlock` BlockNote, des 3 formats de rendu DSFR et des tests automatisés fait partie intégrante du monorepo.
+
+---
+
+## 🗂️ 1. Manifeste Exhaustif des Fichiers Intégrés (+45 Fichiers)
+
+```text
+src/docs/
+├── src/backend/core/
+│   ├── api/viewsets.py                            # Intégration / filtrage des documents
+│   ├── urls.py                                    # Routage /api/v1.0/sources/
+│   ├── sources/                                   # 📁 Module Backend Sources Souveraines
+│   │   ├── __init__.py                            # Exports publics du module
+│   │   ├── base.py                                # BaseSourceProvider(ABC)
+│   │   ├── registry.py                            # SourceProviderRegistry + Cache Redis 24h & SHA-256
+│   │   ├── types.py                               # TypedDicts (SourceSearchResult, SourceSuggestResult)
+│   │   ├── views.py                               # Endpoints DRF (Search, Suggest, Detail)
+│   │   ├── urls.py                                # Routage REST interne
+│   │   ├── tasks.py                               # Tâche Celery de détection des lois abrogées
+│   │   └── providers/                             # 📁 12 Connecteurs Souverains Officiels
+│   │       ├── __init__.py                        # Auto-enregistrement des 12 providers
+│   │       ├── law.py                             # Légifrance / DILA (PISTE OAuth2)
+│   │       ├── address.py                         # Base Adresse Nationale (BAN / Addok)
+│   │       ├── company.py                         # Annuaire des Entreprises / RNE
+│   │       ├── parliament.py                      # Assemblée Nationale (claire.vite / Tricoteuse)
+│   │       ├── albert.py                          # Albert IA Souveraine RAG (DINUM)
+│   │       ├── procurement.py                     # Marchés Publics & BOAMP (DAE)
+│   │       ├── grant.py                           # Aides-Territoires & Fonds Vert (ANCT)
+│   │       ├── insee.py                           # Statistiques Territoriales INSEE
+│   │       ├── agent.py                           # Annuaire du Service Public (DILA)
+│   │       ├── cadastre.py                        # Cadastre & Parcelles DGFiP
+│   │       ├── demarche.py                        # Démarches-Simplifiées.fr
+│   │       └── opendata.py                        # data.gouv.fr Open Data
+│   └── tests/
+│       └── test_api_sources.py                    # Suite de tests Django/DRF complète
+│
+├── src/frontend/apps/impress/                     # 📁 Application Frontend Next.js / BlockNote
+│   ├── .env.development                          # Clés et endpoints locaux
+│   ├── next.config.js                             # Transpilation et configuration Next.js
+│   ├── src/features/docs/doc-editor/components/
+│   │   ├── BlockNoteEditor.tsx                    # Schéma BlockNote avec SourceBlock()
+│   │   ├── BlockNoteSuggestionMenu.tsx            # Commandes slash (/loi, /entreprise, etc.)
+│   │   └── custom-blocks/
+│   │       ├── index.ts                           # Exports des blocs personnalisés
+│   │       └── SourceBlock/                       # 📁 Composant Universel SourceBlock
+│   │           ├── index.ts                       # Point d'entrée
+│   │           ├── SourceBlock.tsx                # Factory createReactBlockSpec
+│   │           ├── SourceSearchPopover.tsx        # Palette flottante 100% Cunningham / ARIA
+│   │           ├── mockSources.ts                 # Fixtures de secours déconnectées
+│   │           ├── types.ts                       # Types TypeScript stricts
+│   │           └── formats/                       # 📁 3 Formats DSFR Marianne
+│   │               ├── index.ts                   # Export des formats
+│   │               ├── SourceCalloutFormat.tsx    # Format 1 : Encadré officiel Marianne
+│   │               ├── SourceCardFormat.tsx       # Format 2 : Carte 3 colonnes
+│   │               ├── SourceLinkFormat.tsx       # Format 3 : Pastille inline avec infobulle
+│   │               └── SourceBlockToolbar.tsx     # Barre de permutation rapide
+│   └── src/features/docs/doc-export/              # 📁 Mappeurs d'Exportation Documentaire
+│       ├── mappingPDF.tsx                         # Enregistrement de l'export vectoriel PDF
+│       ├── mappingDocx.tsx                        # Enregistrement de l'export Word DOCX
+│       ├── mappingODT.ts                          # Enregistrement de l'export LibreOffice ODT
+│       └── blocks-mapping/
+│           ├── index.ts
+│           ├── sourceBlockPDF.tsx                 # Mappeur PDF @react-pdf/renderer
+│           ├── sourceBlockDocx.tsx                # Mappeur Word docx
+│           └── sourceBlockODT.tsx                 # Mappeur LibreOffice Writer XML
+│
+├── src/frontend/packages/slash-sources-sdk/       # 📁 SDK interne pour extensions ministérielles
+│   ├── package.json
+│   ├── README.md
+│   └── src/
+│       ├── index.ts
+│       ├── types.ts
+│       └── defineSourceProvider.ts
+│
+└── src/frontend/apps/e2e/                         # 📁 Tests End-to-End Automatisés Playwright
+    └── __tests__/app-impress/
+        └── doc-slash-sources.spec.ts              # Scénarios multi-navigateurs
+```
+
+---
+
+## 🔍 2. Dépouillement des Diffs Majeurs In-Tree
+
+### 🐍 2.1. Côté Backend Django (`core/sources/`)
+
+#### 1. Déclaration du routage REST dans `src/backend/core/urls.py`
+```python
+# src/backend/core/urls.py
+urlpatterns = [
+    ...,
+    path("api/v1.0/", include("core.sources.urls")),  # Route racine du proxy souverain
+]
+```
+
+#### 2. Architecture du Registre Singleton (`core/sources/registry.py`)
+```python
+class SourceProviderRegistry:
+    """Singleton thread-safe avec cache Redis déterministe (TTL 24h, clés SHA-256)."""
+
+    def search(self, source_type: str, query: str, limit: int = 10) -> Dict[str, Any]:
+        cache_key = f"sources:search:{source_type}:{hashlib.sha256(query.encode()).hexdigest()}"
+        cached_data = cache.get(cache_key)
+        if cached_data:
+            return cached_data
+
+        provider = self.get_provider(source_type)
+        results = provider.search(query=query, limit=limit)
+        payload = {"type": source_type, "results": results, "count": len(results)}
+        cache.set(cache_key, payload, timeout=86400)
+        return payload
+```
+
+---
+
+### 📦 2.2. Côté Frontend Impress (`apps/impress/`)
+
+#### 1. Intégration dans `BlockNoteEditor.tsx`
+```tsx
+// src/frontend/apps/impress/src/features/docs/doc-editor/components/BlockNoteEditor.tsx
+import { SourceBlock } from './custom-blocks/SourceBlock';
+
+const baseBlockNoteSchema = withPageBreak(
+  BlockNoteSchema.create({
+    blockSpecs: {
+      ...defaultBlockSpecs,
+      sourceBlock: SourceBlock(), // ✅ Injection du CustomBlock unique
+    },
+  })
+);
+```
+
+#### 2. Intégration dans `BlockNoteSuggestionMenu.tsx`
+```tsx
+// src/frontend/apps/impress/src/features/docs/doc-editor/components/BlockNoteSuggestionMenu.tsx
+import { getSourceReactSlashMenuItems } from './custom-blocks/SourceBlock';
+
+const getSlashMenuItems = useMemo(() => {
+  return combineByGroup(
+    defaultMenu,
+    getSourceReactSlashMenuItems(editor, t, t('Sources Souveraines')), // ✅ Commandes slash
+  );
+}, [editor, t]);
+```
+
+---
+
+## ⚖️ 3. Bilan & Analyse d'Impact
+
+### 🟢 Points Forts de la Typologie 1 :
+1. **Zéro friction de déploiement de packages :** Pas besoin de configurer des jetons d'authentification npm (`NPM_TOKEN`) ou PyPI (`PYPI_API_TOKEN`).
+2. **Refactoring atomique :** Tout changement d'interface TypeScript et de vue Django peut être commit et testé dans une seule et même PR Git.
+3. **Visibilité immédiate :** Les développeurs de Docs ont le code source des connecteurs sous les yeux dans leur IDE.
+
+### 🔴 Inconvénients & Risques pour la DINUM :
+1. **Pollution du cœur open source international :** L'ajout de connecteurs administratifs nationaux français dans un outil documentaire à vocation mondiale peut entraîner des réticences de la part des mainteneurs de `suitenumerique/docs`.
+2. **Couplage de cycle de vie :** Toute mise à jour d'un schéma d'API externe (ex: refonte de l'API PISTE ou du format BOAMP) nécessite une nouvelle release globale de l'application Docs.
+3. **Non-réutilisabilité :** Les autres produits de La Suite (*Projects*, *Meet*, *People*) ne peuvent pas réutiliser ces connecteurs sans dupliquer le code.

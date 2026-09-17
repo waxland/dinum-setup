@@ -17,8 +17,9 @@ Le dépôt est composé de trois couches distinctes à ne pas confondre :
 ## 🛡️ 2. Règles Fondamentales & Bonnes Pratiques
 
 - 🔒 **Hygiène des Secrets :** Ne jamais commiter de mot de passe, clé privée SSH/PGP ou jeton en clair. Utiliser systématiquement `.env.example` ou le chiffrement SOPS/age.
-- ♿ **Accessibilité Universelle :** Tout composant ou page web doit respecter les critères **RGAA v4.1 (Niveau AA)** et être utilisable au clavier.
-- 🎨 **Design System de l'État :** Utiliser exclusivement les composants officiels `@codegouvfr/react-dsfr` et les classes `fr-*` du DSFR.
+- 🛑 **Typage Strict & Pureté UI :** Zéro `any`, zéro type assertion/cast abusif (`as ...`), zéro Tailwind CSS, et zéro `@mantine/core` dans les composants d'interface utilisateur. Utiliser exclusivement le Design System Cunningham (`@openfun/cunningham-tokens`, `<Box>`), le DSFR (`@codegouvfr/react-dsfr`), et `react-aria-components`.
+- ♿ **Accessibilité Universelle :** Tout composant ou page web doit respecter les critères **RGAA v4.1 (Niveau AA)** et être utilisable à 100% au clavier sans modale bloquante.
+- 🎨 **Design System de l'État :** Utiliser exclusivement les composants officiels `@codegouvfr/react-dsfr`, les tokens Cunningham, et les classes `fr-*` du DSFR.
 - 🔄 **Idempotence :** Les scripts et cibles `Makefile` doivent pouvoir être réexécutés sans écraser silencieusement des configurations existantes ni détruire de données locales.
 - ✅ **Validation Obligatoire :** Toute modification de la documentation doit être validée par `npm run docs:build` (0 erreur d'hydratation ou de build tolérée).
 
@@ -30,6 +31,7 @@ Avant d'effectuer une tâche, chargez et lisez la procédure détaillée dans le
 
 | Intention / Type de Tâche                                                 | Skill à charger       | Fichier                                                                            |
 | ------------------------------------------------------------------------- | --------------------- | ---------------------------------------------------------------------------------- |
+| **Normes TypeScript, Cunningham & Zéro any/cast**                         | `code-standards`      | [`docs/07-skills/code-standards.mdx`](docs/07-skills/code-standards.mdx)           |
 | **Composant ou vue DSFR** (Bouton, alerte, formulaire, tokens, thème)     | `dsfr`                | [`docs/07-skills/dsfr.mdx`](docs/07-skills/dsfr.mdx)                               |
 | **Audit ou correction d'accessibilité** (Clavier, ARIA, contrastes, RGAA) | `rgaa-review`         | [`docs/07-skills/rgaa-review.mdx`](docs/07-skills/rgaa-review.mdx)                 |
 | **Orchestration & Démarrage local** (Makefile, Docker, PostgreSQL, ports) | `lasuite-dev`         | [`docs/07-skills/lasuite-dev.mdx`](docs/07-skills/lasuite-dev.mdx)                 |

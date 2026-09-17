@@ -277,6 +277,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       "/07-skills/architecture-review",
       "/07-skills/code-review",
+      "/07-skills/code-standards",
       "/07-skills/design-change",
       "/07-skills/docs-mdx",
       "/07-skills/dsfr",
@@ -302,6 +303,22 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       "/08-slash/04-tutoriel-ajouter-une-api",
       "/08-slash/05-proposition",
       "/08-slash/07-roadmap",
+      {
+        "type": "category",
+        "label": "Stratégies de Pull Requests (PR)",
+        "icon": "folder",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "08-slash/00-PR/index.mdx",
+            "path": "/08-slash/00-PR"
+          },
+          "/08-slash/00-PR/01-pr-interne-monolithique",
+          "/08-slash/00-PR/02-pr-externe-packagee",
+          "/08-slash/00-PR/03-guide-d-arbitrage-et-migration"
+        ]
+      },
       {
         "type": "category",
         "label": "Projet de Loi (/loi)",
@@ -563,6 +580,32 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "type": "doc",
             "file": "08-slash/10-stats/index.mdx",
             "path": "/08-slash/10-stats"
+          }
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Agent",
+        "icon": "folder",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "08-slash/11-agent/index.mdx",
+            "path": "/08-slash/11-agent"
+          }
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Cadastre (/cadastre)",
+        "icon": "folder",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "08-slash/12-cadastre/index.mdx",
+            "path": "/08-slash/12-cadastre"
           }
         ]
       }

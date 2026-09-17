@@ -120,15 +120,20 @@ sources/
     └── albert.py                # Connecteur Albert API (DINUM / Etalab Sovereign RAG)
 ```
 
-### 3.3. SDK Développeur Ministères (`src/docs/src/frontend/packages/slash-sources-sdk/`)
+### 3.3. Packages Autonomes Découplés (`packages/`)
 ```
-slash-sources-sdk/
-├── package.json                 # @suitenumerique/slash-sources-sdk
-├── README.md                    # Guide de prise en main rapide (< 15 min)
-└── src/
-    ├── types.ts                 # Contrats d'interfaces unifiés pour les tiers
-    ├── defineSourceProvider.ts  # Helper déclaratif et validateur de configuration
-    └── index.ts                 # Baril d'exportation
+packages/
+├── django-lasuite-sources/      # 🐍 Application Django autonome (PyPI)
+│   ├── pyproject.toml           # Build Hatchling, metadata DINUM, deps minimales
+│   ├── README.md & LICENSE      # Guide d'intégration 2 lignes
+│   ├── lasuite_sources/         # 12 connecteurs souverains + registre thread-safe
+│   └── tests/                   # Suite pytest-django standalone avec SQLite
+│
+└── blocknote-sources/           # 📦 Extension BlockNote / React (npm)
+    ├── package.json & tsconfig  # Exports ESM/CJS, types stricts
+    ├── README.md                # Guide d'intégration 3 lignes
+    ├── src/                     # SourceBlock, Formats, Popover Cunningham, Exporters
+    └── tests/                   # Tests unitaires Vitest et E2E Playwright
 ```
 
 ### 3.4. Documentation Zudoku (`docs/08-slash/`)

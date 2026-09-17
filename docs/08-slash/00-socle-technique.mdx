@@ -105,7 +105,43 @@ Inspiré de l'architecture native de **`/link-doc` (`Interlinking`)**, ce socle 
     href="/08-slash/04-tutoriel-ajouter-une-api"
     badge="Guide Dev"
   />
+  <FeatureCard
+    icon="📦"
+    title="Package Frontend : @suitenumerique/blocknote-sources"
+    description="Extension BlockNote.js autonome prête à l'emploi (npm), 100% Cunningham et DSFR, zéro any, zéro Tailwind."
+    href="/08-slash/06-sdk-developpeur"
+    badge="npm package"
+  />
+  <FeatureCard
+    icon="🐍"
+    title="Package Backend : django-lasuite-sources"
+    description="Application Django autonome (PyPI) fournissant le registre des 12 connecteurs et le cache Redis 24h."
+    href="/08-slash/03-proxy-backend-et-cache"
+    badge="PyPI package"
+  />
 </FeatureGrid>
+
+---
+
+## 📦 Les Packages Autonomes « Plug & Play » (Dossier `packages/`)
+
+Pour garantir une intégration **en 1 clic** sans polluer le cœur générique de `suitenumerique/docs`, le socle souverain est packagé de manière autonome :
+
+### 1. Package Python (`django-lasuite-sources`)
+```bash
+uv add django-lasuite-sources
+# ou
+pip install django-lasuite-sources
+```
+- **Configuration `settings.py` :** Ajouter `"lasuite_sources"` dans `INSTALLED_APPS`.
+- **Routage `urls.py` :** `path("api/v1.0/", include("lasuite_sources.urls"))`.
+
+### 2. Package Frontend (`@suitenumerique/blocknote-sources`)
+```bash
+pnpm add @suitenumerique/blocknote-sources
+```
+- **Schéma BlockNote :** `sourceBlock: SourceBlock()` importé depuis `@suitenumerique/blocknote-sources`.
+- **Menu Slash :** `getSourceReactSlashMenuItems(editor, t, 'Sources Souveraines')`.
 
 ---
 

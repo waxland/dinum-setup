@@ -1,0 +1,40 @@
+{
+  "name": "@suitenumerique/slash-sources-sdk",
+  "version": "1.0.0",
+  "description": "SDK TypeScript officiel pour la création et le raccordement rapide de sources de données souveraines dans La Suite Numérique",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "npx vitest run"
+  },
+  "keywords": [
+    "dinum",
+    "lasuite",
+    "blocknote",
+    "slash-commands",
+    "sovereign-sources",
+    "cunningham",
+    "dsfr",
+    "sdk"
+  ],
+  "author": "DINUM",
+  "license": "MIT",
+  "repository": "https://github.com/suitenumerique/docs",
+  "devDependencies": {
+    "typescript": "^5.9.2",
+    "vitest": "^2.1.8"
+  }
+}

@@ -43,8 +43,10 @@ Ce skill définit la procédure standardisée pour auditer un diff Git, identifi
 ### Axe 3 : Sécurité des Secrets & Conventions de Code
 
 - [ ] 🔒 **Aucun secret en clair :** Vérifier l'absence de tokens, clés API ou mots de passe privés dans le diff.
-- [ ] **Conventions de nommage :** Conventional Commits (`feat:`, `fix:`, `docs:`), typage TypeScript strict (pas de `any` injustifié).
-- [ ] **Conformité DSFR :** Pas de classes CSS inventées, utilisation des composants officiels.
+- [ ] 🛑 **Zéro `any` & Zéro cast abusif (`as ...`) :** Tout le code TypeScript doit être typé rigoureusement avec des types/interfaces explicites (voir [Skill Code Standards](/07-skills/code-standards)).
+- [ ] 🎨 **Zéro Tailwind CSS & Zéro `@mantine/core` dans l'UI :** Utilisation exclusive de Cunningham (`<Box>`, `<Card>`, tokens CSS) et du DSFR (`@codegouvfr/react-dsfr`).
+- [ ] **Conventions de nommage :** Conventional Commits (`feat:`, `fix:`, `docs:`), exports d'index clairs.
+- [ ] **Conformité DSFR & RGAA AA :** Classes `fr-*` officielles, rôles ARIA (`combobox`, `listbox`), navigation clavier.
 
 ---
 

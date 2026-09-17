@@ -103,7 +103,7 @@ Voici l'architecture exacte des fichiers à injecter dans le projet `src/docs` p
 src/features/docs/doc-editor/components/custom-blocks/SourceBlock/
 ├── index.ts                         # Export du bloc et des items de menu slash
 ├── SourceBlock.tsx                  # Factory createReactBlockSpec avec styled-components & Box
-├── SourceSearchPopover.tsx          # Popover Mantine + QuickSearch (cmdk) pour la recherche inline
+├── SourceSearchPopover.tsx          # Popover 100% Cunningham + QuickSearch (cmdk) pour la recherche inline
 ├── formats/
 │   ├── SourceCalloutFormat.tsx      # Rendu Format 1 : Callout avec tokens Cunningham
 │   ├── SourceCardFormat.tsx         # Rendu Format 2 : Card multi-colonnes
