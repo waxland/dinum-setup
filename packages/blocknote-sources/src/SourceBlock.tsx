@@ -167,40 +167,40 @@ const SourceComponent: React.FC<SourceComponentProps> = ({ block, editor }) => {
   );
 };
 
-export const SourceBlock = () =>
-  createReactBlockSpec(
-    {
-      type: 'sourceBlock',
-      propSchema: {
-        entityType: { default: 'law', values: SOURCE_ENTITY_TYPES },
-        displayMode: { default: 'callout', values: DISPLAY_MODES },
-        sourceId: { default: '' },
-        title: { default: '' },
-        subtitle: { default: '' },
-        status: { default: '' },
-        statusColor: { default: 'blue', values: STATUS_COLORS },
-        meta1: { default: '' },
-        meta2: { default: '' },
-        meta3: { default: '' },
-        excerpt: { default: '' },
-        summary: { default: '' },
-        url: { default: '' },
-        verifiedAt: { default: '' },
-        rawPayload: { default: '' },
-        textAlignment: defaultProps.textAlignment,
-        backgroundColor: defaultProps.backgroundColor,
-      },
-      content: 'none',
+export const SourceBlock = createReactBlockSpec(
+  {
+    type: 'sourceBlock',
+    propSchema: {
+      entityType: { default: 'law', values: SOURCE_ENTITY_TYPES },
+      displayMode: { default: 'callout', values: DISPLAY_MODES },
+      sourceId: { default: '' },
+      title: { default: '' },
+      subtitle: { default: '' },
+      status: { default: '' },
+      statusColor: { default: 'blue', values: STATUS_COLORS },
+      meta1: { default: '' },
+      meta2: { default: '' },
+      meta3: { default: '' },
+      excerpt: { default: '' },
+      summary: { default: '' },
+      url: { default: '' },
+      verifiedAt: { default: '' },
+      rawPayload: { default: '' },
+      textAlignment: defaultProps.textAlignment,
+      backgroundColor: defaultProps.backgroundColor,
     },
-    {
-      render: ({ block, editor }) => (
-        <SourceComponent
-          block={block}
-          editor={editor}
-        />
-      ),
-    },
-  );
+    content: 'none',
+  },
+  {
+    render: ({ block, editor }) => (
+      <SourceComponent
+        block={block}
+        editor={editor}
+      />
+    ),
+  },
+);
+
 
 export const getSourceReactSlashMenuItems = (
   editor: SourceBlockEditor,

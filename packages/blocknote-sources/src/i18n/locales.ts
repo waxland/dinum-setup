@@ -137,3 +137,19 @@ export const LOCALES: Record<SupportedLocale, ExternalSourceI18nStrings> = {
 export function getI18nStrings(locale: SupportedLocale = 'en'): ExternalSourceI18nStrings {
   return LOCALES[locale] || LOCALES.en;
 }
+
+export function getLocaleDictionary(locale: SupportedLocale = 'en') {
+  const strings = getI18nStrings(locale);
+  return {
+    ...strings,
+    actions: {
+      searchPlaceholder: strings.searchPlaceholder,
+      searchTitle: strings.searchTitle,
+      back: strings.backButton,
+      open: strings.openSource,
+      copy: strings.copyLink,
+      remove: strings.removeReference,
+    },
+  };
+}
+

@@ -16,10 +16,12 @@ import {
     SourceBlock,
     getLocaleDictionary,
     type ExternalSourceDisplayMode,
+    type ExternalSourceEntity,
     type SourceEntityType,
     type SupportedCountry,
     type SupportedLocale,
 } from "@suitenumerique/blocknote-sources";
+
 
 interface CountryPresetConfig {
   country: SupportedCountry;
@@ -92,29 +94,49 @@ const COUNTRY_PRESETS: Record<SupportedCountry, CountryPresetConfig> = {
   },
 };
 
-const createEmptySourceBlock = (sourceType: SourceEntityType) => ({
+const createEmptySourceBlock = (entityType: SourceEntityType) => ({
   type: "sourceBlock" as const,
   props: {
-    sourceType,
+    entityType,
+    displayMode: "callout" as ExternalSourceDisplayMode,
     sourceId: "",
-    provider: "",
     title: "",
     subtitle: "",
-    status: "VIGUEUR",
-    statusBadgeColor: "success" as const,
-    contentHtml: "",
+    status: "",
+    statusColor: "blue" as const,
+    meta1: "",
+    meta2: "",
+    meta3: "",
+    excerpt: "",
     summary: "",
-    metaField1Label: "",
-    metaField1Value: "",
-    metaField2Label: "",
-    metaField2Value: "",
-    metaField3Label: "",
-    metaField3Value: "",
-    displayMode: "callout" as ExternalSourceDisplayMode,
     url: "",
-    lastSyncAt: "",
+    verifiedAt: "",
+    rawPayload: "",
   },
 });
+
+const convertEntityToBlockProps = (
+  item: Partial<ExternalSourceEntity>,
+  mode: ExternalSourceDisplayMode = "callout"
+) => ({
+  entityType: (item.entityType as SourceEntityType) || ("law" as const),
+  displayMode: mode,
+  sourceId: item.sourceId || item.id || "",
+  title: item.title || "",
+  subtitle: item.subtitle || "",
+  status: item.statusLabel || (typeof item.status === "string" ? item.status : "") || "",
+  statusColor: item.statusColor || "blue",
+  meta1: item.meta1 || (item.metadataFields?.[0]?.value ? String(item.metadataFields[0].value) : ""),
+  meta2: item.meta2 || (item.metadataFields?.[1]?.value ? String(item.metadataFields[1].value) : ""),
+  meta3: item.meta3 || (item.metadataFields?.[2]?.value ? String(item.metadataFields[2].value) : ""),
+  excerpt: item.excerpt || item.snippet || "",
+  summary: item.summary || "",
+  url: item.url || "",
+  verifiedAt: item.verifiedAt || item.updatedAt || "",
+  rawPayload: typeof item.rawPayload === "string" ? item.rawPayload : JSON.stringify(item.rawPayload || {}),
+});
+
+
 
 export const App: React.FC = () => {
   const [isDark, setIsDark] = useState(false);
@@ -181,24 +203,15 @@ export const App: React.FC = () => {
       },
       {
         type: "sourceBlock",
-        props: {
-          ...MOCK_FRANCE_SOURCES[0],
-          displayMode: "callout",
-        },
+        props: convertEntityToBlockProps(MOCK_FRANCE_SOURCES[0], "callout"),
       },
       {
         type: "sourceBlock",
-        props: {
-          ...MOCK_GERMANY_SOURCES[0],
-          displayMode: "card",
-        },
+        props: convertEntityToBlockProps(MOCK_GERMANY_SOURCES[0], "card"),
       },
       {
         type: "sourceBlock",
-        props: {
-          ...MOCK_EUROPE_SOURCES[0],
-          displayMode: "link",
-        },
+        props: convertEntityToBlockProps(MOCK_EUROPE_SOURCES[0], "link"),
       },
     ],
   });
@@ -208,7 +221,7 @@ export const App: React.FC = () => {
     setCurrentLocale(COUNTRY_PRESETS[country].defaultLocale);
 
     if (!editor) return;
-    const countryData = ALL_INTERNATIONAL_MOCK_SOURCES.filter(s => s.country === country);
+    const countryData = ALL_INTERNATIONAL_MOCK_SOURCES.filter((s) => s.country === country);
     if (countryData.length > 0) {
       editor.replaceBlocks(editor.document, [
         {
@@ -223,10 +236,10 @@ export const App: React.FC = () => {
         },
         ...countryData.map((item, idx) => ({
           type: "sourceBlock" as const,
-          props: {
-            ...item,
-            displayMode: (idx === 0 ? "callout" : idx === 1 ? "card" : "link") as ExternalSourceDisplayMode,
-          },
+          props: convertEntityToBlockProps(
+            item,
+            (idx === 0 ? "callout" : idx === 1 ? "card" : "link") as ExternalSourceDisplayMode
+          ),
         })),
       ]);
     }

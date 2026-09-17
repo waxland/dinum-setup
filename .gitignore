@@ -30,3 +30,8 @@ demo/dist/
 packages/*/dist/
 packages/*/node_modules/
 packages/*/.turbo/
+packages/*/.venv/
+**/__pycache__/
+*.pyc
+.pytest_cache/
+

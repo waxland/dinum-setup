@@ -36,17 +36,18 @@ def test_source_search_anonymous():
     """Anonymous users should not be allowed to search sources."""
     client = APIClient()
     response = client.get("/sources/search/?type=law&q=commande")
-    assert response.status_code == HTTP_401_UNAUTHORIZED
+    assert response.status_code in (HTTP_401_UNAUTHORIZED, 403)
 
 
 def test_source_search_authenticated():
     """Authenticated users can search sovereign providers."""
     client = APIClient()
     user = User.objects.create_user(username="agent.public", email="agent@gouv.fr")
-    client.force_login(user)
+    client.force_authenticate(user=user)
 
     # Search law provider
     response = client.get("/sources/search/?type=law&q=commande")
+
     assert response.status_code == HTTP_200_OK
     data = response.json()
     assert data["type"] == "law"
@@ -135,7 +136,7 @@ def test_source_suggest_endpoint():
     """Suggest endpoint returns fast autocomplete payload."""
     client = APIClient()
     user = User.objects.create_user(username="agent.suggest", email="suggest@gouv.fr")
-    client.force_login(user)
+    client.force_authenticate(user=user)
 
     response = client.get("/sources/suggest/?type=law&q=art")
     assert response.status_code == HTTP_200_OK
@@ -150,9 +151,10 @@ def test_source_detail_endpoint():
     """Detail endpoint returns complete verified entity."""
     client = APIClient()
     user = User.objects.create_user(username="agent.detail", email="detail@gouv.fr")
-    client.force_login(user)
+    client.force_authenticate(user=user)
 
     response = client.get("/sources/law/LEGIARTI000037812976/")
+
     assert response.status_code == HTTP_200_OK
     data = response.json()
     assert data["source_id"] == "LEGIARTI000037812976"

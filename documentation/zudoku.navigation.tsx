@@ -232,6 +232,17 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     "type": "category",
+    "label": "Ressources",
+    "icon": "map",
+    "collapsed": false,
+    "items": [
+      "/05-ressources/communaute",
+      "/05-ressources/roadmap",
+      "/05-ressources/templates-et-outils"
+    ]
+  },
+  {
+    "type": "category",
     "label": "Skills Ai",
     "icon": "bot",
     "collapsed": false,
@@ -249,6 +260,27 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       "/05-skills-ai/dsfr",
       "/05-skills-ai/lasuite-dev",
       "/05-skills-ai/rgaa-review"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Skills",
+    "icon": "bot",
+    "collapsed": false,
+    "items": [
+      {
+        "type": "doc",
+        "file": "07-skills/index.mdx",
+        "path": "/07-skills"
+      },
+      "/07-skills/architecture-review",
+      "/07-skills/code-review",
+      "/07-skills/code-standards",
+      "/07-skills/design-change",
+      "/07-skills/docs-mdx",
+      "/07-skills/dsfr",
+      "/07-skills/lasuite-dev",
+      "/07-skills/rgaa-review"
     ]
   },
   {
