@@ -3,6 +3,13 @@ export type SourceEntityType =
   | "company"
   | "parliament"
   | "address"
+  | "procurement"
+  | "grant"
+  | "insee"
+  | "agent"
+  | "cadastre"
+  | "demarche"
+  | "opendata"
   | "custom";
 
 export type DisplayMode = "callout" | "card" | "link";

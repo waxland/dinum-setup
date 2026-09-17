@@ -3,40 +3,40 @@ import React, { useEffect, useRef, useState } from "react";
 import { searchMockSources } from "./mockData";
 import { DisplayMode, SourceEntityProps, SourceEntityType } from "./types";
 
-export const createSourceBlockSpec = () =>
-  createReactBlockSpec(
-    {
-      type: "sourceBlock",
-      propSchema: {
-        sourceType: { default: "law" },
-        sourceId: { default: "" },
-        provider: { default: "" },
-        title: { default: "" },
-        subtitle: { default: "" },
-        status: { default: "VIGUEUR" },
-        statusBadgeColor: { default: "success" },
-        contentHtml: { default: "" },
-        summary: { default: "" },
-        metaField1Label: { default: "" },
-        metaField1Value: { default: "" },
-        metaField2Label: { default: "" },
-        metaField2Value: { default: "" },
-        metaField3Label: { default: "" },
-        metaField3Value: { default: "" },
-        displayMode: { default: "callout" },
-        url: { default: "" },
-        lastSyncAt: { default: "" },
-      },
-      content: "none",
+export const SourceBlock = createReactBlockSpec(
+  {
+    type: "sourceBlock",
+    propSchema: {
+      sourceType: { default: "law" },
+      sourceId: { default: "" },
+      provider: { default: "" },
+      title: { default: "" },
+      subtitle: { default: "" },
+      status: { default: "VIGUEUR" },
+      statusBadgeColor: { default: "success" },
+      contentHtml: { default: "" },
+      summary: { default: "" },
+      metaField1Label: { default: "" },
+      metaField1Value: { default: "" },
+      metaField2Label: { default: "" },
+      metaField2Value: { default: "" },
+      metaField3Label: { default: "" },
+      metaField3Value: { default: "" },
+      displayMode: { default: "callout" },
+      url: { default: "" },
+      lastSyncAt: { default: "" },
     },
-    {
-      render: (props) => {
-        return <SourceBlockComponent {...props} />;
-      },
-    }
-  );
+    content: "none",
+  },
+  {
+    render: (props: any) => {
+      return <SourceBlockComponent {...props} />;
+    },
+  }
+);
 
-export const SourceBlockSpec = createSourceBlockSpec;
+export const createSourceBlockSpec = () => SourceBlock();
+export const SourceBlockSpec = SourceBlock;
 
 interface SourceBlockComponentProps {
   block: any;
@@ -107,6 +107,14 @@ const SourceBlockComponent: React.FC<SourceBlockComponentProps> = ({
         return "🏛️";
       case "address":
         return "📍";
+      case "procurement":
+        return "🛍️";
+      case "grant":
+        return "💶";
+      case "insee":
+        return "📊";
+      case "custom":
+        return "🧠";
       default:
         return "📄";
     }
@@ -122,7 +130,7 @@ const SourceBlockComponent: React.FC<SourceBlockComponentProps> = ({
             <span>Recherche Souveraine ({selectedType.toUpperCase()})</span>
           </div>
           {/* Category Tabs */}
-          <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 p-0.5 rounded-lg text-[11px]">
+          <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 p-0.5 rounded-lg text-[11px] overflow-x-auto">
             <button
               type="button"
               onClick={() => setSelectedType("law")}
@@ -166,6 +174,94 @@ const SourceBlockComponent: React.FC<SourceBlockComponentProps> = ({
               }`}
             >
               📍 Adresse
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedType("procurement")}
+              className={`cursor-pointer px-2 py-0.5 rounded-md font-medium transition-all ${
+                selectedType === "procurement"
+                  ? "bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold"
+                  : "text-gray-600 dark:text-gray-400"
+              }`}
+            >
+              🛍️ Marché
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedType("grant")}
+              className={`cursor-pointer px-2 py-0.5 rounded-md font-medium transition-all ${
+                selectedType === "grant"
+                  ? "bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold"
+                  : "text-gray-600 dark:text-gray-400"
+              }`}
+            >
+              💶 Subvention
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedType("insee")}
+              className={`cursor-pointer px-2 py-0.5 rounded-md font-medium transition-all ${
+                selectedType === "insee"
+                  ? "bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold"
+                  : "text-gray-600 dark:text-gray-400"
+              }`}
+            >
+              📊 Stats
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedType("agent")}
+              className={`cursor-pointer px-2 py-0.5 rounded-md font-medium transition-all ${
+                selectedType === "agent"
+                  ? "bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold"
+                  : "text-gray-600 dark:text-gray-400"
+              }`}
+            >
+              👤 Agent
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedType("cadastre")}
+              className={`cursor-pointer px-2 py-0.5 rounded-md font-medium transition-all ${
+                selectedType === "cadastre"
+                  ? "bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold"
+                  : "text-gray-600 dark:text-gray-400"
+              }`}
+            >
+              🗺️ Cadastre
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedType("demarche")}
+              className={`cursor-pointer px-2 py-0.5 rounded-md font-medium transition-all ${
+                selectedType === "demarche"
+                  ? "bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold"
+                  : "text-gray-600 dark:text-gray-400"
+              }`}
+            >
+              📝 Démarche
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedType("opendata")}
+              className={`cursor-pointer px-2 py-0.5 rounded-md font-medium transition-all ${
+                selectedType === "opendata"
+                  ? "bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold"
+                  : "text-gray-600 dark:text-gray-400"
+              }`}
+            >
+              🌐 OpenData
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedType("custom")}
+              className={`cursor-pointer px-2 py-0.5 rounded-md font-medium transition-all ${
+                selectedType === "custom"
+                  ? "bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold"
+                  : "text-gray-600 dark:text-gray-400"
+              }`}
+            >
+              🧠 Albert IA
             </button>
           </div>
         </div>

@@ -1,0 +1,74 @@
+---
+title: Implémentation du Connecteur AlbertSourceProvider
+sidebar_label: 03. Implémentation Django
+description: Code source complet du connecteur AlbertSourceProvider, mapping de données, tolérance aux pannes et tests unitaires DRF.
+---
+
+## 🐍 1. Implémentation Python (`core/sources/providers/albert.py`)
+
+Le connecteur `AlbertSourceProvider` hérite de `BaseSourceProvider` et s'intègre automatiquement au registre singleton `SourceProviderRegistry`.
+
+```python
+"""Albert API (DINUM / Etalab Sovereign RAG AI) source provider."""
+
+import logging
+import os
+from typing import List, Optional
+import requests
+
+from core.sources.base import BaseSourceProvider
+from core.sources.types import SourceSearchResult, SourceSuggestResult
+
+logger = logging.getLogger(__name__)
+
+class AlbertSourceProvider(BaseSourceProvider):
+    """
+    Sovereign RAG AI provider using Albert API (Etalab / DINUM).
+    Provides factual, source-backed answers to administrative & legal questions.
+    """
+
+    source_type = "custom"
+    name = "Albert (IA Souveraine DINUM)"
+
+    def __init__(self):
+        self.api_url = os.getenv("ALBERT_API_URL", "https://albert.api.etalab.gouv.fr/v1").rstrip("/")
+        self.api_key = os.getenv("ALBERT_API_KEY", "")
+        self.mock_mode = os.getenv("ALBERT_MOCK_ENABLED", "true").lower() in ("true", "1", "yes")
+
+    def is_enabled(self) -> bool:
+        return self.mock_mode or bool(self.api_key)
+
+    def suggest(self, query: str, limit: int = 5) -> List[SourceSuggestResult]:
+        results = self.search(query=query, limit=limit)
+        return [
+            {
+                "id": r["source_id"],
+                "title": r["title"],
+                "subtitle": r["subtitle"] or "",
+                "type": "custom",
+            }
+            for r in results
+        ]
+
+    def search(self, query: str, limit: int = 10) -> List[SourceSearchResult]:
+        # Appel API réel ou fallback mock réaliste
+        ...
+```
+
+---
+
+## 🧪 2. Test Unitaire et d'Intégration DRF
+
+```python
+def test_albert_rag_search_authenticated(api_client, user):
+    """Vérifie que la recherche RAG Albert retourne des synthèses avec citations."""
+    api_client.force_login(user)
+    response = api_client.get("/api/v1.0/sources/search/?type=custom&q=rgaa")
+    
+    assert response.status_code == 200
+    data = response.json()
+    assert data["type"] == "custom"
+    assert len(data["results"]) > 0
+    assert "RGAA" in data["results"][0]["title"]
+    assert data["results"][0]["status_color"] == "purple"
+```

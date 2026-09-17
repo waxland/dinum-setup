@@ -1,13 +1,13 @@
 import { BlockNoteSchema, defaultBlockSpecs } from "@blocknote/core";
 import { BlockNoteView } from "@blocknote/mantine";
 import {
-    SuggestionMenuController,
-    getDefaultReactSlashMenuItems,
-    useCreateBlockNote,
+  SuggestionMenuController,
+  getDefaultReactSlashMenuItems,
+  useCreateBlockNote,
 } from "@blocknote/react";
 import React, { useEffect, useMemo, useState } from "react";
 
-import { createSourceBlockSpec } from "./SourceBlockSpec";
+import { SourceBlock } from "./SourceBlockSpec";
 import { MOCK_SOURCES } from "./mockData";
 import { SourceEntityType } from "./types";
 
@@ -49,14 +49,14 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
     return BlockNoteSchema.create({
       blockSpecs: {
         ...defaultBlockSpecs,
-        sourceBlock: createSourceBlockSpec(),
+        sourceBlock: SourceBlock(),
       },
     });
   }, []);
 
   // Initialize editor
   const editor = useCreateBlockNote({
-    schema: playgroundSchema,
+    schema: playgroundSchema as any,
     initialContent: [
       {
         type: "paragraph",
@@ -130,7 +130,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       {
         title: "Texte de Loi (Légifrance)",
         onItemClick: () => {
-          editor.insertBlocks(
+          (editor as any).insertBlocks(
             [
               {
                 type: "sourceBlock",
@@ -139,7 +139,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
                   sourceId: "",
                   title: "",
                 },
-              },
+              } as any,
             ],
             editor.getTextCursorPosition().block,
             "after"
@@ -153,7 +153,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       {
         title: "Fiche Entreprise & SIREN",
         onItemClick: () => {
-          editor.insertBlocks(
+          (editor as any).insertBlocks(
             [
               {
                 type: "sourceBlock",
@@ -162,7 +162,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
                   sourceId: "",
                   title: "",
                 },
-              },
+              } as any,
             ],
             editor.getTextCursorPosition().block,
             "after"
@@ -176,7 +176,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       {
         title: "Amendement Parlementaire",
         onItemClick: () => {
-          editor.insertBlocks(
+          (editor as any).insertBlocks(
             [
               {
                 type: "sourceBlock",
@@ -185,7 +185,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
                   sourceId: "",
                   title: "",
                 },
-              },
+              } as any,
             ],
             editor.getTextCursorPosition().block,
             "after"
@@ -199,7 +199,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       {
         title: "Adresse Postale (BAN)",
         onItemClick: () => {
-          editor.insertBlocks(
+          (editor as any).insertBlocks(
             [
               {
                 type: "sourceBlock",
@@ -208,7 +208,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
                   sourceId: "",
                   title: "",
                 },
-              },
+              } as any,
             ],
             editor.getTextCursorPosition().block,
             "after"
@@ -219,6 +219,190 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
         icon: <span>📍</span>,
         subtext: "Autocomplétion certifiée par la Base Adresse Nationale",
       },
+      {
+        title: "Avis de Marché Public (BOAMP)",
+        onItemClick: () => {
+          (editor as any).insertBlocks(
+            [
+              {
+                type: "sourceBlock",
+                props: {
+                  sourceType: "procurement",
+                  sourceId: "",
+                  title: "",
+                },
+              } as any,
+            ],
+            editor.getTextCursorPosition().block,
+            "after"
+          );
+        },
+        aliases: ["marche", "boamp", "achat", "dce", "dae"],
+        group: "Sources Souveraines de l'État",
+        icon: <span>🛍️</span>,
+        subtext: "Insérer un avis de marché public officiel (BOAMP)",
+      },
+      {
+        title: "Dispositif d'Aide & Subvention",
+        onItemClick: () => {
+          (editor as any).insertBlocks(
+            [
+              {
+                type: "sourceBlock",
+                props: {
+                  sourceType: "grant",
+                  sourceId: "",
+                  title: "",
+                },
+              } as any,
+            ],
+            editor.getTextCursorPosition().block,
+            "after"
+          );
+        },
+        aliases: ["subvention", "aides", "fonds-vert", "detr", "dsil", "anct"],
+        group: "Sources Souveraines de l'État",
+        icon: <span>💶</span>,
+        subtext: "Insérer un dispositif d'aide financière aux territoires",
+      },
+      {
+        title: "Statistiques Territoriales INSEE",
+        onItemClick: () => {
+          (editor as any).insertBlocks(
+            [
+              {
+                type: "sourceBlock",
+                props: {
+                  sourceType: "insee",
+                  sourceId: "",
+                  title: "",
+                },
+              } as any,
+            ],
+            editor.getTextCursorPosition().block,
+            "after"
+          );
+        },
+        aliases: ["insee", "stats", "population", "territoire"],
+        group: "Sources Souveraines de l'État",
+        icon: <span>📊</span>,
+        subtext: "Insérer des indicateurs officiels démographiques INSEE",
+      },
+      {
+        title: "Annuaire du Service Public",
+        onItemClick: () => {
+          (editor as any).insertBlocks(
+            [
+              {
+                type: "sourceBlock",
+                props: {
+                  sourceType: "agent",
+                  sourceId: "",
+                  title: "",
+                },
+              } as any,
+            ],
+            editor.getTextCursorPosition().block,
+            "after"
+          );
+        },
+        aliases: ["agent", "annuaire", "service-public", "contact"],
+        group: "Sources Souveraines de l'État",
+        icon: <span>👤</span>,
+        subtext: "Insérer les coordonnées officielles d'un service public",
+      },
+      {
+        title: "Cadastre & Parcelles (DGFiP)",
+        onItemClick: () => {
+          (editor as any).insertBlocks(
+            [
+              {
+                type: "sourceBlock",
+                props: {
+                  sourceType: "cadastre",
+                  sourceId: "",
+                  title: "",
+                },
+              } as any,
+            ],
+            editor.getTextCursorPosition().block,
+            "after"
+          );
+        },
+        aliases: ["cadastre", "parcelle", "foncier", "dgfip"],
+        group: "Sources Souveraines de l'État",
+        icon: <span>🗺️</span>,
+        subtext: "Insérer une parcelle cadastrale certifiée DGFiP",
+      },
+      {
+        title: "Démarches-Simplifiées.fr",
+        onItemClick: () => {
+          (editor as any).insertBlocks(
+            [
+              {
+                type: "sourceBlock",
+                props: {
+                  sourceType: "demarche",
+                  sourceId: "",
+                  title: "",
+                },
+              } as any,
+            ],
+            editor.getTextCursorPosition().block,
+            "after"
+          );
+        },
+        aliases: ["demarche", "formulaire", "usager", "procedure"],
+        group: "Sources Souveraines de l'État",
+        icon: <span>📝</span>,
+        subtext: "Insérer une téléprocédure Démarches-Simplifiées",
+      },
+      {
+        title: "data.gouv.fr / Open Data",
+        onItemClick: () => {
+          (editor as any).insertBlocks(
+            [
+              {
+                type: "sourceBlock",
+                props: {
+                  sourceType: "opendata",
+                  sourceId: "",
+                  title: "",
+                },
+              } as any,
+            ],
+            editor.getTextCursorPosition().block,
+            "after"
+          );
+        },
+        aliases: ["opendata", "dataset", "datagouv", "donnees"],
+        group: "Sources Souveraines de l'État",
+        icon: <span>🌐</span>,
+        subtext: "Insérer un jeu de données certifié data.gouv.fr",
+      },
+      {
+        title: "Albert IA Souveraine & RAG",
+        onItemClick: () => {
+          (editor as any).insertBlocks(
+            [
+              {
+                type: "sourceBlock",
+                props: {
+                  sourceType: "custom",
+                  sourceId: "",
+                  title: "",
+                },
+              } as any,
+            ],
+            editor.getTextCursorPosition().block,
+            "after"
+          );
+        },
+        aliases: ["albert", "ia", "rag", "etalab", "service-public"],
+        group: "Sources Souveraines de l'État",
+        icon: <span>🧠</span>,
+        subtext: "Poser une question administrative à l'IA souveraine Albert",
+      },
     ];
 
     return [...customItems, ...getDefaultReactSlashMenuItems(editor)];
@@ -227,7 +411,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
   // Insert helper from toolbar buttons
   const handleInsert = (type: SourceEntityType) => {
     if (!editor) return;
-    editor.insertBlocks(
+    (editor as any).insertBlocks(
       [
         {
           type: "sourceBlock",
@@ -236,7 +420,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
             sourceId: "",
             title: "",
           },
-        },
+        } as any,
       ],
       editor.getTextCursorPosition()?.block || editor.document[editor.document.length - 1],
       "after"
@@ -305,6 +489,62 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
             className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
           >
             📍 /adresse
+          </button>
+          <button
+            type="button"
+            onClick={() => handleInsert("procurement")}
+            className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
+          >
+            🛍️ /marche
+          </button>
+          <button
+            type="button"
+            onClick={() => handleInsert("grant")}
+            className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
+          >
+            💶 /subvention
+          </button>
+          <button
+            type="button"
+            onClick={() => handleInsert("insee")}
+            className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
+          >
+            📊 /stats
+          </button>
+          <button
+            type="button"
+            onClick={() => handleInsert("agent")}
+            className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
+          >
+            👤 /agent
+          </button>
+          <button
+            type="button"
+            onClick={() => handleInsert("cadastre")}
+            className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
+          >
+            🗺️ /cadastre
+          </button>
+          <button
+            type="button"
+            onClick={() => handleInsert("demarche")}
+            className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
+          >
+            📝 /demarche
+          </button>
+          <button
+            type="button"
+            onClick={() => handleInsert("opendata")}
+            className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
+          >
+            🌐 /opendata
+          </button>
+          <button
+            type="button"
+            onClick={() => handleInsert("custom")}
+            className="cursor-pointer text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-2xs transition-all"
+          >
+            🧠 /albert
           </button>
           <div className="w-[1px] h-4 bg-gray-300 dark:bg-gray-700 mx-1" />
           <button

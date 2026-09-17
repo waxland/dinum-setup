@@ -301,7 +301,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       "/08-slash/03-proxy-backend-et-cache",
       "/08-slash/04-tutoriel-ajouter-une-api",
       "/08-slash/05-proposition",
-      "/08-slash/06-roadmap",
+      "/08-slash/07-roadmap",
       {
         "type": "category",
         "label": "Projet de Loi (/loi)",
@@ -471,6 +471,98 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
               "/08-slash/04-adresse/03-implementation-adresse/01-provider-django",
               "/08-slash/04-adresse/03-implementation-adresse/02-rendu-et-settings"
             ]
+          }
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Albert",
+        "icon": "folder",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "08-slash/05-albert/index.mdx",
+            "path": "/08-slash/05-albert"
+          },
+          {
+            "type": "category",
+            "label": "Pôle Métier & Usages",
+            "icon": "briefcase",
+            "collapsed": false,
+            "items": [
+              "/08-slash/05-albert/01-metier-albert/01-fondations-et-cadre"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle API & Veille",
+            "icon": "code",
+            "collapsed": false,
+            "items": [
+              "/08-slash/05-albert/02-api-albert/01-benchmark-des-apis"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle Implémentation",
+            "icon": "terminal",
+            "collapsed": false,
+            "items": [
+              "/08-slash/05-albert/03-implementation-albert/01-provider-django"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "category",
+        "label": "SDK Developpeur",
+        "icon": "code",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "08-slash/06-sdk-developpeur/index.mdx",
+            "path": "/08-slash/06-sdk-developpeur"
+          }
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Marchés Publics (/marche)",
+        "icon": "folder",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "08-slash/08-marche/index.mdx",
+            "path": "/08-slash/08-marche"
+          }
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Subventions (/subvention)",
+        "icon": "folder",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "08-slash/09-subvention/index.mdx",
+            "path": "/08-slash/09-subvention"
+          }
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Stats",
+        "icon": "folder",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "08-slash/10-stats/index.mdx",
+            "path": "/08-slash/10-stats"
           }
         ]
       }

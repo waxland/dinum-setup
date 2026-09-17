@@ -73,24 +73,6 @@ const config: ZudokuConfig = {
         target: "_blank",
         icon: "file-text",
       },
-      {
-        label: "Figma UI Kit",
-        to: "https://www.figma.com/community/file/1562860630562131728/lasuite-ui-kit",
-        target: "_blank",
-        icon: "palette",
-      },
-      {
-        label: "Storybook Cunningham",
-        to: "https://suitenumerique.github.io/cunningham/storybook/?path=/story/components-loader-wip--medium",
-        target: "_blank",
-        icon: "sparkles",
-      },
-      {
-        label: "Storybook UI Kit",
-        to: "https://suitenumerique.github.io/ui-kit/?path=/docs/components-button--docs",
-        target: "_blank",
-        icon: "box",
-      },
     ],
   },
   syntaxHighlighting: {
@@ -101,6 +83,9 @@ const config: ZudokuConfig = {
       "docker",
       "dockerfile",
       "nginx",
+      "http",
+      "dotenv",
+      "ssh-config",
     ],
   },
   mdx: {
