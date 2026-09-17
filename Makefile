@@ -224,7 +224,7 @@ logs-projects:
 
 .PHONY: generate-docs-nav
 generate-docs-nav:
-	node scripts/generate-docs-navigation.mjs
+	@npm run docs:nav
 
 .PHONY: docs-dev
 docs-dev: generate-docs-nav

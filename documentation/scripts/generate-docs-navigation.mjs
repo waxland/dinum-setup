@@ -8,8 +8,8 @@ const ROOT_DIR = path.resolve(__dirname, "..");
 
 const CONFIGS = {
   docs: {
-    docsDir: path.join(ROOT_DIR, "documentation", "docs"),
-    outputFile: path.join(ROOT_DIR, "documentation", "zudoku.navigation.tsx"),
+    docsDir: path.join(ROOT_DIR, "docs"),
+    outputFile: path.join(ROOT_DIR, "zudoku.navigation.tsx"),
   },
 };
 

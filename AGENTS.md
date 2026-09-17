@@ -9,7 +9,7 @@ Ce document définit les règles d'intervention, les normes de sécurité et la 
 Le dépôt est composé de trois couches distinctes à ne pas confondre :
 
 1. **Orchestration Racine :** Le `Makefile`, les configurations Docker (`docker-compose*.yml`) et les scripts d'environnement qui coordonnent les services locaux.
-2. **Portail Documentaire Zudoku :** L'application de documentation (`docs/`, `zudoku.config.tsx`, `zudoku.navigation.tsx`, `src/components/`).
+2. **Portail Documentaire Zudoku (`documentation/`) :** L'application de documentation (`documentation/docs/`, `documentation/zudoku.config.tsx`, `documentation/zudoku.navigation.tsx`, `documentation/src/components/`, `documentation/public/`).
 3. **Dépôts Clones (`src/*`) :** Les applications indépendantes de La Suite (`docs`, `projects`, `meet`, `transfers`, `people`, `accounts`). Chaque application possède sa propre stack (Django, Next.js, Sails, etc.) et ses propres commandes.
 
 ---
@@ -27,18 +27,18 @@ Le dépôt est composé de trois couches distinctes à ne pas confondre :
 
 ## 🧭 3. Table de Routage des Skills Spécialisés
 
-Avant d'effectuer une tâche, chargez et lisez la procédure détaillée dans le fichier correspondant du dossier `docs/07-skills/` :
+Avant d'effectuer une tâche, chargez et lisez la procédure détaillée dans le fichier correspondant du dossier `documentation/docs/07-skills/` :
 
-| Intention / Type de Tâche                                                 | Skill à charger       | Fichier                                                                            |
-| ------------------------------------------------------------------------- | --------------------- | ---------------------------------------------------------------------------------- |
-| **Normes TypeScript, Cunningham & Zéro any/cast**                         | `code-standards`      | [`docs/07-skills/code-standards.mdx`](docs/07-skills/code-standards.mdx)           |
-| **Composant ou vue DSFR** (Bouton, alerte, formulaire, tokens, thème)     | `dsfr`                | [`docs/07-skills/dsfr.mdx`](docs/07-skills/dsfr.mdx)                               |
-| **Audit ou correction d'accessibilité** (Clavier, ARIA, contrastes, RGAA) | `rgaa-review`         | [`docs/07-skills/rgaa-review.mdx`](docs/07-skills/rgaa-review.mdx)                 |
-| **Orchestration & Démarrage local** (Makefile, Docker, PostgreSQL, ports) | `lasuite-dev`         | [`docs/07-skills/lasuite-dev.mdx`](docs/07-skills/lasuite-dev.mdx)                 |
-| **Rédaction documentaire MDX** (Zudoku, navigation, composants React)     | `docs-mdx`            | [`docs/07-skills/docs-mdx.mdx`](docs/07-skills/docs-mdx.mdx)                       |
-| **Revue de code / PR** (Bugs, régressions, conventions, secrets)          | `code-review`         | [`docs/07-skills/code-review.mdx`](docs/07-skills/code-review.mdx)                 |
-| **Audit d'architecture** (Couplage, responsabilités, flux temps réel/S3)  | `architecture-review` | [`docs/07-skills/architecture-review.mdx`](docs/07-skills/architecture-review.mdx) |
-| **Conception d'évolution** (Nouvelle feature, comparaison d'options, ADR) | `design-change`       | [`docs/07-skills/design-change.mdx`](docs/07-skills/design-change.mdx)             |
+| Intention / Type de Tâche                                                 | Skill à charger       | Fichier                                                                                                                    |
+| ------------------------------------------------------------------------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| **Normes TypeScript, Cunningham & Zéro any/cast**                         | `code-standards`      | [`documentation/docs/07-skills/code-standards.mdx`](documentation/docs/07-skills/code-standards.mdx)                       |
+| **Composant ou vue DSFR** (Bouton, alerte, formulaire, tokens, thème)     | `dsfr`                | [`documentation/docs/07-skills/dsfr.mdx`](documentation/docs/07-skills/dsfr.mdx)                                           |
+| **Audit ou correction d'accessibilité** (Clavier, ARIA, contrastes, RGAA) | `rgaa-review`         | [`documentation/docs/07-skills/rgaa-review.mdx`](documentation/docs/07-skills/rgaa-review.mdx)                             |
+| **Orchestration & Démarrage local** (Makefile, Docker, PostgreSQL, ports) | `lasuite-dev`         | [`documentation/docs/07-skills/lasuite-dev.mdx`](documentation/docs/07-skills/lasuite-dev.mdx)                             |
+| **Rédaction documentaire MDX** (Zudoku, navigation, composants React)     | `docs-mdx`            | [`documentation/docs/07-skills/docs-mdx.mdx`](documentation/docs/07-skills/docs-mdx.mdx)                                   |
+| **Revue de code / PR** (Bugs, régressions, conventions, secrets)          | `code-review`         | [`documentation/docs/07-skills/code-review.mdx`](documentation/docs/07-skills/code-review.mdx)                             |
+| **Audit d'architecture** (Couplage, responsabilités, flux temps réel/S3)  | `architecture-review` | [`documentation/docs/07-skills/architecture-review.mdx`](documentation/docs/07-skills/architecture-review.mdx)             |
+| **Conception d'évolution** (Nouvelle feature, comparaison d'options, ADR) | `design-change`       | [`documentation/docs/07-skills/design-change.mdx`](documentation/docs/07-skills/design-change.mdx)                         |
 
 ---
 

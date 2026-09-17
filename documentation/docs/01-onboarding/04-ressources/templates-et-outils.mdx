@@ -1,0 +1,98 @@
+---
+title: Templates & Outils Réutilisables
+sidebar_label: Templates & Outils
+description: Répertoire des templates officiels, kits d'interface UI, postes de travail souverains et outils de l'État pour accélérer vos développements.
+---
+
+Cette page regroupe les outils, bibliothèques de composants, templates et architectures de référence mis à disposition par la **DINUM**, **Etalab** et **La Suite numérique** pour accélérer le développement d'applications publiques souveraines.
+
+---
+
+## 🎨 1. UI Kits & Librairies Graphiques
+
+<FeatureGrid cols={2}>
+  <FeatureCard
+    icon="🎨"
+    title="La Suite UI Kit (Figma)"
+    description="Librairie officielle de composants Figma de La Suite numérique (boutons, modales, ProConnect, formulaires)."
+    href="https://www.figma.com/community/file/1562860630562131728/lasuite-ui-kit"
+    badge="Figma Community"
+  />
+  <FeatureCard
+    icon="📖"
+    title="Storybook UI Kit La Suite"
+    description="Démonstrateur interactif et documentation des composants (@gouvfr-lasuite/ui-components)."
+    href="https://suitenumerique.github.io/ui-kit/?path=/docs/components-button--docs"
+    badge="Storybook"
+  />
+  <FeatureCard
+    icon="🐙"
+    title="GitHub suitenumerique/ui-kit"
+    description="Dépôt open-source du package de composants partagé pour les applications de La Suite."
+    href="https://github.com/suitenumerique/ui-kit"
+    badge="React / TS"
+  />
+  <FeatureCard
+    icon="🔤"
+    title="Typographie Marianne (Gouvernement)"
+    description="Règles d'usage de la marque de l'État et téléchargements officiels des polices Marianne et Spectral (OTF/TTF)."
+    href="https://www.info.gouv.fr/marque-de-letat/la-typographie"
+    badge="Info.gouv.fr"
+  />
+</FeatureGrid>
+
+---
+
+## 🏗️ 2. Templates & Modèles d'Applications d'État
+
+<FeatureGrid cols={2}>
+  <FeatureCard
+    icon="📋"
+    title="Template data.gouv.fr"
+    description="Modèle de site web et composants réutilisables créés par Etalab pour les portails de données publiques."
+    href="https://template.data.gouv.fr/"
+    badge="Etalab"
+  />
+  <FeatureCard
+    icon="💻"
+    title="Bureautix (cloud-gouv)"
+    description="Kit d'installation et configuration d'un poste de travail bureautique sécurisé (NixOS, Secure Boot, FIDO2/U2F) par la DINUM."
+    href="https://github.com/cloud-gouv/bureautix-example"
+    badge="Sécurité / NixOS"
+  />
+  <FeatureCard
+    icon="📦"
+    title="@suitenumerique/blocknote-sources"
+    description="Package npm officiel de CustomBlock BlockNote pour intégrer les sources souveraines (Légifrance, BAN, BOAMP, Albert)."
+    href="/08-slash/00-socle-technique"
+    badge="React / BlockNote"
+  />
+  <FeatureCard
+    icon="🐍"
+    title="django-lasuite-sources"
+    description="Package PyPI Django fournissant le registre de providers, le cache Redis 24h et les 12 connecteurs d'APIs d'État."
+    href="/08-slash/00-socle-technique"
+    badge="Python / Django"
+  />
+</FeatureGrid>
+
+---
+
+## 🧭 3. Description des Ressources Clés
+
+### 🎨 La Suite UI Kit & Storybook
+
+- **GitHub :** [suitenumerique/ui-kit](https://github.com/suitenumerique/ui-kit)
+- **Storybook Live :** [suitenumerique.github.io/ui-kit](https://suitenumerique.github.io/ui-kit/?path=/docs/components-button--docs)
+- **Figma Community :** [lasuite-ui-kit sur Figma](https://www.figma.com/community/file/1562860630562131728/lasuite-ui-kit)
+- Fournit l'ensemble des boutons, sélecteurs, modales et le composant officiel d'authentification **Bouton ProConnect**.
+
+### 💻 Bureautix (`cloud-gouv/bureautix-example`)
+
+- Développé par les équipes infrastructures de la DINUM.
+- Exemple complet de configuration d'un poste de travail bureautique sous **NixOS** sécurisé par des clés physiques FIDO2 / PAM U2F et démarrage sécurisé (_Secure Boot_ avec Lanzaboote).
+- Idéal pour configurer des postes d'administration système et d'exploitation sécurisés.
+
+### 📋 Template Data.gouv.fr (`template.data.gouv.fr`)
+
+- Répertoire historique de modèles de composants HTML/CSS d'Etalab pour les sites orientés données ouvertes (_open data_).

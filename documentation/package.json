@@ -1,0 +1,31 @@
+{
+  "name": "@dinum/documentation",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "docs:nav": "node scripts/generate-docs-navigation.mjs",
+    "dev": "node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku dev --host 0.0.0.0",
+    "build": "node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku build",
+    "preview": "ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku preview --host 0.0.0.0",
+    "search": "npx pagefind --site dist --output-path dist/pagefind"
+  },
+  "dependencies": {
+    "@blocknote/core": "^0.54.2",
+    "@blocknote/mantine": "^0.54.2",
+    "@blocknote/react": "^0.54.2",
+    "@codegouvfr/react-dsfr": "^1.35.0",
+    "@suitenumerique/blocknote-sources": "*",
+    "@suitenumerique/slash-sources-sdk": "*",
+    "@types/node": "^22.20.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "mermaid": "^11.17.2",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "zudoku": "^0.86.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  }
+}
