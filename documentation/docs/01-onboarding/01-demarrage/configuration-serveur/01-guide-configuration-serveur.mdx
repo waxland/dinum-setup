@@ -41,16 +41,16 @@ L'agent va générer et positionner automatiquement tous les fichiers `.local` r
 
 | Fichier | Emplacement | Rôle |
 | :--- | :--- | :--- |
-| `next.config.js` | `src/docs/src/frontend/apps/impress/next.config.js` | Configuration Next.js (notamment `allowedDevOrigins`). |
-| `.env.local` | `src/docs/src/frontend/apps/impress/.env.local` | Variables du frontend Next.js (URL de l'API Docs). |
-| `common.local` | `src/docs/env.d/development/common.local` | Surcharges du backend Docker Docs (URLs publiques, OIDC, collaboration Yjs). |
-| `kc_auth.local` | `src/docs/env.d/development/kc_auth.local` | Hostname public Keycloak pour éviter les redirections vers `localhost`. |
+| `next.config.js` | `LaSuite/docs/src/frontend/apps/impress/next.config.js` | Configuration Next.js (notamment `allowedDevOrigins`). |
+| `.env.local` | `LaSuite/docs/src/frontend/apps/impress/.env.local` | Variables du frontend Next.js (URL de l'API Docs). |
+| `common.local` | `LaSuite/docs/env.d/development/common.local` | Surcharges du backend Docker Docs (URLs publiques, OIDC, collaboration Yjs). |
+| `kc_auth.local` | `LaSuite/docs/env.d/development/kc_auth.local` | Hostname public Keycloak pour éviter les redirections vers `localhost`. |
 
 ---
 
 ## 🌐 2. `allowedDevOrigins` : autoriser l'origine du serveur (Next.js)
 
-Dans `src/docs/src/frontend/apps/impress/next.config.js`, l'option `allowedDevOrigins` autorise les domaines ou IPs qui interrogent le serveur de développement :
+Dans `LaSuite/docs/src/frontend/apps/impress/next.config.js`, l'option `allowedDevOrigins` autorise les domaines ou IPs qui interrogent le serveur de développement :
 
 ```js
 const nextConfig = {
@@ -73,7 +73,7 @@ const nextConfig = {
 Créez le fichier local dans le dossier de l'application frontend :
 
 ```bash
-cd src/docs/src/frontend/apps/impress
+cd LaSuite/docs/src/frontend/apps/impress
 touch .env.local
 chmod 600 .env.local
 ```
@@ -91,16 +91,16 @@ NEXT_PUBLIC_SW_DEACTIVATED=false
 Vérifiez que le fichier est bien ignoré par Git :
 
 ```bash
-git check-ignore -v src/docs/src/frontend/apps/impress/.env.local
+git check-ignore -v LaSuite/docs/src/frontend/apps/impress/.env.local
 ```
 
 ---
 
 ## 🐳 4. `common.local` : Configuration Docker du Backend Docs
 
-Le fichier `common.local` surcharge les variables de `src/docs/env.d/development/common` pour les conteneurs `app-dev`, `celery-dev` et le serveur de collaboration Yjs.
+Le fichier `common.local` surcharge les variables de `LaSuite/docs/env.d/development/common` pour les conteneurs `app-dev`, `celery-dev` et le serveur de collaboration Yjs.
 
-Créez ou éditez le fichier `src/docs/env.d/development/common.local` :
+Créez ou éditez le fichier `LaSuite/docs/env.d/development/common.local` :
 
 ```dotenv
 # URL après connexion et retours de redirection
@@ -143,10 +143,10 @@ DJANGO_EMAIL_URL_APP="http://<VOTRE_IP>:3000"
 
 Keycloak génère les actions de formulaire et les redirections à partir de son hostname configuré. S'il reste sur `localhost`, le navigateur est renvoyé vers `localhost:8083` et perd le cookie de session, générant l'erreur **« Restart login cookie not found »**.
 
-Créez ou éditez `src/docs/env.d/development/kc_auth.local` :
+Créez ou éditez `LaSuite/docs/env.d/development/kc_auth.local` :
 
 ```dotenv
-# src/docs/env.d/development/kc_auth.local
+# LaSuite/docs/env.d/development/kc_auth.local
 KC_HOSTNAME=http://<VOTRE_IP>:8083
 KC_HOSTNAME_STRICT=false
 ```
@@ -159,7 +159,7 @@ Après avoir configuré les fichiers `.local` :
 
 ```bash
 # Vérifier la configuration Docker sans démarrer
-docker compose -f src/docs/compose.yml config \
+docker compose -f LaSuite/docs/compose.yml config \
   | grep -E "KC_HOSTNAME|LOGIN_REDIRECT_URL|OIDC_REDIRECT_ALLOWED_HOSTS|OIDC_OP_AUTHORIZATION_ENDPOINT"
 
 # Lancer ou recréer les conteneurs Docs

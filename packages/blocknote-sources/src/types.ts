@@ -1,4 +1,21 @@
 import { BlockConfig, defaultProps } from '@blocknote/core';
+import type {
+    ExternalSourceDisplayMode,
+    ExternalSourceEntity,
+    ExternalSourceMetadataField,
+    ExternalSourceProviderDefinition,
+    ExternalSourceStatus,
+    ExternalSourceSuggestResult,
+} from '@suitenumerique/slash-sources-sdk';
+
+export type {
+    ExternalSourceDisplayMode,
+    ExternalSourceEntity,
+    ExternalSourceMetadataField,
+    ExternalSourceProviderDefinition,
+    ExternalSourceStatus,
+    ExternalSourceSuggestResult
+};
 
 export type SourceEntityType =
   | 'law'
@@ -14,7 +31,8 @@ export type SourceEntityType =
   | 'opendata'
   | 'custom';
 
-export type DisplayMode = 'callout' | 'card' | 'link';
+export type DisplayMode = ExternalSourceDisplayMode;
+
 
 export type StatusColor =
   | 'blue'

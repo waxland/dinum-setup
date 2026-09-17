@@ -4,7 +4,8 @@
   "type": "module",
   "workspaces": [
     "packages/*",
-    "documentation"
+    "documentation",
+    "demo"
   ],
   "scripts": {
     "dev": "npm --prefix documentation run dev",
@@ -14,6 +15,9 @@
     "docs:build": "npm run packages:build && npm --prefix documentation run build",
     "docs:preview": "npm --prefix documentation run preview",
     "docs:search": "npm --prefix documentation run search",
+    "demo:dev": "npm --prefix demo run dev",
+    "demo:build": "npm run packages:build && npm --prefix demo run build",
+    "demo:preview": "npm --prefix demo run preview",
     "packages:build": "npm --prefix packages/slash-sources-sdk run build && npm --prefix packages/blocknote-sources run build",
     "packages:test": "npm --prefix packages/slash-sources-sdk test && npm --prefix packages/blocknote-sources test"
   },

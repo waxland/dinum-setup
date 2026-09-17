@@ -1,7 +1,7 @@
 SHELL := /usr/bin/env bash
 
 ROOT_DIR := $(CURDIR)
-SRC_DIR ?= $(ROOT_DIR)/src
+SRC_DIR ?= $(ROOT_DIR)/LaSuite
 
 # Liste par defaut volontairement modifiable.
 # Exemple:
@@ -21,11 +21,18 @@ export accounts_URL ?= https://github.com/suitenumerique/accounts.git
 
 .PHONY: help
 help:
-	@printf "DINUM / La Suite dev setup\n\n"
-	@printf "Commandes principales:\n"
+	@printf "DINUM / La Suite dev setup (Monorepo 4 Piliers)\n\n"
+	@printf "Commandes Documentation & Demo:\n"
+	@printf "  make docs-dev           Lance le portail documentaire Zudoku (http://localhost:3000)\n"
+	@printf "  make docs-build         Compile la documentation Zudoku (SSR 270 routes)\n"
+	@printf "  make demo-dev           Lance le demonstrateur web standalone (http://localhost:5173)\n"
+	@printf "  make demo-build         Compile le demonstrateur web standalone\n"
+	@printf "  make packages-build     Compile les packages TypeScript (@suitenumerique/*)\n"
+	@printf "  make packages-test      Execute les 15 tests unitaires et RGAA\n\n"
+	@printf "Commandes Clones LaSuite:\n"
 	@printf "  make install            Installe les dependances systeme (Docker plugins, etc.)\n"
-	@printf "  make clone              Clone les depots dans ./src\n"
-	@printf "  make pull               Met a jour les depots deja clones\n"
+	@printf "  make clone              Clone les depots dans ./LaSuite\n"
+	@printf "  make pull               Met a jour les depots deja clones dans ./LaSuite\n"
 	@printf "  make env                Prepare les fichiers .env locaux connus\n"
 	@printf "  make bootstrap          Prepare les projets supportes\n"
 	@printf "  make dev                Lance les projets supportes en mode dev\n"
@@ -33,11 +40,9 @@ help:
 	@printf "  make status             Affiche les containers Docker actifs\n"
 	@printf "  make logs-docs          Suit les logs Docs\n"
 	@printf "  make logs-projects      Suit les logs Projects\n"
-	@printf "  make generate-docs-nav  Genere zudoku.navigation.tsx\n"
-	@printf "  make docs-dev           Lance la documentation en local\n"
 	@printf "\nExemples:\n"
 	@printf "  REPOS=\"docs projects\" make clone\n"
-	@printf "  SRC_DIR=/opt/lasuite/src make dev\n"
+	@printf "  SRC_DIR=/opt/lasuite/LaSuite make dev\n"
 
 .PHONY: check-tools
 check-tools:
@@ -237,3 +242,20 @@ docs-build: generate-docs-nav
 .PHONY: docs-preview
 docs-preview:
 	@npm run docs:preview
+
+.PHONY: demo-dev
+demo-dev:
+	@npm run demo:dev
+
+.PHONY: demo-build
+demo-build:
+	@npm run demo:build
+
+.PHONY: packages-build
+packages-build:
+	@npm run packages:build
+
+.PHONY: packages-test
+packages-test:
+	@npm run packages:test
+

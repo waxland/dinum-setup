@@ -10,7 +10,7 @@ Le dépôt est composé de trois couches distinctes à ne pas confondre :
 
 1. **Orchestration Racine :** Le `Makefile`, les configurations Docker (`docker-compose*.yml`) et les scripts d'environnement qui coordonnent les services locaux.
 2. **Portail Documentaire Zudoku (`documentation/`) :** L'application de documentation (`documentation/docs/`, `documentation/zudoku.config.tsx`, `documentation/zudoku.navigation.tsx`, `documentation/src/components/`, `documentation/public/`).
-3. **Dépôts Clones (`src/*`) :** Les applications indépendantes de La Suite (`docs`, `projects`, `meet`, `transfers`, `people`, `accounts`). Chaque application possède sa propre stack (Django, Next.js, Sails, etc.) et ses propres commandes.
+3. **Dépôts Clones (`LaSuite/*`) :** Les applications indépendantes de La Suite (`docs`, `projects`, `meet`, `transfers`, `people`, `accounts`). Chaque application possède sa propre stack (Django, Next.js, Sails, etc.) et ses propres commandes.
 
 ---
 

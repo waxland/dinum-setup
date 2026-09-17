@@ -11,19 +11,22 @@ dist/
 **/.env
 **/.env.local
 
-# Dépôts applicatifs clonés
-src/docs/
-src/projects/
-src/meet/
-src/transfers/
-src/people/
-src/accounts/
-src/docspec/
-src/grist/
-src/tchap/
-src/drive/
+# Dépôts applicatifs clonés de La Suite
+LaSuite/
+LaSuite/docs/
+LaSuite/projects/
+LaSuite/meet/
+LaSuite/transfers/
+LaSuite/people/
+LaSuite/accounts/
+LaSuite/docspec/
+LaSuite/grist/
+LaSuite/tchap/
+LaSuite/drive/
 
-# Packages autonomes (on ignore uniquement les builds et node_modules locaux)
+# Builds des sous-projets et packages
+documentation/dist/
+demo/dist/
 packages/*/dist/
 packages/*/node_modules/
 packages/*/.turbo/

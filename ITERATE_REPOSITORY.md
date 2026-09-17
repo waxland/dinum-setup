@@ -175,143 +175,28 @@ Ce pilier regroupe les 3 bibliothèques open source distribuables sur PyPI et np
 
 Ce pilier fournit une application web légère et autonome (Vite + React 19) permettant de faire une démonstration interactive de BlockNote et des 12 connecteurs souverains sur un site dédié, sans dépendre de l'infrastructure Docker de La Suite.
 
-#### A. 🗂️ Fichiers à Créer sous `demo/`
-- [ ] **Configuration du projet (`demo/package.json`) :**
+#### A. 🗂️ Fichiers Créés sous `demo/`
+- [x] **Configuration du projet (`demo/package.json`) :**
   - *Fichier :* `demo/package.json`
-  - *Contenu exact :*
-    ```json
-    {
-      "name": "@dinum/demo-sources",
-      "version": "1.0.0",
-      "private": true,
-      "type": "module",
-      "scripts": {
-        "dev": "vite --host 0.0.0.0 --port 5173",
-        "build": "tsc && vite build",
-        "preview": "vite preview --port 5173"
-      },
-      "dependencies": {
-        "@blocknote/core": "^0.54.2",
-        "@blocknote/mantine": "^0.54.2",
-        "@blocknote/react": "^0.54.2",
-        "@codegouvfr/react-dsfr": "^1.35.0",
-        "@suitenumerique/blocknote-sources": "*",
-        "@suitenumerique/slash-sources-sdk": "*",
-        "react": "^19.2.7",
-        "react-dom": "^19.2.7"
-      },
-      "devDependencies": {
-        "@types/react": "^19.3.0",
-        "@types/react-dom": "^19.3.0",
-        "@vitejs/plugin-react": "^4.3.4",
-        "typescript": "^5.9.2",
-        "vite": "^6.2.0"
-      }
-    }
-    ```
-- [ ] **Configuration TypeScript (`demo/tsconfig.json`) :**
+  - *Statut :* Créé avec workspaces `["@suitenumerique/*"]`, scripts `dev` (port 5173), `build` et `preview`.
+- [x] **Configuration TypeScript (`demo/tsconfig.json`) :**
   - *Fichier :* `demo/tsconfig.json`
-  - *Contenu exact :*
-    ```json
-    {
-      "compilerOptions": {
-        "target": "ES2022",
-        "lib": ["ESNext", "DOM", "DOM.Iterable"],
-        "module": "ESNext",
-        "moduleResolution": "Bundler",
-        "jsx": "react-jsx",
-        "strict": true,
-        "skipLibCheck": true,
-        "noEmit": true,
-        "paths": {
-          "@suitenumerique/blocknote-sources": ["../packages/blocknote-sources/src/index.ts"],
-          "@suitenumerique/blocknote-sources/*": ["../packages/blocknote-sources/src/*"],
-          "@suitenumerique/slash-sources-sdk": ["../packages/slash-sources-sdk/src/index.ts"],
-          "@suitenumerique/slash-sources-sdk/*": ["../packages/slash-sources-sdk/src/*"]
-        }
-      },
-      "include": ["src", "vite.config.ts"]
-    }
-    ```
-- [ ] **Configuration du Bundler (`demo/vite.config.ts`) :**
+  - *Statut :* Typage strict et alias de résolution vers `../packages/*`.
+- [x] **Configuration du Bundler (`demo/vite.config.ts`) :**
   - *Fichier :* `demo/vite.config.ts`
-  - *Contenu exact :*
-    ```typescript
-    import path from "node:path";
-    import { fileURLToPath } from "node:url";
-    import react from "@vitejs/plugin-react";
-    import { defineConfig } from "vite";
-
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
-
-    export default defineConfig({
-      plugins: [react()],
-      resolve: {
-        alias: {
-          "@suitenumerique/blocknote-sources/exporters": path.resolve(
-            __dirname,
-            "../packages/blocknote-sources/src/exporters/index.ts",
-          ),
-          "@suitenumerique/blocknote-sources": path.resolve(
-            __dirname,
-            "../packages/blocknote-sources/src/index.ts",
-          ),
-          "@suitenumerique/slash-sources-sdk": path.resolve(
-            __dirname,
-            "../packages/slash-sources-sdk/src/index.ts",
-          ),
-        },
-      },
-      server: {
-        port: 5173,
-        host: "0.0.0.0",
-      },
-    });
-    ```
-- [ ] **Page HTML Principale (`demo/index.html`) :**
+  - *Statut :* Plugin `@vitejs/plugin-react` et résolution d'alias.
+- [x] **Page HTML Principale (`demo/index.html`) :**
   - *Fichier :* `demo/index.html`
-  - *Contenu exact :*
-    ```html
-    <!DOCTYPE html>
-    <html lang="fr">
-      <head>
-        <meta charset="UTF-8" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Démonstrateur Sources Souveraines — BlockNote x DINUM</title>
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.12.1/dist/dsfr.min.css"
-        />
-      </head>
-      <body>
-        <div id="root"></div>
-        <script type="module" src="/src/main.tsx"></script>
-      </body>
-    </html>
-    ```
-- [ ] **Point d'Entrée React (`demo/src/main.tsx`) :**
+  - *Statut :* Conteneur `#root` et feuille de style DSFR officielle.
+- [x] **Point d'Entrée React (`demo/src/main.tsx`) :**
   - *Fichier :* `demo/src/main.tsx`
-  - *Contenu exact :*
-    ```tsx
-    import React from "react";
-    import ReactDOM from "react-dom/client";
-    import { App } from "./App";
-    import "./demo.css";
-
-    ReactDOM.createRoot(document.getElementById("root")!).render(
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>,
-    );
-    ```
-- [ ] **Composant d'Application Principal (`demo/src/App.tsx`) :**
+  - *Statut :* Initialisation React 19 avec `StrictMode`.
+- [x] **Composant d'Application Principal (`demo/src/App.tsx`) :**
   - *Fichier :* `demo/src/App.tsx`
-  - *Fonctionnalités :* En-tête officiel DSFR Marianne `#000091`, barre d'insertion rapide des 12 commandes slash (`/loi`, `/entreprise`, `/assemblee`, etc.), sélecteur de thème clair/sombre, éditeur BlockNote complet avec les 3 formats d'affichage DSFR permutables, et panneau de documentation latérale.
-- [ ] **Feuille de Style (`demo/src/demo.css`) :**
+  - *Statut :* Barre d'insertion des 12 commandes `/loi`, `/entreprise`, etc., sélecteur clair/sombre, éditeur BlockNote et custom blocks.
+- [x] **Feuille de Style (`demo/src/demo.css`) :**
   - *Fichier :* `demo/src/demo.css`
-  - *Styles :* Typographie Marianne, réactivité mobile, conteneur d'édition centré avec ombre douce.
+  - *Statut :* Tokens Marianne `#000091`, mise en page centré et dark mode.
 
 #### B. 🧪 Commandes de Validation Pilier 3
 ```bash
@@ -331,21 +216,19 @@ npm --prefix demo run build
 Ce pilier renomme l'espace de clone Git des 6 applications de La Suite Numérique de `src/` vers `LaSuite/` afin d'éliminer toute ambiguïté avec les sources de documentation ou des packages.
 
 #### A. 🛠️ Actions de Migration & Fichiers Modifiés
-- [ ] **Mise à jour du `Makefile` racine :**
-  - *Action :* Remplacer `SRC_DIR ?= $(ROOT_DIR)/src` par `SRC_DIR ?= $(ROOT_DIR)/LaSuite`.
-  - *Vérification :* Adapter les cibles `make clone`, `make pull`, `make dev`, `make stop`, `make logs-docs`, `make logs-projects`.
-- [ ] **Mise à jour du fichier `.gitignore` racine :**
-  - *Action :* Remplacer les règles obsolètes `src/docs/`, `src/projects/` par les règles `LaSuite/docs/`, `LaSuite/projects/`, etc.
-- [ ] **Mise à jour de `install.sh` :**
-  - *Action :* S'assurer que le script clone bien les dépôts dans `./LaSuite/`.
-- [ ] **Mise à jour du fichier `README.md` racine :**
-  - *Action :* Remplacer toute mention de `dans src/` par `dans LaSuite/`.
-- [ ] **Mise à jour de `AGENTS.md` :**
-  - *Action :* Mettre à jour la couche 3 : `3. Dépôts Clones (LaSuite/*)`.
-- [ ] **Création du dossier cible `LaSuite/` :**
-  - *Commande :* `mkdir -p LaSuite && touch LaSuite/.gitkeep`
-- [ ] **Nettoyage et suppression de l'ancien dossier `src/` racine :**
-  - *Commande :* Supprimer les anciens fichiers résiduels de `src/` désormais tous localisés sous `documentation/src/`.
+- [x] **Mise à jour du `Makefile` racine :**
+  - *Action :* Remplacement de `SRC_DIR ?= $(ROOT_DIR)/src` par `SRC_DIR ?= $(ROOT_DIR)/LaSuite`.
+  - *Vérification :* Cibles `make clone`, `make pull`, `make dev`, `make demo-dev`, `make demo-build`, `make packages-build`, `make packages-test` ajoutées.
+- [x] **Mise à jour du fichier `.gitignore` racine :**
+  - *Action :* Remplacement des règles `src/*` par `LaSuite/*`, `documentation/dist/` et `demo/dist/`.
+- [x] **Mise à jour du fichier `README.md` racine :**
+  - *Action :* Remplacement de `dans src/` par `dans LaSuite/` et mise à jour des liens vers `documentation/docs/`.
+- [x] **Mise à jour de `AGENTS.md` :**
+  - *Action :* Mise à jour de la couche 3 : `3. Dépôts Clones (LaSuite/*)`.
+- [x] **Création du dossier cible `LaSuite/` :**
+  - *Action :* `LaSuite/.gitkeep` créé.
+- [x] **Mise à jour de la documentation d'onboarding et d'architecture :**
+  - *Action :* Remplacement des chemins `src/docs/...` par `LaSuite/docs/...` dans `01-guide-configuration-serveur.mdx`, `hot-reload.mdx`, `lasuite-dev.mdx`, `index.mdx`, `workflow.mdx`, `transfers.mdx`, `people.mdx`, `accounts.mdx`.
 
 ---
 

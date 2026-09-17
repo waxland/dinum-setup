@@ -476,7 +476,6 @@ Cette TODO regroupe toutes les actions d'amélioration, d'harmonisation et de pu
 - [ ] Configurer le moteur de recherche plein texte Pagefind sur le portail Zudoku
 
 ---
-
 ## 📜 10. Conclusion de l'Audit
 
 Le portail documentaire `dinum-setup` atteint un **niveau d'excellence industrielle, de clarté architecturale et d'alignement avec les standards de l'État remarquable** :

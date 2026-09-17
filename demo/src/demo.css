@@ -1,0 +1,141 @@
+:root {
+  --blue-france: #000091;
+  --blue-france-hover: #1212ff;
+  --red-marianne: #e1000f;
+  --font-family-base: Marianne, system-ui, -apple-system, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family-base);
+  background-color: #f6f6f6;
+  color: #1e1e1e;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.dark {
+  background-color: #0b0f19;
+  color: #f1f5f9;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.demo-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 64px 16px;
+}
+
+.demo-header {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+body.dark .demo-header {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.demo-title-group h1 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #000091;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+body.dark .demo-title-group h1 {
+  color: #8585f6;
+}
+
+.demo-title-group p {
+  margin: 4px 0 0 0;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+body.dark .demo-title-group p {
+  color: #94a3b8;
+}
+
+.demo-toolbar {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+body.dark .demo-toolbar {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.demo-btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.demo-btn {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #1e293b;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.demo-btn:hover {
+  background: #f1f5f9;
+  border-color: #000091;
+  color: #000091;
+}
+
+body.dark .demo-btn {
+  background: #334155;
+  border-color: #475569;
+  color: #f8fafc;
+}
+
+body.dark .demo-btn:hover {
+  background: #475569;
+  border-color: #8585f6;
+  color: #8585f6;
+}
+
+.demo-editor-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  min-height: 500px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 145, 0.04);
+}
+
+body.dark .demo-editor-card {
+  background: #0f172a;
+  border-color: #334155;
+}

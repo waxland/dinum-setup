@@ -1,17 +1,15 @@
-import { SourceProviderDefinition } from './types';
+import { ExternalSourceProviderDefinition } from './types';
 
 /**
- * Helper function to declare a type-safe sovereign source provider for La Suite Numérique.
- * Allows ministries, public operators and developers to implement a compliant connector in < 15 min.
+ * Helper function to declare a type-safe external source provider for BlockNote.
+ * Allows ministries, public operators and developers worldwide to implement a compliant connector in < 15 min.
  *
  * @example
  * ```typescript
- * import { defineSourceProvider } from '@suitenumerique/slash-sources-sdk';
+ * import { defineSourceProvider } from '@blocknote/source-provider-sdk';
  *
  * export const justiceProvider = defineSourceProvider({
- *   type: 'custom',
  *   name: 'Casier Judiciaire National',
- *   iconName: 'gavel',
  *   slashCommand: 'casier',
  *   slashAliases: ['cjn', 'justice', 'bulletin'],
  *   description: 'Consulter et référencer les textes du Casier Judiciaire',
@@ -22,11 +20,8 @@ import { SourceProviderDefinition } from './types';
  * ```
  */
 export function defineSourceProvider(
-  definition: SourceProviderDefinition,
-): SourceProviderDefinition {
-  if (!definition.type) {
-    throw new Error('[SlashSourcesSDK] Provider definition must declare a valid `type`.');
-  }
+  definition: ExternalSourceProviderDefinition,
+): ExternalSourceProviderDefinition {
   if (!definition.name || definition.name.trim().length === 0) {
     throw new Error('[SlashSourcesSDK] Provider definition must declare a non-empty `name`.');
   }
@@ -43,5 +38,11 @@ export function defineSourceProvider(
     throw new Error('[SlashSourcesSDK] Provider definition must provide a `getDetail` async method.');
   }
 
-  return Object.freeze({ ...definition });
+  const normalized = {
+    ...definition,
+    type: definition.type || 'custom',
+    iconName: definition.iconName || 'database',
+  };
+
+  return Object.freeze(normalized);
 }

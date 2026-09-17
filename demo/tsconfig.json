@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "paths": {
+      "@suitenumerique/blocknote-sources": ["../packages/blocknote-sources/src/index.ts"],
+      "@suitenumerique/blocknote-sources/*": ["../packages/blocknote-sources/src/*"],
+      "@suitenumerique/slash-sources-sdk": ["../packages/slash-sources-sdk/src/index.ts"],
+      "@suitenumerique/slash-sources-sdk/*": ["../packages/slash-sources-sdk/src/*"]
+    }
+  },
+  "include": ["src", "vite.config.ts"]
+}
