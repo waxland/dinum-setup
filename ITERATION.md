@@ -432,16 +432,52 @@ Création de **33 nouveaux documents techniques et métier** garantissant une sy
 
 ---
 
-### 📊 Tableau de Bord Récapitulatif Final (Itération n°7)
+### 📊 Tableau de Bord Récapitulatif (Itération n°7)
 
 | Composant / Livrable | Statut Qualité | Preuve de Validation |
 | :--- | :---: | :--- |
-| **Portail Zudoku (`docs/`)** | ✅ 100% Validé | 153 fichiers, 262 routes HTML pré-rendues, 0 erreur SSR |
-| **Audit & Stratégie (`AUDIT_DOCS.md`)** | ✅ Consolidé | Recensement complet, 6 points sensibles, 8 questions, TODOs en 4 phases |
+| **Portail Zudoku (`docs/`)** | ✅ 100% Validé | 152 fichiers, 270 routes HTML pré-rendues, 0 erreur SSR |
+| **Audit & Stratégie (`AUDIT_DOCS.md`)** | ✅ Consolidé | Recensement complet, 6 points sensibles, 8 décisions actées, TODOs en 4 phases |
 | **Plan d'Action (`TODO_NEXT_STEP.md`)** | ✅ Aligné | Étapes 1 à 5 validées, procédure 3 commandes / 3 lignes |
 | **Stratégie Packages (`TODO_PACKAGE.md`)** | ✅ Aligné | Architecture des 3 packages découplés |
+| **Section PR Dédiée (`docs/09-PR/`)** | ✅ Déployé | PR 1 (Serveur/VM), PR 2 (Packages Opt-in), PR 3 (BlockNote RFC), Guide d'arbitrage |
 | **Package Python `django-lasuite-sources`** | ✅ 100% Validé | 21 modules compilés, 12 connecteurs, cache Redis SHA-256 |
 | **Package TS `@suitenumerique/blocknote-sources`** | ✅ 100% Validé | 12 tests unitaires, 3 formats DSFR, popover Cunningham, mappers d'export |
 | **Package SDK `@suitenumerique/slash-sources-sdk`** | ✅ 100% Validé | 3 tests Vitest, `defineSourceProvider()` immuable |
-| **Dossier de PR Officielle GitHub** | ✅ Prêt à soumettre | `docs/08-slash/00-PR/00-dossier-pull-request-officielle.mdx` |
-| **Dossier de RFC Amont BlockNote** | ✅ Prêt à soumettre | `docs/08-slash/00-PR/04-proposition-amont-blocknote.mdx` |
+
+---
+
+## 📅 Itération n°8 — 17 Septembre 2026 : Intégration des Arbitrages DINUM & Isolation de la Section 09-PR
+
+### 🎯 Objectifs de l'Itération
+1. **Acter les réponses formelles aux 8 questions stratégiques de l'audit :**
+   - Gouvernance : `@suitenumerique` en priorité, option de fallback privée/`waxland`.
+   - PR Docs : Soumission immédiate avec mention d'une activation progressive par lot de connecteurs.
+   - PR BlockNote : Package communautaire `@blocknote/xl-external-sources` avec proposition de graduation core.
+   - Liseré Marianne : `#000091` DSFR par défaut + prop optionnelle `borderColor`.
+   - Albert IA : Fonctionnement RAG propre et autonome sans entremêlement complexe.
+   - Abrogation : Indicateur visuel direct dans le document (zéro push Tchap invasif).
+   - Recherche & Storybook : Validation de l'intégration Pagefind et du Storybook dédié.
+2. **Créer la section dédiée `docs/09-PR/` :**
+   - `01-docs-serveur-config.mdx` : PR 1 pour `suitenumerique/docs` (VM / Hairpin NAT / `API_ORIGIN`).
+   - `02-docs-packages-souverains.mdx` : PR 2 pour `suitenumerique/docs` (Packages souverains & opt-in modulaire).
+   - `03-blocknote-external-sources.mdx` : PR 3 pour `TypeCellOS/BlockNote` (RFC & extension communautaire).
+   - `04-guide-d-arbitrage-et-migration.mdx` : Matrice décisionnelle Monolithe vs Packages.
+   - `index.mdx` : Hub des contributions Git.
+3. **Supprimer l'ancien sous-dossier `docs/08-slash/00-PR/`** et rediriger les routes.
+4. **Mettre à jour le header Zudoku (`zudoku.config.tsx`)** avec le bouton `🚀 PRs Officielles`.
+5. **Valider les tests et la compilation SSR Zudoku :** `npm run packages:test` (15/15) et `npm run docs:build` (**270 routes pré-rendues, 0 erreur**).
+
+---
+
+### 📊 Tableau de Bord Récapitulatif Final
+
+| Périmètre | Action Menée | Statut |
+| :--- | :--- | :---: |
+| `docs/09-PR/` | Création de la section dédiée catégorisée par dépôt | ✅ 5 / 5 fichiers créés |
+| `docs/08-slash/00-PR/` | Suppression de l'ancien dossier imbriqué | ✅ Supprimé & Redirigé |
+| `zudoku.config.tsx` | Ajout du raccourci `🚀 PRs Officielles` dans le header | ✅ Mis à jour |
+| `AUDIT_DOCS.md` | Actualisation avec les 8 décisions formelles actées | ✅ Consolidé |
+| `TODO_NEXT_STEP.md` | Mise à jour des liens vers `docs/09-PR/` | ✅ Actualisé |
+| Tests TypeScript | Vitest unitaire & accessibilité (`packages:test`) | ✅ 15 / 15 réussis |
+| Portail Zudoku | Compilation SSR de production (`docs:build`) | ✅ 270 routes, 0 erreur |

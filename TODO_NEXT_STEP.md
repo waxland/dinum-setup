@@ -186,23 +186,22 @@ Cette étape correspond exactement au contenu minimaliste de l'unique Pull Reque
 
 ---
 
-### 🏛️ ÉTAPE 4 : Documentation Complète de la Pull Request dans `docs/`
+### 🏛️ ÉTAPE 4 : Documentation Complète des Pull Requests dans `docs/09-PR/`
 
-- [x] **Dossier Explicatif Global des PRs :** `docs/08-slash/00-PR/index.mdx`
-- [x] **Spécification PR 1 (Monolithe In-Tree) :** `docs/08-slash/00-PR/01-pr-interne-monolithique.mdx`
-- [x] **Spécification PR 2 (Packagée Low-Code) :** `docs/08-slash/00-PR/02-pr-externe-packagee.mdx`
-- [x] **Guide d'Arbitrage & Grille de Décision :** `docs/08-slash/00-PR/03-guide-d-arbitrage-et-migration.mdx`
-- [x] **Dossier Markdown Prêt à Soumettre sur GitHub :** `docs/08-slash/00-PR/00-dossier-pull-request-officielle.mdx`
-  - *Contenu :* Titre officiel, Résumé exécutif, Table des fichiers touchés, Diff Git complet, Procédure de test pas-à-pas, Matrice de sécurité & conformité RGAA.
+- [x] **Hub des Pull Requests Catégorisées :** `docs/09-PR/index.mdx`
+- [x] **PR 1 : Support Serveurs Distants & VMs (Docs) :** `docs/09-PR/01-docs-serveur-config.mdx`
+- [x] **PR 2 : Intégration Packages Souverains & Activation Progressive (Docs) :** `docs/09-PR/02-docs-packages-souverains.mdx`
+- [x] **PR 3 : RFC & Extension Communautaire BlockNote :** `docs/09-PR/03-blocknote-external-sources.mdx`
+- [x] **Guide d'Arbitrage Stratégique & Matrice Décision :** `docs/09-PR/04-guide-d-arbitrage-et-migration.mdx`
 
 ---
 
 ### 🌐 ÉTAPE 5 : Contribution Amont vers l'Écosystème `TypeCell/BlockNote`
 
-- [x] **Rédaction de la RFC / Proposition Amont :** Spécification du standard d'intégration de sources de données distantes dans BlockNote (`docs/08-slash/00-PR/04-proposition-amont-blocknote.mdx`).
-- [x] **Spécification du Package Communautaire :** Définition de l'interface `ExternalSourceBlockSpec` et des 3 formats universels.
+- [x] **Rédaction de la RFC / Proposition Amont :** Spécification du standard d'intégration de sources de données distantes dans BlockNote (`docs/09-PR/03-blocknote-external-sources.mdx`).
+- [x] **Spécification du Package Communautaire :** Définition de l'interface `ExternalSourceBlockSpec` et des 3 formats universels avec liseré personnalisable.
 - [x] **Mappeurs d'Exportation Multi-Formats :** Spécification des adaptateurs pour `@blocknote/xl-pdf-exporter`, `@blocknote/xl-docx-exporter` et `@blocknote/xl-odt-exporter`.
-- [x] **Template de RFC GitHub Prêt à Soumettre :** Modèle complet prêt pour ouverture d'une issue sur `TypeCellOS/BlockNote`.
+- [x] **Template de RFC GitHub Prêt à Soumettre :** Modèle complet rédigé en anglais, prêt pour ouverture d'une issue sur `TypeCellOS/BlockNote`.
 
 ---
 
@@ -211,7 +210,7 @@ Cette étape correspond exactement au contenu minimaliste de l'unique Pull Reque
 | Étape | Critère d'Acceptation Observable | Méthode de Validation | Preuve Attendue |
 | :--- | :--- | :--- | :--- |
 | **Packages Build** | Compilation TypeScript et Python sans erreur | `npm run packages:build` | Fichiers `dist/index.mjs` et `dist/index.d.ts` générés. |
-| **Docs Portal** | Zéro erreur de build et pré-rendu de toutes les pages | `npm run docs:build` | 272 routes générées avec succès par Zudoku. |
+| **Docs Portal** | Zéro erreur de build et pré-rendu de toutes les pages | `npm run docs:build` | 262 routes générées avec succès par Zudoku. |
 | **Typage Strict** | Zéro `any`, zéro type assertion non sécurisée (`as ...`) | `npm run typecheck` / `tsc --noEmit` | 0 avertissement TypeScript. |
 | **Pureté UI** | Zéro Tailwind CSS et zéro `@mantine/core` dans l'UI | Audit grep dans `src/` | 0 classe Tailwind et 0 import `@mantine/core` dans les vues. |
 | **Accessibilité** | Navigation clavier intégrale, ARIA complet et focus | Test manuel & Playwright | Focus visible, touches `↑`/`↓`/`Entrée`/`Échap` opérationnelles. |
@@ -221,7 +220,7 @@ Cette étape correspond exactement au contenu minimaliste de l'unique Pull Reque
 
 ## 📜 5. Conclusion & Prochaine Action Immédiate
 
-Toutes les fondations des packages autonomes, des connecteurs en 3 pôles et de la documentation sont prêtes et validées. L'ouverture de l'unique PR sur `suitenumerique/docs` et de la RFC amont sur `TypeCellOS/BlockNote` peuvent être effectuées selon les dossiers `docs/08-slash/00-PR/00-dossier-pull-request-officielle.mdx` et `docs/08-slash/00-PR/04-proposition-amont-blocknote.mdx`.
+Toutes les fondations des packages autonomes, des connecteurs en 3 pôles et de la documentation sont prêtes et validées. L'ouverture des PRs sur `suitenumerique/docs` et de la RFC amont sur `TypeCellOS/BlockNote` peuvent être effectuées selon les dossiers `docs/09-PR/01-docs-serveur-config.mdx`, `docs/09-PR/02-docs-packages-souverains.mdx` et `docs/09-PR/03-blocknote-external-sources.mdx`.
 
 
 

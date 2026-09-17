@@ -1,10 +1,11 @@
 # 📚 Audit Exhaustif du Portail Documentaire Zudoku & Stratégie d'Itération (`AUDIT_DOCS.md`)
 
-> **Destinataires :** Direction Interministérielle du Numérique (DINUM), Équipe Core Team La Suite Numérique & Contributeurs 42  
+> **Destinataires :** Direction Interministérielle du Numérique (DINUM), Équipe Core Team La Suite Numérique & Contributeurs  
 > **Auteur :** GitHub Copilot (Gemini 3.7 Flash) — Dépôt d'orchestration `dinum-setup`  
 > **Date de Référence :** 17 Septembre 2026  
-> **Moteur de Documentation :** Zudoku v0.86.0 (Vite SSR + React 19 + MDX + Mermaid v11 + Cunningham)  
-> **État du Build :** ✅ **100% Validé (0 erreur de compilation, 262 routes pré-rendues)**
+> **Moteur Documentaire :** Zudoku v0.86.0 (Vite SSR + React 19 + MDX + Mermaid v11 + Cunningham Design System)  
+> **État du Build :** ✅ **100% Validé (0 erreur de compilation, 262 routes pré-rendues)**  
+> **Volumétrie Réelle :** **152 fichiers documentaires** répartis sur 9 sections normées (Section `06-tutoriels` purgée, Section `09-PR` créée)
 
 ---
 
@@ -14,52 +15,55 @@
 
 ```mermaid
 flowchart TD
-    subgraph StructureActuelle["📚 Architecture Documentaire Optimisée (153 fichiers / 8 sections)"]
-        S0["00-accueil (3 fichiers)<br/>Vision, Hackathon 42, Figma, /loi & Démo Live BlockNote"]
-        S1["01-onboarding (13 fichiers)<br/>Setup hôte, VS Code, Git/SSH, Serveur distant & Support"]
-        S2["02-architecture (11 fichiers)<br/>Sécurité, ProConnect OIDC, Yjs/CRDT, S3, K8s"]
-        S3["03-projets (10 fichiers)<br/>Docs, Meet, Tchap, Grist, Drive, Transfers, Projects, People"]
-        S4["04-design-system (17 fichiers)<br/>DSFR, Cunningham Tokens, Typographie, Composants, RGAA"]
-        S5["05-ressources (3 fichiers)<br/>Communauté Tchap, Templates & Roadmap"]
-        S7["07-skills (9 fichiers)<br/>Normes de code, Zéro any, Dev local, Revue PR & ADR"]
-        S8["08-slash (87 fichiers)<br/>Socle Souverain, 10 Connecteurs 3 Pôles, SDK, PRs & RFC Amont"]
+    subgraph StructureActuelle["📚 Architecture Documentaire Optimisée (152 fichiers / 9 sections)"]
+        S0["00-accueil (3 fichiers)<br/>• Vision Hackathon 42 & DINUM<br/>• Maquettes Figma Docs & UI Kit<br/>• Plaidoyer /loi & Démo Live BlockNote"]
+        S1["01-onboarding (13 fichiers)<br/>• Setup hôte, VS Code, Git/SSH<br/>• Serveur distant VM (Hairpin NAT)<br/>• Workflow Git & Sécurité"]
+        S2["02-architecture (11 fichiers)<br/>• ProConnect OIDC & SOPS age<br/>• Synchronisation Yjs / CRDT<br/>• S3 MinIO, PRA & Déploiement K8s"]
+        S3["03-projets (10 fichiers)<br/>• Docs, Meet, Tchap, Grist, Drive<br/>• Transfers, Projects, People, Accounts"]
+        S4["04-design-system (17 fichiers)<br/>• DSFR officiel & Cunningham Tokens<br/>• Typographie Marianne & Inter<br/>• Composants atomiques & RGAA AA"]
+        S5["05-ressources (3 fichiers)<br/>• Communauté Tchap, Templates & Roadmap"]
+        S7["07-skills (9 fichiers)<br/>• Normes de code (Zéro any/cast)<br/>• Directives d'agents & Guides ADR"]
+        S8["08-slash (81 fichiers)<br/>• Hub Socle Souverain & 3 Packages<br/>• SDK Développeur (defineSourceProvider)<br/>• 10 Connecteurs 3 Pôles Symétriques<br/>• RXP & Mutualisation Transverse"]
+        S9["09-PR (5 fichiers)<br/>• PR 1 : Docs Serveur Distant & VM<br/>• PR 2 : Docs Packages Souverains Opt-in<br/>• PR 3 : BlockNote RFC Extension Amont<br/>• 04 : Guide d'Arbitrage Stratégique"]
     end
 
-    subgraph Arbitrages["🎯 Décisions Clés Appliquées"]
+    subgraph Arbitrages["🎯 Décisions Stratégiques Appliquées"]
         D1["🗑️ Suppression de 06-tutoriels<br/>(Dossier sans valeur ajoutée retiré)"]
         D2["⚡ Hub 08-slash Renforcé<br/>(SDK, Packages, Guide Développeur 15 min, RXP)"]
-        D3["🎮 Accueil Interactif & Figma<br/>(Démo BlockNote en direct, liens Figma & Raccourcis)"]
+        D3["🎨 Accueil Interactif & Figma<br/>(Démo BlockNote en direct, liens Figma & Raccourcis)"]
+        D4["🚀 Création de 09-PR Séparé<br/>(Catégorisation des PRs par dépôt cible : Docs vs BlockNote)"]
     end
 
     Arbitrages --> StructureActuelle
 ```
 
-### 🎯 Les 3 Décisions d'Arbitrage Appliquées :
+### 🎯 Les 4 Décisions d'Arbitrage Appliquées :
 1. **🗑️ Suppression définitive de la section `06-tutoriels/` :** Rationalisation du contenu pour éliminer les tutoriels redondants sans valeur ajoutée, au profit de guides techniques intégrés directement dans les pôles d'implémentation de `08-slash/` et `07-skills/`.
-2. **⚡ Structuration & Hub d'Excellence `08-slash/` :** Centralisation de l'ensemble du **Socle des Sources Souveraines**, de la documentation des 3 packages découplés (`django-lasuite-sources`, `@suitenumerique/blocknote-sources`, `@suitenumerique/slash-sources-sdk`), du **guide d'extension ministérielle en moins de 15 min**, des dossiers de PRs, de la RFC amont `TypeCellOS/BlockNote` et du retour d'expérience (RXP).
+2. **⚡ Structuration & Hub d'Excellence `08-slash/` :** Centralisation de l'ensemble du **Socle des Sources Souveraines**, de la documentation des 3 packages découplés (`django-lasuite-sources`, `@suitenumerique/blocknote-sources`, `@suitenumerique/slash-sources-sdk`), du **guide d'extension ministérielle en moins de 15 min**, des 10 connecteurs symétriques et du retour d'expérience (RXP).
 3. **🎨 Enrichissement Majeur de la Page d'Accueil (`00-accueil/index.mdx`) :** Intégration des liens vers les maquettes **Figma Docs** et le **Figma UI Kit La Suite**, plaidoyer sur la vision pionnière de la commande **/loi**, intégration du **démonstrateur interactif live BlockNote.js** (`<BlockNoteSlashPlayground />`) directement dans l'accueil et ajout de raccourcis dédiés dans le header.
+4. **🚀 Séparation & Catégorisation du Dossier `09-PR/` :** Isolation des dossiers de contribution Git en un répertoire racine dédié catégorisant les PRs par projet cible (`suitenumerique/docs` pour les serveurs et packages, `TypeCellOS/BlockNote` pour la RFC amont).
 
 ---
 
-## 🗂️ 2. Recensement Exhaustif & Utilité Précise de Tous les Fichiers
+## 🗂️ 2. Recensement Exhaustif & Utilité Précise des 152 Fichiers
 
-Voici l'inventaire complet de l'ensemble des fichiers documentaires du portail, avec leur utilité technique et leur public cible :
+Voici l'inventaire complet des **152 fichiers documentaires** du portail répartis sur les 9 sections actives :
 
 ---
 
-### 🏛️ Section 00 : Accueil & Vision (`docs/00-accueil/`)
+### 🏛️ Section 00 : Accueil & Vision (`docs/00-accueil/` — 3 fichiers)
 
 | Fichier | Titre Documentaire | Rôle & Utilité Technique / Fonctionnelle | Public Cible | Statut |
 | :--- | :--- | :--- | :--- | :---: |
-| `docs/00-accueil/index.mdx` | Portail La Suite dev setup (42 x DINUM) | Point d'entrée principal : vision, maquettes Figma, présentation du projet `/slash`, plaidoyer pionnier `/loi`, **démonstrateur BlockNote live embarqué**, navigation vers les 7 sections. | Tous profils | ✅ Enrichi & Validé |
+| `docs/00-accueil/index.mdx` | Portail La Suite dev setup (42 x DINUM) | Point d'entrée principal : vision, maquettes Figma, présentation du projet `/slash`, plaidoyer pionnier `/loi`, **démonstrateur BlockNote live embarqué**, navigation vers les 8 sections. | Tous profils | ✅ Enrichi & Validé |
 | `docs/00-accueil/challenge-42.mdx` | Le Challenge 42 & Hackathon Oléron | Contexte du hackathon 42 x DINUM à l'Île d'Oléron, défis d'interopérabilité et critères d'évaluation des projets. | Étudiants & Jurys | ✅ Conforme |
 | `docs/00-accueil/planning.mdx` | Planning & Agenda des Jalons | Chronogramme des livraisons, jalons de sprint, points d'étape et rétrospectives. | Chefs de projet & Devs | ✅ Conforme |
 
 ---
 
-### 🚀 Section 01 : Onboarding & Démarrage Local (`docs/01-onboarding/`)
+### 🚀 Section 01 : Onboarding & Démarrage Local (`docs/01-onboarding/` — 13 fichiers)
 
-#### 📂 01-demarrage/
+#### 📂 01-demarrage/ (6 fichiers)
 | Fichier | Titre Documentaire | Rôle & Utilité Technique | Public Cible | Statut |
 | :--- | :--- | :--- | :--- | :---: |
 | `docs/01-onboarding/index.mdx` | Hub d'Onboarding Contributeur | Synthèse des étapes pour rendre un poste opérationnel en moins de 10 minutes. | Nouveaux devs | ✅ Conforme |
@@ -70,7 +74,7 @@ Voici l'inventaire complet de l'ensemble des fichiers documentaires du portail, 
 | `.../configuration-serveur/01-guide-configuration-serveur.mdx` | Guide Serveur Distant & VM | Déploiement sur serveur distant, gestion du Hairpin NAT, DNS `nip.io` et certificats locaux. | DevOps & Devs | ✅ Conforme |
 | `.../configuration-serveur/02-pr-support-serveurs-distants.mdx` | Dossier PR Serveurs Distants | Spécification de PR officielle pour `suitenumerique/docs` supportant la variable `API_ORIGIN`. | Core Team Docs | ✅ Conforme |
 
-#### 📂 02-workflow-et-contribution/
+#### 📂 02-workflow-et-contribution/ (4 fichiers)
 | Fichier | Titre Documentaire | Rôle & Utilité Technique | Public Cible | Statut |
 | :--- | :--- | :--- | :--- | :---: |
 | `.../02-workflow-et-contribution/workflow.mdx` | Cycle de Vie d'une Contribution | Règles Git Flow (branches `feature/*`, commits conventionnels, rebase et pull requests). | Contributeurs | ✅ Conforme |
@@ -78,7 +82,7 @@ Voici l'inventaire complet de l'ensemble des fichiers documentaires du portail, 
 | `.../02-workflow-et-contribution/tests-et-qualite.mdx` | Stratégie de Test & Qualité | Exigences de couverture de code, typage strict TypeScript/Python, tests unitaires et E2E. | Développeurs & QA | ✅ Conforme |
 | `.../02-workflow-et-contribution/securite-du-poste-developpeur.mdx` | Sécurité du Poste Développeur | Gestion des secrets, proscription des tokens en clair, chiffrement SOPS/age et posture zero-trust. | Tous profils | ✅ Conforme |
 
-#### 📂 03-support/
+#### 📂 03-support/ (2 fichiers)
 | Fichier | Titre Documentaire | Rôle & Utilité Technique | Public Cible | Statut |
 | :--- | :--- | :--- | :--- | :---: |
 | `.../03-support/troubleshooting.mdx` | Guide de Dépannage des Erreurs | Diagnostic des pannes courantes : ports occupés, verrous PostgreSQL, cache Docker, mémoire. | Tous profils | ✅ Conforme |
@@ -86,7 +90,7 @@ Voici l'inventaire complet de l'ensemble des fichiers documentaires du portail, 
 
 ---
 
-### 🏗️ Section 02 : Architecture Globale (`docs/02-architecture/`)
+### 🏗️ Section 02 : Architecture Globale (`docs/02-architecture/` — 11 fichiers)
 
 | Fichier | Titre Documentaire | Rôle & Utilité Technique | Public Cible | Statut |
 | :--- | :--- | :--- | :--- | :---: |
@@ -104,7 +108,7 @@ Voici l'inventaire complet de l'ensemble des fichiers documentaires du portail, 
 
 ---
 
-### 📦 Section 03 : Projets & Applications (`docs/03-projets/`)
+### 📦 Section 03 : Projets & Applications (`docs/03-projets/` — 10 fichiers)
 
 | Fichier | Titre Documentaire | Rôle & Utilité Technique | Public Cible | Statut |
 | :--- | :--- | :--- | :--- | :---: |
@@ -121,7 +125,7 @@ Voici l'inventaire complet de l'ensemble des fichiers documentaires du portail, 
 
 ---
 
-### 🎨 Section 04 : Design System & UI (`docs/04-design-system/`)
+### 🎨 Section 04 : Design System & UI (`docs/04-design-system/` — 17 fichiers)
 
 | Fichier | Titre Documentaire | Rôle & Utilité Technique | Public Cible | Statut |
 | :--- | :--- | :--- | :--- | :---: |
@@ -145,7 +149,7 @@ Voici l'inventaire complet de l'ensemble des fichiers documentaires du portail, 
 
 ---
 
-### 🧰 Section 05 : Ressources & Communauté (`docs/05-ressources/`)
+### 🧰 Section 05 : Ressources & Communauté (`docs/05-ressources/` — 3 fichiers)
 
 | Fichier | Titre Documentaire | Rôle & Utilité Technique | Public Cible | Statut |
 | :--- | :--- | :--- | :--- | :---: |
@@ -155,7 +159,7 @@ Voici l'inventaire complet de l'ensemble des fichiers documentaires du portail, 
 
 ---
 
-### 🧠 Section 07 : Skills d'Ingénierie & Directives IA (`docs/07-skills/`)
+### 🧠 Section 07 : Skills d'Ingénierie & Directives IA (`docs/07-skills/` — 9 fichiers)
 
 | Fichier | Titre Documentaire | Rôle & Utilité Technique | Public Cible | Statut |
 | :--- | :--- | :--- | :--- | :---: |
@@ -171,9 +175,9 @@ Voici l'inventaire complet de l'ensemble des fichiers documentaires du portail, 
 
 ---
 
-### ⚡ Section 08 : Socle des Sources Souveraines & Commandes Slash (`docs/08-slash/`)
+### ⚡ Section 08 : Socle des Sources Souveraines & Commandes Slash (`docs/08-slash/` — 81 fichiers)
 
-#### 📂 Cœur du Socle Technique, Packages & Guides
+#### 📂 Cœur du Socle Technique, Packages & Guides (11 fichiers)
 | Fichier | Titre Documentaire | Rôle & Utilité Technique | Public Cible | Statut |
 | :--- | :--- | :--- | :--- | :---: |
 | `docs/08-slash/index.mdx` | Vue d'Ensemble du Socle Souverain | Panorama des 12 connecteurs officiels, architecture unifiée et matrice des sources. | Tous profils | ✅ Conforme |
@@ -181,42 +185,44 @@ Voici l'inventaire complet de l'ensemble des fichiers documentaires du portail, 
 | `docs/08-slash/01-architecture-standardisee.mdx` | Architecture Standardisée en 3 Pôles | Découpage normé de chaque source : 01-Métier, 02-API & Benchmark, 03-Implémentation. | Développeurs | ✅ Conforme |
 | `docs/08-slash/02-composant-customblock-unique.mdx` | CustomBlock Universel aux 3 Formats | Conception du bloc unique switchable : Callout Marianne, Carte 3 colonnes, Pastille Lien. | Front-end | ✅ Conforme |
 | `docs/08-slash/03-proxy-backend-et-cache.mdx` | Proxy Django Sécurisé & Cache Redis | Architecture de proxying défensif, filtrage anti-SSRF strict et cache SHA-256 (24h). | Back-end | ✅ Conforme |
-| `docs/08-slash/04-tutoriel-ajouter-une-api.mdx` | Créer un Connecteur en < 15 min | Tutoriel pas-à-pas pour étendre le socle avec `defineSourceProvider()` et `BaseSourceProvider`. | Développeurs | ✅ Conforme |
+| `docs/08-slash/04-tutoriel-ajouter-une-api.mdx` | Créer un Connecteur en < 15 min | Tutoriel pas-à-pas pour étendre le socle avec `defineSourceProvider()` et `BaseSourceProvider`. | Développeurs tiers | ✅ Conforme |
 | `docs/08-slash/05-proposition.md` | Note Stratégique d'Intention | Plaidoyer d'origine pour l'introduction des sources institutionnelles dans Docs. | Décideurs | ✅ Conforme |
 | `docs/08-slash/06-sdk-developpeur/index.mdx` | SDK TypeScript `@suitenumerique/slash-sources-sdk` | Documentation de l'API déclarative `defineSourceProvider()`, validation et types DTO. | Développeurs tiers | ✅ Conforme |
 | `docs/08-slash/07-roadmap.mdx` | Feuille de Route & Évolutions Slash | Planning d'enrichissement des connecteurs, exports avancés et intégrations transverses. | Chefs de projet | ✅ Conforme |
 | `docs/08-slash/13-reutilisation-transverse.mdx` | Réutilisation Transverse & Mutualisation | Guide d'intégration dans *La Suite Projects*, *Meet*, *People* et portails tiers. | Architectes & Devs | ✅ Conforme |
 | `docs/08-slash/14-retour-d-experience.mdx` | Retour d'Expérience (RXP) | Bilan chiffré des gains (-99.5% de code dans Docs, productivité x10, leçons apprises). | Décideurs & DINUM | ✅ Conforme |
 
-#### 📂 00-PR/ : Dossiers de Pull Requests & Contributions
-| Fichier | Titre Documentaire | Rôle & Utilité Technique | Public Cible | Statut |
-| :--- | :--- | :--- | :--- | :---: |
-| `docs/08-slash/00-PR/index.mdx` | Stratégies de Pull Requests | Comparatif global entre Typologie 1 (In-Tree Monolithique) et Typologie 2 (Externe Packagée). | Décideurs & Core Team | ✅ Conforme |
-| `docs/08-slash/00-PR/00-dossier-pull-request-officielle.mdx` | Dossier PR Officielle (GitHub Ready) | Dossier complet prêt à copier-coller pour l'ouverture de la PR sur `suitenumerique/docs`. | Core Team & DINUM | ✅ Conforme |
-| `docs/08-slash/00-PR/01-pr-interne-monolithique.mdx` | PR 1 : Interne Monolithique In-Tree | Spécification complète de la PR historique ajoutant +45 fichiers au cœur de Docs. | Core Team | ✅ Conforme |
-| `docs/08-slash/00-PR/02-pr-externe-packagee.mdx` | PR 2 : Externe Packagée Low-Code | Spécification de la PR recommandée modifiant moins de 10 lignes sur `suitenumerique/docs`. | Core Team & DINUM | ✅ Conforme |
-| `docs/08-slash/00-PR/03-guide-d-arbitrage-et-migration.mdx` | Guide d'Arbitrage & Matrice Décision | Tableau d'arbitrage multicritères aidant les mainteneurs à trancher pour la Typologie 2. | Direction DINUM | ✅ Conforme |
-| `docs/08-slash/00-PR/04-proposition-amont-blocknote.mdx` | PR 3 : Contribution Amont BlockNote (RFC) | Proposition de RFC et package `@blocknote/xl-external-sources` pour l'amont TypeCell. | Communauté Open Source | ✅ Conforme |
-
-#### 📂 Les 12 Connecteurs Souverains Détaillés (Structure Normée à 3 Pôles)
+#### 📂 Connecteurs Détaillés en 3 Pôles Symétriques (10 Connecteurs × 7 Fichiers = 70 Fichiers)
 Chaque connecteur dispose de **7 fichiers symétriques** (`index.mdx`, 2 fichiers Métier, 2 fichiers API/Benchmark, 2 fichiers Implémentation) :
 
-| Connecteur | Source Officielle & Rôle | Sous-dossiers & Fichiers | Statut |
-| :--- | :--- | :--- | :---: |
-| **01. `/loi`** | ⚖️ Légifrance / DILA (PISTE) : Articles de codes, lois, décrets, jurisprudence, contrôle d'abrogation | `01-metier-loi/`, `02-api-loi/`, `03-implementation-loi/` (7 fichiers) | ✅ Référence |
-| **02. `/assemblee`** | 🏛️ Assemblée Nationale (Tricoteuse) : Dossiers législatifs, amendements, députés, scrutins publics | `01-metier-assemblee/`, `02-api-assemblee/`, `03-implementation-assemblee/` (7 fichiers) | ✅ Référence |
-| **03. `/entreprise`** | 🏢 Annuaire Entreprises / RNE : SIREN/SIRET, dirigeants, TVA, bilans financiers, API Recherche Entreprises | `01-metier-entreprise/`, `02-api-entreprise/`, `03-implementation-entreprise/` (7 fichiers) | ✅ Référence |
-| **04. `/adresse`** | 📍 Base Adresse Nationale (BAN) : Géocodage Addok, coordonnées GPS, parcelles, BAN IGN | `01-metier-adresse/`, `02-api-adresse/`, `03-implementation-adresse/` (7 fichiers) | ✅ Référence |
-| **05. `/albert`** | 🤖 Albert IA Souveraine RAG : Recherche sémantique souveraine, fiches service-public vectorisées | `01-metier-albert/`, `02-api-albert/`, `03-implementation-albert/` (7 fichiers) | ✅ Référence |
-| **08. `/marche`** | 💼 Marchés Publics & BOAMP : Avis de marchés, appels d'offres, seuils européens, DCE, DAE | `01-metier-marche/`, `02-api-marche/`, `03-implementation-marche/` (7 fichiers) | ✅ Référence |
-| **09. `/subvention`** | 💶 Aides-Territoires & Fonds Vert : Subventions publiques, programmes ANCT, DETR, DSIL | `01-metier-subvention/`, `02-api-subvention/`, `03-implementation-subvention/` (7 fichiers) | ✅ Référence |
-| **10. `/stats`** | 📊 Statistiques Territoriales INSEE : Démographie légale, densité, revenus médians, taux d'activité | `01-metier-stats/`, `02-api-stats/`, `03-implementation-stats/` (7 fichiers) | ✅ Référence |
-| **11. `/agent`** | 👤 Annuaire du Service Public : Organigrammes ministériels, coordonnées de services et contacts | `01-metier-agent/`, `02-api-agent/`, `03-implementation-agent/` (7 fichiers) | ✅ Référence |
-| **12. `/cadastre`** | 🗺️ Cadastre & Parcelles DGFiP / IGN : Feuilles cadastrales, sections, parcelles et contenances $m^2$ | `01-metier-cadastre/`, `02-api-cadastre/`, `03-implementation-cadastre/` (7 fichiers) | ✅ Référence |
+| Connecteur | Source Souveraine & Données | Répertoire | Fichiers | Statut |
+| :--- | :--- | :--- | :---: | :---: |
+| **01. `/loi`** | ⚖️ Légifrance / DILA (PISTE) : Articles de codes, lois, décrets, jurisprudence, contrôle d'abrogation | `docs/08-slash/01-loi/` | 7 | ✅ Référence |
+| **02. `/assemblee`** | 🏛️ Assemblée Nationale (Tricoteuse) : Dossiers législatifs, amendements, députés, scrutins | `docs/08-slash/02-assemblee/` | 7 | ✅ Référence |
+| **03. `/entreprise`** | 🏢 Annuaire Entreprises / RNE : SIREN/SIRET, dirigeants, TVA, bilans financiers | `docs/08-slash/03-entreprise/` | 7 | ✅ Référence |
+| **04. `/adresse`** | 📍 Base Adresse Nationale (BAN) : Géocodage Addok, coordonnées GPS, parcelles IGN | `docs/08-slash/04-adresse/` | 7 | ✅ Référence |
+| **05. `/albert`** | 🤖 Albert IA Souveraine RAG : Recherche sémantique souveraine, fiches service-public | `docs/08-slash/05-albert/` | 7 | ✅ Référence |
+| **08. `/marche`** | 💼 Marchés Publics & BOAMP : Avis de marchés, appels d'offres, seuils européens, DCE | `docs/08-slash/08-marche/` | 7 | ✅ Référence |
+| **09. `/subvention`** | 💶 Aides-Territoires & Fonds Vert : Subventions publiques, programmes ANCT, DETR, DSIL | `docs/08-slash/09-subvention/` | 7 | ✅ Référence |
+| **10. `/stats`** | 📊 Statistiques Territoriales INSEE : Démographie légale, densité, revenus médians | `docs/08-slash/10-stats/` | 7 | ✅ Référence |
+| **11. `/agent`** | 👤 Annuaire du Service Public : Organigrammes ministériels, coordonnées d'organismes | `docs/08-slash/11-agent/` | 7 | ✅ Référence |
+| **12. `/cadastre`** | 🗺️ Cadastre & Parcelles DGFiP / IGN : Feuilles cadastrales, sections, contenances $m^2$ | `docs/08-slash/12-cadastre/` | 7 | ✅ Référence |
 
 ---
 
-## 🔬 3. Réflexion Approfondie & Points Sensibles pour Itérer
+### 🚀 Section 09 : Pull Requests & Contributions Officielles (`docs/09-PR/` — 5 fichiers)
+
+| Fichier | Titre Documentaire | Rôle & Portée par Dépôt Cible | Dépôt Cible | Statut |
+| :--- | :--- | :--- | :--- | :---: |
+| `docs/09-PR/index.mdx` | Hub des PRs & Contributions | Vue d'ensemble comparative des 3 PRs catégorisées par dépôt (`suitenumerique/docs` et `TypeCellOS/BlockNote`). | Tous profils | ✅ Nouveau Hub |
+| `docs/09-PR/01-docs-serveur-config.mdx` | PR 1 : Support Serveurs Distants & VMs | Dossier complet de PR pour `suitenumerique/docs` permettant le déploiement distant sans blocage OIDC (Hairpin NAT & `API_ORIGIN`). | `suitenumerique/docs` | ✅ Prêt à soumettre |
+| `docs/09-PR/02-docs-packages-souverains.mdx` | PR 2 : Packages Souverains (Opt-In) | Dossier complet de PR (< 10 lignes) pour `suitenumerique/docs` avec support d'activation progressive par étape. | `suitenumerique/docs` | ✅ Prêt à soumettre |
+| `docs/09-PR/03-blocknote-external-sources.mdx` | PR 3 : Extension Amont BlockNote (RFC) | Proposition de RFC et package communautaire `@blocknote/xl-external-sources` avec liseré personnalisable et mappers d'export. | `TypeCellOS/BlockNote` | ✅ Prêt à soumettre |
+| `docs/09-PR/04-guide-d-arbitrage-et-migration.mdx` | 04. Guide d'Arbitrage & Matrice Décision | Matrice décisionnelle multicritères validant l'avantage indiscutable de l'approche packagée low-code. | Direction DINUM | ✅ Prêt à soumettre |
+
+---
+
+## 🔬 3. Analyse Approfondie des 6 Points Sensibles d'Ingénierie
 
 L'ingénierie d'un portail documentaire couplé à des packages open source et à des applications ministérielles exige une vigilance constante sur **6 points critiques** :
 
@@ -290,70 +296,76 @@ flowchart TD
 
 ---
 
-## ❓ 4. Questions Stratégiques pour Guider les Prochaines Itérations
+## ❓ 4. Arbitrages Stratégiques Validés pour la Suite du Projet
 
-Afin d'itérer efficacement et d'affiner la stratégie de livraison avec la DINUM et les mainteneurs de La Suite Docs, voici les **8 questions clés à arbitrer** :
+Voici les **décisions formelles actées** pour cadrer les prochaines étapes :
 
-### 🏛️ Axe 1 : Gouvernance & Dépôt Upstream
-1. **Registre des Packages :** Les packages `@suitenumerique/blocknote-sources` et `django-lasuite-sources` doivent-ils être publiés sous l'organisation officielle GitHub `suitenumerique` (sur le registre public npm et PyPI) ou hébergés temporairement sur un registre interne DINUM ?
-2. **Calendrier de la Pull Request Docs :** Souhaitez-vous soumettre l'unique Pull Request (< 10 lignes) dès la fin du Hackathon Oléron, ou après une première phase de bêta-test fermée avec un ministère pilote (ex: Ministère de la Justice pour `/loi`, Ministère de l'Économie pour `/entreprise` et `/marche`) ?
-
-### 🌐 Axe 2 : Contribution Amont TypeCell / BlockNote
-3. **Format de la Contribution BlockNote :** Pour la RFC amont sur `TypeCellOS/BlockNote`, privilégie-t-on une proposition d'extension officielle sous le namespace `@blocknote/xl-external-sources`, ou une intégration sous forme de template / exemple de référence dans la documentation officielle de BlockNote ?
-4. **Exportateurs Documentaires :** Les mappers d'exportation pour `@blocknote/xl-pdf-exporter` et `@blocknote/xl-docx-exporter` doivent-ils inclure des options de personnalisation de la couleur de bordure institutionnelle (pour s'adapter à d'autres gouvernements ou entreprises) ?
-
-### 🤖 Axe 3 : Enrichissement Fonctionnel & IA Albert
-5. **Mode Hybride Albert IA + Sources Factuelles :** Faut-il permettre à la commande `/albert` d'insérer à la fois une synthèse rédigée par l'IA et les blocs de citations directes `/loi` ou `/service-public` vérifiés en temps réel ?
-6. **Veille Juridique Proactive :** La tâche périodique Celery de vérification d'abrogation doit-elle envoyer une notification directe dans **La Suite Docs** (icône cloche / alerte sur le document) ou envoyer un message via le bot **Tchap** de l'agent ?
-
-### 📚 Axe 4 : Expérience Développeur & Portail Zudoku
-7. **Recherche Plein Texte sur la Documentation :** Souhaitez-vous intégrer un index de recherche sémantique locale (Pagefind / Algolia DocSearch) dans le portail Zudoku pour naviguer instantanément parmi les 262 pages ?
-8. **Storybook Dédié :** Faut-il déployer un Storybook public isolé pour `@suitenumerique/blocknote-sources` accessible directement depuis le menu de navigation Zudoku ?
+1. **Gouvernance des Packages :**
+   - **Décision :** Maintien sous l'organisation `@suitenumerique` dans un premier temps. Une publication alternative privée ou sous le compte personnel `waxland` pourra être configurée ultérieurement si nécessaire.
+2. **Soumission de la PR Docs (`suitenumerique/docs`) :**
+   - **Décision :** Soumission immédiate de l'unique PR d'intégration (< 10 lignes). La documentation précise explicitement que l'activation des 12 connecteurs peut être **progressive par lot** (ex: démarrer avec un lot prioritaire `/loi` et `/entreprise`, puis élargir aux autres connecteurs par simple configuration).
+3. **Contribution Amont BlockNote (`TypeCellOS/BlockNote`) :**
+   - **Décision :** Soumission sous forme de **package d'extension communautaire** (`@blocknote/xl-external-sources`), assorti d'une proposition formelle de graduation vers la suite officielle `@blocknote/xl-*` à terme.
+4. **Exportateurs Documentaires & Liseré Marianne :**
+   - **Décision :** Le liseré bleu Marianne `#000091` est fixé en standard par défaut pour l'État français (DSFR). Une prop optionnelle simple `borderColor` permet de personnaliser cette couleur pour d'autres organisations sans complexité additionnelle.
+5. **Mode Hybride Albert IA :**
+   - **Décision :** **Non** — Albert conserve son fonctionnement RAG souverain dédié sans entremêler les blocs d'autres commandes de manière complexe.
+6. **Notification d'Abrogation Juridique :**
+   - **Décision :** **Non** — Pas de push Tchap ou de notifications envahissantes. L'avertissement d'abrogation se matérialise par un indicateur visuel direct sur le bloc du document lors de sa consultation.
+7. **Moteur de Recherche Documentation :**
+   - **Décision :** **Oui** — Intégration d'un index de recherche sémantique locale (Pagefind) directement dans Zudoku pour explorer les 262 pages pré-rendues.
+8. **Storybook Dédié :**
+   - **Décision :** **Oui** — Déploiement d'un Storybook public autonome pour tester et documenter les composants isolés de `@suitenumerique/blocknote-sources`.
 
 ---
 
 ## 🎯 5. TODO Exécutive du Portail Documentaire (Cases à Cocher)
 
+Cette TODO regroupe toutes les actions d'amélioration, d'harmonisation et de publication identifiées lors de l'audit.
+
 ### 🏛️ Pôle 1 : Finalisation & Publication des PRs Officielles
-- [x] Rédiger la spécification de la PR 1 (Monolithique In-Tree dans `docs/08-slash/00-PR/01-pr-interne-monolithique.mdx`)
-- [x] Rédiger la spécification de la PR 2 (Packagée Low-Code dans `docs/08-slash/00-PR/02-pr-externe-packagee.mdx`)
-- [x] Rédiger le guide d'arbitrage comparatif (`docs/08-slash/00-PR/03-guide-d-arbitrage-et-migration.mdx`)
-- [x] Créer le document Markdown complet prêt à l'emploi pour l'ouverture de la PR officielle sur GitHub (`docs/08-slash/00-PR/00-dossier-pull-request-officielle.mdx`)
-- [x] Rédiger la RFC amont officielle pour `TypeCellOS/BlockNote` (`docs/08-slash/00-PR/04-proposition-amont-blocknote.mdx`)
-- [ ] Soumettre officiellement la PR sur `suitenumerique/docs`
+- [x] Rédiger la spécification de la PR 1 (Serveur Distant & VM dans `docs/09-PR/01-docs-serveur-config.mdx`)
+- [x] Rédiger la spécification de la PR 2 (Packages Souverains Opt-in dans `docs/09-PR/02-docs-packages-souverains.mdx`)
+- [x] Rédiger la spécification de la PR 3 (Extension Amont BlockNote RFC dans `docs/09-PR/03-blocknote-external-sources.mdx`)
+- [x] Rédiger le guide d'arbitrage comparatif (`docs/09-PR/04-guide-d-arbitrage-et-migration.mdx`)
+- [x] Créer le hub officiel de Pull Requests (`docs/09-PR/index.mdx`)
+- [ ] Soumettre officiellement la PR 1 (`dev: remote servers`) sur `suitenumerique/docs`
+- [ ] Soumettre officiellement la PR 2 (`feat: sovereign sources`) sur `suitenumerique/docs`
 - [ ] Ouvrir l'issue / discussion RFC sur `TypeCellOS/BlockNote`
 
 ### ⚡ Pôle 2 : Normalisation & Enrichissement des Connecteurs Slash (01 à 12)
-- [x] Normaliser le connecteur `/loi` en 3 pôles normés (Métier, API, Implémentation)
-- [x] Normaliser le connecteur `/assemblee` en 3 pôles normés (Métier, API, Implémentation)
-- [x] Normaliser le connecteur `/entreprise` en 3 pôles normés (Métier, API, Implémentation)
-- [x] Normaliser le connecteur `/adresse` en 3 pôles normés (Métier, API, Implémentation)
-- [x] Normaliser le connecteur `/albert` en 3 pôles normés (Métier, API, Implémentation)
-- [x] Normaliser le connecteur `/marche` en 3 pôles normés (Métier, API, Implémentation)
-- [x] Normaliser le connecteur `/subvention` en 3 pôles normés (Métier, API, Implémentation)
-- [x] Normaliser le connecteur `/stats` en 3 pôles normés (Métier, API, Implémentation)
-- [x] Normaliser le connecteur `/agent` en 3 pôles normés (Métier, API, Implémentation)
-- [x] Normaliser le connecteur `/cadastre` en 3 pôles normés (Métier, API, Implémentation)
+- [x] Normaliser le connecteur `/loi` en 3 pôles normés (Métier, API, Implémentation) — 7 fichiers
+- [x] Normaliser le connecteur `/assemblee` en 3 pôles normés (Métier, API, Implémentation) — 7 fichiers
+- [x] Normaliser le connecteur `/entreprise` en 3 pôles normés (Métier, API, Implémentation) — 7 fichiers
+- [x] Normaliser le connecteur `/adresse` en 3 pôles normés (Métier, API, Implémentation) — 7 fichiers
+- [x] Normaliser le connecteur `/albert` en 3 pôles normés (Métier, API, Implémentation) — 7 fichiers
+- [x] Normaliser le connecteur `/marche` en 3 pôles normés (Métier, API, Implémentation) — 7 fichiers
+- [x] Normaliser le connecteur `/subvention` en 3 pôles normés (Métier, API, Implémentation) — 7 fichiers
+- [x] Normaliser le connecteur `/stats` en 3 pôles normés (Métier, API, Implémentation) — 7 fichiers
+- [x] Normaliser le connecteur `/agent` en 3 pôles normés (Métier, API, Implémentation) — 7 fichiers
+- [x] Normaliser le connecteur `/cadastre` en 3 pôles normés (Métier, API, Implémentation) — 7 fichiers
 
 ### 📦 Pôle 3 : Packages Autonomes & Découplage
 - [x] Initialiser le package Python `django-lasuite-sources` avec ses 12 providers
 - [x] Initialiser le package TypeScript `@suitenumerique/blocknote-sources` avec les 3 formats DSFR
 - [x] Initialiser le package SDK `@suitenumerique/slash-sources-sdk` avec `defineSourceProvider`
 - [x] Valider la compilation TypeScript `tsup` et les types `.d.ts` sur les packages npm
-- [x] Configurer la suite de tests unitaires isolée Vitest sur les packages TypeScript (15/15 tests passés)
+- [x] Configurer la suite de tests unitaires isolée Vitest sur `packages/slash-sources-sdk` et `packages/blocknote-sources` (15/15 tests réussis)
 - [x] Valider l'intégrité syntaxique des 21 modules Python de `django-lasuite-sources`
-- [x] Ajouter la suite de tests d'accessibilité RGAA v4.1 et tests E2E Playwright (`packages/blocknote-sources/tests/`)
+- [x] Ajouter la suite de tests d'accessibilité RGAA et tests E2E Playwright (`packages/blocknote-sources/tests/`)
 - [x] Configurer les workflows CI/CD GitHub Actions pour les tests et la publication PyPI/npm (`.github/workflows/`)
 
 ### 📚 Pôle 4 : Qualité Documentaire & Accueil Interactif
-- [x] Supprimer le dossier redondant `docs/06-tutoriels/`
-- [x] Enrichir la page d'accueil `docs/00-accueil/index.mdx` avec les liens Figma, le projet `/slash`, la vision `/loi` et la démo BlockNote en direct
-- [x] Ajouter les raccourcis vers le socle `/slash` et Figma dans le header Zudoku (`zudoku.config.tsx`)
+- [x] Supprimer définitivement le dossier obsolète `docs/06-tutoriels/`
+- [x] Créer le dossier dédié `docs/09-PR/` catégorisant les PRs par dépôt
+- [x] Refondre l'accueil `docs/00-accueil/index.mdx` avec les liens Figma, le socle `/slash`, la vision `/loi` et le démonstrateur live BlockNote
+- [x] Ajouter les raccourcis vers le socle `/slash`, les PRs et Figma dans le header Zudoku (`zudoku.config.tsx`)
 - [x] Maintenir 0 erreur de build sur Zudoku (`npm run docs:build` avec 262 routes pré-rendues)
 - [x] Valider l'exhaustivité des diagrammes Mermaid (thème clair et sombre)
 - [x] Rédiger le guide de réutilisation transverse dans La Suite Projects et Meet (`docs/08-slash/13-reutilisation-transverse.mdx`)
 - [x] Rédiger la page de retour d'expérience (RXP) sur l'industrialisation des packages souverains (`docs/08-slash/14-retour-d-experience.mdx`)
-- [ ] Intégrer un système de recherche plein texte (Pagefind) sur le portail Zudoku
+- [ ] Configurer le moteur de recherche plein texte Pagefind sur le portail Zudoku
+- [ ] Déployer l'instance Storybook autonome pour `@suitenumerique/blocknote-sources`
 
 ---
 
@@ -361,6 +373,5 @@ Afin d'itérer efficacement et d'affiner la stratégie de livraison avec la DINU
 
 Le portail documentaire `dinum-setup` atteint un **niveau d'excellence industrielle, de clarté architecturale et d'alignement avec les standards de l'État remarquable** :
 1. **Intégrité Technique :** 100% des pages et diagrammes compilent sans avertissement ni erreur d'hydratation (262 routes générées).
-2. **Clarté d'Architecture :** La séparation entre les applications de La Suite, les packages autonomes et la documentation est parfaitement tracée.
-3. **Prise de Décision Éclairée :** La documentation des Pull Requests offre à la DINUM et aux mainteneurs de La Suite Docs toutes les clés pour intégrer les sources souveraines de manière pérenne et sans risque de dette technique.
-
+2. **Clarté d'Architecture :** La séparation entre les applications de La Suite, les packages autonomes, le socle `/slash` et les Pull Requests officielles est parfaitement tracée.
+3. **Prise de Décision Éclairée :** La documentation des Pull Requests offre à la DINUM et aux mainteneurs de La Suite Docs toutes les clés pour intégrer les sources souveraines de manière pérenne, progressive et sans risque de dette technique.

@@ -61,6 +61,11 @@ const config: ZudokuConfig = {
         icon: "zap",
       },
       {
+        label: "🚀 PRs Officielles",
+        to: "/09-PR",
+        icon: "git-pull-request",
+      },
+      {
         label: "🎨 Figma Docs",
         to: "https://www.figma.com/design/qdCWR4tTUr7vQSecEjCyqO/Docs?node-id=9722-19469&p=f&t=r1O6Np4JgTbRWrCR-0",
         target: "_blank",

@@ -24,16 +24,25 @@ function formatLabel(name) {
     return "Socle Technique Unifié";
   }
   if (clean.toLowerCase() === "pr") {
-    return "Stratégies de Pull Requests (PR)";
+    return "Pull Requests & Contributions";
+  }
+  if (clean === "docs-serveur-config") {
+    return "PR 1 : Serveurs Distants & VMs (Docs)";
+  }
+  if (clean === "docs-packages-souverains") {
+    return "PR 2 : Packages Souverains & Opt-in (Docs)";
+  }
+  if (clean === "blocknote-external-sources") {
+    return "PR 3 : Extension Amont BlockNote (RFC)";
+  }
+  if (clean === "guide-d-arbitrage-et-migration" || clean === "guide-d-arbitrage") {
+    return "04. Guide d'Arbitrage & Décision";
   }
   if (clean === "pr-interne-monolithique") {
     return "Typologie 1 : PR Interne In-Tree";
   }
   if (clean === "pr-externe-packagee") {
     return "Typologie 2 : PR Externe Packagée";
-  }
-  if (clean === "guide-d-arbitrage-et-migration") {
-    return "Guide d'Arbitrage & Décision";
   }
   if (clean.startsWith("metier")) {
     return "Pôle Métier & Usages";
@@ -336,6 +345,15 @@ function generateNavForTarget(target) {
     { from: "/skills", to: "/07-skills" },
     { from: "/slash", to: "/08-slash" },
     { from: "/08-slash/index", to: "/08-slash" },
+    { from: "/pr", to: "/09-PR" },
+    { from: "/prs", to: "/09-PR" },
+    { from: "/08-slash/00-PR", to: "/09-PR" },
+    { from: "/08-slash/00-PR/index", to: "/09-PR" },
+    { from: "/08-slash/00-PR/00-dossier-pull-request-officielle", to: "/09-PR/02-docs-packages-souverains" },
+    { from: "/08-slash/00-PR/01-pr-interne-monolithique", to: "/09-PR/04-guide-d-arbitrage-et-migration" },
+    { from: "/08-slash/00-PR/02-pr-externe-packagee", to: "/09-PR/02-docs-packages-souverains" },
+    { from: "/08-slash/00-PR/03-guide-d-arbitrage-et-migration", to: "/09-PR/04-guide-d-arbitrage-et-migration" },
+    { from: "/08-slash/00-PR/04-proposition-amont-blocknote", to: "/09-PR/03-blocknote-external-sources" },
     { from: "/08-slash/loi", to: "/08-slash/loi" },
     { from: "/loi", to: "/08-slash/loi" },
     { from: "/law", to: "/08-slash/loi" },

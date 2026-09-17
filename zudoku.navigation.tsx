@@ -273,24 +273,6 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       "/08-slash/14-retour-d-experience",
       {
         "type": "category",
-        "label": "Stratégies de Pull Requests (PR)",
-        "icon": "folder",
-        "collapsed": false,
-        "items": [
-          {
-            "type": "doc",
-            "file": "08-slash/00-PR/index.mdx",
-            "path": "/08-slash/00-PR"
-          },
-          "/08-slash/00-PR/00-dossier-pull-request-officielle",
-          "/08-slash/00-PR/01-pr-interne-monolithique",
-          "/08-slash/00-PR/02-pr-externe-packagee",
-          "/08-slash/00-PR/03-guide-d-arbitrage-et-migration",
-          "/08-slash/00-PR/04-proposition-amont-blocknote"
-        ]
-      },
-      {
-        "type": "category",
         "label": "Projet de Loi (/loi)",
         "icon": "scale",
         "collapsed": false,
@@ -733,6 +715,23 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
         ]
       }
     ]
+  },
+  {
+    "type": "category",
+    "label": "Pull Requests & Contributions",
+    "icon": "folder",
+    "collapsed": false,
+    "items": [
+      {
+        "type": "doc",
+        "file": "09-PR/index.mdx",
+        "path": "/09-PR"
+      },
+      "/09-PR/01-docs-serveur-config",
+      "/09-PR/02-docs-packages-souverains",
+      "/09-PR/03-blocknote-external-sources",
+      "/09-PR/04-guide-d-arbitrage-et-migration"
+    ]
   }
 ];
 
@@ -792,6 +791,42 @@ export const docsRedirects: ZudokuConfig["redirects"] = [
   {
     "from": "/08-slash/index",
     "to": "/08-slash"
+  },
+  {
+    "from": "/pr",
+    "to": "/09-PR"
+  },
+  {
+    "from": "/prs",
+    "to": "/09-PR"
+  },
+  {
+    "from": "/08-slash/00-PR",
+    "to": "/09-PR"
+  },
+  {
+    "from": "/08-slash/00-PR/index",
+    "to": "/09-PR"
+  },
+  {
+    "from": "/08-slash/00-PR/00-dossier-pull-request-officielle",
+    "to": "/09-PR/02-docs-packages-souverains"
+  },
+  {
+    "from": "/08-slash/00-PR/01-pr-interne-monolithique",
+    "to": "/09-PR/04-guide-d-arbitrage-et-migration"
+  },
+  {
+    "from": "/08-slash/00-PR/02-pr-externe-packagee",
+    "to": "/09-PR/02-docs-packages-souverains"
+  },
+  {
+    "from": "/08-slash/00-PR/03-guide-d-arbitrage-et-migration",
+    "to": "/09-PR/04-guide-d-arbitrage-et-migration"
+  },
+  {
+    "from": "/08-slash/00-PR/04-proposition-amont-blocknote",
+    "to": "/09-PR/03-blocknote-external-sources"
   },
   {
     "from": "/08-slash/loi",
