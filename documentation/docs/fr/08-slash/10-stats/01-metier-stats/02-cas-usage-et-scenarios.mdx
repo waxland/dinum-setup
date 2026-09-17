@@ -1,0 +1,43 @@
+---
+title: "Scénarios Métier & Cas d'Usage de la Commande /stats"
+sidebar_label: "02. Cas d'Usage & Scénarios"
+description: Parcours d'agents territoriaux, chargés d'études d'urbanisme et décideurs publics exploitant les statistiques INSEE dans Docs.
+---
+
+import { Mermaid } from "../../../../../src/components/Mermaid";
+
+---
+
+## 🎯 1. Parcours Types d'Utilisation
+
+### 🏙️ Scénario A : Diagnostic de Plan Local d'Urbanisme (PLU)
+- **Contexte :** Un urbaniste rédige le rapport de présentation d'un PLU intercommunal.
+- **Action :** Il saisit `/stats Rennes` ou `/insee 35238`.
+- **Résultat :** Insertion immédiate de la fiche statistique officielle (225 000 hab, densité, évolution sur 5 ans).
+
+### 💶 Scénario B : Justification d'une Demande de Dotation (DGS)
+- **Contexte :** Un directeur général des services prépare la demande de dotation de solidarité rurale (DSR).
+- **Action :** Saisie de `/stats 23096` (Guéret).
+- **Résultat :** Insertion de la carte de revenus médians et du taux d'activité certifiés.
+
+---
+
+## 🔄 2. Diagramme de Flux
+
+<Mermaid chart={`sequenceDiagram
+    actor Agent as 👤 Rédacteur Public
+    participant Editor as 📝 Éditeur Docs
+    participant Popover as 🔍 Popover /stats
+    participant Backend as 🐍 Proxy Django
+    participant INSEE as 📊 API Données Locales INSEE
+
+    Agent->>Editor: Saisie "/stats Lyon"
+    Editor->>Popover: Déclenchement de la recherche
+    Popover->>Backend: GET /api/v1.0/sources/search/?type=insee&q=Lyon
+    Backend->>INSEE: Requête API Données Locales
+    INSEE-->>Backend: Données démographiques & économiques
+    Backend-->>Popover: DTO SourceSearchResult normalisé
+    Popover-->>Agent: Suggestion avec population et code INSEE
+    Agent->>Popover: Validation (Entrée)
+    Popover->>Editor: Insertion du SourceBlock (Format Carte)
+`} />

@@ -35,10 +35,10 @@ const config: ZudokuConfig = {
     favicon: "/favicon.ico",
   },
   site: {
-    title: "La Suite dev setup",
+    title: "Slasher — La Suite dev setup",
     banner: {
       message:
-        "📖 Portail d'ingénierie & Socle des Sources Souveraines pour La Suite Numérique (DINUM)",
+        "📖 Slasher : Standard Universel BlockNote & Socle des Slasheurs Souverains (DINUM)",
       color: "info",
       dismissible: true,
     },
@@ -47,22 +47,32 @@ const config: ZudokuConfig = {
         light: "/lasuite.svg",
         dark: "/lasuite-dark.svg",
       },
-      alt: "La Suite numérique - Non officiel",
+      alt: "Slasher — La Suite Numérique",
       width: 145,
-      href: "/",
+      href: "/fr",
     },
     showPoweredBy: false,
   },
   header: {
     navigation: [
       {
-        label: "⚡ Socle /slash",
-        to: "/08-slash",
+        label: "🇫🇷 Français",
+        to: "/fr",
+        icon: "flag",
+      },
+      {
+        label: "🇬🇧 English",
+        to: "/en",
+        icon: "globe",
+      },
+      {
+        label: "⚡ Slasheurs",
+        to: "/fr/08-slash",
         icon: "zap",
       },
       {
         label: "🚀 PRs Officielles",
-        to: "/09-PR",
+        to: "/fr/09-PR",
         icon: "git-pull-request",
       },
       {
@@ -77,6 +87,7 @@ const config: ZudokuConfig = {
         target: "_blank",
         icon: "layout",
       },
+
       {
         label: "GitHub dinum-setup",
         to: "https://github.com/waxland/dinum-setup",

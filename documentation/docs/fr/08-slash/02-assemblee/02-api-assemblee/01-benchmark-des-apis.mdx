@@ -1,0 +1,52 @@
+---
+title: Benchmark des APIs Parlementaires — claire.vite vs Tricoteuse vs Open Data AN
+sidebar_label: Benchmark des APIs
+description: "Comparatif technique entre l'API claire.vite, l'ingesteur open-source Tricoteuse (Regards Citoyens) et l'Open Data officiel de l'Assemblée."
+---
+
+import { Mermaid } from "../../../../../src/components/Mermaid";
+
+L'interconnexion avec les données de l'Assemblée nationale peut s'appuyer sur plusieurs architectures techniques souveraines.
+
+---
+
+## 📊 Matrice Comparative des Sources Parlementaires
+
+| Critère | 1. API `claire.vite` | 2. `Tricoteuse` (Regards Citoyens) | 3. Open Data Direct (data.assemblee-nationale.fr) |
+| :--- | :--- | :--- | :--- |
+| **Type de Solution** | API REST JSON normalisée | Indexeur & Parser Open Source | Dumps XML / JSON bruts |
+| **Temps de Réponse** | ~40 à 100 ms | Dépend de la base locale | Traitement batch lourd |
+| **Fraîcheur des Données** | Temps réel (Polling 30s) | Temps réel via webhook/sync | Mises à jour quotidiennes/horaires |
+| **Souveraineté & Auto-hébergement** | Service cloud / API externe | **100% Auto-hébergeable en local** | Source institutionnelle première |
+| **Recherche par Numéro** | Optimisée (`/amendements?num=142`) | Requête SQL / Elastic locale | Parsing de zip complet requis |
+| **Licence** | Ouverte | Libre (AGPLv3 / MIT) | Licence Ouverte v2.0 |
+
+---
+
+## 🏗️ Architecture & Choix Stratégique
+
+<Mermaid chart={`flowchart TD
+    subgraph DocsBack["Backend La Suite Docs (ParliamentSourceProvider)"]
+        CheckConfig{"Option configurée dans .env"}
+    end
+
+    subgraph Sources["Solutions d'Interconnexion"]
+        ClaireAPI["API claire.vite (Mode Cloud Rapide)"]
+        TricoteuseServer["Serveur Tricoteuse Local (Mode 100% Souverain)"]
+        DirectAN["Open Data Direct Assemblée (Secours)"]
+    end
+
+    CheckConfig -->|Par défaut en Dev / Prod standard| ClaireAPI
+    CheckConfig -->|Réseaux Ministériels Étanches / SecNumCloud| TricoteuseServer
+    ClaireAPI -.->|Alimenté par| DirectAN
+    TricoteuseServer -.->|Ingestion continue de| DirectAN
+`} />
+
+---
+
+## 🎯 Recommandation d'Intégration
+
+1. **Phase 1 (Immédiate) : Connecteur `claire.vite`**  
+   Permet une mise en service instantanée avec des temps de réponse ultra-rapides (< 100 ms) pour la recherche d'amendements et de dossiers.
+2. **Phase 2 (Souveraineté renforcée) : Connecteur `Tricoteuse`**  
+   L'association *Regards Citoyens* maintient le moteur `tricoteuse-assemblee` qui parse l'intégralité des flux parlementaires. Docs permet de basculer sur une instance locale de Tricoteuse via `TRICOTEUSE_API_URL`.

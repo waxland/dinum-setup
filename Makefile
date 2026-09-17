@@ -27,6 +27,7 @@ help:
 	@printf "  make docs-build         Compile la documentation Zudoku (SSR 270 routes)\n"
 	@printf "  make demo-dev           Lance le demonstrateur web standalone (http://localhost:5173)\n"
 	@printf "  make demo-build         Compile le demonstrateur web standalone\n"
+	@printf "  make storybook          Lance le Storybook des composants BlockNote (http://localhost:6006)\n"
 	@printf "  make packages-build     Compile les packages TypeScript (@suitenumerique/*)\n"
 	@printf "  make packages-test      Execute les 15 tests unitaires et RGAA\n\n"
 	@printf "Commandes Clones LaSuite:\n"
@@ -251,11 +252,16 @@ demo-dev:
 demo-build:
 	@npm run demo:build
 
+.PHONY: storybook
+storybook:
+	npm run storybook
+
 .PHONY: packages-build
 packages-build:
-	@npm run packages:build
+	npm run packages:build
 
 .PHONY: packages-test
 packages-test:
-	@npm run packages:test
+	npm run packages:test
+
 

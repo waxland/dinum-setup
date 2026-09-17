@@ -1,9 +1,10 @@
-# 📝 Journal d'Exécution & Suivi des Itérations (`RECAP.md`)
+# 📝 Journal d'Exécution & Suivi des Itérations — Projet Slasher (`RECAP.md`)
 
-> **Projet :** `dinum-setup` — Standard Universel `@blocknote/xl-external-sources` & Presets Souverains DINUM  
+> **Projet Officiel :** **Slasher** (Standard Universel `@blocknote/xl-external-sources` & Presets Souverains DINUM)  
 > **Auteur :** GitHub Copilot (Gemini 3.7 Flash)  
 > **Date de Création :** 17 Septembre 2026  
-> **Règle de Fonctionnement :** Ce document est mis à jour à chaque itération ou complétion de tâche définie dans le [`PLAN.md`](PLAN.md).
+> **Règle de Fonctionnement :** Ce document est mis à jour à chaque itération ou complétion de tâche définie dans le plan.
+
 
 ---
 

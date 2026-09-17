@@ -1,0 +1,55 @@
+---
+title: Commande Slash /cadastre — Cadastre & Parcelles Foncières
+sidebar_label: 12. Cadastre & Foncier (/cadastre)
+description: "Hub complet de la commande /cadastre : recherche et insertion de parcelles cadastrales, contenances, sections et plans officiels DGFiP / IGN."
+---
+
+import { Mermaid } from "../../../../src/components/Mermaid";
+
+La commande **`/cadastre`** (alias **`/parcelle`**, **`/foncier`**, **`/dgfip`**, **`/section`**) permet aux urbanistes, chargés d'affaires foncières et agents de voirie d'interroger le plan cadastral vectoriel informatisé (**DGFiP / Géoplateforme IGN**) et d'insérer les références parcellaires officielles dans leurs actes, rapports et délibérations.
+
+---
+
+## 🎯 Problématique Métier
+
+Dans les déclarations de travaux, permis d'aménager, actes de cession foncière et délibérations municipales, les références cadastrales doivent être infaillibles :
+- **Section et numéro de parcelle** (`AK 0042`).
+- **Contenance cadastrale officielle** en mètres carrés.
+- **Code communal INSEE** et numéro de feuille.
+- Lien direct vers la visualisation cartographique cadastrale.
+
+---
+
+## 🏗️ Architecture du Connecteur `/cadastre`
+
+<Mermaid chart={`flowchart TD
+    subgraph Client["Navigateur Rédacteur"]
+        Slash["Saisie /cadastre + commune ou référence"] --> Popover["SourceSearchPopover (cmdk)"]
+        Popover --> Block["SourceBlock (Format Carte)"]
+    end
+
+    subgraph Backend["Backend Django 5"]
+        Proxy["/api/v1.0/sources/search/?type=cadastre"]
+        Cache[("Redis Cache TTL 24h")]
+        Registry["SourceProviderRegistry (CadastreSourceProvider)"]
+    end
+
+    subgraph Source["DGFiP / IGN"]
+        CadastreAPI["API Cadastre / Géoplateforme (data.gouv.fr)"]
+    end
+
+    Slash --> Popover
+    Popover --> Proxy --> Cache
+    Cache -.->|Miss| Registry
+    Registry --> CadastreAPI
+    CadastreAPI -.-> Registry
+    Registry --> Block
+`} />
+
+---
+
+## 🧩 Formats de Rendu (Design System Cunningham)
+
+- **🗂️ Carte Parcellaire :** Contenance en m² • Feuille cadastrale • Date de mise à jour DGFiP.
+- **📢 Encadré :** Note foncière avec description des servitudes ou affectation domaniale.
+- **🔗 Pastille :** Lien direct `🗺️ Parcelle Section AK n° 0042 (Paris 7e)`.

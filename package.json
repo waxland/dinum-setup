@@ -19,7 +19,8 @@
     "demo:build": "npm run packages:build && npm --prefix demo run build",
     "demo:preview": "npm --prefix demo run preview",
     "packages:build": "npm --prefix packages/slash-sources-sdk run build && npm --prefix packages/blocknote-sources run build",
-    "packages:test": "npm --prefix packages/slash-sources-sdk test && npm --prefix packages/blocknote-sources test"
+    "packages:test": "npm --prefix packages/slash-sources-sdk test && npm --prefix packages/blocknote-sources test",
+    "storybook": "npm --prefix packages/blocknote-sources run storybook"
   },
   "dependencies": {
     "@suitenumerique/blocknote-sources": "*",

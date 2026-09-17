@@ -20,6 +20,22 @@ const CONFIGS = {
 function formatLabel(name) {
   const clean = name.replace(/^(\d+-)+/, "");
 
+  if (clean === "fr") {
+    return "🇫🇷 Français (Socle DINUM)";
+  }
+  if (clean === "en") {
+    return "🇬🇧 English (Universal Standard)";
+  }
+  if (clean === "de") {
+    return "🇩🇪 Deutsch";
+  }
+  if (clean === "nl") {
+    return "🇳🇱 Nederlands";
+  }
+  if (clean === "es") {
+    return "🇪🇸 Español";
+  }
+
   if (clean === "socle-technique") {
     return "Socle Technique Unifié";
   }
@@ -53,6 +69,7 @@ function formatLabel(name) {
   if (clean.startsWith("implementation")) {
     return "Pôle Implémentation";
   }
+
 
   const acronyms = {
     roi: "ROI",
@@ -136,6 +153,8 @@ function getDefaultIcon(name, depth) {
   const lower = name.toLowerCase();
 
   if (depth === 0) {
+    if (lower === "fr") return "flag";
+    if (lower === "en" || lower === "de" || lower === "nl" || lower === "es") return "globe";
     if (lower.includes("accueil") || lower.includes("home"))
       return "home";
     if (lower.includes("onboarding") || lower.includes("demarrage"))
@@ -175,6 +194,7 @@ function getDefaultIcon(name, depth) {
     if (lower.includes("lien") || lower.includes("link"))
       return "external-link";
   }
+
 
   // Depth > 0 (Sub-categories)
   if (lower.includes("metier")) return "briefcase";
@@ -291,11 +311,24 @@ function scanDir(dir, baseDir, depth = 0) {
             label: "Accueil",
             icon: "home",
           });
-        } else if (path.dirname(relPath).replace(/^(\d+-)+/, "") === "accueil") {
+        } else if (relPath === "en/index.mdx" || relPath === "en/index.md") {
           items.push({
             type: "doc",
             file: relPath,
-            path: "/",
+            path: "/en",
+            label: "Overview",
+          });
+        } else if (
+          relPath === "fr/index.mdx" ||
+          relPath === "fr/index.md" ||
+          relPath === "fr/00-accueil/index.mdx" ||
+          relPath === "fr/00-accueil/index.md"
+        ) {
+          items.push({
+            type: "doc",
+            file: relPath,
+            path: "/fr",
+            label: "Accueil",
           });
         } else {
           items.push({
@@ -308,6 +341,7 @@ function scanDir(dir, baseDir, depth = 0) {
         const route = "/" + relPath.replace(/\.mdx?$/, "");
         items.push(route);
       }
+
     }
   }
 
@@ -330,36 +364,50 @@ function generateNavForTarget(target) {
   const navItems = scanDir(config.docsDir, config.docsDir);
 
   const redirects = [
-    // Category aliases and root redirects
-    { from: "/index", to: "/" },
-    { from: "/accueil", to: "/" },
-    { from: "/00-accueil", to: "/" },
-    { from: "/00-accueil/index", to: "/" },
-    { from: "/05-ressources", to: "/05-ressources/communaute" },
-    { from: "/onboarding", to: "/01-onboarding" },
-    { from: "/architecture", to: "/02-architecture" },
-    { from: "/projets", to: "/03-projets" },
-    { from: "/design-system", to: "/04-design-system" },
-    { from: "/dsfr", to: "/04-design-system" },
-    { from: "/ressources", to: "/05-ressources/communaute" },
-    { from: "/skills", to: "/07-skills" },
-    { from: "/slash", to: "/08-slash" },
-    { from: "/08-slash/index", to: "/08-slash" },
-    { from: "/pr", to: "/09-PR" },
-    { from: "/prs", to: "/09-PR" },
-    { from: "/08-slash/00-PR", to: "/09-PR" },
-    { from: "/08-slash/00-PR/index", to: "/09-PR" },
-    { from: "/08-slash/00-PR/00-dossier-pull-request-officielle", to: "/09-PR/02-docs-packages-souverains" },
-    { from: "/08-slash/00-PR/01-pr-interne-monolithique", to: "/09-PR/04-guide-d-arbitrage-et-migration" },
-    { from: "/08-slash/00-PR/02-pr-externe-packagee", to: "/09-PR/02-docs-packages-souverains" },
-    { from: "/08-slash/00-PR/03-guide-d-arbitrage-et-migration", to: "/09-PR/04-guide-d-arbitrage-et-migration" },
-    { from: "/08-slash/00-PR/04-proposition-amont-blocknote", to: "/09-PR/03-blocknote-external-sources" },
-    { from: "/08-slash/loi", to: "/08-slash/loi" },
-    { from: "/loi", to: "/08-slash/loi" },
-    { from: "/law", to: "/08-slash/loi" },
-    { from: "/comprendre-les-lois", to: "/comprendre-les-lois" },
-    { from: "/ressources-juridiques", to: "/ressources-juridiques" },
-    { from: "/guide", to: "/01-onboarding" },
+    // Root and language redirects
+    { from: "/index", to: "/fr" },
+    { from: "/accueil", to: "/fr" },
+    { from: "/00-accueil", to: "/fr" },
+    { from: "/00-accueil/index", to: "/fr" },
+    { from: "/fr/index", to: "/fr" },
+    { from: "/fr/00-accueil", to: "/fr" },
+    { from: "/fr/00-accueil/index", to: "/fr" },
+    { from: "/en/index", to: "/en" },
+
+    // Old non-prefixed redirects to /fr/
+    { from: "/05-ressources", to: "/fr/05-ressources/communaute" },
+    { from: "/onboarding", to: "/fr/01-onboarding" },
+    { from: "/01-onboarding", to: "/fr/01-onboarding" },
+    { from: "/architecture", to: "/fr/02-architecture" },
+    { from: "/02-architecture", to: "/fr/02-architecture" },
+    { from: "/projets", to: "/fr/03-projets" },
+    { from: "/03-projets", to: "/fr/03-projets" },
+    { from: "/design-system", to: "/fr/04-design-system" },
+    { from: "/04-design-system", to: "/fr/04-design-system" },
+    { from: "/dsfr", to: "/fr/04-design-system" },
+    { from: "/ressources", to: "/fr/05-ressources/communaute" },
+    { from: "/skills", to: "/fr/07-skills" },
+    { from: "/07-skills", to: "/fr/07-skills" },
+    { from: "/slash", to: "/fr/08-slash" },
+    { from: "/08-slash", to: "/fr/08-slash" },
+    { from: "/08-slash/index", to: "/fr/08-slash" },
+    { from: "/pr", to: "/fr/09-PR" },
+    { from: "/prs", to: "/fr/09-PR" },
+    { from: "/09-PR", to: "/fr/09-PR" },
+    { from: "/08-slash/00-PR", to: "/fr/09-PR" },
+    { from: "/08-slash/00-PR/index", to: "/fr/09-PR" },
+    { from: "/08-slash/00-PR/00-dossier-pull-request-officielle", to: "/fr/09-PR/02-docs-packages-souverains" },
+    { from: "/08-slash/00-PR/01-pr-interne-monolithique", to: "/fr/09-PR/04-guide-d-arbitrage-et-migration" },
+    { from: "/08-slash/00-PR/02-pr-externe-packagee", to: "/fr/09-PR/02-docs-packages-souverains" },
+    { from: "/08-slash/00-PR/03-guide-d-arbitrage-et-migration", to: "/fr/09-PR/04-guide-d-arbitrage-et-migration" },
+    { from: "/08-slash/00-PR/04-proposition-amont-blocknote", to: "/fr/09-PR/03-blocknote-external-sources" },
+    { from: "/08-slash/loi", to: "/fr/08-slash/loi" },
+    { from: "/loi", to: "/fr/08-slash/loi" },
+    { from: "/law", to: "/fr/08-slash/loi" },
+    { from: "/comprendre-les-lois", to: "/fr/08-slash/loi" },
+    { from: "/ressources-juridiques", to: "/fr/08-slash/loi" },
+    { from: "/guide", to: "/fr/01-onboarding" },
+
 
     // Flat to subfolder backwards compatibility: Accueil / Onboarding
     {

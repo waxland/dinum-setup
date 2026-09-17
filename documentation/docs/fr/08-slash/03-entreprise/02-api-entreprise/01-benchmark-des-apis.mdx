@@ -1,0 +1,48 @@
+---
+title: Benchmark des APIs Entreprises — Pappers vs API Entreprise vs RNE
+sidebar_label: Benchmark des APIs
+description: "Comparatif technique entre le connecteur Pappers, l'API Entreprise d'État (DINUM) et l'Open Data du Registre National des Entreprises."
+---
+
+import { Mermaid } from "../../../../../src/components/Mermaid";
+
+L'accès aux données légales et financières des entreprises françaises peut s'effectuer via trois canaux distincts.
+
+---
+
+## 📊 Matrice Comparative des Sources Entreprises
+
+| Critère | 1. API Pappers Entreprises | 2. API Entreprise (DINUM) | 3. Annuaire RNE / INPI |
+| :--- | :--- | :--- | :--- |
+| **Périmètre** | SIRENE, INPI, BODACC, bilans, dirigeants, actionnariat | Données régaliennes complètes (DGFiP, Urssaf, RNE) | Registre légal brut des immatriculations |
+| **Recherche Fuzzy** | Excellente (tolérance aux fautes d'orthographe) | Basée sur SIREN / SIRET exact | Recherche textuelle RNE |
+| **Éligibilité** | Ouverte à tous (Modèle freemium) | **Réservée aux administrations publiques** | Ouverte à tous (Open Data) |
+| **Temps de Réponse** | ~50 à 120 ms | ~100 à 200 ms | ~150 à 300 ms |
+| **Coût d'Utilisation** | Quota gratuit limité puis commercial | **100% Gratuit pour l'administration** | Gratuit (data.gouv.fr) |
+
+---
+
+## 🏗️ Architecture Multi-Sources
+
+<Mermaid chart={`flowchart TD
+    subgraph DocsProxy["CompanySourceProvider (Django Backend)"]
+        CheckMode{"Configuration active dans .env"}
+    end
+
+    subgraph Sources["Connecteurs Supportés"]
+        PappersAPI["1. Connecteur Pappers (Par défaut en dev)"]
+        ApiEnt["2. Connecteur API Entreprise DINUM (En production étatique)"]
+        MockData["3. Fixtures Mock Locales (Sans clé externe)"]
+    end
+
+    CheckMode -->|PAPPERS_API_KEY présente| PappersAPI
+    CheckMode -->|API_ENTREPRISE_TOKEN présent| ApiEnt
+    CheckMode -->|PAPPERS_MOCK_ENABLED=true| MockData
+`} />
+
+---
+
+## 🎯 Recommandation pour La Suite Docs
+
+- **Pour les contributeurs et développeurs en local :** Utiliser `PAPPERS_MOCK_ENABLED=true` pour tester l'ensemble du parcours sans clé d'API.
+- **Pour les instances de production ministérielles :** Basculer sur **API Entreprise (DINUM)** pour bénéficier de la gratuité totale et des attestations fiscales et sociales certifiées de l'État.

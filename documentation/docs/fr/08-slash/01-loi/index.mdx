@@ -1,0 +1,83 @@
+---
+title: Commande Slash /loi — Légifrance & Droit Français
+sidebar_label: Vue d'Ensemble
+description: "Hub complet de la commande /loi : accès au droit officiel, hiérarchie des normes, benchmark API PISTE vs Albert et implémentation sur le socle commun."
+---
+
+import { Mermaid } from "../../../../src/components/Mermaid";
+
+La commande **`/loi`** (alias **`/law`**, **`/legifrance`**, **`/code`**, **`/article`**, **`/decret`**) permet aux agents publics d'accéder au droit positif français directement au fil de leur rédaction dans **La Suite Docs**.
+
+Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le cadrage métier, la veille sur les APIs juridiques et le raccordement au socle technique unifié.
+
+---
+
+## 🎯 Organisation du Dossier `/loi`
+
+<FeatureGrid cols={3}>
+  <FeatureCard
+    icon="🏢"
+    title="Pôle Métier & Cas d'Usage"
+    description="Hiérarchie des normes (Kelsen), compréhension des codes et lois, règles de citation et situations de travail réelles."
+    href="/08-slash/01-loi/01-metier-loi/01-fondations-et-cadre"
+    badge="Métier"
+  />
+  <FeatureCard
+    icon="📡"
+    title="Pôle API & Veille Technique"
+    description="Benchmark comparatif PISTE / DILA vs IA Albert vs Judilibre, authentification OAuth2 et contrats de données."
+    href="/08-slash/01-loi/02-api-loi/01-benchmark-des-apis"
+    badge="API"
+  />
+  <FeatureCard
+    icon="💻"
+    title="Pôle Implémentation Socle"
+    description="LawSourceProvider Django, mapping vers SourceBlockSpec (Callout, Carte, Lien) et activation conditionnelle."
+    href="/08-slash/01-loi/03-implementation-loi/01-provider-django"
+    badge="Code & Socle"
+  />
+</FeatureGrid>
+
+---
+
+## 🏗️ Architecture Globale de la Commande `/loi`
+
+<Mermaid chart={`flowchart TD
+    subgraph Client["Navigateur Agent (Poste Client)"]
+        Slash["Saisie /loi au clavier"] --> SearchPopover["Popover Inline de Recherche (QuickSearch DSFR)"]
+        SearchPopover --> BlockSpec["Composant Universel SourceBlockSpec (React 19)"]
+        BlockSpec --> YDoc["Arbre CRDT Yjs (Y.Doc)"]
+    end
+
+    subgraph Backend["Infrastructure La Suite Docs"]
+        DjangoProxy["API Django 5 (/api/v1/sources/search?type=law)"]
+        RedisCache[("Cache Redis 7 (TTL 24h)")]
+        ProviderRegistry["Provider Registry (LawSourceProvider)"]
+        YjsServer["Serveur WebSockets Hocuspocus"]
+    end
+
+    subgraph Sources["Écosystème Juridique Souverain"]
+        PISTE["Plateforme PISTE / DILA (Légifrance Engine)"]
+        AlbertAPI["Albert API (IA Souveraine DINUM / Etalab)"]
+    end
+
+    SearchPopover -->|"1. Recherche asynchrone"| DjangoProxy
+    DjangoProxy -->|2. Lecture Cache| RedisCache
+    RedisCache -.->|Miss| DjangoProxy
+    DjangoProxy --> ProviderRegistry
+    ProviderRegistry -->|"3. Requête OAuth2"| PISTE
+    ProviderRegistry -.->|"Option RAG Sémantique"| AlbertAPI
+    PISTE -.->|4. JSON structuré certifié| DjangoProxy
+    DjangoProxy -.->|5. DTO normalisé SourceSearchResult| SearchPopover
+    SearchPopover -->|"6. Insertion du bloc"| YDoc
+    YDoc <==>|7. Synchronisation Temps Réel| YjsServer
+`} />
+
+---
+
+## 🧩 Formats d'Affichage Disponibles
+
+Conformément au **[Socle Technique Unifié](/08-slash/00-socle-technique)**, les articles insérés sont déclinables en :
+- 📢 **Format Callout (Encadré DSFR)** : Reproduction intégrale du texte légal certifié avec badge `VIGUEUR`.
+- 🗂️ **Format Carte (Card DSFR)** : Synthèse avec code, article, date d'effet et lien officiel.
+- 🔗 **Format Lien (Inline Badge)** : Pastille compacte cliquable dans la phrase avec popover au survol.

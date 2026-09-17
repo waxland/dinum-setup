@@ -1,0 +1,266 @@
+---
+title: Roadmap des Commandes Slash (/)
+sidebar_label: Roadmap & Jalons
+description: Feuille de route interactive, tableau Kanban des étapes clés, priorités interministérielles et jalons de livraison des commandes slash dans La Suite Docs.
+---
+
+import { Kanban } from "../../../src/components/Kanban";
+
+export const slashRoadmapColumns = [
+  {
+    id: "backlog",
+    title: "Idéation & Cadrage",
+    badge: "3 idées",
+    color: "slate",
+    items: [
+      {
+        id: "cmd-marches",
+        title: "/marche — Marchés Publics & BOAMP",
+        description: "Avis d'appels publics à la concurrence (AAPC), critères d'attribution et DCE.",
+        badge: "Commande Slash",
+        badgeColor: "gray",
+        priority: "P2",
+        tags: ["Marchés", "BOAMP", "Achat"],
+        assignee: "DINUM / DAE",
+        milestone: "Q3 2026",
+      },
+      {
+        id: "cmd-subvention",
+        title: "/subvention — Aides-Territoires & Financements",
+        description: "Programmes d'aides publiques, Fonds Vert, DETR/DSIL et critères d'éligibilité.",
+        badge: "Commande Slash",
+        badgeColor: "green",
+        priority: "P2",
+        tags: ["Subventions", "Territoires", "ANCT"],
+        assignee: "ANCT / Fabrique",
+        milestone: "Q3 2026",
+      },
+      {
+        id: "cmd-insee",
+        title: "/stats — Données INSEE & Territoires",
+        description: "Chiffres clés démographiques et économiques par commune ou département.",
+        badge: "Commande Slash",
+        badgeColor: "purple",
+        priority: "P2",
+        tags: ["INSEE", "Open Data"],
+        assignee: "INSEE",
+        milestone: "Q4 2026",
+      },
+    ],
+  },
+  {
+    id: "testing",
+    title: "Recette & Validation Upstream",
+    badge: "2 sujets",
+    color: "amber",
+    items: [
+      {
+        id: "cmd-e2e-suite",
+        title: "Recette E2E & Tests Multi-Navigateurs",
+        description: "Campagne de validation Playwright sur Chromium, Firefox et WebKit.",
+        badge: "QA & CI",
+        badgeColor: "amber",
+        priority: "P0",
+        tags: ["Playwright", "E2E", "CI/CD"],
+        assignee: "QA Team",
+        progress: 100,
+        milestone: "PR Upstream",
+      },
+      {
+        id: "cmd-rgaa-audit",
+        title: "Audit d'Accessibilité RGAA v4.1",
+        description: "Contrôle des critères AA, focus trapping et synthèse vocale NVDA/JAWS.",
+        badge: "RGAA AA",
+        badgeColor: "purple",
+        priority: "P0",
+        tags: ["Accessibilité", "ARIA", "RGAA"],
+        assignee: "Pôle Accessibilité",
+        progress: 100,
+        milestone: "PR Upstream",
+      },
+    ],
+  },
+  {
+    id: "done",
+    title: "Implémenté & Prêt Upstream",
+    badge: "8 modules",
+    color: "emerald",
+    items: [
+      {
+        id: "cmd-loi",
+        title: "/loi — Légifrance & Droit Positif",
+        description: "Accès certifié aux articles de codes, lois, décrets et jurisprudence avec 3 formats.",
+        badge: "Terminé",
+        badgeColor: "green",
+        priority: "P0",
+        tags: ["Légifrance", "PISTE", "Droit"],
+        assignee: "Dev Fullstack",
+        href: "/08-slash/01-loi",
+        progress: 100,
+        milestone: "Sprint 1",
+      },
+      {
+        id: "cmd-entreprise",
+        title: "/entreprise — Registre Légal & SIREN",
+        description: "Insertion de fiches d'entreprises certifiées RNE/INSEE avec statut In Bonis.",
+        badge: "Terminé",
+        badgeColor: "green",
+        priority: "P0",
+        tags: ["RNE", "INSEE", "SIREN"],
+        assignee: "Dev Fullstack",
+        href: "/08-slash/03-entreprise",
+        progress: 100,
+        milestone: "Sprint 1",
+      },
+      {
+        id: "cmd-assemblee",
+        title: "/assemblee — Travail Parlementaire",
+        description: "Suivi des projets de loi, amendements en direct et votes de l'Assemblée (claire.vite).",
+        badge: "Terminé",
+        badgeColor: "green",
+        priority: "P0",
+        tags: ["Assemblée", "claire.vite", "Amendements"],
+        assignee: "Dev Fullstack",
+        href: "/08-slash/02-assemblee",
+        progress: 100,
+        milestone: "Sprint 1",
+      },
+      {
+        id: "cmd-adresse",
+        title: "/adresse — Base Adresse Nationale (BAN)",
+        description: "Autocomplétion et géocodage certifié d'adresses postales (Addok GeoJSON).",
+        badge: "Terminé",
+        badgeColor: "green",
+        priority: "P0",
+        tags: ["BAN", "Addok", "IGN"],
+        assignee: "Dev Fullstack",
+        href: "/08-slash/04-adresse",
+        progress: 100,
+        milestone: "Sprint 1",
+      },
+      {
+        id: "cmd-albert",
+        title: "/albert — IA Souveraine & RAG Public",
+        description: "Recherche sémantique et réponses factuelles sourcées sur corpus publics (DINUM/Etalab).",
+        badge: "Terminé",
+        badgeColor: "green",
+        priority: "P0",
+        tags: ["Albert", "RAG", "IA Souveraine"],
+        assignee: "Dev IA",
+        href: "/08-slash/05-albert",
+        progress: 100,
+        milestone: "Sprint 1",
+      },
+      {
+        id: "cmd-sdk",
+        title: "SDK Développeur Ministères",
+        description: "Package @suitenumerique/slash-sources-sdk pour étendre l'éditeur en < 15 min.",
+        badge: "Terminé",
+        badgeColor: "green",
+        priority: "P0",
+        tags: ["SDK", "TypeScript", "Partenaires"],
+        assignee: "Core Team",
+        href: "/08-slash/06-sdk-developpeur",
+        progress: 100,
+        milestone: "Sprint 1",
+      },
+      {
+        id: "cmd-exporters",
+        title: "Exportateurs Multi-Formats (PDF/DOCX/ODT)",
+        description: "Mappeurs haute fidélité conservant encadrés Marianne et liens officiels.",
+        badge: "Terminé",
+        badgeColor: "green",
+        priority: "P1",
+        tags: ["PDF", "DOCX", "ODT", "Export"],
+        assignee: "Dev Front",
+        progress: 100,
+        milestone: "Sprint 2",
+      },
+      {
+        id: "cmd-celery",
+        title: "Veille Nocturne d'Abrogation Juridique",
+        description: "Tâche Celery analysant automatiquement la validité des articles cités.",
+        badge: "Terminé",
+        badgeColor: "green",
+        priority: "P1",
+        tags: ["Celery", "Redis", "Veille"],
+        assignee: "Dev Back",
+        progress: 100,
+        milestone: "Sprint 2",
+      },
+    ],
+  },
+];
+
+L'écosystème des commandes slash (`/`) dans **La Suite Docs** suit une démarche de co-construction agile impliquant les équipes de la DINUM, de l'ANCT, des ministères partenaires et de l'École 42.
+
+Ce tableau interactif résume l'état d'avancement des fonctionnalités, des spécifications et des intégrations prévues.
+
+---
+
+## 📊 Tableau Kanban des Commandes & Évolutions
+
+<Kanban
+  title="Tableau de Bord des Commandes Slash"
+  description="Suivi en temps réel de l'idéation, de la spécification, du développement et de la mise en production des commandes."
+  columns={slashRoadmapColumns}
+/>
+
+---
+
+## 🎯 Jalons & Calendrier de Livraison
+
+### 🏁 Jalon 1 : Hackathon 42 x DINUM (Sprint Immédiat)
+*Objectif : Démontrer la puissance des commandes slash métier avec la commande juridique `/loi`.*
+
+- [x] Spécification complète du bloc BlockNote et du proxy Django.
+- [x] Intégration de l'authentification OAuth2 PISTE / DILA.
+- [x] Cache Redis 24h avec gestion des quotas et résilience.
+- [x] Composant React BlockNote avec 4 modes d'affichage (Badge, Fiche, Citation, Article complet).
+- [ ] Finalisation des tests E2E Playwright et validation du contraste DSFR (RGAA AA).
+
+---
+
+### 🚀 Jalon 2 : Enrichissement des Données Administratives (Q3 2026)
+*Objectif : Outiller les acheteurs publics, juristes, aménageurs et chargés de mission parlementaires.*
+
+- **Commande `/entreprise` (ex `/pappers`) :**
+  - Fiche d'entreprise certifiée à partir d'un SIREN / SIRET ou raison sociale (Pappers / API Entreprise).
+  - Données financières de synthèse, dirigeants légaux, code NAF et alertes procédures collectives.
+- **Commande `/adresse` (Base Adresse Nationale - BAN / IGN) :**
+  - Autocomplétion officielle et géocodage certifié pour les formulaires, arrêtés et courriers territoriaux.
+- **Commande `/assemblee` (via `claire.vite` / `Tricoteuse`) :**
+  - Suivi en temps réel des projets et propositions de loi en discussion.
+  - Insertion de fiches amendements avec texte comparatif et résultat des scrutins publics.
+  - Cartographie des députés et groupes politiques pour les fiches de banc en cabinet.
+
+---
+
+### 🌐 Jalon 3 : Déploiement Socle Interministériel & Nouvelles Pistes (Q4 2026)
+*Objectif : Généraliser l'ouverture et standardiser les commandes slash dans le Core de Docs.*
+
+- **Commande `/marche` (BOAMP & DAE) :**
+  - Consultation des avis d'appels publics à la concurrence et critères de sélection.
+- **Commande `/subvention` (Aides-Territoires / Fonds Vert) :**
+  - Intégration des dispositifs de financement et d'aides aux collectivités.
+- **SDK Développeur pour Commandes Tiers :**
+  - API standardisée pour permettre aux ministères de déclarer leurs propres commandes slash métier sans forker l'application.
+
+---
+
+## 💡 Propositions de Nouvelles Commandes
+
+Pour explorer les 10 fiches de cadrage détaillées des prochaines commandes slash (`/marche`, `/subvention`, `/cadastre`, `/insee`, `/agent`, `/tchap`, `/parapheur`, `/demarche`, etc.) :
+
+👉 **[Consulter le document complet des propositions (`proposition.md`)](/08-slash/05-proposition)**
+
+---
+
+## 📝 Comment Proposer une Nouvelle Commande ?
+
+Toute proposition de commande slash doit suivre la procédure d'architecture définie dans le **Design Change Skill** :
+
+1. **Rédiger une fiche de cadrage :** Expliquer le cas d'usage métier pour les agents de l'État (gain de temps, réduction d'erreurs).
+2. **Identifier la source de données souveraine :** Privilégier les API de l'État (PISTE, data.gouv.fr, API Entreprise, BAN, Légifrance).
+3. **Respecter la conformité DSFR & RGAA v4.1 :** Tout composant inséré doit être 100% accessible au clavier et aux lecteurs d'écran.
+4. **Garantir la compatibilité CRDT Yjs :** Les données du bloc doivent être sérialisables sous forme de propriétés simples dans l'arbre partagé.

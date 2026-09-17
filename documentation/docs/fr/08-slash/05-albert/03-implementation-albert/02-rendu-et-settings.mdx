@@ -1,0 +1,48 @@
+---
+title: "Rendu Visuel & Configuration de la Commande /albert"
+sidebar_label: "02. Rendu & Settings"
+description: Configuration des formats de rendu Cunningham et variables d'environnement pour l'activation d'Albert IA Souveraine.
+---
+
+import { Mermaid } from "../../../../../src/components/Mermaid";
+
+Ce document présente les configurations d'environnement requises et le comportement des formats de rendu visuels de la commande `/albert`.
+
+---
+
+## ⚙️ 1. Variables d'Environnement (Backend Django)
+
+```ini
+# Configuration Albert IA (django-lasuite-sources)
+SOURCES_ALBERT_API_KEY=votre_cle_api_albert_dinum
+SOURCES_ALBERT_BASE_URL=https://albert.api.etalab.gouv.fr/v1
+SOURCES_ALBERT_MODEL=albert-large-fr
+SOURCES_ALBERT_TIMEOUT=3.5
+SOURCES_ALBERT_MOCK_FALLBACK=true
+```
+
+---
+
+## 🎨 2. Rendu des 3 Formats DSFR / Cunningham
+
+### 📢 Mode 1 : Encadré Callout Marianne
+- **Bordure :** Bleu Marianne `#000091` (token `var(--c--contextuals--border--primary)`).
+- **En-tête :** Icône `🤖 Albert IA Souveraine` avec badge de confiance `Confiance : 96%`.
+- **Contenu :** Synthèse textuelle claire avec lien cliquable vers le texte de loi source.
+
+### 🗂️ Mode 2 : Carte Structurée
+- **Fond :** Gris 975 institutionnel.
+- **Grille :** 3 colonnes de métadonnées (Modèle utilisé, Source de doctrine, Date de vérification).
+
+### 🔗 Mode 3 : Pastille Lien Inline
+- **Rendu :** `🤖 Albert : Prime pouvoir d'achat (Décret 2023-1006)`.
+- **Infobulle :** Survol affichant le résumé complet de la doctrine.
+
+---
+
+## 📄 3. Export Documentaire (PDF, Word, LibreOffice)
+
+Lors de l'exportation d'un document contenant un bloc `/albert` :
+- **PDF Vectoriel :** Le bloc est sérialisé avec un fond grisé, un liseré bleu institutionnel et le lien hypertexte vers la source officielle.
+- **Word (.docx) :** Traduit en table DOCX avec bordure gauche colorée `#000091`.
+- **ODT (LibreOffice) :** Rendu sous forme de cadre ODF standard avec métadonnées sémantiques.

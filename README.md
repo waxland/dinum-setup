@@ -1,165 +1,244 @@
-# DINUM / La Suite dev setup
+# 🏛️ Projet Slasher — DINUM / La Suite Dev Setup (Monorepo 4 Piliers)
 
-Depot d'orchestration pour recuperer et lancer en local les projets de La Suite numerique.
+> **Slasher** : Standard universel de blocs de données distantes pour BlockNote (`@blocknote/xl-external-sources`), SDK zéro-dépendance (`@blocknote/source-provider-sdk`) et socle souverain des sources connectées de l'État français (DINUM / Hackathon 42 Oléron).  
+> Proposé à l'écosystème open source international **TypeCellOS/BlockNote**.
 
-Ce depot est articule en 4 piliers : `documentation/`, `packages/`, `demo/` et `LaSuite/`. Le Makefile clone les projets applicatifs dans `LaSuite/`, prepare les fichiers d'environnement connus, puis lance les projets deja cables.
 
-## Lecture rapide
+---
 
-- **Accueil & Challenge 42 :** [documentation/docs/00-accueil/index.mdx](documentation/docs/00-accueil/index.mdx)
-  - [Challenge La Suite Numérique x 42](documentation/docs/00-accueil/challenge-42.mdx)
-  - [Planning & Agenda du Hackathon](documentation/docs/00-accueil/planning.mdx)
-- **Onboarding & Démarrage :** [documentation/docs/01-onboarding/index.mdx](documentation/docs/01-onboarding/index.mdx)
-  - [Services, URLs & Identifiants](documentation/docs/01-onboarding/01-demarrage/urls-et-identifiants.mdx)
-  - [Glossaire & Concepts Clés](documentation/docs/01-onboarding/03-support/glossaire.mdx)
-  - [Configuration de la Machine Hôte](documentation/docs/01-onboarding/01-demarrage/environnement-machine-hote.mdx)
-  - [Configuration Git & SSH](documentation/docs/01-onboarding/01-demarrage/git-ssh.mdx)
-  - [Guide du Premier Commit](documentation/docs/01-onboarding/02-workflow-et-contribution/guide-du-premier-commit.mdx)
-  - [Sécurité du Poste Développeur](documentation/docs/01-onboarding/02-workflow-et-contribution/securite-du-poste-developpeur.mdx)
-  - [Environnement & Extensions VS Code](documentation/docs/01-onboarding/01-demarrage/vscode.mdx)
-  - [Workflow Makefile](documentation/docs/01-onboarding/02-workflow-et-contribution/workflow.mdx)
-  - [Tests, Linters & Qualité](documentation/docs/01-onboarding/02-workflow-et-contribution/tests-et-qualite.mdx)
-  - [Guide de Dépannage & FAQ](documentation/docs/01-onboarding/03-support/troubleshooting.mdx)
-- **Architecture & Fonctionnement :** [documentation/docs/02-architecture/index.mdx](documentation/docs/02-architecture/index.mdx)
-  - [Fédération d'Identité & ProConnect](documentation/docs/02-architecture/01-securite-et-identite/federation-identite-proconnect.mdx)
-  - [Collaboration Temps Réel & CRDT (Yjs)](documentation/docs/02-architecture/02-donnees-et-temps-reel/temps-reel-et-crdt.mdx)
-  - [Stockage d'Objets & Flux S3](documentation/docs/02-architecture/02-donnees-et-temps-reel/flux-stockage-s3.mdx)
-  - [Intégration Continue (CI/CD GitHub Actions)](documentation/docs/02-architecture/03-devops-et-deploiement/cicd-github-actions.mdx)
-  - [Déploiement en Production & Cloud Souverain](documentation/docs/02-architecture/03-devops-et-deploiement/deploiement-production.mdx)
-  - [Sauvegardes & Plan de Continuité (PRA / PCA)](documentation/docs/02-architecture/02-donnees-et-temps-reel/sauvegardes-et-restauration.mdx)
-  - [Authentification OIDC & Keycloak](documentation/docs/02-architecture/01-securite-et-identite/auth.mdx)
-  - [Stratégie de Hot Reload](documentation/docs/02-architecture/03-devops-et-deploiement/hot-reload.mdx)
-  - [Variables et .env](documentation/docs/02-architecture/03-devops-et-deploiement/env.mdx)
-  - [Gestion des Secrets (SOPS & age)](documentation/docs/02-architecture/01-securite-et-identite/secrets-sops.mdx)
-- **Fiches Projets :** [documentation/docs/03-projets/index.mdx](documentation/docs/03-projets/index.mdx)
-  - [Docs](documentation/docs/03-projets/01-documents-et-contenus/docs.mdx) • [Fichiers & Drive](documentation/docs/03-projets/01-documents-et-contenus/fichiers-drive.mdx) • [Grist](documentation/docs/03-projets/01-documents-et-contenus/grist.mdx)
-  - [Meet](documentation/docs/03-projets/02-communication-et-echange/meet.mdx) • [Tchap](documentation/docs/03-projets/02-communication-et-echange/tchap.mdx) • [Transfers](documentation/docs/03-projets/02-communication-et-echange/transfers.mdx)
-  - [Projects](documentation/docs/03-projets/03-gestion-et-utilisateurs/projects.mdx) • [People](documentation/docs/03-projets/03-gestion-et-utilisateurs/people.mdx) • [Accounts](documentation/docs/03-projets/03-gestion-et-utilisateurs/accounts.mdx)
-- **Design System & DSFR :** [documentation/docs/04-design-system/index.mdx](documentation/docs/04-design-system/index.mdx)
-  - [Installation & Setup](documentation/docs/04-design-system/01-fondations/installation.mdx)
-  - [Figma & UI Kit La Suite](documentation/docs/04-design-system/01-fondations/figma.mdx)
-  - [Couleurs & Thèmes](documentation/docs/04-design-system/01-fondations/couleurs-et-themes.mdx)
-  - [Typographie & Échelle](documentation/docs/04-design-system/01-fondations/typographie.mdx)
-  - [Boutons & Actions](documentation/docs/04-design-system/02-composants/boutons.mdx)
-  - [Badges & Statuts](documentation/docs/04-design-system/02-composants/badges-et-statuts.mdx)
-  - [Alertes & Callouts](documentation/docs/04-design-system/02-composants/alertes-et-callouts.mdx)
-  - [Modales & Boîtes de Dialogue](documentation/docs/04-design-system/02-composants/modales-et-dialogues.mdx)
-  - [Tableaux de Données](documentation/docs/04-design-system/02-composants/tableaux.mdx)
-  - [Pagination & Stepper](documentation/docs/04-design-system/02-composants/pagination-et-stepper.mdx)
-  - [Notices & Bandeaux](documentation/docs/04-design-system/02-composants/notices-et-bandeaux.mdx)
-  - [Formulaires & Saisie](documentation/docs/04-design-system/02-composants/formulaires.mdx)
-  - [Cartes & Conteneurs](documentation/docs/04-design-system/02-composants/cartes-et-conteneurs.mdx)
-  - [Navigation & Layout](documentation/docs/04-design-system/03-layout-et-structure/navigation-et-layout.mdx)
-  - [Icônes & Visuels](documentation/docs/04-design-system/01-fondations/icones.mdx)
-  - [Accessibilité RGAA](documentation/docs/04-design-system/01-fondations/accessibilite-rgaa.mdx)
-- **Skills d'Agent & Ingénierie :** [documentation/docs/07-skills/index.mdx](documentation/docs/07-skills/index.mdx)
-  - [DSFR](documentation/docs/07-skills/dsfr.mdx) • [RGAA Review](documentation/docs/07-skills/rgaa-review.mdx) • [La Suite Dev](documentation/docs/07-skills/lasuite-dev.mdx)
-  - [Docs MDX](documentation/docs/07-skills/docs-mdx.mdx) • [Code Review](documentation/docs/07-skills/code-review.mdx) • [Architecture Review](documentation/docs/07-skills/architecture-review.mdx) • [Design Change](documentation/docs/07-skills/design-change.mdx)
-- **Ressources & Communauté :** [documentation/docs/05-ressources/roadmap.mdx](documentation/docs/05-ressources/roadmap.mdx)
-  - [Templates & Outils Réutilisables](documentation/docs/05-ressources/templates-et-outils.mdx)
-  - [Salons Matrix & Contacts](documentation/docs/05-ressources/communaute.mdx)
+## 🧭 1. Architecture du Monorepo en 4 Piliers
 
-## Commandes principales
+Le dépôt est structuré en **4 piliers étanches et indépendants** :
 
-Afficher l'aide :
+```mermaid
+flowchart TD
+    subgraph P1["🎮 1. demo/ (Démonstrateur Web Standalone)"]
+        WebDemo["Application Vite 6 + React 19 (Port 5173)<br/>• Sélecteur de pays interactif (🇫🇷 🇩🇪 🇳🇱 🇪🇺)<br/>• Sélecteur de langue (en, fr, de, nl)<br/>• Permutation des 3 formats (Callout / Card / Link)<br/>• Testable sans Docker ni conteneur"]
+    end
 
-```bash
-make help
+    subgraph P2["📦 2. packages/ (Bibliothèques Open Source)"]
+        SDK["🛠️ @suitenumerique/slash-sources-sdk (&lt; 5 kB)<br/>SDK TypeScript universel déclaratif immuable"]
+        BN["🧩 @suitenumerique/blocknote-sources<br/>Extension BlockNote multi-formats & Storybook (Port 6006)"]
+        DJ["🐍 django-lasuite-sources (PyPI)<br/>Proxy DRF, cache Redis SHA-256 & anti-SSRF (Port 8000)"]
+    end
+
+    subgraph P3["📚 3. documentation/ (Portail Zudoku SSR)"]
+        Zudoku["Portail Documentaire Zudoku 0.86 (Port 3000)<br/>• 152 fichiers MDX normés / 270 routes pré-rendues<br/>• Guides techniques, ADRs & Dossiers de PR"]
+    end
+
+    subgraph P4["🐙 4. LaSuite/ (Espace Clones Git)"]
+        Clones["Clones applicatifs indépendants<br/>(docs, projects, meet, transfers, people, accounts)<br/>Pilotés par le Makefile et Docker Compose"]
+    end
+
+    SDK --> BN
+    BN --> WebDemo
+    DJ -.->|API REST| BN
+    P2 --> Zudoku
+    P2 --> Clones
 ```
 
-Installer les prérequis système (plugins Docker, etc.) :
+---
+
+## ⚡ 2. Démarrage Rapide & Tableau des Commandes
+
+| Action / Composant | Commande npm | Commande Make | URL / Port |
+| :--- | :--- | :--- | :---: |
+| **🎮 Démonstrateur Web Standalone** | `npm run demo:dev` | `make demo-dev` | [`http://localhost:5173`](http://localhost:5173) |
+| **📚 Portail Documentaire Zudoku** | `npm run docs:dev` | `make docs-dev` | [`http://localhost:3000`](http://localhost:3000) |
+| **🎨 Storybook Composants BlockNote** | `npm run storybook` | `make storybook` | [`http://localhost:6006`](http://localhost:6006) |
+| **🐍 Sandbox Django Demo Server** | `cd packages/django-lasuite-sources/demo && PYTHONPATH=.. ../.venv/bin/python manage.py runserver 8000` | - | [`http://localhost:8000`](http://localhost:8000) |
+| **🧪 Tests Unitaires TypeScript (15/15)** | `npm run packages:test` | `make packages-test` | - |
+| **🧪 Tests Unitaires Django (22/22)** | `cd packages/django-lasuite-sources && PYTHONPATH=. .venv/bin/pytest` | `make -C packages/django-lasuite-sources test` | - |
+| **🏗️ Build Packages TypeScript** | `npm run packages:build` | `make packages-build` | `packages/*/dist/` |
+| **🏗️ Build Démonstrateur Web** | `npm run demo:build` | `make demo-build` | `demo/dist/` |
+| **🏗️ Build Documentation (270 routes)** | `npm run docs:build` | `make docs-build` | `documentation/dist/` |
+
+---
+
+## 🎮 3. Lancer le Démonstrateur Web Standalone (`demo/`)
+
+Le démonstrateur web est une application autonome moderne (Vite 6 + React 19) qui embarque l'éditeur BlockNote.js et permet de tester tous les connecteurs souverains **sans nécessiter Docker ni backend local**.
+
+### 🚀 Démarrage en Mode Développement :
 
 ```bash
-make install # ou ./install.sh
+# Via npm
+npm run demo:dev
+
+# Ou via Make
+make demo-dev
 ```
 
-Cloner les projets declares :
+👉 Ouvrez [`http://localhost:5173`](http://localhost:5173) dans votre navigateur.
+
+### ✨ Fonctionnalités du Démonstrateur :
+- **🌍 Sélecteur de Pays Interactif :**
+  - 🇫🇷 **France (DINUM) :** Commandes `/loi` (Légifrance), `/entreprise` (RNE), `/marche` (BOAMP), `/adresse` (BAN), `/subvention`, `/stats` (INSEE), `/agent`, `/cadastre`, `/demarche`, `/opendata`, `/albert` (IA RAG).
+  - 🇩🇪 **Deutschland (Bund) :** Commandes `/gesetz` (*Gesetze im Internet* / BMJ), `/register` (*Handelsregister*), `/bundestag`, `/govdata`.
+  - 🇳🇱 **Nederland (Overheid) :** Commandes `/wet` (*Wettenbank* / Overheid.nl), `/kvk` (*Kamer van Koophandel*), `/bag` (Adresses), `/dataoverheid`.
+  - 🇪🇺 **European Union :** Commandes `/eurlex` (*EUR-Lex* - RGPD / Directives), `/ted` (*Tenders Electronic Daily*), `/dataeuropa`.
+- **🌐 Sélecteur de Langue :** Bascule instantanée de la locale de l'UI (`en` 🇬🇧, `fr` 🇫🇷, `de` 🇩🇪, `nl` 🇳🇱).
+- **🌙 Thème Sombre / Clair :** Bouton de bascule en haut à droite respectant les contrastes WCAG AA.
+- **🔄 Permutation des Formats :** Basculez à chaud chaque bloc entre les formats **Callout**, **Card (Carte)** et **Link (Lien Inline)**.
+
+### 🏗️ Compiler pour la Production :
 
 ```bash
-make clone
+npm run demo:build
+# Ou : make demo-build
 ```
 
-Cloner seulement certains projets :
+---
+
+## 🎨 4. Lancer et Visualiser les Storybooks
+
+### 🎨 4.1. Storybook Local des Composants BlockNote (`packages/blocknote-sources/`)
+
+Le package `@suitenumerique/blocknote-sources` inclut une suite de Stories isolées pour tester chaque format et état du composant :
+- `SourceCalloutFormat.stories.tsx` (Rendu Callout Marianne avec bordure `#000091`)
+- `SourceCardFormat.stories.tsx` (Rendu Carte 3 colonnes avec métadonnées)
+- `SourceLinkFormat.stories.tsx` (Rendu Lien Inline compact)
+- `SourceSearchPopover.stories.tsx` (Palette de recherche contextuelle WAI-ARIA `cmdk`)
+
+#### Démarrage du Storybook Local :
 
 ```bash
-REPOS="docs projects" make clone
+# Via npm
+npm run storybook
+
+# Ou via Make
+make storybook
 ```
 
-Preparer les fichiers d'environnement locaux :
+👉 Ouvrez [`http://localhost:6006`](http://localhost:6006) dans votre navigateur.
+
+### 🌐 4.2. Storybooks Officiels en Ligne de La Suite :
+- 📖 **Storybook Cunningham Design System :** [suitenumerique.github.io/cunningham](https://suitenumerique.github.io/cunningham/storybook/)
+- 📖 **Storybook UI Kit La Suite (`@gouvfr-lasuite`) :** [suitenumerique.github.io/ui-kit](https://suitenumerique.github.io/ui-kit/)
+- 📖 **Storybook React-DSFR Officiel :** [components.react-dsfr.fr](https://components.react-dsfr.fr/)
+
+---
+
+## 📦 5. Lancer, Développer et Tester les Packages (`packages/`)
+
+Le dossier `packages/` héberge les 3 bibliothèques open source découplées :
+
+### 🛠️ 5.1. Package `@suitenumerique/slash-sources-sdk` (TypeScript SDK)
+
+SDK ultra-léger (< 5 kB) sans dépendance pour déclarer des connecteurs distants immuables.
 
 ```bash
-make env
+# Lancer les tests unitaires Vitest
+npm --prefix packages/slash-sources-sdk test
+
+# Compiler en ESM + DTS
+npm --prefix packages/slash-sources-sdk run build
 ```
 
-Preparer les projets supportes :
+### 🧩 5.2. Package `@suitenumerique/blocknote-sources` (Extension BlockNote)
+
+Composant React pour BlockNote avec WAI-ARIA, i18n et exports PDF/DOCX/ODT.
 
 ```bash
-make bootstrap
+# Lancer les tests unitaires et RGAA Vitest (12/12)
+npm --prefix packages/blocknote-sources test
+
+# Compiler les bundles CJS + ESM + DTS avec tsup
+npm --prefix packages/blocknote-sources run build
+
+# Lancer Storybook
+npm --prefix packages/blocknote-sources run storybook
 ```
 
-Lancer le mode dev :
+### 🐍 5.3. Package `django-lasuite-sources` (Backend Django)
+
+Package Python / Django REST Framework encapsulant les 12 connecteurs certifiés de l'État, le cache Redis déterministe SHA-256 (24h) et le filtrage anti-SSRF.
 
 ```bash
-make dev
+# 1. Se positionner dans le dossier du package
+cd packages/django-lasuite-sources
+
+# 2. Exécuter la suite complète de 22 tests pytest (anti-SSRF, circuit breaker, registry, DRF)
+PYTHONPATH=. .venv/bin/pytest
+
+# 3. Lancer la mini-application Django autonome de démonstration (Port 8000)
+cd demo
+PYTHONPATH=.. ../.venv/bin/python manage.py runserver 8000
 ```
 
-Arreter les stacks connues :
-
+👉 Tester un connecteur via curl :
 ```bash
-make stop
+curl "http://localhost:8000/sources/suggest/?type=law&q=commande"
 ```
 
-## Ce qui est cable aujourd'hui
+---
 
-| Projet    | Clone | Env local | Lancement dev | Notes                                 |
-| --------- | ----: | --------: | ------------: | ------------------------------------- |
-| Docs      |   Oui |       Oui |           Oui | Via le Makefile upstream              |
-| Projects  |   Oui |       Oui |           Oui | Via `docker-compose-dev.yml`          |
-| Meet      |   Oui |   Partiel |           Non | LiveKit/OIDC/domaines a clarifier     |
-| Transfers |   Oui |       Non |           Non | Lire le README upstream avant cablage |
-| People    |   Oui |       Non |           Non | Lire le README upstream avant cablage |
-| Accounts  |   Oui |       Non |           Non | Lire le README upstream avant cablage |
+## 📚 6. Lancer le Portail Documentaire Zudoku (`documentation/`)
 
-## Point important sur le hot reload
+Le portail documentaire Zudoku (Vite SSR + React 19) expose les **152 fichiers documentaires** et les **270 routes** pré-rendues.
 
-Les changements dans `src/<projet>` sont visibles automatiquement seulement si le projet est lance en vrai mode developpement depuis ce code clone.
-
-Ils ne seront pas visibles si le service lance uniquement une image Docker deja construite, sans monter le code local.
-
-Details : [docs/hot-reload.md](docs/hot-reload.md)
-
-## Point important sur l'authentification
-
-Le chemin recommande en dev est d'utiliser Keycloak/OIDC avec des comptes de test, pas de supprimer l'authentification dans le code.
-
-Details : [docs/auth.md](docs/auth.md)
-
-## Documentation visuelle
-
-Zudoku est installe pour afficher le dossier `docs/` sous forme de documentation navigable.
-
-Generer la navigation automatique :
+### 🚀 Démarrage en Mode Développement :
 
 ```bash
-make generate-docs-nav
-```
+# Via npm
+npm run docs:dev
 
-Lancer le serveur local :
-
-```bash
+# Ou via Make
 make docs-dev
 ```
 
-Construire la version statique :
+👉 Ouvrez [`http://localhost:3000`](http://localhost:3000) dans votre navigateur.
+
+### 🏗️ Build SSR & Génération Statique :
 
 ```bash
-make docs-build
+# Génération de l'arbre de navigation
+npm run docs:nav
+
+# Compilation statique SSR (270 routes pré-rendues)
+npm run docs:build
+
+# Prévisualisation du build de production
+npm run docs:preview
 ```
 
-Previsualiser le build statique :
+---
+
+## 🐙 7. Gérer les Clones Applicatifs de La Suite (`LaSuite/`)
+
+Le Makefile permet de cloner et d'orchestrer localement les applications de La Suite Numérique dans le dossier `LaSuite/` (isolé de la racine) :
 
 ```bash
-make docs-preview
+# Cloner l'ensemble des dépôts configurés (docs, projects, meet, transfers, people, accounts)
+make clone
+
+# Cloner uniquement des dépôts spécifiques
+REPOS="docs projects" make clone
+
+# Préparer les fichiers .env locaux
+make env
+
+# Préparer les conteneurs et les bases de données locales
+make bootstrap
+
+# Démarrer la stack de développement Docker
+make dev
+
+# Arrêter les conteneurs
+make stop
 ```
 
-Les scripts npm equivalents sont `npm run docs:nav`, `npm run docs:dev`, `npm run docs:build` et `npm run docs:preview`.
+---
+
+## 🛡️ 8. Qualité, Sécurité & Traçabilité
+
+- **Accessibilité Universelle :** 100% conforme **RGAA v4.1 (Niveau AA)** et navigation clavier intégrale.
+- **Pureté UI :** Zéro Tailwind CSS, zéro composant visuel `@mantine/core` dans les bibliothèques, tokens Cunningham officiels et composants DSFR.
+- **Typage Strict :** Zéro `any`, `strict: true` sur l'ensemble du monorepo TypeScript.
+- **Sécurité Défensive :** Filtrage anti-SSRF sur toutes les requêtes distantes et circuit breaker 3.5s.
+- **Fichiers de Pilotage :**
+  - [`RECAP.md`](RECAP.md) : Historique chronologique des itérations et tableau de bord 100% validé.
+  - [`ISSUES.md`](ISSUES.md) : Registre officiel des contrôles de sécurité et de santé (0 bloqueur critique).
+  - [`AUDIT_COMPLET.md`](AUDIT_COMPLET.md) : Audit technique complet et analyse critique d'ingénierie.
+  - [`ARCHITECTURE.md`](ARCHITECTURE.md) : Cartographie des 4 piliers du monorepo.
+

@@ -1,0 +1,43 @@
+---
+title: "Scénarios Métier & Cas d'Usage de la Commande /marche"
+sidebar_label: "02. Cas d'Usage & Scénarios"
+description: Parcours d'acheteurs publics, juristes marchés et chefs de projets intégrant des avis de marchés dans leurs documents de travail.
+---
+
+import { Mermaid } from "../../../../../src/components/Mermaid";
+
+---
+
+## 🎯 1. Principaux Cas d'Usage
+
+### 📝 Scénario A : Rédaction du Rapport de Présentation (Acheteur Public)
+- **Contexte :** Un acheteur du Ministère de l'Intérieur rédige le rapport d'attribution d'un accord-cadre de cybersécurité.
+- **Action :** Il saisit `/marche 26-104892` ou `/marche accord-cadre socle cyber`.
+- **Résultat :** Le bloc affiche automatiquement le pouvoir adjudicateur, l'intitulé exact, la date de publication et les montants prévisionnels.
+
+### 🏢 Scénario B : Note de Cadrage Budgétaire (Chef de Projet)
+- **Contexte :** Un directeur de programme planifie le renouvellement des marchés d'assistance à maîtrise d'ouvrage (AMOA).
+- **Action :** Il utilise `/achat renouvellement infogérance cloud`.
+- **Résultat :** Insertion d'une carte comparative des avis publiés avec dates d'échéance.
+
+---
+
+## 🔄 2. Flux Séquentiel d'Insertion
+
+<Mermaid chart={`sequenceDiagram
+    actor Acheteur as 👤 Acheteur Public
+    participant Editor as 📝 Éditeur Docs
+    participant Popover as 🔍 Popover /marche
+    participant Proxy as 🐍 Backend Django
+    participant BOAMP as 📡 API DILA BOAMP
+
+    Acheteur->>Editor: Saisie "/marche cybersécurité DINUM"
+    Editor->>Popover: Ouverture popover de recherche
+    Popover->>Proxy: GET /api/v1.0/sources/search/?type=procurement&q=...
+    Proxy->>BOAMP: Requête OpenAPI DILA
+    BOAMP-->>Proxy: Liste des avis AAPC conformes
+    Proxy-->>Popover: Résultats DTO normalisés
+    Popover-->>Acheteur: Suggestions avec statut de validité
+    Acheteur->>Popover: Sélection de l'avis
+    Popover->>Editor: Insertion du SourceBlock (Mode Card ou Callout)
+`} />

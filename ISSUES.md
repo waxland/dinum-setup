@@ -1,8 +1,9 @@
-# 🚨 Registre des Problèmes & Alertes Critiques (`ISSUES.md`)
+# 🚨 Registre des Problèmes & Alertes Critiques — Projet Slasher (`ISSUES.md`)
 
-> **Projet :** `@blocknote/xl-external-sources` & Presets Souverains DINUM  
+> **Projet Officiel :** **Slasher** (`@blocknote/xl-external-sources` & Presets Souverains DINUM)  
 > **Dernière Revue :** 17 Septembre 2026  
 > **Statut Global du Registre :** 🟢 **Aucun Bloqueur Critique (0 Issue)**
+
 
 ---
 
