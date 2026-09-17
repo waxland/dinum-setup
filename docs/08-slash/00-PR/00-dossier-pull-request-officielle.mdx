@@ -208,7 +208,7 @@ pnpm --filter impress build
 ## 🛡️ Engagements de Qualité & Sécurité DINUM
 
 - 🔒 **Sécurité Anti-SSRF :** Toutes les requêtes sortantes passent par le proxy validé interdisant les IPs privées (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `127.0.0.1`, `169.254.169.254`).
-- ⚡ **Performance Caching :** Clés SHA-256 déterministes, cache Redis 24h avec temps de réponse en cache $< 5\text{ms}$.
+- ⚡ **Performance Caching :** Clés SHA-256 déterministes, cache Redis 24h avec temps de réponse en cache inférieur à 5 ms.
 - 🛑 **Typage Strict :** 0 `any`, 0 `as ...` cast non vérifié.
 - 🎨 **Conformité Design System :** Utilisation exclusive de `@openfun/cunningham-tokens`, `<Box>` et des tokens Marianne DSFR (zéro Tailwind, zéro Mantine dans l'UI).
 - ♿ **Accessibilité RGAA v4.1 (Niveau AA) :** Navigation clavier 100% opérationnelle, contrastes $\ge 4.5:1$, labels ARIA complets.

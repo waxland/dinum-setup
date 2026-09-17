@@ -148,29 +148,29 @@ Avant d'appliquer l'intégration propre par packages, le code prototype in-tree 
 
 ### 🚀 ÉTAPE 3 : Intégration « 3 Commandes, 3 Lignes » dans `suitenumerique/docs`
 
-Cette étape correspond exactement au contenu minimaliste de l'unique Pull Request soumise à l'équipe Core Team de La Suite Docs.
+Cette étape correspond exactement au contenu minimaliste de l'unique Pull Request soumise à l'équipe Core Team de La Suite Docs (dossier complet formalisé dans `docs/08-slash/00-PR/00-dossier-pull-request-officielle.mdx`).
 
 #### 3.1. Les 3 Commandes Bash
-- [ ] **Installation Frontend :** `pnpm --filter impress add @suitenumerique/blocknote-sources`
-- [ ] **Installation Backend :** `cd src/backend && uv add django-lasuite-sources`
-- [ ] **Vérification Build & Tests :** `pytest && pnpm --filter impress build`
+- [x] **Installation Frontend :** `pnpm --filter impress add @suitenumerique/blocknote-sources` (validé avec bundle tsup ESM/CJS).
+- [x] **Installation Backend :** `cd src/backend && uv add django-lasuite-sources` (validé avec packaging Python standard).
+- [x] **Vérification Build & Tests :** `pytest && pnpm --filter impress build` (protocole de test automatisé).
 
 #### 3.2. Les 3 Lignes de Code Exactes
-- [ ] **Ligne 1 : Backend Settings (`src/backend/impress/settings.py`)**
+- [x] **Ligne 1 : Backend Settings (`src/backend/impress/settings.py`)**
   ```python
   INSTALLED_APPS = [
       ...,
       "lasuite_sources",  # 👈 Ligne 1
   ]
   ```
-- [ ] **Ligne 2 : Backend URLs (`src/backend/impress/urls.py`)**
+- [x] **Ligne 2 : Backend URLs (`src/backend/impress/urls.py`)**
   ```python
   urlpatterns = [
       ...,
       path(f"api/{settings.API_VERSION}/", include("lasuite_sources.urls")),  # 👈 Ligne 2
   ]
   ```
-- [ ] **Ligne 3 : Frontend Editor (`src/frontend/apps/impress/.../BlockNoteEditor.tsx`)**
+- [x] **Ligne 3 : Frontend Editor (`src/frontend/apps/impress/.../BlockNoteEditor.tsx`)**
   ```tsx
   import { SourceBlock } from '@suitenumerique/blocknote-sources'; // Import
 

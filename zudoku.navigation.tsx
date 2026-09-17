@@ -232,40 +232,6 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     "type": "category",
-    "label": "Tutoriels",
-    "icon": "sparkles",
-    "collapsed": false,
-    "items": [
-      {
-        "type": "doc",
-        "file": "06-tutoriels/index.mdx",
-        "path": "/06-tutoriels"
-      },
-      {
-        "type": "category",
-        "label": "Developpement Applicatif",
-        "icon": "code",
-        "collapsed": false,
-        "items": [
-          "/06-tutoriels/01-developpement-applicatif/commande-slash-blocknote-legifrance",
-          "/06-tutoriels/01-developpement-applicatif/creer-un-bloc-docs",
-          "/06-tutoriels/01-developpement-applicatif/creer-un-bot-tchap-matrix"
-        ]
-      },
-      {
-        "type": "category",
-        "label": "Integration Et Tests",
-        "icon": "check-circle",
-        "collapsed": false,
-        "items": [
-          "/06-tutoriels/02-integration-et-tests/ecrire-un-test-e2e-playwright",
-          "/06-tutoriels/02-integration-et-tests/integrer-authentification-oidc"
-        ]
-      }
-    ]
-  },
-  {
-    "type": "category",
     "label": "Skills",
     "icon": "bot",
     "collapsed": false,
@@ -816,10 +782,6 @@ export const docsRedirects: ZudokuConfig["redirects"] = [
     "to": "/05-ressources/communaute"
   },
   {
-    "from": "/tutoriels",
-    "to": "/06-tutoriels"
-  },
-  {
     "from": "/skills",
     "to": "/07-skills"
   },
@@ -1066,22 +1028,6 @@ export const docsRedirects: ZudokuConfig["redirects"] = [
   {
     "from": "/04-design-system/navigation-et-layout",
     "to": "/04-design-system/03-layout-et-structure/navigation-et-layout"
-  },
-  {
-    "from": "/06-tutoriels/creer-un-bloc-docs",
-    "to": "/06-tutoriels/01-developpement-applicatif/creer-un-bloc-docs"
-  },
-  {
-    "from": "/06-tutoriels/creer-un-bot-tchap-matrix",
-    "to": "/06-tutoriels/01-developpement-applicatif/creer-un-bot-tchap-matrix"
-  },
-  {
-    "from": "/06-tutoriels/integrer-authentification-oidc",
-    "to": "/06-tutoriels/02-integration-et-tests/integrer-authentification-oidc"
-  },
-  {
-    "from": "/06-tutoriels/ecrire-un-test-e2e-playwright",
-    "to": "/06-tutoriels/02-integration-et-tests/ecrire-un-test-e2e-playwright"
   },
   {
     "from": "/07-skills/dsfr-skill",

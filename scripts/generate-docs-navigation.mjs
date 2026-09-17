@@ -333,7 +333,6 @@ function generateNavForTarget(target) {
     { from: "/design-system", to: "/04-design-system" },
     { from: "/dsfr", to: "/04-design-system" },
     { from: "/ressources", to: "/05-ressources/communaute" },
-    { from: "/tutoriels", to: "/06-tutoriels" },
     { from: "/skills", to: "/07-skills" },
     { from: "/slash", to: "/08-slash" },
     { from: "/08-slash/index", to: "/08-slash" },
@@ -559,24 +558,6 @@ function generateNavForTarget(target) {
     {
       from: "/04-design-system/navigation-et-layout",
       to: "/04-design-system/03-layout-et-structure/navigation-et-layout",
-    },
-
-    // Flat to subfolder backwards compatibility: Tutoriels
-    {
-      from: "/06-tutoriels/creer-un-bloc-docs",
-      to: "/06-tutoriels/01-developpement-applicatif/creer-un-bloc-docs",
-    },
-    {
-      from: "/06-tutoriels/creer-un-bot-tchap-matrix",
-      to: "/06-tutoriels/01-developpement-applicatif/creer-un-bot-tchap-matrix",
-    },
-    {
-      from: "/06-tutoriels/integrer-authentification-oidc",
-      to: "/06-tutoriels/02-integration-et-tests/integrer-authentification-oidc",
-    },
-    {
-      from: "/06-tutoriels/ecrire-un-test-e2e-playwright",
-      to: "/06-tutoriels/02-integration-et-tests/ecrire-un-test-e2e-playwright",
     },
 
     // Skills aliases and backwards compatibility

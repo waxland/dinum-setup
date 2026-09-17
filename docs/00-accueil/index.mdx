@@ -1,55 +1,95 @@
 ---
 title: Portail La Suite dev setup (42 x DINUM)
 sidebar_label: Accueil
-description: Portail de documentation, onboarding et boîte à outils pour le développement local et le Hackathon 42 x DINUM sur La Suite numérique.
+description: Portail de documentation d'ingénierie, onboarding et boîte à outils pour La Suite Numérique et le Socle des Sources Souveraines (/slash).
 ---
 
 import { Mermaid } from "../../src/components/Mermaid";
+import { FeatureCard, FeatureGrid } from "../../src/components/Cards";
+import { BlockNoteSlashPlayground } from "../../src/components/slash-preview/BlockNoteSlashPlayground";
 
-Bienvenue sur le portail de développement et d'orchestration locale de **La Suite numérique** !
+Bienvenue sur le portail d'ingénierie et d'orchestration locale de **La Suite numérique** de l'État français (DINUM) !
 
-Ce dépôt a été créé dans le cadre de la collaboration **42 x DINUM** à l'occasion du hackathon d'une semaine organisé à **Forty 2 (Île d'Oléron)** du 14 au 18 septembre 2026.
+Ce dépôt a été initié dans le cadre de la collaboration **42 x DINUM** à l'occasion du hackathon organisé à **Forty 2 (Île d'Oléron)** du 14 au 18 septembre 2026. Il centralise l'architecture, les packages souverains, l'onboarding accéléré et la spécification des **Commandes Slash (`/slash`)**.
 
-🔗 **Ressources clés :** [Challenge 42 x DINUM](/00-accueil/challenge-42) • [📅 Planning & Agenda](/00-accueil/planning) • [Portail officiel La Suite](https://lasuite.numerique.gouv.fr/) • [GitHub suitenumerique](https://github.com/suitenumerique) • [DINUM](https://www.numerique.gouv.fr/) • [42](https://42.fr/)
+🔗 **Ressources Rapides :** [Challenge 42 x DINUM](/00-accueil/challenge-42) • [📅 Planning & Agenda](/00-accueil/planning) • [Portail La Suite](https://lasuite.numerique.gouv.fr/) • [GitHub suitenumerique](https://github.com/suitenumerique) • [DINUM](https://www.numerique.gouv.fr/) • [42](https://42.fr/)
 
 ---
 
-## 🎯 Le Pourquoi du Comment de ce Dépôt
+## 🎨 Références Officielles du Design System & Maquettes Figma
 
-### 💡 Le Constat : La complexité d'un écosystème distribué
+Pour assurer une cohérence visuelle parfaite entre les applications de La Suite et respecter la charte graphique de l'État :
 
-**La Suite numérique** n'est pas une simple application monolithique, mais un ensemble de briques souveraines et interconnectées :
+<FeatureGrid cols={3}>
+  <FeatureCard
+    icon="📄"
+    title="Figma La Suite Docs"
+    badge="Maquette Officielle"
+    description="Maquettes Figma de référence de l'éditeur collaboratif Docs (Impress), vues de documents et CustomBlocks."
+    href="https://www.figma.com/design/qdCWR4tTUr7vQSecEjCyqO/Docs?node-id=9722-19469&p=f&t=r1O6Np4JgTbRWrCR-0"
+  />
+  <FeatureCard
+    icon="🎨"
+    title="Figma La Suite UI Kit"
+    badge="Cunningham Tokens"
+    description="Bibliothèque de composants UI Kit La Suite basée sur Cunningham et le Design System officiel."
+    href="https://www.figma.com/community/file/1562860630562131728/lasuite-ui-kit"
+  />
+  <FeatureCard
+    icon="📖"
+    title="Storybook Cunningham"
+    badge="Composants Live"
+    description="Documentation interactive et bac à sable des composants UI (@openfun/cunningham-tokens)."
+    href="https://suitenumerique.github.io/cunningham/storybook/"
+  />
+</FeatureGrid>
 
-- Plusieurs back-ends (Python/Django 5, Node.js, Go),
-- Des front-ends modernes (TypeScript, React 18/19, Next.js, Vite),
-- Des services d'infrastructure dédiés (Keycloak SSO OIDC, serveurs WebSocket temps réel Yjs/CRDT, moteurs WebRTC LiveKit, stockage S3 MinIO, caches Redis et plusieurs bases PostgreSQL isolées).
+---
 
-Sans orchestration unifiée, chaque étudiant ou contributeur arrivant sur le projet devrait passer **1 à 2 journées entières** à cloner individuellement chaque dépôt, résoudre des conflits de versions de runtimes (Node, Python), configurer à la main des dizaines de variables `.env` et déboguer des problèmes de ports ou d'authentification.
+## ⚡ Le Projet Phare : Le Socle des Commandes Souveraines (`/slash`)
 
-### 🚀 L'Objectif : Zéro friction et setup en 5 minutes entre étudiants
+Le projet **`/slash`** dote l'éditeur **La Suite Docs** d'un accès direct aux **12 grandes bases de données souveraines de l'État français** au fil de la frappe.
 
-Le projet **`dinum-setup`** a été pensé pour **accélérer et simplifier au maximum l'onboarding des étudiants de 42** :
-
-1. **Un seul point d'entrée (`Makefile`)** : Cloner, configurer les variables d'environnement, migrer les bases de données et lancer l'ensemble des services en quelques commandes standardisées (`make install`, `make clone`, `make env`, `make dev`).
-2. **Accès base de données en 1-clic** : Toutes les connexions PostgreSQL sont pré-intégrées pour **SQLTools** dans VS Code sans mot de passe à renseigner.
-3. **Documentation vivante & interactive** : Ce site Zudoku centralise les schémas d'architecture temps réel, la matrice des projets, les guides de contribution et la bibliothèque de composants officielle du **Design System de l'État (DSFR)**.
-4. **Focus sur la valeur ajoutée** : Permettre aux équipes du hackathon de se concentrer immédiatement sur le code et les [Tracks du Challenge 42](/00-accueil/challenge-42) (interopérabilités, sécurité, mini-apps Typst, signature électronique).
-
-<Mermaid chart={`flowchart LR
-    subgraph Sans["❌ Sans dinum-setup"]
-        S1["Cloner 6 repos manuellement"] --> S2["Installer 3 versions de Node/Python"]
-        S2 --> S3["Créer 6 BDD PostgreSQL"]
-        S3 --> S4["Résoudre les conflits de ports"]
-        S4 --> S5["1 jour perdu à debugger le setup"]
+```mermaid
+flowchart TD
+    subgraph Client["📝 Éditeur Collaboratif (Navigateur)"]
+        Saisie["Saisie au clavier : /loi, /marche, /entreprise..."] --> Popover["Palette de Recherche Popover (Cunningham + cmdk)"]
+        Popover --> Block["CustomBlock Universel (3 Formats DSFR : Callout, Carte, Lien)"]
     end
 
-    subgraph Avec["✅ Avec dinum-setup (42 x DINUM)"]
-        A1["git clone dinum-setup"] --> A2["make install && make clone"]
-        A2 --> A3["make env && make dev"]
-        A3 --> A4["🚀 Prêt à coder en 5 minutes !"]
+    subgraph Packages["📦 Packages Autonomes Découplés (DINUM)"]
+        Pkg_Py["🐍 django-lasuite-sources (PyPI)"]
+        Pkg_JS["📦 @suitenumerique/blocknote-sources (npm)"]
+        Pkg_SDK["🛠️ @suitenumerique/slash-sources-sdk (npm)"]
     end
 
-`} />
+    subgraph APIs["🏛️ Sources Officielles de l'État"]
+        PISTE["Légifrance / PISTE (DILA)"]
+        BOAMP["Marchés Publics BOAMP (DAE)"]
+        BAN["Base Adresse Nationale (IGN)"]
+        INSEE["INSEE Stats & RNE"]
+        Albert["Albert IA Souveraine (Etalab)"]
+    end
+
+    Client --> Pkg_JS
+    Pkg_JS --> Pkg_Py
+    Pkg_Py --> APIs
+```
+
+### ⚖️ La Première Proposition Pionnière : `/loi` & la Vision Juridique
+La commande **/loi** (alias `/legifrance`, `/code`, `/article`) constitue la première brique emblématique de cette vision :
+- **Sécurité Juridique Absolue :** Interrogation en temps réel de l'API officielle **PISTE / DILA** pour certifier que l'article de loi ou le décret cité est **en vigueur**.
+- **Veille d'Abrogation Continue :** Tâche Celery scannant les documents pour avertir automatiquement les agents si un article cité vient d'être modifié ou abrogé au Journal Officiel.
+- **Rendu aux 3 Formats DSFR :** Permutation instantanée entre l'**Encadré officiel Marianne** (`#000091`), la **Carte 3 colonnes** de métadonnées et la **Pastille Lien inline**.
+- **Export Vectoriel Parfait :** Préservation de la bordure Marianne et des hyperliens lors de l'export vers PDF, Word (.docx) ou LibreOffice (.odt).
+
+---
+
+## 🎮 Démonstrateur Interactif BlockNote.js en Direct
+
+Testez ci-dessous le moteur d'édition en direct avec les commandes `/loi`, `/entreprise`, `/adresse`, `/marche`, `/stats` :
+
+<BlockNoteSlashPlayground />
 
 ---
 
@@ -58,58 +98,58 @@ Le projet **`dinum-setup`** a été pensé pour **accélérer et simplifier au m
 <FeatureGrid cols={3}>
   <FeatureCard
     icon="🚀"
-    title="Onboarding & Démarrage"
+    title="01. Onboarding & Démarrage"
     description="Checklist du 1er jour, configuration VS Code 1-clic, Git/SSH et environnement système."
     href="/01-onboarding"
     badge="Démarrage"
   />
   <FeatureCard
     icon="🏛️"
-    title="Architecture Globale"
+    title="02. Architecture Globale"
     description="Schémas Mermaid interactifs, flux OIDC ProConnect, synchronisation Yjs CRDT et stockage S3."
     href="/02-architecture"
     badge="Système"
   />
   <FeatureCard
     icon="📦"
-    title="Matrice des Projets"
-    description="Fiches détaillées des applications : Docs, BlockNote, Meet, Tchap, Grist, Drive, Transfers."
+    title="03. Matrice des Projets"
+    description="Fiches détaillées des applications : Docs, Meet, Tchap, Grist, Drive, Transfers, Projects, People."
     href="/03-projets"
     badge="Applications"
   />
   <FeatureCard
     icon="🎨"
-    title="Design System (DSFR)"
-    description="Composants officiels @codegouvfr/react-dsfr, typographie Marianne, accessibilité RGAA AA."
+    title="04. Design System (DSFR & Cunningham)"
+    description="Composants officiels, typographie Marianne, tokens de couleur et conformité RGAA v4.1 AA."
     href="/04-design-system"
     badge="UI / UX"
   />
   <FeatureCard
-    icon="💡"
-    title="Tutoriels & Recettes"
-    description="Guides pratiques pas-à-pas : commande /law dans BlockNote, bot Tchap, tests Playwright E2E."
-    href="/06-tutoriels"
-    badge="Pratique"
+    icon="🧰"
+    title="05. Ressources & Outils"
+    description="Templates de PR, feuille de route pluriannuelle et canaux d'entraide communautaire."
+    href="/05-ressources/communaute"
+    badge="Ressources"
   />
   <FeatureCard
     icon="🤖"
-    title="Skills d'Agent & Ingénierie"
-    description="Procédures et compétences spécialisées pour assister les développeurs et l'IA."
+    title="07. Skills d'Agent & Ingénierie"
+    description="Procédures, directives strictes (Zéro any, Zéro cast) et compétences spécialisées."
     href="/07-skills"
     badge="Méthode"
   />
   <FeatureCard
-    icon="⚖️"
-    title="Commandes Slash & Projet de Loi"
-    description="Dossier métier et technique complet pour la commande /loi connectée à Légifrance."
-    href="/08-slash/loi"
-    badge="Nouveau"
+    icon="⚡"
+    title="08. Socle Souverain & Packages /slash"
+    description="Dossier technique complet, 12 connecteurs, SDK développeur et dossiers de Pull Requests."
+    href="/08-slash"
+    badge="Majeur"
   />
 </FeatureGrid>
 
 ---
 
-## ⚡ Commandes Principales
+## ⚡ Commandes Principales d'Orchestration
 
 ```bash
 # 1. Cloner tous les dépôts de La Suite dans ./src
