@@ -1,0 +1,20 @@
+---
+title: "Benchmark des Sources Statistiques Territoriales"
+sidebar_label: "01. Benchmark des APIs"
+description: Analyse comparative de l'API INSEE Données Locales, data.gouv.fr et GeoAPI.
+---
+
+---
+
+## 📊 Matrice Comparative des APIs
+
+| API | Opérateur | Couverture | Latence | Fiabilité |
+| :--- | :--- | :--- | :--- | :---: |
+| **API Données Locales INSEE** | INSEE | Toutes les communes | $< 150\text{ms}$ | 🟢 **Source Primaire** |
+| **GeoAPI (geo.api.gouv.fr)** | DINUM / Etalab | Découpage administratif | $< 50\text{ms}$ | 🟢 Complément Géographique |
+| **Fichiers Millésimés INSEE** | data.gouv.fr | Annuel | Batch | 🟡 Source d'archive |
+
+---
+
+## 💡 Architecture Retenue
+Le provider combine l'API **geo.api.gouv.fr** pour l'autocomplétion ultrarapide des noms de communes et l'API **INSEE Données Locales** pour l'extraction certifiée des indicateurs socio-économiques.

@@ -1,0 +1,40 @@
+---
+title: "Spécifications Techniques de l'API Cadastre"
+sidebar_label: "02. Spécifications Techniques"
+description: Schémas GeoJSON, paramètres de requêtes et endpoints de recherche cadastrale.
+---
+
+---
+
+## 📡 1. Endpoint de Recherche Parcellaire
+
+### `GET https://apicarto.ign.fr/api/cadastre/parcelle`
+
+#### Paramètres :
+- `code_insee` : Code INSEE de la commune (ex: `75107`).
+- `section` : Lettres de section (ex: `AK`).
+- `numero` : Numéro de parcelle (ex: `0042`).
+
+#### Exemple de Réponse GeoJSON :
+```json
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "idu": "75107000AK0042",
+        "commune": "75107",
+        "section": "AK",
+        "numero": "0042",
+        "contenance": 1250,
+        "date_maj": "2026-01-01"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[2.3125, 48.8582], [2.3130, 48.8585], [2.3128, 48.8580], [2.3125, 48.8582]]]
+      }
+    }
+  ]
+}
+```

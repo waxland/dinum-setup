@@ -1,0 +1,20 @@
+---
+title: "Benchmark des Sources d'Aides Publiques"
+sidebar_label: "01. Benchmark des APIs"
+description: Comparatif de l'API Aides-Territoires (beta.gouv.fr), data.gouv.fr et des catalogues régionaux d'aides publiques.
+---
+
+---
+
+## 📊 Matrice d'Évaluation des APIs
+
+| Source | Opérateur | Couverture | API / Format | Fiabilité |
+| :--- | :--- | :--- | :--- | :---: |
+| **API Aides-Territoires** | ANCT / beta.gouv.fr | Nationale + Régionale | REST / JSON OpenAPI | 🟢 **Référence Officielle** |
+| **Open Data Aides Territoires** | data.gouv.fr | Nationale | CSV / Parquet | 🟡 Export différé ($24\text{h}$) |
+| **Portails Régionaux** | Régions de France | Locale uniquement | Hétérogène | ⚪ Non unifiée |
+
+---
+
+## 💡 Choix Technique
+L'API REST native **Aides-Territoires** fournit les critères d'éligibilité, les montants et les formulaires de dépôt en temps réel.

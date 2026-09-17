@@ -1,0 +1,43 @@
+---
+title: "Scénarios Métier & Cas d'Usage de la Commande /cadastre"
+sidebar_label: "02. Cas d'Usage & Scénarios"
+description: Parcours d'agents fonciers, urbanistes et géomètres insérant des références parcellaires dans des délibérations et permis.
+---
+
+import { Mermaid } from "../../../../src/components/Mermaid";
+
+---
+
+## 🎯 1. Parcours Types
+
+### 📜 Scénario A : Délibération de Cession Foncière (Conseil Municipal)
+- **Contexte :** Un agent de mairie prépare la délibération relative à la vente d'une emprise communale déclassée.
+- **Action :** Saisie de `/cadastre 35238 Section BK parcelle 112`.
+- **Résultat :** Le bloc affiche la contenance certifiée ($842\,m^2$), l'adresse postale rattachée et la référence DGFiP.
+
+### 🏗️ Scénario B : Instruction de Déclaration Préalable
+- **Contexte :** Un instructeur en urbanisme valide les références cadastrales d'une division de terrain.
+- **Action :** Saisie de `/parcelle Nantes 44109 AR 0015`.
+- **Résultat :** Insertion immédiate de la carte de parcelle avec lien IGN.
+
+---
+
+## 🔄 2. Flux Séquentiel
+
+<Mermaid chart={`sequenceDiagram
+    actor Urbaniste as 👤 Instructeur Urbanisme
+    participant Editor as 📝 Éditeur Docs
+    participant Popover as 🔍 Popover /cadastre
+    participant Django as 🐍 django-lasuite-sources
+    participant IGN as 🗺️ API Géoplateforme IGN
+
+    Urbaniste->>Editor: Saisie "/cadastre 75107 AK 0042"
+    Editor->>Popover: Déclenchement de la recherche
+    Popover->>Django: GET /api/v1.0/sources/search/?type=cadastre&q=...
+    Django->>IGN: Requête WFS / Vector Tiles Géoplateforme
+    IGN-->>Django: Géométrie + Contenance de la parcelle
+    Django-->>Popover: DTO SourceSearchResult normalisé
+    Popover-->>Urbaniste: Aperçu parcelle avec superficie en m²
+    Urbaniste->>Popover: Validation (Entrée)
+    Popover->>Editor: Insertion du SourceBlock
+`} />

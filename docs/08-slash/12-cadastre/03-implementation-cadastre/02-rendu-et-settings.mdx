@@ -1,0 +1,24 @@
+---
+title: "Rendu Visuel & Configuration de la Commande /cadastre"
+sidebar_label: "02. Rendu & Settings"
+description: Configuration des formats de rendu Cunningham et variables d'environnement pour le cadastre.
+---
+
+---
+
+## ⚙️ 1. Variables d'Environnement
+
+```ini
+# Configuration Cadastre (django-lasuite-sources)
+SOURCES_CADASTRE_API_URL=https://apicarto.ign.fr/api/cadastre
+SOURCES_CADASTRE_TIMEOUT=3.5
+SOURCES_CADASTRE_CACHE_TTL=86400
+```
+
+---
+
+## 🎨 2. Rendu des 3 Formats DSFR
+
+1. **🗂️ Carte Parcellaire :** Contenance en $m^2$ • Section & Numéro • Date de mise à jour.
+2. **📢 Encadré :** Note foncière avec bordure Marianne `#000091` et lien IGN.
+3. **🔗 Pastille Lien :** `🗺️ Parcelle 75107 AK 0042 (1 250 m²)`.

@@ -1,9 +1,9 @@
 import {
-  BlockNoDefaults,
-  BlockNoteEditor,
-  InlineContentSchema,
-  StyleSchema,
-  defaultProps,
+    BlockNoDefaults,
+    BlockNoteEditor,
+    InlineContentSchema,
+    StyleSchema,
+    defaultProps,
 } from '@blocknote/core';
 import { insertOrUpdateBlockForSlashMenu } from '@blocknote/core/extensions';
 import { createReactBlockSpec } from '@blocknote/react';
@@ -11,21 +11,21 @@ import React from 'react';
 
 import { SourceSearchPopover } from './components/SourceSearchPopover';
 import {
-  SourceBlockToolbar,
-  SourceCalloutFormat,
-  SourceCardFormat,
-  SourceLinkFormat,
+    SourceBlockToolbar,
+    SourceCalloutFormat,
+    SourceCardFormat,
+    SourceLinkFormat,
 } from './formats';
 import {
-  CreateSourceBlockConfig,
-  DISPLAY_MODES,
-  DisplayMode,
-  SOURCE_ENTITY_TYPES,
-  STATUS_COLORS,
-  SourceBlockEditor,
-  SourceEntityProps,
-  SourceEntityType,
-  TranslationFn,
+    CreateSourceBlockConfig,
+    DISPLAY_MODES,
+    DisplayMode,
+    SOURCE_ENTITY_TYPES,
+    STATUS_COLORS,
+    SourceBlockEditor,
+    SourceEntityProps,
+    SourceEntityType,
+    TranslationFn,
 } from './types';
 
 interface SourceComponentProps {

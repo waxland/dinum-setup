@@ -1,0 +1,29 @@
+---
+title: "Implémentation du Provider Django /stats"
+sidebar_label: "01. Provider Django"
+description: Code source et structure de InseeSourceProvider dans django-lasuite-sources.
+---
+
+---
+
+## 🐍 1. Implémentation `InseeSourceProvider`
+
+```python
+from typing import List
+from lasuite_sources.base import BaseSourceProvider
+from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
+
+class InseeSourceProvider(BaseSourceProvider):
+    name = "INSEE / Statistiques Territoriales"
+    source_type = "insee"
+    aliases = ["stats", "insee", "population", "territoire", "demographie"]
+    description = "Données démographiques, socio-économiques et territoriales certifiées par l'INSEE"
+
+    async def search(self, query: str, limit: int = 10) -> List[SourceSearchResult]:
+        # Requête INSEE / GeoAPI avec cache Redis 24h
+        ...
+
+    async def suggest(self, query: str, limit: int = 5) -> List[SourceSuggestResult]:
+        # Suggestions de communes par nom ou code postal
+        ...
+```

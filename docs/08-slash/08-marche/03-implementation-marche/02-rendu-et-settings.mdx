@@ -1,0 +1,25 @@
+---
+title: "Rendu Visuel & Configuration de la Commande /marche"
+sidebar_label: "02. Rendu & Settings"
+description: Configuration des formats de rendu Cunningham et variables d'environnement pour l'API BOAMP.
+---
+
+---
+
+## ⚙️ 1. Variables d'Environnement
+
+```ini
+# Configuration BOAMP (django-lasuite-sources)
+SOURCES_BOAMP_API_URL=https://api.piste.gouv.fr/dila/legifrance/boamp/v1
+SOURCES_BOAMP_CLIENT_ID=votre_client_id
+SOURCES_BOAMP_CLIENT_SECRET=votre_secret
+SOURCES_BOAMP_CACHE_TTL=86400
+```
+
+---
+
+## 🎨 2. Rendu des 3 Formats DSFR
+
+1. **🗂️ Format Carte (Card) :** Affiche l'acheteur public, le numéro AAPC, la date limite de réponse et le statut de la consultation.
+2. **📢 Format Encadré (Callout) :** Extrait d'objet du marché avec bordure Marianne `#000091` et lien vers le profil acheteur.
+3. **🔗 Format Lien (Link) :** Pastille inline `🛍️ Marché 26-104892 (La Suite)`.

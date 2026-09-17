@@ -303,6 +303,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       "/08-slash/04-tutoriel-ajouter-une-api",
       "/08-slash/05-proposition",
       "/08-slash/07-roadmap",
+      "/08-slash/13-reutilisation-transverse",
+      "/08-slash/14-retour-d-experience",
       {
         "type": "category",
         "label": "Stratégies de Pull Requests (PR)",
@@ -314,9 +316,11 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "file": "08-slash/00-PR/index.mdx",
             "path": "/08-slash/00-PR"
           },
+          "/08-slash/00-PR/00-dossier-pull-request-officielle",
           "/08-slash/00-PR/01-pr-interne-monolithique",
           "/08-slash/00-PR/02-pr-externe-packagee",
-          "/08-slash/00-PR/03-guide-d-arbitrage-et-migration"
+          "/08-slash/00-PR/03-guide-d-arbitrage-et-migration",
+          "/08-slash/00-PR/04-proposition-amont-blocknote"
         ]
       },
       {
@@ -508,7 +512,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "icon": "briefcase",
             "collapsed": false,
             "items": [
-              "/08-slash/05-albert/01-metier-albert/01-fondations-et-cadre"
+              "/08-slash/05-albert/01-metier-albert/01-fondations-et-cadre",
+              "/08-slash/05-albert/01-metier-albert/02-cas-usage-et-scenarios"
             ]
           },
           {
@@ -517,7 +522,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "icon": "code",
             "collapsed": false,
             "items": [
-              "/08-slash/05-albert/02-api-albert/01-benchmark-des-apis"
+              "/08-slash/05-albert/02-api-albert/01-benchmark-des-apis",
+              "/08-slash/05-albert/02-api-albert/02-specifications-techniques"
             ]
           },
           {
@@ -526,7 +532,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "icon": "terminal",
             "collapsed": false,
             "items": [
-              "/08-slash/05-albert/03-implementation-albert/01-provider-django"
+              "/08-slash/05-albert/03-implementation-albert/01-provider-django",
+              "/08-slash/05-albert/03-implementation-albert/02-rendu-et-settings"
             ]
           }
         ]
@@ -554,6 +561,36 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "type": "doc",
             "file": "08-slash/08-marche/index.mdx",
             "path": "/08-slash/08-marche"
+          },
+          {
+            "type": "category",
+            "label": "Pôle Métier & Usages",
+            "icon": "briefcase",
+            "collapsed": false,
+            "items": [
+              "/08-slash/08-marche/01-metier-marche/01-fondations-et-cadre",
+              "/08-slash/08-marche/01-metier-marche/02-cas-usage-et-scenarios"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle API & Veille",
+            "icon": "code",
+            "collapsed": false,
+            "items": [
+              "/08-slash/08-marche/02-api-marche/01-benchmark-des-apis",
+              "/08-slash/08-marche/02-api-marche/02-specifications-techniques"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle Implémentation",
+            "icon": "terminal",
+            "collapsed": false,
+            "items": [
+              "/08-slash/08-marche/03-implementation-marche/01-provider-django",
+              "/08-slash/08-marche/03-implementation-marche/02-rendu-et-settings"
+            ]
           }
         ]
       },
@@ -567,6 +604,36 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "type": "doc",
             "file": "08-slash/09-subvention/index.mdx",
             "path": "/08-slash/09-subvention"
+          },
+          {
+            "type": "category",
+            "label": "Pôle Métier & Usages",
+            "icon": "briefcase",
+            "collapsed": false,
+            "items": [
+              "/08-slash/09-subvention/01-metier-subvention/01-fondations-et-cadre",
+              "/08-slash/09-subvention/01-metier-subvention/02-cas-usage-et-scenarios"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle API & Veille",
+            "icon": "code",
+            "collapsed": false,
+            "items": [
+              "/08-slash/09-subvention/02-api-subvention/01-benchmark-des-apis",
+              "/08-slash/09-subvention/02-api-subvention/02-specifications-techniques"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle Implémentation",
+            "icon": "terminal",
+            "collapsed": false,
+            "items": [
+              "/08-slash/09-subvention/03-implementation-subvention/01-provider-django",
+              "/08-slash/09-subvention/03-implementation-subvention/02-rendu-et-settings"
+            ]
           }
         ]
       },
@@ -580,6 +647,36 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "type": "doc",
             "file": "08-slash/10-stats/index.mdx",
             "path": "/08-slash/10-stats"
+          },
+          {
+            "type": "category",
+            "label": "Pôle Métier & Usages",
+            "icon": "briefcase",
+            "collapsed": false,
+            "items": [
+              "/08-slash/10-stats/01-metier-stats/01-fondations-et-cadre",
+              "/08-slash/10-stats/01-metier-stats/02-cas-usage-et-scenarios"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle API & Veille",
+            "icon": "code",
+            "collapsed": false,
+            "items": [
+              "/08-slash/10-stats/02-api-stats/01-benchmark-des-apis",
+              "/08-slash/10-stats/02-api-stats/02-specifications-techniques"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle Implémentation",
+            "icon": "terminal",
+            "collapsed": false,
+            "items": [
+              "/08-slash/10-stats/03-implementation-stats/01-provider-django",
+              "/08-slash/10-stats/03-implementation-stats/02-rendu-et-settings"
+            ]
           }
         ]
       },
@@ -593,6 +690,36 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "type": "doc",
             "file": "08-slash/11-agent/index.mdx",
             "path": "/08-slash/11-agent"
+          },
+          {
+            "type": "category",
+            "label": "Pôle Métier & Usages",
+            "icon": "briefcase",
+            "collapsed": false,
+            "items": [
+              "/08-slash/11-agent/01-metier-agent/01-fondations-et-cadre",
+              "/08-slash/11-agent/01-metier-agent/02-cas-usage-et-scenarios"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle API & Veille",
+            "icon": "code",
+            "collapsed": false,
+            "items": [
+              "/08-slash/11-agent/02-api-agent/01-benchmark-des-apis",
+              "/08-slash/11-agent/02-api-agent/02-specifications-techniques"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle Implémentation",
+            "icon": "terminal",
+            "collapsed": false,
+            "items": [
+              "/08-slash/11-agent/03-implementation-agent/01-provider-django",
+              "/08-slash/11-agent/03-implementation-agent/02-rendu-et-settings"
+            ]
           }
         ]
       },
@@ -606,6 +733,36 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "type": "doc",
             "file": "08-slash/12-cadastre/index.mdx",
             "path": "/08-slash/12-cadastre"
+          },
+          {
+            "type": "category",
+            "label": "Pôle Métier & Usages",
+            "icon": "briefcase",
+            "collapsed": false,
+            "items": [
+              "/08-slash/12-cadastre/01-metier-cadastre/01-fondations-et-cadre",
+              "/08-slash/12-cadastre/01-metier-cadastre/02-cas-usage-et-scenarios"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle API & Veille",
+            "icon": "code",
+            "collapsed": false,
+            "items": [
+              "/08-slash/12-cadastre/02-api-cadastre/01-benchmark-des-apis",
+              "/08-slash/12-cadastre/02-api-cadastre/02-specifications-techniques"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle Implémentation",
+            "icon": "terminal",
+            "collapsed": false,
+            "items": [
+              "/08-slash/12-cadastre/03-implementation-cadastre/01-provider-django",
+              "/08-slash/12-cadastre/03-implementation-cadastre/02-rendu-et-settings"
+            ]
           }
         ]
       }

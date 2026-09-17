@@ -1,0 +1,24 @@
+---
+title: "Rendu Visuel & Configuration de la Commande /agent"
+sidebar_label: "02. Rendu & Settings"
+description: Configuration des formats de rendu Cunningham et variables d'environnement pour l'Annuaire du Service Public.
+---
+
+---
+
+## ⚙️ 1. Variables d'Environnement
+
+```ini
+# Configuration Annuaire DILA (django-lasuite-sources)
+SOURCES_AGENT_API_URL=https://api-lannuaire.service-public.fr/api/explore/v2.1
+SOURCES_AGENT_TIMEOUT=3.5
+SOURCES_AGENT_CACHE_TTL=86400
+```
+
+---
+
+## 🎨 2. Rendu des 3 Formats DSFR
+
+1. **🗂️ Carte 3 Colonnes :** Téléphone • Courriel • Adresse postale certifiée.
+2. **📢 Encadré Marianne :** Fiche d'organisme complète avec liseré Marianne `#000091` et lien vers service-public.fr.
+3. **🔗 Pastille Lien :** `🏛️ Préfecture d'Ille-et-Vilaine`.

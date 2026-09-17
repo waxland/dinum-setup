@@ -1,9 +1,9 @@
 import { BlockNoteSchema, defaultBlockSpecs } from "@blocknote/core";
 import { BlockNoteView } from "@blocknote/mantine";
 import {
-  SuggestionMenuController,
-  getDefaultReactSlashMenuItems,
-  useCreateBlockNote,
+    SuggestionMenuController,
+    getDefaultReactSlashMenuItems,
+    useCreateBlockNote,
 } from "@blocknote/react";
 import React, { useEffect, useMemo, useState } from "react";
 

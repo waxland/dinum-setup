@@ -1,0 +1,20 @@
+---
+title: "Benchmark des APIs d'Annuaires Publics"
+sidebar_label: "01. Benchmark des APIs"
+description: Étude comparative entre l'API Annuaire Service-Public (DILA), l'Annuaire Interministériel People et l'annuaire Sirene.
+---
+
+---
+
+## 📊 Matrice d'Évaluation des APIs
+
+| API | Opérateur | Type d'Entités | Latence | Statut |
+| :--- | :--- | :--- | :--- | :---: |
+| **API Annuaire DILA** | DILA / Service-Public | Administrations, Mairies, Tribunaux | $< 80\text{ms}$ | 🟢 **Source Principale** |
+| **La Suite People** | DINUM | Agents publics individuels | $< 50\text{ms}$ | 🟢 Fédération Suite |
+| **Sirene Entreprises Publiques** | INSEE | Établissements publics | $< 100\text{ms}$ | 🟡 Données légales seules |
+
+---
+
+## 💡 Choix Technique
+L'API **`api-lannuaire.service-public.fr`** constitue la référence nationale pour les coordonnées des organismes publics.

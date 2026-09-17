@@ -1,0 +1,24 @@
+---
+title: "Rendu Visuel & Configuration de la Commande /subvention"
+sidebar_label: "02. Rendu & Settings"
+description: Configuration des formats de rendu Cunningham et variables d'environnement pour l'API Aides-Territoires.
+---
+
+---
+
+## ⚙️ 1. Variables d'Environnement
+
+```ini
+# Configuration Aides-Territoires (django-lasuite-sources)
+SOURCES_GRANT_API_URL=https://aides-territoires.beta.gouv.fr/api/aides/
+SOURCES_GRANT_TIMEOUT=3.5
+SOURCES_GRANT_CACHE_TTL=86400
+```
+
+---
+
+## 🎨 2. Rendu des 3 Formats DSFR
+
+1. **🗂️ Carte 3 Colonnes :** Financeur • Taux maximal de prise en charge • Date limite.
+2. **📢 Encadré Marianne :** Résumé des conditions d'éligibilité avec bordure Marianne `#000091`.
+3. **🔗 Pastille Lien :** `💶 Aide Fonds Vert (80% max)`.

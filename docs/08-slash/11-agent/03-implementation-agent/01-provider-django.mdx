@@ -1,0 +1,29 @@
+---
+title: "Implémentation du Provider Django /agent"
+sidebar_label: "01. Provider Django"
+description: Code source et structure de AgentSourceProvider dans django-lasuite-sources.
+---
+
+---
+
+## 🐍 1. Implémentation `AgentSourceProvider`
+
+```python
+from typing import List
+from lasuite_sources.base import BaseSourceProvider
+from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
+
+class AgentSourceProvider(BaseSourceProvider):
+    name = "Annuaire du Service Public / DILA"
+    source_type = "agent"
+    aliases = ["agent", "annuaire", "service-public", "contact", "ministere"]
+    description = "Coordonnées institutionnelles, services déconcentrés et administrations publiques"
+
+    async def search(self, query: str, limit: int = 10) -> List[SourceSearchResult]:
+        # Recherche dans l'API Annuaire DILA avec cache Redis 24h
+        ...
+
+    async def suggest(self, query: str, limit: int = 5) -> List[SourceSuggestResult]:
+        # Autocomplétion
+        ...
+```

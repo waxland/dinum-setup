@@ -1,0 +1,29 @@
+---
+title: "Implémentation du Provider Django /subvention"
+sidebar_label: "01. Provider Django"
+description: Code source et structure de GrantSourceProvider dans django-lasuite-sources.
+---
+
+---
+
+## 🐍 1. Implémentation `GrantSourceProvider`
+
+```python
+from typing import List
+from lasuite_sources.base import BaseSourceProvider
+from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
+
+class GrantSourceProvider(BaseSourceProvider):
+    name = "Aides-Territoires / ANCT"
+    source_type = "grant"
+    aliases = ["subvention", "aides", "fonds-vert", "detr", "dsil", "anct"]
+    description = "Dispositifs d'aides financières publiques et subventions de l'État pour les collectivités"
+
+    async def search(self, query: str, limit: int = 10) -> List[SourceSearchResult]:
+        # Requête vers l'API Aides-Territoires avec cache Redis 24h
+        ...
+
+    async def suggest(self, query: str, limit: int = 5) -> List[SourceSuggestResult]:
+        # Autocomplétion temps réel
+        ...
+```

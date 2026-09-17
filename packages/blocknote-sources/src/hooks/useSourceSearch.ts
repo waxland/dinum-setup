@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { MOCK_SOURCES } from '../mockSources';
 import {
-  isDisplayMode,
-  isObjectRecord,
-  isSourceEntityType,
-  isStatusColor,
-  SourceEntityProps,
-  SourceEntityType,
+    isDisplayMode,
+    isObjectRecord,
+    isSourceEntityType,
+    isStatusColor,
+    SourceEntityProps,
+    SourceEntityType,
 } from '../types';
 
 export interface UseSourceSearchOptions {

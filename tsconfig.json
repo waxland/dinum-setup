@@ -8,7 +8,13 @@
     "strict": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "types": ["zudoku/client", "node"]
+    "types": ["zudoku/client", "node"],
+    "paths": {
+      "@suitenumerique/blocknote-sources": ["./packages/blocknote-sources/src/index.ts"],
+      "@suitenumerique/blocknote-sources/*": ["./packages/blocknote-sources/src/*"],
+      "@suitenumerique/slash-sources-sdk": ["./packages/slash-sources-sdk/src/index.ts"],
+      "@suitenumerique/slash-sources-sdk/*": ["./packages/slash-sources-sdk/src/*"]
+    }
   },
-  "include": ["src", "zudoku.config.tsx", "vite.config.ts"]
+  "include": ["src", "packages", "zudoku.config.tsx", "vite.config.ts"]
 }

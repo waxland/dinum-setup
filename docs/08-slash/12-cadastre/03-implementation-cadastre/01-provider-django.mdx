@@ -1,0 +1,29 @@
+---
+title: "Implémentation du Provider Django /cadastre"
+sidebar_label: "01. Provider Django"
+description: Code source et structure de CadastreSourceProvider dans django-lasuite-sources.
+---
+
+---
+
+## 🐍 1. Implémentation `CadastreSourceProvider`
+
+```python
+from typing import List
+from lasuite_sources.base import BaseSourceProvider
+from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
+
+class CadastreSourceProvider(BaseSourceProvider):
+    name = "Cadastre & Parcelles / DGFiP - IGN"
+    source_type = "cadastre"
+    aliases = ["cadastre", "parcelle", "foncier", "dgfip", "section"]
+    description = "Parcelles foncières, contenances en m² et sections cadastrales"
+
+    async def search(self, query: str, limit: int = 10) -> List[SourceSearchResult]:
+        # Requête vers l'API Cadastre IGN / data.gouv avec cache Redis 24h
+        ...
+
+    async def suggest(self, query: str, limit: int = 5) -> List[SourceSuggestResult]:
+        # Autocomplétion de parcelles
+        ...
+```

@@ -1,0 +1,20 @@
+---
+title: "Benchmark des APIs Cadastrales & Cartographiques"
+sidebar_label: "01. Benchmark des APIs"
+description: Comparatif entre l'API Géoplateforme IGN, l'API Cadastre data.gouv.fr et le cadastre vectoriel DGFiP.
+---
+
+---
+
+## 📊 Matrice d'Évaluation des APIs
+
+| Source / API | Opérateur | Couverture | Précision | Statut |
+| :--- | :--- | :--- | :--- | :---: |
+| **Géoplateforme IGN (APIs Carto)** | IGN / DGFiP | France entière | Centimétrique | 🟢 **Source Principale** |
+| **API Parcelle data.gouv.fr (Etalab)** | Etalab | France entière | Métrique | 🟢 Source Légère |
+| **WMS/WFS DGFiP** | DGFiP | France entière | Couches SIG | 🟡 Usage Carto Expert |
+
+---
+
+## 💡 Choix Technique
+L'utilisation conjointe de la **Géoplateforme IGN** et de l'**API Parcelle Etalab** assure des temps de réponse rapides ($< 80\text{ms}$) avec restitution fidèle des contenances légales.

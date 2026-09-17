@@ -31,9 +31,9 @@ vi.mock('docx', () => ({
 }));
 
 import {
-  blockMappingSourceBlockDocx,
-  blockMappingSourceBlockODT,
-  blockMappingSourceBlockPDF,
+    blockMappingSourceBlockDocx,
+    blockMappingSourceBlockODT,
+    blockMappingSourceBlockPDF,
 } from '../../src/exporters';
 import { SourceBlockExportBlock } from '../../src/types';
 

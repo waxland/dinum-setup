@@ -382,3 +382,5 @@ flowchart TD
 
 Cette proposition offre le **meilleur compromis d'ingénierie logicielle** : elle apporte toute la puissance des données souveraines aux agents publics français, tout en préservant l'universalité, l'élégance et la maintenabilité du produit international **La Suite Docs**.
 
+
+

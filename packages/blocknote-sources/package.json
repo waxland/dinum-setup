@@ -3,18 +3,18 @@
   "version": "1.0.0",
   "description": "Extension BlockNote.js officielle pour connecter La Suite Docs aux sources souveraines de données publiques (Légifrance, BAN, BOAMP, Aides-Territoires, INSEE, Albert RAG, etc.) avec rendu 100% Cunningham et DSFR.",
   "main": "./dist/index.js",
-  "module": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     },
     "./exporters": {
-      "import": "./dist/exporters/index.js",
-      "require": "./dist/exporters/index.js",
-      "types": "./dist/exporters/index.d.ts"
+      "types": "./dist/exporters/index.d.ts",
+      "import": "./dist/exporters/index.mjs",
+      "require": "./dist/exporters/index.js"
     }
   },
   "files": [
@@ -24,7 +24,7 @@
   "license": "MIT",
   "repository": "https://github.com/suitenumerique/docs",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsup",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "npx vitest run tests/unit/",
     "test:e2e": "playwright test"
