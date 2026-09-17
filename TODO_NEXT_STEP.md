@@ -210,7 +210,7 @@ Cette étape correspond exactement au contenu minimaliste de l'unique Pull Reque
 | Étape | Critère d'Acceptation Observable | Méthode de Validation | Preuve Attendue |
 | :--- | :--- | :--- | :--- |
 | **Packages Build** | Compilation TypeScript et Python sans erreur | `npm run packages:build` | Fichiers `dist/index.mjs` et `dist/index.d.ts` générés. |
-| **Docs Portal** | Zéro erreur de build et pré-rendu de toutes les pages | `npm run docs:build` | 262 routes générées avec succès par Zudoku. |
+| **Docs Portal** | Zéro erreur de build et pré-rendu de toutes les pages | `npm run docs:build` | 270 routes générées avec succès par Zudoku. |
 | **Typage Strict** | Zéro `any`, zéro type assertion non sécurisée (`as ...`) | `npm run typecheck` / `tsc --noEmit` | 0 avertissement TypeScript. |
 | **Pureté UI** | Zéro Tailwind CSS et zéro `@mantine/core` dans l'UI | Audit grep dans `src/` | 0 classe Tailwind et 0 import `@mantine/core` dans les vues. |
 | **Accessibilité** | Navigation clavier intégrale, ARIA complet et focus | Test manuel & Playwright | Focus visible, touches `↑`/`↓`/`Entrée`/`Échap` opérationnelles. |

@@ -23,4 +23,7 @@ src/grist/
 src/tchap/
 src/drive/
 
-packages/
+# Packages autonomes (on ignore uniquement les builds et node_modules locaux)
+packages/*/dist/
+packages/*/node_modules/
+packages/*/.turbo/

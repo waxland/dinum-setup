@@ -1,0 +1,218 @@
+openapi: 3.0.3
+info:
+  title: API Sources Souveraines La Suite (django-lasuite-sources)
+  description: >-
+    Spécification OpenAPI officielle des endpoints REST de recherche, autocomplétion
+    et détails pour les 12 connecteurs de données souveraines de l'État français.
+  version: 1.0.0
+  contact:
+    name: Direction Interministérielle du Numérique (DINUM)
+    url: https://github.com/suitenumerique/docs
+
+servers:
+  - url: /api/v1.0/sources
+    description: Serveur API local / production
+
+paths:
+  /search/:
+    get:
+      summary: Recherche textuelle paginée dans les sources souveraines
+      description: >-
+        Effectue une recherche textuelle avec mise en cache Redis 24h (hachage SHA-256)
+        sur le connecteur spécifié (law, address, company, parliament, albert, etc.).
+      parameters:
+        - name: type
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - law
+              - address
+              - company
+              - parliament
+              - albert
+              - procurement
+              - grant
+              - insee
+              - agent
+              - cadastre
+              - demarche
+              - opendata
+              - custom
+            default: law
+          description: Identifiant du type de connecteur souverain
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Termes de recherche ou mots-clés
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+            maximum: 50
+          description: Nombre maximal de résultats à retourner
+      responses:
+        '200':
+          description: Résultats de recherche trouvés
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: law
+                  query:
+                    type: string
+                    example: commande publique
+                  count:
+                    type: integer
+                    example: 1
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SourceSearchResult'
+        '401':
+          description: Non authentifié (session utilisateur ou jeton JWT requis)
+
+  /suggest/:
+    get:
+      summary: Autocomplétion temps réel rapide (< 100ms)
+      description: >-
+        Fournit une liste de suggestions instantanées au fil de la frappe
+        pour alimenter la palette de recherche Popover de l'éditeur BlockNote.
+      parameters:
+        - name: type
+          in: query
+          required: true
+          schema:
+            type: string
+            default: law
+          description: Type de source souveraine
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Préfixe ou chaîne partielle saisie
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5
+            maximum: 20
+          description: Nombre de suggestions
+      responses:
+        '200':
+          description: Suggestions d'autocomplétion
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: law
+                  query:
+                    type: string
+                    example: art
+                  suggestions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SourceSuggestResult'
+
+  /{source_type}/{source_id}/:
+    get:
+      summary: Fiche détaillée certifiée d'une entité souveraine
+      description: >-
+        Récupère l'intégralité des métadonnées, du texte légal et des liens officiels
+        d'une entité identifiée par son ID unique.
+      parameters:
+        - name: source_type
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Type de source (ex: law, company, address)
+        - name: source_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Identifiant unique de l'entité (ex: LEGIARTI000038814944)
+      responses:
+        '200':
+          description: Fiche détaillée de l'entité
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SourceSearchResult'
+        '404':
+          description: Entité ou connecteur introuvable
+
+components:
+  schemas:
+    SourceSearchResult:
+      type: object
+      required:
+        - sourceId
+        - entityType
+        - title
+      properties:
+        sourceId:
+          type: string
+          example: LEGIARTI000038814944
+        entityType:
+          type: string
+          example: law
+        title:
+          type: string
+          example: Article L. 111-1 du Code de la commande publique
+        subtitle:
+          type: string
+          example: Code de la commande publique - Titre Ier
+        url:
+          type: string
+          format: uri
+          example: https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000038814944
+        badgeText:
+          type: string
+          example: En vigueur
+        badgeVariant:
+          type: string
+          enum: [success, warning, info, neutral, error]
+          example: success
+        excerpt:
+          type: string
+          example: Les acheteurs et les autorités concédantes choisissent librement le mode de passation...
+        metadata:
+          type: object
+          additionalProperties: true
+
+    SourceSuggestResult:
+      type: object
+      required:
+        - sourceId
+        - title
+      properties:
+        sourceId:
+          type: string
+          example: LEGIARTI000038814944
+        title:
+          type: string
+          example: Article L. 111-1
+        subtitle:
+          type: string
+          example: Code de la commande publique
+        badgeText:
+          type: string
+          example: En vigueur
+        badgeVariant:
+          type: string
+          example: success

@@ -2,13 +2,17 @@
   "name": "dinum-setup-docs",
   "private": true,
   "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "docs:nav": "node scripts/generate-docs-navigation.mjs",
     "dev": "node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku dev --host 0.0.0.0",
     "docs:dev": "node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku dev --host 0.0.0.0",
-    "docs:build": "node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku build",
+    "docs:build": "npm run packages:build && node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku build",
+    "docs:search": "npx pagefind --site dist --output-path dist/pagefind",
     "docs:preview": "ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku preview --host 0.0.0.0",
-    "build": "node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku build",
+    "build": "npm run packages:build && node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku build",
     "packages:build": "npm --prefix packages/slash-sources-sdk run build && npm --prefix packages/blocknote-sources run build",
     "packages:test": "npm --prefix packages/slash-sources-sdk test && npm --prefix packages/blocknote-sources test"
   },
@@ -17,8 +21,8 @@
     "@blocknote/mantine": "^0.54.2",
     "@blocknote/react": "^0.54.2",
     "@codegouvfr/react-dsfr": "^1.35.0",
-    "@suitenumerique/blocknote-sources": "file:./packages/blocknote-sources",
-    "@suitenumerique/slash-sources-sdk": "file:./packages/slash-sources-sdk",
+    "@suitenumerique/blocknote-sources": "*",
+    "@suitenumerique/slash-sources-sdk": "*",
     "@types/node": "^22.20.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
