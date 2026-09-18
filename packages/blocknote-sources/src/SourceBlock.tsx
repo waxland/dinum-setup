@@ -1,31 +1,32 @@
 import {
-    BlockNoDefaults,
-    BlockNoteEditor,
-    InlineContentSchema,
-    StyleSchema,
-    defaultProps,
+  BlockNoDefaults,
+  BlockNoteEditor,
+  InlineContentSchema,
+  StyleSchema,
+  defaultProps,
 } from '@blocknote/core';
 import { insertOrUpdateBlockForSlashMenu } from '@blocknote/core/extensions';
 import { createReactBlockSpec } from '@blocknote/react';
 import React from 'react';
 
+import { SOURCE_INLINE_LABELS } from './components/SourceInlineContent';
 import { SourceSearchPopover } from './components/SourceSearchPopover';
 import {
-    SourceBlockToolbar,
-    SourceCalloutFormat,
-    SourceCardFormat,
-    SourceLinkFormat,
+  SourceBlockToolbar,
+  SourceCalloutFormat,
+  SourceCardFormat,
+  SourceLinkFormat,
 } from './formats';
 import {
-    CreateSourceBlockConfig,
-    DISPLAY_MODES,
-    DisplayMode,
-    SOURCE_ENTITY_TYPES,
-    STATUS_COLORS,
-    SourceBlockEditor,
-    SourceEntityProps,
-    SourceEntityType,
-    TranslationFn,
+  CreateSourceBlockConfig,
+  DISPLAY_MODES,
+  DisplayMode,
+  SOURCE_ENTITY_TYPES,
+  STATUS_COLORS,
+  SourceBlockEditor,
+  SourceEntityProps,
+  SourceEntityType,
+  TranslationFn,
 } from './types';
 
 interface SourceComponentProps {
@@ -42,41 +43,7 @@ interface SourceComponentProps {
 }
 
 const getSourceTypeLabel = (type: SourceEntityType): string => {
-  switch (type) {
-    case 'law':
-      return 'Légifrance / Law';
-    case 'case-law':
-      return 'Jurisprudence / Case Law';
-    case 'company':
-      return 'Annuaire des Entreprises / Company';
-    case 'parliament':
-      return 'Assemblée Nationale / Parliament';
-    case 'address':
-      return 'Base Adresse Nationale (BAN) / Address';
-    case 'place':
-      return 'Lieu Géographique / GeoNames';
-    case 'procurement':
-      return 'Marchés Publics / Procurement';
-    case 'grant':
-      return 'Aides-Territoires / Grants';
-    case 'statistics':
-    case 'insee':
-      return 'Statistiques Officielles / Statistics';
-    case 'agent':
-      return 'Annuaire du Service Public / Directory';
-    case 'cadastre':
-      return 'Cadastre & Parcelles / Land Registry';
-    case 'demarche':
-      return 'Démarches Administratives / Procedures';
-    case 'opendata':
-      return 'data.gouv.fr / Open Data';
-    case 'research':
-      return 'Recherche & Innovation / Research';
-    case 'custom':
-      return 'Albert IA Souveraine / Custom';
-    default:
-      return 'Source Connectée';
-  }
+  return SOURCE_INLINE_LABELS[type] || 'Source Souveraine';
 };
 
 const SourceComponent: React.FC<SourceComponentProps> = ({ block, editor }) => {
