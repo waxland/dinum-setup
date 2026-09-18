@@ -1,6 +1,7 @@
 # 🤖 General Instructions for AI Agents (`AGENTS.md`)
 
 This document defines operating rules, security standards, and the routing table for **specialized skills** within the `dinum-setup` monorepo.
+For exhaustive engineering guidelines, developer handbook references, and coding standards, consult **[`GUIDELINES.md`](./GUIDELINES.md)**.
 
 ---
 
@@ -29,7 +30,7 @@ The repository consists of distinct layers:
 
 ## 🏛️ 3. DINUM / La Suite Engineering Standards (Mandatory Skills)
 
-Before creating, modifying, refactoring, or reviewing application code, determine which DINUM engineering skill applies:
+Before creating, modifying, refactoring, or reviewing application code, consult **[`GUIDELINES.md`](./GUIDELINES.md)** and determine which DINUM engineering skill applies:
 
 ### React / Frontend
 For any work involving React, TypeScript, JavaScript, JSX/TSX, HTML, CSS, frontend components, Next.js, forms, or browser-side behaviour:

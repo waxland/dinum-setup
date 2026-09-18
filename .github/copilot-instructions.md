@@ -1,13 +1,13 @@
 # Instructions GitHub Copilot — Monorepo DINUM / La Suite
 
-> ⚠️ **Consigne Impérative :** Avant toute modification ou analyse dans ce dépôt, **consulter systématiquement le fichier [`AGENTS.md`](./AGENTS.md)** situé à la racine du workspace et appliquer la table de routage des compétences spécialisées (`.skills/`).
+> ⚠️ **Consigne Impérative :** Avant toute modification ou analyse dans ce dépôt, **consulter systématiquement les fichiers [`AGENTS.md`](./AGENTS.md) et [`GUIDELINES.md`](./GUIDELINES.md)** situés à la racine du workspace et appliquer la table de routage des compétences spécialisées (`.skills/`).
 
 ---
 
 ## 🎯 Ordre de Préséance des Règles
 
 1. **Instruction explicite de l'utilisateur**
-2. **Consignes et règles d'ingénierie définies dans [`AGENTS.md`](./AGENTS.md)**
+2. **Consignes et règles d'ingénierie définies dans [`AGENTS.md`](./AGENTS.md) et [`GUIDELINES.md`](./GUIDELINES.md)**
 3. **Configuration du dépôt (`package.json`, `tsconfig.json`, `pyproject.toml`, `pytest.ini`)**
 4. **Conventions architecturales du projet existant**
 5. **Standards DINUM / beta.gouv.fr / La Suite numérique** ([`.skills/dinum-react.md`](../.skills/dinum-react.md) et [`.skills/dinum-python.md`](../.skills/dinum-python.md))
