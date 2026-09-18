@@ -85,15 +85,15 @@ export type SourceEntityType =
 ## 📋 3. Step-by-Step Orchestration Roadmap
 
 ### 📦 Phase 1 : Core Engine Refactoring (Option 2 Setup)
-- [ ] **T-101 : Entry Points Dynamic Registry Architecture**
+- [x] **T-101 : Entry Points Dynamic Registry Architecture**
   - Implement Python `importlib.metadata.entry_points(group='lasuite_sources.providers')` discovery in `SourceProviderRegistry`.
   - Maintain backward compatibility with in-tree registered fallback providers.
   - Add thread-safe singleton lock for concurrency safety.
-- [ ] **T-102 : Universal Entity Type Harmonization**
+- [x] **T-102 : Universal Entity Type Harmonization**
   - Update `packages/slash-sources-sdk/src/types.ts` to support universal `statistics`, `case-law`, `research`, and `place`.
   - Update `packages/blocknote-sources/src/types.ts` and format components.
   - Maintain fallback alias mapping (`insee` $\to$ `statistics`).
-- [ ] **T-103 : Ingestion & Dataset Cache Engine for Bulk Registries**
+- [x] **T-103 : Ingestion & Dataset Cache Engine for Bulk Registries**
   - Implement scheduled background ingestion pipeline for bulk open data files (e.g., CanadaBuys XML/CSV, DVF flat files).
   - Provide local SQLite / Redis indexed full-text search fallback.
 
@@ -102,49 +102,57 @@ export type SourceEntityType =
 ### 🇪🇺 Phase 2 : European Union Native & Federated Connectors
 
 #### P0 — Connecteurs EU Natifs Prioritaires
-- [ ] **T-201 : EUR-Lex / CELLAR Publications Office (`/eurlex`)**
-  - *Type Slasher :* `law`
+- [x] **T-201 : EUR-Lex / CELLAR Publications Office (`/eurlex`)**
+  - *Type Slasher :* `law` / `eurlex`
   - *Interface :* CELLAR SPARQL triplestore + EUR-Lex REST Webservice.
-  - *Identifiants supportés :* CELEX (ex: `32016R0679` RGPD), ELI, URI CELLAR.
-  - *Setup minimal :* Provider Django avec connecteur SPARQL / REST, parsing XML/JSON-LD, fallback mock certifié (RGPD, AI Act, Directive NIS 2).
-- [ ] **T-202 : European Parliament Open Data API v2 (`/europarl`, `/parlement-eu`)**
-  - *Type Slasher :* `parliament`
+  - *Identifiants supportés :* CELEX (ex: `32016R0679` RGPD, `32024R1689` AI Act, `32022L2555` NIS 2).
+  - *Setup minimal :* Provider Django avec connecteur SPARQL / REST, parsing XML/JSON-LD, fallback mock certifié.
+- [x] **T-202 : European Parliament Open Data API v2 (`/europarl`, `/parlement-eu`)**
+  - *Type Slasher :* `parliament` / `europarl`
   - *Interface :* REST API v2 (`https://data.europarl.europa.eu/api/v2/`), OpenAPI, JSON-LD.
-  - *Modèles supportés :* ELI-EP, ORG-EP, DCAT-EP (Députés, projets législatifs, amendements, votes en séance).
-  - *Setup minimal :* Client REST asynchrone avec pagination, extraction des DTOs parlementaires, dataset mock avec 2 résolutions adoptées.
-- [ ] **T-203 : TED — Tenders Electronic Daily (`/ted`, `/marche-eu`)**
-  - *Type Slasher :* `procurement`
+  - *Modèles supportés :* ELI-EP, ORG-EP, DCAT-EP (Députés, résolutions adoptées, amendements).
+  - *Setup minimal :* Client REST asynchrone avec pagination, extraction des DTOs parlementaires, mock certifié.
+- [x] **T-203 : TED — Tenders Electronic Daily (`/ted`, `/marche-eu`)**
+  - *Type Slasher :* `procurement` / `ted`
   - *Interface :* TED Search API (`https://api.ted.europa.eu/`) & Open Data v3 eForms.
-  - *Données :* Avis d'appels d'offres européens, codes CPV, acheteurs publics, dates limites, montants de lots.
-  - *Setup minimal :* Recherche textuelle avec filtre sur pays/CPV, normalisation des montants et statuts d'attribution.
-- [ ] **T-204 : Eurostat Statistics API (`/eurostat`, `/stats`)**
-  - *Type Slasher :* `statistics` (anciennement `insee`)
-  - *Interface :* Statistics REST API (`https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/`), SDMX 2.1 / 3.0, JSON-stat 2.0.
-  - *Données :* Indicateurs économiques harmonisés, PIB, inflation HICP, chômage, démographie régionale NUTS.
-  - *Setup minimal :* Parser JSON-stat vers DTO 3 colonnes (Valeur, Période, Zone géographique).
-- [ ] **T-205 : EU Funding & Tenders Portal (`/funding`, `/subvention-eu`)**
-  - *Type Slasher :* `grant`
+  - *Données :* Avis d'appels d'offres européens, codes CPV, acheteurs publics (DIGIT, ENISA).
+  - *Setup minimal :* Recherche textuelle avec filtre sur pays/CPV, normalisation des montants et statuts.
+- [x] **T-204 : Eurostat Statistics API (`/eurostat`, `/stats`)**
+  - *Type Slasher :* `statistics` / `eurostat`
+  - *Interface :* Statistics REST API & SDMX 2.1 / 3.0.
+  - *Données :* Inflation HICP harmonisée, démographie de l'UE27, PIB régional.
+  - *Setup minimal :* DTO 3 colonnes (Valeur, Période, Zone géographique).
+- [x] **T-205 : EU Funding & Tenders Portal (`/funding`, `/subvention-eu`)**
+  - *Type Slasher :* `grant` / `funding`
   - *Interface :* Search API (`https://api.tech.ec.europa.eu/`), Facet API, Topic Details.
-  - *Programmes couverts :* Horizon Europe, Digital Europe, LIFE, CEF, Erasmus+.
-  - *Setup minimal :* Recherche d'appels à projets ouverts, date de clôture, budget prévisionnel et critères d'éligibilité.
-- [ ] **T-206 : data.europa.eu Catalog API (`/dataeuropa`, `/opendata-eu`)**
-  - *Type Slasher :* `opendata`
-  - *Interface :* Hub Search API (`https://data.europa.eu/api/hub/search/`), SPARQL, standard DCAT-AP.
-  - *Setup minimal :* Recherche fédérée sur les catalogues des 27 pays membres avec filtres de licences ouvertes.
+  - *Programmes couverts :* Horizon Europe, Digital Europe (EUDI Wallet), LIFE, CEF.
+  - *Setup minimal :* Recherche d'appels à projets ouverts, budgets et dates de clôture.
+- [x] **T-206 : data.europa.eu Catalog API (`/dataeuropa`, `/opendata-eu`)**
+  - *Type Slasher :* `opendata` / `dataeuropa`
+  - *Interface :* Hub Search API (`https://data.europa.eu/api/hub/search/`), DCAT-AP.
+  - *Setup minimal :* Recherche fédérée sur les catalogues des 27 pays membres et NUTS.
 
 #### P1 — Connecteurs EU Natifs Complémentaires & Jurisprudence
-- [ ] **T-207 : EU Whoiswho Directory (`/whoiswho`, `/eu-agent`)**
-  - *Type Slasher :* `agent`
-  - *Interface :* CELLAR Linked Open Data & SPARQL.
-  - *Données :* Organigrammes des institutions européennes, DGs, commissaires, chefs d'unités.
-- [ ] **T-208 : CORDIS Horizon Research & Innovation (`/cordis`, `/recherche-eu`)**
-  - *Type Slasher :* `research`
-  - *Interface :* CORDIS REST & EURIO Knowledge Graph.
-  - *Données :* Fiches de projets de recherche financés, bénéficiaires, subventions et livrables publics.
-- [ ] **T-209 : CURIA & ECLI Search (`/curia`, `/ecli`)**
-  - *Type Slasher :* `case-law`
-  - *Données :* Arrêts et ordonnances de la Cour de justice de l'Union européenne (`ECLI:EU:C:...`).
-  - *Note d'isolation :* Distinguer rigoureusement la CJUE (UE) de la Cour européenne des droits de l'homme (CEDH / Conseil de l'Europe).
+- [x] **T-207 : EU Whoiswho Directory (`/whoiswho`, `/eu-agent`)**
+  - *Type Slasher :* `agent` / `whoiswho` (Organigrammes Secrétariat général Commission, DGs).
+- [x] **T-208 : CORDIS Horizon Research & Innovation (`/cordis`, `/recherche-eu`)**
+  - *Type Slasher :* `research` / `cordis` (Projets de recherche financés OpenSovereignAI, consortiums).
+- [x] **T-209 : CURIA & ECLI Search (`/curia`, `/ecli`)**
+  - *Type Slasher :* `case-law` / `curia` (Arrêts CJUE Grande chambre, conformité RGPD).
+
+#### P1 — Connecteurs EU Fédérés (Résolution par Délégation Nationale)
+- [ ] **T-210 : BRIS European Companies Federation (`/eu-company`)**
+  - *Architecture :* Détection du préfixe pays $\to$ Délégation au provider national souverain (FR $\to$ RNE, DE $\to$ Handelsregister, NL $\to$ KVK, ES $\to$ Registro Mercantil) $\to$ Préservation de l'identifiant européen **EUID**.
+- [ ] **T-211 : INSPIRE European Address Federation (`/eu-address`)**
+  - *Architecture :* Résolution par pays auprès des API d'adresses High-Value Datasets (HVD) nationales.
+- [ ] **T-212 : INSPIRE European Cadastral Parcels (`/eu-cadastre`)**
+  - *Architecture :* Modèle harmonisé INSPIRE déléguant aux couches cadastrales géospatiales souveraines.
+
+#### P2 — Démarches & Enrichissement
+- [ ] **T-213 : Your Europe / Single Digital Gateway (`/your-europe`, `/demarche-eu`)**
+  - *Type Slasher :* `demarche` (Guides et démarches transfrontalières pour citoyens et entreprises de l'UE).
+- [ ] **T-214 : eTranslation Multilingual Enrichment Service**
+  - *Type Slasher :* Middleware d'enrichissement multilingue temps réel préservant la version officielle d'origine.
 
 #### P1 — Connecteurs EU Fédérés (Résolution par Délégation Nationale)
 - [ ] **T-210 : BRIS European Companies Federation (`/eu-company`)**

@@ -1,5 +1,16 @@
 """Providers package initializing and registering built-in source providers."""
 
+from lasuite_sources.providers.europe import (
+    CordisSourceProvider,
+    CuriaSourceProvider,
+    DataEuropaSourceProvider,
+    EurLexSourceProvider,
+    EuroparlSourceProvider,
+    EurostatSourceProvider,
+    FundingTendersSourceProvider,
+    TedSourceProvider,
+    WhoiswhoSourceProvider,
+)
 from lasuite_sources.providers.france import (
     AddressSourceProvider,
     AgentSourceProvider,
@@ -16,7 +27,7 @@ from lasuite_sources.providers.france import (
 )
 from lasuite_sources.registry import source_registry
 
-# Auto-register all 12 default providers
+# Auto-register France default providers
 source_registry.register(LawSourceProvider())
 source_registry.register(AddressSourceProvider())
 source_registry.register(CompanySourceProvider())
@@ -29,6 +40,17 @@ source_registry.register(AgentSourceProvider())
 source_registry.register(CadastreSourceProvider())
 source_registry.register(DemarcheSourceProvider())
 source_registry.register(OpenDataSourceProvider())
+
+# Auto-register Europe sovereign providers
+source_registry.register(EurLexSourceProvider())
+source_registry.register(EuroparlSourceProvider())
+source_registry.register(TedSourceProvider())
+source_registry.register(EurostatSourceProvider())
+source_registry.register(FundingTendersSourceProvider())
+source_registry.register(DataEuropaSourceProvider())
+source_registry.register(WhoiswhoSourceProvider())
+source_registry.register(CordisSourceProvider())
+source_registry.register(CuriaSourceProvider())
 
 
 __all__ = [
@@ -44,4 +66,13 @@ __all__ = [
     "CadastreSourceProvider",
     "DemarcheSourceProvider",
     "OpenDataSourceProvider",
+    "EurLexSourceProvider",
+    "EuroparlSourceProvider",
+    "TedSourceProvider",
+    "EurostatSourceProvider",
+    "FundingTendersSourceProvider",
+    "DataEuropaSourceProvider",
+    "WhoiswhoSourceProvider",
+    "CordisSourceProvider",
+    "CuriaSourceProvider",
 ]

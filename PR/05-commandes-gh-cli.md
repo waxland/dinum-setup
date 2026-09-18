@@ -23,41 +23,6 @@ flowchart LR
     end
 ```
 
----
-
-## 🚀 1. Submitting PR 1: `suitenumerique/docs` (VM Support & Hairpin NAT)
-
-### Objective
-Enable seamless deployment of **La Suite Docs** on remote servers, VPS, and cloud VMs without OIDC redirection issues.
-
-### Git & GitHub CLI Commands
-
-```bash
-# 1. Navigate to local Docs clone
-cd LaSuite/docs
-
-# 2. Create dedicated feature branch
-git checkout -b feature/remote-server-support
-
-# 3. Stage modified files
-git add compose.yml compose-e2e.yml src/frontend/apps/impress/.env.development src/frontend/apps/impress/next.config.js
-
-# 4. Create conventional commit
-git commit -m "feat(dev): make development URLs configurable for remote servers and VMs"
-
-# 5. Push branch
-git push origin feature/remote-server-support
-
-# 6. Create official Pull Request
-gh pr create \
-  --repo suitenumerique/docs \
-  --title "feat(dev): make development URLs configurable for remote servers and VMs" \
-  --body-file ../../documentation/docs/09-PR/01-docs-serveur-config.mdx \
-  --base main \
-  --head feature/remote-server-support
-```
-
----
 
 ## 🚀 2. Submitting PR 2: `suitenumerique/docs` (Sovereign Packages Integration)
 
