@@ -15,9 +15,9 @@
   "scripts": {
     "docs:nav": "node scripts/generate-docs-navigation.mjs",
     "dev": "node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku dev --host 0.0.0.0",
-    "build": "node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku build && npx pagefind --site dist --output-path dist/pagefind",
+    "build": "node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku build && pagefind --site dist --output-path dist/pagefind",
     "preview": "ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku preview --host 0.0.0.0",
-    "search": "npx pagefind --site dist --output-path dist/pagefind",
+    "search": "pagefind --site dist --output-path dist/pagefind",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
@@ -40,6 +40,7 @@
     "zudoku": "^0.86.0"
   },
   "devDependencies": {
+    "pagefind": "1.5.2",
     "typescript": "^5.9.2"
   }
 }

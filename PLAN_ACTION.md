@@ -3,7 +3,7 @@
 Date de création : 18 septembre 2026.
 Référence : [AUDIT.md](./AUDIT.md), révision auditée `f447bf3ce7dcc76fac975ffd3b8f270a24594c30`.
 Responsable d'exécution prévu : Codex, dans le dépôt partagé, avec compte rendu des décisions et des validations.
-Statut : **plan préparé ; corrections applicatives non commencées dans le cadre de cette demande**.
+Statut : **exécution en cours ; plusieurs lots corrigés, recette transversale non terminée**.
 
 ## 1. Objectif et résultat attendu
 
@@ -11,7 +11,7 @@ Ce document constitue mon déroulé d'exécution pour traiter les **18 constats*
 
 Le résultat attendu est un dépôt installable à partir de ses manifestes, une extension qui recherche réellement via les fournisseurs configurés, des données dont la provenance est explicite, des protections backend actives, des packages consommables hors monorepo et une chaîne de validation commune au développement et à la publication.
 
-Le présent travail porte sur la préparation de ce plan. Il ne réalise ni les corrections décrites, ni une publication npm/PyPI, ni un déploiement Vercel. Les commandes et interfaces futures sont signalées comme telles lorsqu'elles n'existent pas encore.
+Le plan est désormais en cours d'exécution à la demande de l'utilisateur. Aucune publication npm/PyPI ni aucun déploiement Vercel n'est effectué. Le bilan daté de remédiation distingue les corrections testées des points encore ouverts ; une case non cochée n'est pas une preuve de clôture.
 
 ### 1.1. Définition de « résolu »
 

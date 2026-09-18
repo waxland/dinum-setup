@@ -31,6 +31,7 @@
     "demo:preview": "npm --prefix demo run preview",
     "packages:build": "npm --prefix packages/slash-sources-sdk run build && npm --prefix packages/blocknote-sources run build",
     "packages:test": "npm --prefix packages/slash-sources-sdk test && npm --prefix packages/blocknote-sources test",
+    "packages:verify": "node scripts/verify-packages.mjs",
     "storybook": "npm --prefix packages/blocknote-sources run storybook"
   },
   "dependencies": {

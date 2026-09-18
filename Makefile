@@ -344,6 +344,7 @@ check:
 	@npm run packages:test
 	@cd packages/django-lasuite-sources && PYTHONPATH=. $(PYTHON) -m pytest
 	@$(MAKE) packages-build
+	@npm run packages:verify
 	@npm run demo:build
 	@echo "🧪 Execution des tests E2E Playwright..."
 	@npm --prefix packages/blocknote-sources run test:e2e

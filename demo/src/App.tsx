@@ -165,7 +165,7 @@ export const App: React.FC = () => {
               title: "Article L. 111-1 (Commande publique)",
               subtitle: "Code de la commande publique",
               entityType: "law",
-              status: "En vigueur",
+              status: "Demonstration",
               url: "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000037812976",
               excerpt: "Un marché est un contrat conclu par un ou plusieurs acheteurs...",
               verifiedAt: "",
@@ -183,7 +183,7 @@ export const App: React.FC = () => {
               title: "DINUM (SIREN 130 025 265)",
               subtitle: "Services du Premier ministre",
               entityType: "company",
-              status: "In bonis",
+              status: "Demonstration",
               url: "https://annuaire-entreprises.data.gouv.fr/entreprise/direction-interministerielle-du-numerique-dinum-130025265",
               excerpt: "Conçoit et met en œuvre la stratégie numérique de l’État...",
               verifiedAt: "",
@@ -365,10 +365,7 @@ export const App: React.FC = () => {
               title: item.title || "",
               subtitle: item.subtitle || "",
               entityType: (item.entityType as SourceEntityType) || "law",
-              status:
-                item.statusLabel ||
-                (typeof item.status === "string" ? item.status : "") ||
-                "",
+              status: "Demonstration",
               url: item.url || "",
               excerpt: item.excerpt || item.snippet || "",
               verifiedAt: "",

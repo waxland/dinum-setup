@@ -8,6 +8,8 @@ export default defineConfig({
   format: ["esm", "cjs"],
   dts: true,
   clean: true,
+  // react-dsfr ships extensionless ESM imports that Node cannot load directly during SSR.
+  noExternal: ["@codegouvfr/react-dsfr"],
   external: [
     "react",
     "react-dom",
