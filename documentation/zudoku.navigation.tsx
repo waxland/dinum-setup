@@ -73,7 +73,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "path": "/en/03-backend-proxy"
           },
           "/en/03-backend-proxy/defensive-security-ssrf",
-          "/en/03-backend-proxy/deterministic-cache"
+          "/en/03-backend-proxy/deterministic-cache",
+          "/en/03-backend-proxy/quota-and-rate-limiting"
         ]
       },
       {
