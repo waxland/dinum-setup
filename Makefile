@@ -38,11 +38,12 @@ help:
 	@printf "  make packages-release   Publie une release GitHub avec les 4 binaires (ex: VERSION=v1.0.1 make packages-release)\n\n"
 	@printf "Commandes Deploiement Vercel:\n"
 	@printf "  make vercel-login       Authentifie le CLI sur votre compte Vercel\n"
-	@printf "  make vercel-init        Cree, configure et lie les 3 projets (Docs, Demo, Storybook) a GitHub\n"
-	@printf "  make vercel-status      Affiche l'etat et les URLs des 3 projets sur Vercel\n"
-	@printf "  make deploy-vercel      Deploie manuellement l'ensemble des 3 projets en production\n"
+	@printf "  make vercel-init        Cree, configure et lie les 4 projets (Docs FR, Docs EN, Demo, Storybook) a GitHub\n"
+	@printf "  make vercel-status      Affiche l'etat et les URLs des 4 projets sur Vercel\n"
+	@printf "  make deploy-vercel      Deploie manuellement l'ensemble des 4 projets en production\n"
 	@printf "  make deploy-demo        Deploie uniquement l'application Demo sur Vercel\n"
-	@printf "  make deploy-docs        Deploie uniquement le portail Zudoku sur Vercel\n"
+	@printf "  make deploy-docs        Deploie uniquement le portail Zudoku FR sur Vercel\n"
+	@printf "  make deploy-docs-en     Deploie uniquement le portail Zudoku EN International sur Vercel\n"
 	@printf "  make deploy-storybook   Deploie uniquement le Storybook sur Vercel\n\n"
 	@printf "Commandes Clones LaSuite:\n"
 	@printf "  make install            Installe les dependances systeme (Docker plugins, etc.)\n"
@@ -288,9 +289,15 @@ vercel-init-storybook:
 	npx vercel project update dinum-storybook --root-directory "packages/blocknote-sources" --build-command "cd ../.. && npm run packages:build && npm --prefix packages/blocknote-sources run build-storybook" --output-directory "storybook-static" --framework "storybook" --node-version "22.x" --yes
 	npx vercel git connect https://github.com/$(GITHUB_REPO) --cwd packages/blocknote-sources --yes || true
 
+.PHONY: vercel-init-docs-en
+vercel-init-docs-en:
+	@echo "📦 Liaison du projet Vercel: dinum-docs-en (Documentation International)..."
+	npx vercel link --cwd documentation-international --yes --project dinum-docs-en || true
+	npx vercel git connect https://github.com/$(GITHUB_REPO) --cwd documentation-international --yes || true
+
 .PHONY: vercel-init
-vercel-init: vercel-init-docs vercel-init-demo vercel-init-storybook
-	@echo "✅ Les 3 projets Vercel (Docs, Demo, Storybook) sont crees, configures et lies a GitHub !"
+vercel-init: vercel-init-docs vercel-init-docs-en vercel-init-demo vercel-init-storybook
+	@echo "✅ Les 4 projets Vercel (Docs FR, Docs EN, Demo, Storybook) sont crees, configures et lies a GitHub !"
 
 .PHONY: vercel-status
 vercel-status:
@@ -308,12 +315,17 @@ deploy-storybook:
 
 .PHONY: deploy-docs
 deploy-docs:
-	@echo "🚀 Deploiement Documentation Zudoku sur Vercel..."
-	npx vercel --archive=tgz --prod --yes
+	@echo "🚀 Deploiement Documentation Zudoku FR sur Vercel..."
+	npx vercel --cwd documentation --archive=tgz --prod --yes
+
+.PHONY: deploy-docs-en
+deploy-docs-en:
+	@echo "🚀 Deploiement Documentation Zudoku EN International sur Vercel..."
+	npx vercel --cwd documentation-international --archive=tgz --prod --yes
 
 .PHONY: deploy-vercel
-deploy-vercel: deploy-demo deploy-storybook deploy-docs
-	@echo "✅ Tous les projets ont ete deployes avec succes sur Vercel !"
+deploy-vercel: deploy-demo deploy-storybook deploy-docs deploy-docs-en
+	@echo "✅ Tous les 4 projets ont ete deployes avec succes sur Vercel !"
 
 # -----------------------------------------------------------------------------
 # Quality Gate Global (Validation intégrale conforme aux standards DINUM)

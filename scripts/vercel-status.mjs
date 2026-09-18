@@ -7,7 +7,8 @@ console.log("  🌐 STATUT DETAILLE DES DEPLOIEMENTS VERCEL (DINUM)");
 console.log("======================================================================================================\n");
 
 const projects = [
-  { id: "dinum-docs", name: "📚 Documentation Zudoku (SSR)", prodUrl: "https://dinum-docs-waxlands-projects.vercel.app" },
+  { id: "dinum-docs", name: "🇫🇷 Documentation FR (La Suite)", prodUrl: "https://dinum-docs-waxlands-projects.vercel.app" },
+  { id: "dinum-docs-en", name: "🌍 Documentation EN (International)", prodUrl: "https://dinum-docs-en-waxlands-projects.vercel.app" },
   { id: "dinum-demo", name: "⚡ Demo Web BlockNote (Vite)", prodUrl: "https://dinum-demo-waxlands-projects.vercel.app" },
   { id: "dinum-storybook", name: "🎨 Storybook Composants", prodUrl: "https://dinum-storybook-waxlands-projects.vercel.app" },
 ];

@@ -2,6 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "trailingSlash": false,
-  "buildCommand": "npm run docs:fr:build",
-  "outputDirectory": "documentation/dist"
+  "buildCommand": "npm run docs:en:build",
+  "outputDirectory": "documentation-international/dist"
 }
