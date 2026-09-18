@@ -1,4 +1,4 @@
-import { BlockNoteSchema, defaultBlockSpecs } from "@blocknote/core";
+import { BlockNoteSchema, defaultBlockSpecs, defaultInlineContentSpecs } from "@blocknote/core";
 import { BlockNoteView } from "@blocknote/mantine";
 import {
   SuggestionMenuController,
@@ -13,6 +13,7 @@ import {
   MOCK_FRANCE_SOURCES,
   MOCK_GERMANY_SOURCES,
   SourceBlock,
+  SourceInlineContent,
   getLocaleDictionary,
   type ExternalSourceDisplayMode,
   type ExternalSourceEntity,
@@ -180,6 +181,10 @@ export const App: React.FC = () => {
         ...defaultBlockSpecs,
         sourceBlock: SourceBlock(),
       },
+      inlineContentSpecs: {
+        ...defaultInlineContentSpecs,
+        sourceLink: SourceInlineContent,
+      },
     });
   }, []);
 
@@ -191,12 +196,12 @@ export const App: React.FC = () => {
         content: [
           {
             type: "text",
-            text: "Demo Hub — ",
+            text: "Démonstrateur Officiel — ",
             styles: {},
           },
           {
             type: "text",
-            text: "@blocknote/xl-external-sources (Multi-Country Sovereign Connectors)",
+            text: "La Suite Docs / Connecteurs Souverains",
             styles: { bold: true },
           },
         ],
@@ -206,7 +211,7 @@ export const App: React.FC = () => {
         content: [
           {
             type: "text",
-            text: "Type ",
+            text: "Tapez ",
             styles: {},
           },
           {
@@ -216,7 +221,63 @@ export const App: React.FC = () => {
           },
           {
             type: "text",
-            text: " to browse external sources or click on preset buttons below :",
+            text: " pour insérer un bloc riche ou ",
+            styles: {},
+          },
+          {
+            type: "text",
+            text: "@",
+            styles: { code: true, bold: true },
+          },
+          {
+            type: "text",
+            text: " pour lier une source inline au fil du texte :",
+            styles: {},
+          },
+        ],
+      },
+      {
+        type: "paragraph",
+        content: [
+          {
+            type: "text",
+            text: "Exemple d'interlinking certifié dans la phrase : ",
+            styles: {},
+          },
+          {
+            type: "sourceLink",
+            props: {
+              sourceId: "LEGIARTI000037812976",
+              title: "Article L. 111-1 (Commande publique)",
+              subtitle: "Code de la commande publique",
+              entityType: "law",
+              status: "En vigueur",
+              url: "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000037812976",
+              excerpt: "Un marché est un contrat conclu par un ou plusieurs acheteurs...",
+              verifiedAt: "17/09/2026",
+            },
+          },
+          {
+            type: "text",
+            text: " puis consultation de ",
+            styles: {},
+          },
+          {
+            type: "sourceLink",
+            props: {
+              sourceId: "13002526500013",
+              title: "DINUM (SIREN 130 025 265)",
+              subtitle: "Services du Premier ministre",
+              entityType: "company",
+              status: "In bonis",
+              url: "https://annuaire-entreprises.data.gouv.fr/entreprise/direction-interministerielle-du-numerique-dinum-130025265",
+              excerpt: "Conçoit et met en œuvre la stratégie numérique de l’État...",
+              verifiedAt: "17/09/2026",
+            },
+          },
+          {
+            type: "text",
+            text: ".",
             styles: {},
           },
         ],
@@ -385,6 +446,45 @@ export const App: React.FC = () => {
 
     return [...customItems, ...getDefaultReactSlashMenuItems(editor)];
   }, [editor]);
+
+  // Menu de suggestions @mention (Interlinking direct au fil du texte)
+  const customMentionMenuItems = useMemo(() => {
+    if (!editor) return [];
+
+    const currentPool = [
+      ...MOCK_FRANCE_SOURCES,
+      ...ALL_INTERNATIONAL_MOCK_SOURCES.filter(
+        (s) => s.country === currentCountry && s.country !== "fr"
+      ),
+    ];
+
+    return currentPool.map((item) => ({
+      title: item.title,
+      subtext: `${item.subtitle || ""} (${item.entityType})`,
+      icon: <span>{item.entityType === "law" ? "⚖️" : item.entityType === "company" ? "🏢" : item.entityType === "parliament" ? "🏛️" : item.entityType === "address" ? "📍" : item.entityType === "procurement" ? "🛍️" : item.entityType === "grant" ? "💶" : item.entityType === "insee" ? "📊" : item.entityType === "agent" ? "👤" : item.entityType === "cadastre" ? "🗺️" : item.entityType === "demarche" ? "📝" : item.entityType === "opendata" ? "🌐" : "🧠"}</span>,
+      onItemClick: () => {
+        editor.insertInlineContent([
+          {
+            type: "sourceLink" as const,
+            props: {
+              sourceId: item.sourceId || item.id || "",
+              title: item.title || "",
+              subtitle: item.subtitle || "",
+              entityType: (item.entityType as SourceEntityType) || "law",
+              status:
+                item.statusLabel ||
+                (typeof item.status === "string" ? item.status : "") ||
+                "",
+              url: item.url || "",
+              excerpt: item.excerpt || item.snippet || "",
+              verifiedAt: item.verifiedAt || item.updatedAt || "",
+            },
+          },
+          " ",
+        ]);
+      },
+    }));
+  }, [editor, currentCountry]);
 
   const handleInsert = (type: SourceEntityType) => {
     if (!editor) return;
@@ -613,6 +713,7 @@ export const App: React.FC = () => {
             theme={isDark ? "dark" : "light"}
             slashMenu={false}
           >
+            {/* Slash Menu (/) -> Insertion de blocs riches */}
             <SuggestionMenuController
               triggerCharacter={"/"}
               getItems={async (query) =>
@@ -622,6 +723,18 @@ export const App: React.FC = () => {
                     item.aliases?.some((a) =>
                       a.toLowerCase().includes(query.toLowerCase())
                     )
+                )
+              }
+            />
+
+            {/* Mention Menu (@) -> Insertion d'interlinking inline */}
+            <SuggestionMenuController
+              triggerCharacter={"@"}
+              getItems={async (query) =>
+                customMentionMenuItems.filter(
+                  (item) =>
+                    item.title.toLowerCase().includes(query.toLowerCase()) ||
+                    item.subtext?.toLowerCase().includes(query.toLowerCase())
                 )
               }
             />
