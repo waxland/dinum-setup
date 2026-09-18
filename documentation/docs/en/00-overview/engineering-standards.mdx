@@ -1,0 +1,130 @@
+---
+title: "Engineering Standards & Quality Guidelines (DINUM / beta.gouv / La Suite)"
+sidebar_label: "Engineering Standards"
+description: "Comprehensive software quality standards, React/TypeScript guidelines, Python/Django conventions, RGAA accessibility, and defensive security by DINUM."
+---
+
+import { FeatureCard, FeatureGrid } from "../../../src/components/Cards";
+import { Mermaid } from "../../../src/components/Mermaid";
+
+# 🏛️ Software Engineering & Quality Standards
+
+This document formalizes the **software engineering standards and quality guidelines** established by the **French Interministerial Digital Directorate (DINUM)**, **beta.gouv.fr**, and **La Suite Numérique**.
+
+---
+
+## 📚 1. Official Canonical References & Handbooks
+
+All contributions across this monorepo must adhere to the official state references:
+
+<FeatureGrid cols={3}>
+  <FeatureCard
+    title="La Suite Developer Handbook"
+    description="Official developer handbook for La Suite numérique (Architecture, code reviews, accessibility, and security)."
+    href="https://suitenumerique.gitbook.io/handbook"
+    icon="book-open"
+  />
+  <FeatureCard
+    title="Python Best Practices Guide"
+    description="Python coding standards, typing, Django/DRF architecture, and import organization."
+    href="https://github.com/suitenumerique/dev-handbook/blob/main/python.md"
+    icon="code"
+  />
+  <FeatureCard
+    title="DesignGouv — Accessibility Memo"
+    description="Digital accessibility checklists and developer memo from the French government."
+    href="https://design.numerique.gouv.fr/outils/memo-dev/"
+    icon="check-circle"
+  />
+  <FeatureCard
+    title="beta.gouv.fr Quality Standards"
+    description="Public service standards: uniform code, mandatory automated tests, and product documentation."
+    href="https://standards.beta.gouv.fr/standards"
+    icon="zap"
+  />
+  <FeatureCard
+    title="La Suite UI Kit"
+    description="Official UI component library for La Suite applications (@gouvfr-lasuite/ui-components)."
+    href="https://github.com/suitenumerique/ui-kit"
+    icon="layout"
+  />
+  <FeatureCard
+    title="La Suite Security Rules"
+    description="Secrets hygiene, defensive anti-SSRF validation, defense in depth, and permissions."
+    href="https://github.com/suitenumerique/dev-handbook/blob/main/security.md"
+    icon="shield"
+  />
+</FeatureGrid>
+
+---
+
+## 🎯 2. Strict Precedence of Rules
+
+When technical guidelines appear to conflict across repositories, apply this strict precedence order:
+
+```mermaid
+flowchart TD
+    P1["1. Explicit User Instruction"] --> P2["2. AGENTS.md / Repository Instructions"]
+    P2 --> P3["3. Repository Configuration (pyproject.toml, package.json, CI)"]
+    P3 --> P4["4. Existing Architectural & Project Conventions"]
+    P4 --> P5["5. DINUM / beta.gouv / La Suite Recommendations"]
+    P5 --> P6["6. Generic Framework & Language Practices"]
+```
+
+> 💡 **Example :** The historical La Suite handbook suggests PEP 8 with 99-character line lengths, whereas modern La Suite repositories configure Ruff with 88 characters. **Local repository configuration always wins.**
+
+---
+
+## ⚛️ 3. Frontend Standards (React, TypeScript & DSFR)
+
+### Pre-flight Inspection
+- Inspect `package.json`, `tsconfig.json`, and ESLint/Prettier configurations before authoring code.
+- Reuse existing primitives (`@codegouvfr/react-dsfr`, `@openfun/cunningham-tokens`) rather than introducing redundant packages.
+
+### Strict TypeScript
+- **Zero `any`** and **zero unsafe type assertions (`as ...`)** without technical documentation.
+- Explicitly model nullable and optional states (`null | undefined`).
+- Provide complete prop types and API response schemas.
+
+### React Component Architecture
+- Single-responsibility, cohesive components.
+- Derive state during render instead of creating synchronized `useEffect` chains.
+- Explicitly handle all 6 UI states: *Initial, Loading, Success, Empty, Recoverable Error, Disabled*.
+
+### RGAA v4.1 AA Accessibility
+- Native semantic HTML elements (`<button>`, `<a>`, `<nav>`, `<main>`, `<dialog>`) before ARIA.
+- 100% keyboard navigable with visible focus indicators.
+- Text contrast ratio $\ge 4.5:1$ and UI components contrast $\ge 3:1$.
+
+---
+
+## 🐍 4. Backend Standards (Python, Django & Security)
+
+### Code Style & Imports
+- Enforce automated formatters and linters (Ruff / Black / isort).
+- Group imports into 6 logical blocks: `__future__`, standard library, frameworks (Django/DRF), third-party libraries, first-party modules, and local imports.
+
+### Django & Database Robustness
+- Eliminate $N+1$ query overhead with `select_related()` and `prefetch_related()`.
+- Wrap critical multi-table operations in atomic transactions (`transaction.atomic`).
+- Ensure safe, backward-compatible, and idempotent database migrations.
+
+### Defensive Security
+- Zero plaintext credentials or hard-coded tokens.
+- Mandatory anti-SSRF IP filtering on all outbound network requests.
+- Circuit breaker with strict timeouts (e.g. 3.5s) on external APIs.
+
+---
+
+## 🔗 5. Canonical URLs & Resources
+
+- **beta.gouv.fr Standards:**
+  - [Uniform Source Code](https://github.com/betagouv/standards/blob/main/qualit%C3%A9-logicielle/le-code-source-est-uniforme.md)
+  - [Unit and E2E Tests](https://github.com/betagouv/standards/blob/main/qualit%C3%A9-logicielle/le-code-est-instrumente-par-des-tests-unitaires-et-des-tests-e2e.md)
+  - [Technical Documentation](https://github.com/betagouv/standards/blob/main/qualit%C3%A9-logicielle/les-aspects-techniques-du-produit-sont-documentes.md)
+- **La Suite Numérique:**
+  - [Code Reviews Guidelines](https://github.com/suitenumerique/dev-handbook/blob/main/code-reviews.md)
+  - [Accessibility Development Rules](https://github.com/suitenumerique/dev-handbook/blob/main/accessibility.md)
+  - [Security Rules](https://github.com/suitenumerique/dev-handbook/blob/main/security.md)
+  - [Docs Backend pyproject.toml](https://github.com/suitenumerique/docs/blob/main/src/backend/pyproject.toml)
+  - [Impress Frontend package.json](https://github.com/suitenumerique/docs/blob/main/src/frontend/apps/impress/package.json)

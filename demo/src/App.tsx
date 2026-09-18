@@ -605,6 +605,23 @@ export const App: React.FC = () => {
               </button>
             ))}
           </div>
+
+          {/* Connecteurs rapides pour insertion directe */}
+          <div className="clean-pills-bar" style={{ marginTop: "12px" }}>
+            {activePreset.buttons.map((btn) => (
+              <button
+                key={btn.type + btn.label}
+                type="button"
+                onClick={() => handleInsert(btn.type)}
+                className="clean-pill"
+                title={btn.desc}
+                style={{ fontSize: "0.78rem", padding: "4px 10px" }}
+              >
+                <SourceIcon type={btn.type} size={13} color="currentColor" />
+                <span>{btn.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Éditeur BlockNote Fluide */}

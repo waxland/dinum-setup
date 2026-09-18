@@ -25,6 +25,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "path": "/en/00-overview"
           },
           "/en/00-overview/architecture-3-tier",
+          "/en/00-overview/engineering-standards",
           "/en/00-overview/international-vision"
         ]
       },
