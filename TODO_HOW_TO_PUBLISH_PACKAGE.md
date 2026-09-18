@@ -158,25 +158,50 @@ Pour héberger la documentation sans Vercel :
 
 ---
 
-## 🏷️ 6. Procédure de Publication en 1 Commande Git (Recommandée)
+## 🏷️ 6. Procédure de Publication en 1 Commande Git & GitHub CLI
 
-Grâce au fichier [`.github/workflows/publish-packages.yml`](.github/workflows/publish-packages.yml), la publication sur **npm** et **PyPI** se fait automatiquement dès que vous poussez un tag de version :
+> 🟢 **Statut Actuel :** Version officielle **v1.0.0** compilée et publiée avec succès !  
+> 🔗 **Lien de la Release :** [https://github.com/waxland/dinum-setup/releases/tag/v1.0.0](https://github.com/waxland/dinum-setup/releases/tag/v1.0.0)
 
+### Installation Directe en 1 Commande CLI
+
+#### Pour les Projets TypeScript / Node.js :
 ```bash
-# 1. Vérifier que tous les tests passent localement
-npm run packages:test
-cd packages/django-lasuite-sources && PYTHONPATH=. .venv/bin/pytest && cd ../..
+# 1. Installer le SDK universel
+npm install https://github.com/waxland/dinum-setup/releases/download/v1.0.0/suitenumerique-slash-sources-sdk-1.0.0.tgz
 
-# 2. Incrémenter les versions dans les package.json et pyproject.toml (ex: 1.0.0 -> 1.0.1)
-
-# 3. Créer le tag Git officiel
-git tag v1.0.1
-
-# 4. Pousser le tag sur GitHub
-git push origin v1.0.1
+# 2. Installer l'extension BlockNote CustomBlock
+npm install https://github.com/waxland/dinum-setup/releases/download/v1.0.0/suitenumerique-blocknote-sources-1.0.0.tgz
 ```
 
-🎉 **GitHub Actions prend le relais :** Il compile le code, exécute les suites de tests, et publie automatiquement les nouvelles versions sur **npm** et **PyPI** sans aucune action manuelle !
+#### Pour les Projets Python / Django :
+```bash
+# 1. Installer le package Django via son archive Wheel compilée
+pip install https://github.com/waxland/dinum-setup/releases/download/v1.0.0/django_lasuite_sources-1.0.0-py3-none-any.whl
+
+# 2. Ou directement depuis le sous-dossier du dépôt Git
+pip install git+https://github.com/waxland/dinum-setup.git#subdirectory=packages/django-lasuite-sources
+```
+
+---
+
+### Commandes CLI pour publier une nouvelle version (ex: v1.0.1) :
+
+```bash
+# 1. Compiler les packages TypeScript et Python
+npm run packages:build
+cd packages/slash-sources-sdk && npm pack && cd ../blocknote-sources && npm pack && cd ../..
+cd packages/django-lasuite-sources && .venv/bin/python -m build && cd ../..
+
+# 2. Publier la Release et ses binaires en 1 ligne CLI
+gh release create v1.0.1 \
+  packages/slash-sources-sdk/suitenumerique-slash-sources-sdk-1.0.1.tgz \
+  packages/blocknote-sources/suitenumerique-blocknote-sources-1.0.1.tgz \
+  packages/django-lasuite-sources/dist/django_lasuite_sources-1.0.1-py3-none-any.whl \
+  packages/django-lasuite-sources/dist/django_lasuite_sources-1.0.1.tar.gz \
+  --title "v1.0.1 — Sovereign Slasher Packages Release" \
+  --notes "Release notes for v1.0.1"
+```
 
 ---
 
