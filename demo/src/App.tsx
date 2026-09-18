@@ -15,14 +15,15 @@ import {
   SourceBlock,
   SourceIcon,
   SourceInlineContent,
-  getLocaleDictionary,
   type ExternalSourceDisplayMode,
   type ExternalSourceEntity,
   type SourceEntityType,
   type SupportedCountry,
-  type SupportedLocale
 } from "@suitenumerique/blocknote-sources";
 
+import { Header, Hero, Footer } from "./components";
+import { useLocaleRouter } from "./hooks/useLocaleRouter";
+import { getDemoTranslations } from "./i18n";
 import { COUNTRY_PRESETS } from "./presets.config";
 
 const createEmptySourceBlock = (entityType: SourceEntityType) => ({
@@ -67,15 +68,12 @@ const convertEntityToBlockProps = (
   rawPayload: typeof item.rawPayload === "string" ? item.rawPayload : JSON.stringify(item.rawPayload || {}),
 });
 
-
-
 export const App: React.FC = () => {
   const [isDark, setIsDark] = useState(false);
   const [currentCountry, setCurrentCountry] = useState<SupportedCountry>("fr");
-  const [currentLocale, setCurrentLocale] = useState<SupportedLocale>("fr");
+  const [currentLocale, setCurrentLocale] = useLocaleRouter();
 
-  const i18n = useMemo(() => getLocaleDictionary(currentLocale), [currentLocale]);
-  const activePreset = COUNTRY_PRESETS[currentCountry];
+  const t = useMemo(() => getDemoTranslations(currentLocale), [currentLocale]);
 
   useEffect(() => {
     if (isDark) {
@@ -106,12 +104,12 @@ export const App: React.FC = () => {
         content: [
           {
             type: "text",
-            text: "Démonstrateur Officiel — ",
+            text: t.editor.initialTitlePrefix,
             styles: {},
           },
           {
             type: "text",
-            text: "La Suite Docs / Connecteurs Souverains",
+            text: t.editor.initialTitleSuffix,
             styles: { bold: true },
           },
         ],
@@ -121,7 +119,7 @@ export const App: React.FC = () => {
         content: [
           {
             type: "text",
-            text: "Tapez ",
+            text: currentLocale === "fr" ? "Tapez " : "Type ",
             styles: {},
           },
           {
@@ -131,7 +129,7 @@ export const App: React.FC = () => {
           },
           {
             type: "text",
-            text: " pour insérer un bloc riche ou ",
+            text: t.editor.instructionBlock,
             styles: {},
           },
           {
@@ -141,7 +139,7 @@ export const App: React.FC = () => {
           },
           {
             type: "text",
-            text: " pour lier une source inline au fil du texte :",
+            text: t.editor.instructionInline,
             styles: {},
           },
         ],
@@ -151,7 +149,7 @@ export const App: React.FC = () => {
         content: [
           {
             type: "text",
-            text: "Exemple d'interlinking certifié dans la phrase : ",
+            text: t.editor.interlinkExample,
             styles: {},
           },
           {
@@ -169,7 +167,7 @@ export const App: React.FC = () => {
           },
           {
             type: "text",
-            text: " puis consultation de ",
+            text: t.editor.consultation,
             styles: {},
           },
           {
@@ -209,7 +207,6 @@ export const App: React.FC = () => {
 
   const handleCountryChange = (country: SupportedCountry) => {
     setCurrentCountry(country);
-    setCurrentLocale(COUNTRY_PRESETS[country].defaultLocale);
 
     if (!editor) {
       return;
@@ -222,7 +219,7 @@ export const App: React.FC = () => {
           content: [
             {
               type: "text",
-              text: `${COUNTRY_PRESETS[country].flag} Sovereign Dataset Loaded: ${COUNTRY_PRESETS[country].name}`,
+              text: `${COUNTRY_PRESETS[country].flag} ${t.editor.datasetLoaded} ${COUNTRY_PRESETS[country].name}`,
               styles: { bold: true },
             },
           ],
@@ -254,8 +251,8 @@ export const App: React.FC = () => {
           );
         },
         aliases: ["loi", "law", "legifrance", "code", "article", "decret", "gesetz", "wet", "eurlex"],
-        group: "Sovereign & Official Sources",
-        icon: <SourceIcon type="law" size={16} color="var(--blue-france-sun-113, #000091)" />,
+        group: t.editor.slashGroupTitle,
+        icon: <SourceIcon type="law" size={16} color="var(--blue-france, #000091)" />,
         subtext: "Insert a certified official legal text",
       },
       {
@@ -268,8 +265,8 @@ export const App: React.FC = () => {
           );
         },
         aliases: ["entreprise", "company", "pappers", "siren", "siret", "societe", "kbis", "register", "kvk"],
-        group: "Sovereign & Official Sources",
-        icon: <SourceIcon type="company" size={16} color="var(--blue-france-sun-113, #000091)" />,
+        group: t.editor.slashGroupTitle,
+        icon: <SourceIcon type="company" size={16} color="var(--blue-france, #000091)" />,
         subtext: "Insert certified commercial registry data",
       },
       {
@@ -282,8 +279,8 @@ export const App: React.FC = () => {
           );
         },
         aliases: ["assemblee", "parliament", "assemble", "an", "amendement", "depute", "bundestag", "dip"],
-        group: "Sovereign & Official Sources",
-        icon: <SourceIcon type="parliament" size={16} color="var(--blue-france-sun-113, #000091)" />,
+        group: t.editor.slashGroupTitle,
+        icon: <SourceIcon type="parliament" size={16} color="var(--blue-france, #000091)" />,
         subtext: "Track a parliamentary amendment or bill in session",
       },
       {
@@ -296,8 +293,8 @@ export const App: React.FC = () => {
           );
         },
         aliases: ["adresse", "address", "ban", "geo", "rue", "bag"],
-        group: "Sovereign & Official Sources",
-        icon: <SourceIcon type="address" size={16} color="var(--blue-france-sun-113, #000091)" />,
+        group: t.editor.slashGroupTitle,
+        icon: <SourceIcon type="address" size={16} color="var(--blue-france, #000091)" />,
         subtext: "Certified autocomplete from national address registries",
       },
       {
@@ -310,8 +307,8 @@ export const App: React.FC = () => {
           );
         },
         aliases: ["marche", "boamp", "achat", "dce", "dae", "ted", "procurement"],
-        group: "Sovereign & Official Sources",
-        icon: <SourceIcon type="procurement" size={16} color="var(--blue-france-sun-113, #000091)" />,
+        group: t.editor.slashGroupTitle,
+        icon: <SourceIcon type="procurement" size={16} color="var(--blue-france, #000091)" />,
         subtext: "Insert an official public procurement notice",
       },
       {
@@ -324,8 +321,8 @@ export const App: React.FC = () => {
           );
         },
         aliases: ["subvention", "grant", "aides", "fonds-vert", "detr", "dsil", "anct", "subsidies"],
-        group: "Sovereign & Official Sources",
-        icon: <SourceIcon type="grant" size={16} color="var(--blue-france-sun-113, #000091)" />,
+        group: t.editor.slashGroupTitle,
+        icon: <SourceIcon type="grant" size={16} color="var(--blue-france, #000091)" />,
         subtext: "Insert a public funding or territorial grant program",
       },
       {
@@ -338,8 +335,8 @@ export const App: React.FC = () => {
           );
         },
         aliases: ["insee", "stats", "population", "territoire", "destatis", "cbs", "eurostat"],
-        group: "Sovereign & Official Sources",
-        icon: <SourceIcon type="insee" size={16} color="var(--blue-france-sun-113, #000091)" />,
+        group: t.editor.slashGroupTitle,
+        icon: <SourceIcon type="insee" size={16} color="var(--blue-france, #000091)" />,
         subtext: "Insert official demographic indicators",
       },
       {
@@ -352,16 +349,15 @@ export const App: React.FC = () => {
           );
         },
         aliases: ["opendata", "dataset", "datagouv", "donnees", "govdata", "dataeuropa"],
-        group: "Sovereign & Official Sources",
-        icon: <SourceIcon type="opendata" size={16} color="var(--blue-france-sun-113, #000091)" />,
+        group: t.editor.slashGroupTitle,
+        icon: <SourceIcon type="opendata" size={16} color="var(--blue-france, #000091)" />,
         subtext: "Insert a certified open dataset record",
       },
     ];
 
     return [...customItems, ...getDefaultReactSlashMenuItems(editor)];
-  }, [editor]);
+  }, [editor, t.editor.slashGroupTitle]);
 
-  // Menu de suggestions @mention (Interlinking direct au fil du texte)
   const customMentionMenuItems = useMemo(() => {
     if (!editor) {
       return [];
@@ -377,7 +373,7 @@ export const App: React.FC = () => {
     return currentPool.map((item) => ({
       title: item.title,
       subtext: `${item.subtitle || ""} (${item.entityType || "law"})`,
-      icon: <SourceIcon type={item.entityType || "law"} size={15} color="var(--blue-france-sun-113, #000091)" />,
+      icon: <SourceIcon type={item.entityType || "law"} size={15} color="var(--blue-france, #000091)" />,
       onItemClick: () => {
         editor.insertInlineContent([
           {
@@ -422,7 +418,7 @@ export const App: React.FC = () => {
         content: [
           {
             type: "text",
-            text: i18n.actions.searchPlaceholder,
+            text: t.editor.emptySearchPlaceholder,
             styles: {},
           },
         ],
@@ -431,110 +427,30 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="clean-app">
-      {/* Navbar Minimaliste épurée */}
-      <nav className="clean-nav" aria-label="Navigation principale">
-        <div className="clean-nav-inner">
-          <a href="/" className="clean-brand">
-            <img
-              src={isDark ? "/lasuite-dark.svg" : "/lasuite.svg"}
-              alt="La Suite"
-              onError={(e) => {
-                (e.currentTarget as HTMLElement).style.display = "none";
-              }}
-            />
-            <span className="clean-brand-name">Docs</span>
-          </a>
+    <div className="sober-app">
+      <Header
+        isDark={isDark}
+        onToggleTheme={() => setIsDark(!isDark)}
+        onReset={handleReset}
+        currentLocale={currentLocale}
+        onLocaleChange={setCurrentLocale}
+        t={t.nav}
+      />
 
-          <div className="clean-nav-actions">
-            <a
-              href="https://dinum-docs-waxlands-projects.vercel.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="clean-link-btn"
-            >
-              Documentation ↗
-            </a>
-            <a
-              href="https://github.com/waxland/dinum-setup"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="clean-link-btn"
-            >
-              GitHub ↗
-            </a>
-            <button
-              type="button"
-              onClick={() => setIsDark(!isDark)}
-              className="clean-link-btn"
-              title="Changer de thème"
-            >
-              {isDark ? "☀️ Clair" : "🌙 Sombre"}
-            </button>
-            <button
-              type="button"
-              onClick={handleReset}
-              className="clean-link-btn"
-              style={{ color: "#c9191e" }}
-              title="Vider l'éditeur"
-            >
-              Réinitialiser
-            </button>
-          </div>
-        </div>
-      </nav>
+      <main className="sober-main">
+        <Hero
+          currentCountry={currentCountry}
+          onCountryChange={handleCountryChange}
+          onInsert={handleInsert}
+          t={t.hero}
+        />
 
-      {/* Contenu Principal Fluide */}
-      <main className="clean-main">
-        {/* Section Titre & Contexte Sobre */}
-        <div className="clean-hero">
-          <span className="clean-hero-tag">Démonstrateur Interactif</span>
-          <h1>Connecteurs Souverains & BlockNote</h1>
-          <p>
-            Explorez les données certifiées de l'État (Légifrance, Annuaire Entreprises, BAN, BOAMP, Albert IA) directement dans l'éditeur.
-          </p>
-
-          {/* Filtres discrets par pays */}
-          <div className="clean-pills-bar">
-            {(Object.keys(COUNTRY_PRESETS) as SupportedCountry[]).map((c) => (
-              <button
-                key={c}
-                type="button"
-                onClick={() => handleCountryChange(c)}
-                className={`clean-pill ${currentCountry === c ? "active" : ""}`}
-              >
-                <span>{COUNTRY_PRESETS[c].flag}</span>
-                <span>{COUNTRY_PRESETS[c].name}</span>
-              </button>
-            ))}
-          </div>
-
-          {/* Connecteurs rapides pour insertion directe */}
-          <div className="clean-pills-bar" style={{ marginTop: "12px" }}>
-            {activePreset.buttons.map((btn) => (
-              <button
-                key={btn.type + btn.label}
-                type="button"
-                onClick={() => handleInsert(btn.type)}
-                className="clean-pill"
-                title={btn.desc}
-                style={{ fontSize: "0.78rem", padding: "4px 10px" }}
-              >
-                <SourceIcon type={btn.type} size={13} color="currentColor" />
-                <span>{btn.label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Éditeur BlockNote Fluide */}
-        <div className="clean-editor-wrap">
+        <div className="sober-editor-wrap">
           <BlockNoteView
             editor={editor}
             theme={isDark ? "dark" : "light"}
             slashMenu={false}
           >
-            {/* Slash Menu (/) -> Insertion de blocs riches */}
             <SuggestionMenuController
               triggerCharacter={"/"}
               getItems={async (query) =>
@@ -548,7 +464,6 @@ export const App: React.FC = () => {
               }
             />
 
-            {/* Mention Menu (@) -> Insertion d'interlinking inline */}
             <SuggestionMenuController
               triggerCharacter={"@"}
               getItems={async (query) =>
@@ -562,17 +477,8 @@ export const App: React.FC = () => {
           </BlockNoteView>
         </div>
 
-        {/* Footer Minimaliste */}
-        <footer className="clean-footer">
-          <div>
-            La Suite Numérique • Direction Interministérielle du Numérique (DINUM)
-          </div>
-          <div>
-            Licence MIT • RGAA v4.1 AA
-          </div>
-        </footer>
+        <Footer t={t.footer} />
       </main>
     </div>
   );
 };
-
