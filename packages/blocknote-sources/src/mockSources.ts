@@ -1,6 +1,6 @@
 import { SourceEntityProps, SourceEntityType } from './types';
 
-export const MOCK_SOURCES: Record<SourceEntityType, SourceEntityProps[]> = {
+export const MOCK_SOURCES: Partial<Record<SourceEntityType, SourceEntityProps[]>> = {
   law: [
     {
       entityType: 'law',
@@ -217,6 +217,77 @@ export const MOCK_SOURCES: Record<SourceEntityType, SourceEntityProps[]> = {
       summary: 'Durée légale du préavis de démission applicable aux agents non titulaires.',
       url: 'https://albert.etalab.gouv.fr',
       verifiedAt: '17/09/2026',
+    },
+  ],
+  statistics: [
+    {
+      entityType: 'statistics',
+      displayMode: 'card',
+      sourceId: 'STAT-EU-2026-001',
+      title: 'Eurostat Key Indicators — GDP & Inflation',
+      subtitle: 'European Statistical System (Eurostat SDMX)',
+      status: 'Official Data',
+      statusColor: 'blue',
+      meta1: 'Inflation (HICP) : 2.1%',
+      meta2: 'Zone : Euro Area (EA20)',
+      meta3: 'Période : Q3 2026',
+      excerpt: 'Official harmonized consumer price index and economic data released by Eurostat.',
+      summary: 'Harmonized index of consumer prices across EU member states.',
+      url: 'https://ec.europa.eu/eurostat',
+      verifiedAt: '18/09/2026',
+    },
+  ],
+  'case-law': [
+    {
+      entityType: 'case-law',
+      displayMode: 'callout',
+      sourceId: 'ECLI:EU:C:2024:42',
+      title: 'Arrêt de la Cour (Grande chambre) — Protection des Données',
+      subtitle: 'Cour de justice de l’Union européenne (CJUE)',
+      status: 'Jurisprudence',
+      statusColor: 'green',
+      meta1: 'Affaire C-42/24',
+      meta2: 'ECLI:EU:C:2024:42',
+      meta3: 'Date : 14/06/2024',
+      excerpt: 'L’article 6 du RGPD doit être interprété en ce sens qu’il s’oppose à un traitement de données personnelles sans base juridique valable.',
+      summary: 'Portée du consentement et des bases légales de traitement de données au titre du RGPD.',
+      url: 'https://curia.europa.eu',
+      verifiedAt: '18/09/2026',
+    },
+  ],
+  place: [
+    {
+      entityType: 'place',
+      displayMode: 'card',
+      sourceId: 'GEO-CA-OTTAWA',
+      title: 'Ottawa, Ontario, Canada',
+      subtitle: 'Canadian Geographical Names Database (CGNDB)',
+      status: 'Verified Place',
+      statusColor: 'green',
+      meta1: 'CGNDB : FDZCS',
+      meta2: 'Type : Capital City',
+      meta3: 'GPS : 45.4215, -75.6972',
+      summary: 'National capital of Canada located in Ontario.',
+      url: 'https://geonames.nrcan.gc.ca',
+      verifiedAt: '18/09/2026',
+    },
+  ],
+  research: [
+    {
+      entityType: 'research',
+      displayMode: 'card',
+      sourceId: 'CORDIS-HORIZON-101042',
+      title: 'Horizon Europe — Open Source Sovereign AI for Public Administrations',
+      subtitle: 'European Commission (CORDIS)',
+      status: 'Ongoing Project',
+      statusColor: 'blue',
+      meta1: 'Budget : 4.5M €',
+      meta2: 'Programme : Horizon Europe',
+      meta3: 'Fin : 2027',
+      excerpt: 'Research project delivering verifiable and privacy-preserving AI models for EU public administrations.',
+      summary: 'Co-funded research initiative under Digital Europe and Horizon Europe.',
+      url: 'https://cordis.europa.eu',
+      verifiedAt: '18/09/2026',
     },
   ],
 };
