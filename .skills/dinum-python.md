@@ -1,80 +1,80 @@
 ---
-title: Standards d'Ingénierie Python & Django (DINUM / La Suite)
+title: Python & Django Engineering Standards (DINUM / La Suite)
 sidebar_label: DINUM Python Standards
-description: Règles de développement Python, Django, DRF, sécurité défensive SSRF, typage et tests pour La Suite Numérique et les services publics.
+description: Engineering rules for Python, Django, DRF, defensive SSRF security, typing, and testing in La Suite Numérique and public service APIs.
 ---
 
-Ce skill définit la procédure et les règles à appliquer pour toute création, modification ou revue de code backend (**Python**, **Django**, **Django REST Framework**, **FastAPI**, **pytest**, **Celery**).
-
----
-
-## 🎯 1. Périmètre d'Activation
-
-Activer ce skill lors d'interventions sur :
-- Modules et scripts Python (`.py`)
-- Applications Django & Django REST Framework
-- Modèles, migrations et requêtes ORM
-- Fournisseurs de données et connecteurs d'APIs (`lasuite_sources/providers/`)
-- Tâches asynchrones et workers (Celery, background tasks)
-- Tests unitaires et d'intégration (`pytest`, `pytest-django`, `responses`)
-- Configuration des dépendances (`pyproject.toml`, `requirements.txt`)
+This skill defines the procedures and engineering standards to apply whenever creating, modifying, or reviewing backend Python code (**Python**, **Django**, **Django REST Framework**, **FastAPI**, **pytest**, **Celery**).
 
 ---
 
-## 🧭 2. Ordre de Préséance des Règles
+## 🎯 1. Activation Scope
 
-1. **Instruction explicite de l'utilisateur**
-2. **Consignes `AGENTS.md` / `AGENT.md`**
-3. **Configuration du dépôt (`pyproject.toml`, `ruff.toml`, `.flake8`, `pytest.ini`)**
-4. **Conventions architecturales du projet existant**
-5. **Recommandations du Python Handbook La Suite**
-6. **Bonnes pratiques générales de l'écosystème Python / PEP 8**
-
-> ⚠️ **Note sur la longueur de ligne :** Le handbook historique La Suite mentionne 99 caractères (PEP 8 étendu), tandis que les projets modernes peuvent être configurés avec Ruff à 88 caractères. **La configuration du dépôt prime toujours.**
+Activate this skill when working on:
+- Python modules and scripts (`.py`)
+- Django and Django REST Framework applications
+- ORM models, migrations, and database queries
+- Data source providers and API connectors (`lasuite_sources/providers/`)
+- Asynchronous tasks and workers (Celery, background tasks)
+- Automated testing (`pytest`, `pytest-django`, `responses`)
+- Dependency configuration (`pyproject.toml`, `requirements.txt`)
 
 ---
 
-## 📋 3. Checklist Obligatoire d'Implémentation
+## 🧭 2. Rules Precedence Order
 
-### A. Style, Formatage et Imports
-- [ ] Respecter le linter et formateur configuré (Ruff / Black / Flake8).
-- [ ] Regrouper les imports selon les 6 sections logiques :
+1. **Explicit user instruction**
+2. **`AGENTS.md` / `AGENT.md` instructions**
+3. **Repository configuration (`pyproject.toml`, `ruff.toml`, `.flake8`, `pytest.ini`)**
+4. **Established architectural conventions in the project**
+5. **La Suite Python Handbook recommendations**
+6. **Generic Python / PEP 8 ecosystem best practices**
+
+> ⚠️ **Note on Line Length :** The legacy La Suite handbook mentions 99 characters (extended PEP 8), whereas modern repositories often configure Ruff at 88 characters. **Local repository configuration always wins.**
+
+---
+
+## 📋 3. Mandatory Implementation Checklist
+
+### A. Style, Formatting & Imports
+- [ ] Obey the repository's configured linter/formatter (Ruff / Black / Flake8).
+- [ ] Group imports into 6 distinct sections:
   1. `__future__`
-  2. Bibliothèque standard Python
+  2. Standard Python library
   3. Frameworks (Django, DRF, FastAPI)
-  4. Dépendances tierces (`requests`, `pydantic`, etc.)
-  5. Modules applicatifs internes du package
-  6. Imports relatifs locaux.
-- [ ] Aucun import générique avec astérisque (`from module import *`).
-- [ ] Aucun `print()` de debug ni code commenté résiduel.
+  4. Third-party dependencies (`requests`, `pydantic`, etc.)
+  5. Internal application modules
+  6. Local/relative imports.
+- [ ] No wildcard imports (`from module import *`).
+- [ ] No leftover `print()` debug calls or commented-out code.
 
-### B. Architecture & Bonnes Pratiques Django
-- [ ] Prévention des requêtes $N+1$ via `select_related()` et `prefetch_related()`.
-- [ ] Mutations multi-tables encapsulées dans des transactions atomiques (`transaction.atomic`).
-- [ ] Migrations de base de données rétrocompatibles et idempotentes.
-- [ ] Validation stricte des permissions côté serveur (ne jamais faire confiance au client).
+### B. Django & Database Best Practices
+- [ ] Prevent $N+1$ query problems using `select_related()` and `prefetch_related()`.
+- [ ] Wrap multi-table mutations inside atomic transactions (`transaction.atomic`).
+- [ ] Ensure database migrations are idempotent, backwards-compatible, and safe.
+- [ ] Always enforce authorization server-side (never trust the client).
 
-### C. Typage & Documentation
-- [ ] Annotations de type (type hints) sur toutes les fonctions publiques.
-- [ ] Modélisation explicite de `Optional[T]` / `T | None`.
-- [ ] Docstrings explicites décrivant l'intention et les invariants métier.
+### C. Typing & Documentation
+- [ ] Type hints on all public functions, classes, and methods.
+- [ ] Explicit modeling of `Optional[T]` / `T | None`.
+- [ ] Clear docstrings explaining business intent, invariants, and edge cases.
 
-### D. Sécurité Défensive & Robustesse Réseau
-- [ ] Zéro mot de passe ou clé API hardcodée.
-- [ ] Validation anti-SSRF obligatoire sur toutes les URLs externes appelées par le serveur.
-- [ ] Circuit Breaker et timeouts stricts (ex: 3.5s) sur tous les appels réseau sortants.
-- [ ] Gestion fine des exceptions : ne jamais capturer silencieusement `except Exception: pass`.
+### D. Defensive Security & Network Robustness
+- [ ] Zero hard-coded credentials or API tokens.
+- [ ] Mandatory anti-SSRF URL validation on all outgoing server-side requests (block private IP ranges: `127.0.0.0/8`, `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `169.254.169.254`).
+- [ ] Circuit Breaker and strict timeouts (e.g. 3.5s) on external API calls.
+- [ ] Avoid catching general exceptions without re-raising or logging (`except Exception: pass`).
 
-### E. Tests Automatisés
-- [ ] Ajouter ou mettre à jour les tests pytest associés à chaque fonctionnalité.
-- [ ] Utiliser `responses` ou `unittest.mock` pour isoler les requêtes HTTP externes.
-- [ ] Exécuter `pytest` avec `PYTHONPATH=.` pour valider la suite complète (100% vert).
+### E. Automated Testing
+- [ ] Add or update pytest test suites for every feature and bug fix.
+- [ ] Mock external HTTP calls using `responses` or `unittest.mock`.
+- [ ] Execute `pytest` with `PYTHONPATH=.` to ensure a 100% green test suite.
 
 ---
 
-## 🔗 4. Références Officielles
+## 🔗 4. Official References
 
 - [La Suite — Python Best Practices](https://github.com/suitenumerique/dev-handbook/blob/main/python.md)
 - [La Suite — Security Rules](https://github.com/suitenumerique/dev-handbook/blob/main/security.md)
 - [La Suite — Code Reviews](https://github.com/suitenumerique/dev-handbook/blob/main/code-reviews.md)
-- [beta.gouv — Standards de Qualité Logicielle](https://standards.beta.gouv.fr/standards)
+- [beta.gouv — Software Quality Standards](https://standards.beta.gouv.fr/standards)

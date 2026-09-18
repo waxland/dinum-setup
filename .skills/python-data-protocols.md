@@ -1,50 +1,50 @@
 ---
-title: Protocoles de Données Souveraines & Intégration de Bibliothèques Python
-sidebar_label: Protocoles de Données
-description: Bonnes pratiques et patterns pour intégrer les bibliothèques spécialisées de données publiques (ckanapi, pandasdmx, SPARQLWrapper, OWSLib, sodapy) avec clés réelles et fallbacks de mock.
+title: Sovereign Data Protocols & Python Client Integration
+sidebar_label: Data Protocols
+description: Guidelines and patterns for integrating specialized public data libraries (ckanapi, pandasdmx, SPARQLWrapper, OWSLib, sodapy) with live API keys and mock fallbacks.
 ---
 
-Ce skill définit la procédure standardisée pour intégrer, configurer et sécuriser les bibliothèques clientes de protocoles de données publiques (`ckanapi`, `pandasdmx`, `SPARQLWrapper`, `OWSLib`, `sodapy`, `httpx`) au sein de `django-lasuite-sources` lors de la connexion à des APIs gouvernementales réelles en production.
-
----
-
-## 1. Quand l'utiliser
-
-- Implémentation d'appels clients réels vers des APIs souveraines utilisant des standards ouverts (CKAN, SDMX, SPARQL/RDF, OGC/WFS).
-- Configuration des dépendances optionnelles dans `pyproject.toml` (extras) sans alourdir le cœur du package de base.
-- Mise en place du pattern bimode : Client de protocole réel authentifié $\leftrightarrow$ Mock certifié de secours hors-ligne.
-- Encapsulation des clients tiers avec la sécurité défensive obligatoire (filtrage anti-SSRF, timeout strict de 3.5s, cache Redis SHA-256, circuit breaker).
-- _Ne pas utiliser pour :_ de simples intégrations REST sans protocole spécialisé (utiliser [Standards Python DINUM](dinum-python.md)).
+This skill defines the standardized procedure for integrating, configuring, and securing specialized public data protocol libraries (`ckanapi`, `pandasdmx`, `SPARQLWrapper`, `OWSLib`, `sodapy`, `httpx`) within `django-lasuite-sources` when connecting to live production government APIs instead of certified offline mocks.
 
 ---
 
-## 2. Informations à lire
+## 1. When to Use
 
-- Classe de base du package : `packages/django-lasuite-sources/lasuite_sources/base.py` (`BaseSourceProvider`).
-- Moteur de quotas et circuit breaker : `packages/django-lasuite-sources/lasuite_sources/quota.py` (`DistributedQuotaManager`).
-- Validateur de sécurité : `packages/django-lasuite-sources/tests/test_security_ssrf.py` (`is_safe_external_url`).
-- Manifeste de dépendances : `packages/django-lasuite-sources/pyproject.toml`.
+- Implementing live production client calls for sovereign APIs using open government standards (CKAN, SDMX, SPARQL/RDF, OGC/WFS).
+- Configuring optional dependencies in `pyproject.toml` (extras) without bloating the lightweight core package.
+- Establishing the dual-mode pattern: Live authenticated protocol client $\leftrightarrow$ Verified offline mock fixture.
+- Wrapping third-party protocol clients with mandatory defensive security (anti-SSRF validation, 3.5s timeouts, Redis SHA-256 caching, circuit breaker).
+- _Do not use for:_ generic REST API integrations without specialized protocols (use [DINUM Python Standards](dinum-python.md)).
 
 ---
 
-## 3. Procédure Pas à Pas
+## 2. Context & Inputs
 
-### Étape 1 : Associer les registres publics aux bibliothèques de protocoles
+- Package base class: `packages/django-lasuite-sources/lasuite_sources/base.py` (`BaseSourceProvider`).
+- Quota and circuit breaker engine: `packages/django-lasuite-sources/lasuite_sources/quota.py` (`DistributedQuotaManager`).
+- Security validator: `packages/django-lasuite-sources/tests/test_security_ssrf.py` (`is_safe_external_url`).
+- Dependencies manifest: `packages/django-lasuite-sources/pyproject.toml`.
 
-| Protocole Standard | Bibliothèque Python | Registres & Portails Cibles | Commandes Slash Associées |
+---
+
+## 3. Step-by-Step Procedure
+
+### Step 1: Map Public Service Registries to Standard Protocol Libraries
+
+| Standard Protocol | Python Library | Target Public Registries & Portals | Target Slash Commands |
 |---|---|---|:---:|
-| **Open Data CKAN** | `ckanapi` | `data.gouv.fr`, `data.overheid.nl`, `open.canada.ca`, `govdata.de`, `datos.gob.es` | `/opendata`, `/dataoverheid`, `/opencanada`, `/govdata`, `/datosgob` |
-| **Données Statistiques SDMX** | `pandasdmx`, `pysdmx` | `Eurostat SDMX API`, `Statistics Canada WDS`, `OECD Data Explorer`, `Destatis Genesis` | `/eurostat`, `/statcan`, `/oecd`, `/destatis` |
+| **CKAN Open Data** | `ckanapi` | `data.gouv.fr`, `data.overheid.nl`, `open.canada.ca`, `govdata.de`, `datos.gob.es` | `/opendata`, `/dataoverheid`, `/opencanada`, `/govdata`, `/datosgob` |
+| **SDMX Statistical Data** | `pandasdmx`, `pysdmx` | `Eurostat SDMX API`, `Statistics Canada WDS`, `OECD Data Explorer`, `Destatis Genesis` | `/eurostat`, `/statcan`, `/oecd`, `/destatis` |
 | **SPARQL / Linked Data** | `SPARQLWrapper`, `rdflib` | `EUR-Lex / CELLAR`, `data.europa.eu SPARQL endpoint`, `UK Parliament Linked Data` | `/eurlex`, `/dataeuropa`, `/whoiswho` |
-| **Géospatial OGC (WFS/WMS)** | `OWSLib` | `INSPIRE Adresses & Cadastre`, `IGN Géoplateforme`, `PDOK / Kadaster BAG` | `/eu-address`, `/eu-cadastre`, `/cadastre` |
-| **Open Data Socrata** | `sodapy` | Portails open data utilisant la Socrata Open Data API (SODA) | `/socrata`, `/us-opendata` |
+| **OGC Geospatial (WFS/WMS)** | `OWSLib` | `INSPIRE European Addresses & Cadastre`, `IGN Géoplateforme`, `PDOK / Kadaster BAG` | `/eu-address`, `/eu-cadastre`, `/cadastre` |
+| **Socrata Open Data** | `sodapy` | Public open data portals using Socrata Open Data API (SODA) | `/socrata`, `/us-opendata` |
 | **OAuth2 / REST** | `httpx`, `requests` | `Légifrance (PISTE)`, `BOAMP`, `Corporations Canada`, `DIP Bundestag` | `/loi`, `/marche`, `/corporation-ca`, `/bundestag` |
 
 ---
 
-### Étape 2 : Configurer les dépendances optionnelles dans `pyproject.toml`
+### Step 2: Configure Optional Dependencies in `pyproject.toml`
 
-Pour conserver la légèreté du package de base `django-lasuite-sources` (< 50 ko), les bibliothèques de protocoles doivent être déclarées en extras optionnels :
+To keep the base `django-lasuite-sources` package ultra-lightweight (< 50 kB), protocol libraries must be configured under optional extras:
 
 ```toml
 [project.optional-dependencies]
@@ -64,9 +64,9 @@ all = [
 
 ---
 
-### Étape 3 : Implémenter le Pattern Bimode (Live $\leftrightarrow$ Fallback Mock)
+### Step 3: Implement the Dual-Mode Provider Pattern (Live $\leftrightarrow$ Mock Fallback)
 
-Chaque connecteur doit importer paresseusement (*lazy-import*) son client de protocole pour basculer de manière transparente sur les mocks vérifiés en mode déconnecté ou en CI :
+Every provider must conditionally use the live protocol client when credentials/network are available, and seamlessly fall back to verified mock datasets when offline or during CI runs:
 
 ```python
 import os
@@ -78,7 +78,7 @@ from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
 logger = logging.getLogger(__name__)
 
 class CkanOpenDataSourceProvider(BaseSourceProvider):
-    """Provider Open Data exploitant ckanapi avec fallback de mock hors-ligne."""
+    """Sovereign Open Data provider utilizing ckanapi with offline mock fallback."""
 
     source_type = "opendata"
     name = "data.gouv.fr / Open Data"
@@ -90,13 +90,13 @@ class CkanOpenDataSourceProvider(BaseSourceProvider):
         self._client = None
 
     def _get_client(self):
-        """Charge le client RemoteCKAN uniquement si le mode live est actif."""
+        """Lazy-load the ckanapi RemoteCKAN client only when live mode is active."""
         if self._client is None and not self.mock_mode:
             try:
                 from ckanapi import RemoteCKAN
                 self._client = RemoteCKAN(self.api_url, apikey=self.api_key, user_agent="Slasher-LaSuite/1.0")
             except ImportError:
-                logger.warning("ckanapi non installé ; bascule en mode mock pour %s", self.name)
+                logger.warning("ckanapi not installed; falling back to mock mode for %s", self.name)
                 self.mock_mode = True
         return self._client
 
@@ -110,41 +110,45 @@ class CkanOpenDataSourceProvider(BaseSourceProvider):
                 response = client.action.package_search(q=query, rows=limit)
                 return [self._normalize_package(item) for item in response.get("results", [])]
             except Exception as err:
-                logger.error("Échec de recherche live CKAN sur %s : %s ; utilisation du mock", self.name, err)
+                logger.error("Live CKAN search failed on %s: %s; using mock fallback", self.name, err)
 
+        # Verified offline mock fallback
         return self._search_mock(query, limit)
 ```
 
 ---
 
-### Étape 4 : Appliquer la Sécurité Défensive (Anti-SSRF & Circuit Breaker)
+### Step 4: Enforce Defensive Security Wrapping (Anti-SSRF & Circuit Breaker)
 
-1. **Validation Anti-SSRF :** Vérifier systématiquement les noms d'hôtes cibles :
+Whenever instantiating live protocol clients or executing network queries:
+
+1. **Anti-SSRF Verification:** Validate destination hostnames before making calls:
    ```python
+   from urllib.parse import urlparse
    from lasuite_sources.quota import is_safe_external_url
 
    if not is_safe_external_url(endpoint_url):
-       raise ValueError(f"L'URL {endpoint_url} enfreint la politique anti-SSRF.")
+       raise ValueError(f"Destination URL {endpoint_url} violates anti-SSRF policy.")
    ```
-2. **Timeouts Stricts :** Définir un timeout réseau de **$3.5\text{ s}$ maximum** sur tous les drivers de protocoles.
-3. **Enregistrement du Circuit Breaker :** Notifier les succès via `quota_manager.record_request_success()` et les erreurs via `quota_manager.record_request_failure()`.
+2. **Strict Timeouts:** Set network timeout to **$3.5\text{ s}$ maximum** across all protocol drivers (e.g. `timeout=3.5` in `httpx` or `SPARQLWrapper.setTimeout(3.5)`).
+3. **Circuit Breaker Registration:** Report live successes via `quota_manager.record_request_success()` and failures via `quota_manager.record_request_failure()`.
 
 ---
 
-## 4. Livrable & Vérification
+## 4. Deliverables & Verification
 
-- Le provider hérite de `BaseSourceProvider` avec import paresseux des bibliothèques de protocoles.
-- Les tests unitaires passent à 100% en mode hors-ligne (`PYTHONPATH=. pytest`).
-- Aucun secret codé en dur ; clés lues depuis l'environnement (`SLASHER_<PAYS>_<SERVICE>_API_KEY`).
-- Les DTOs renvoyés respectent rigoureusement `SourceSearchResult` / `SourceEntityProps`.
+- Provider implements `BaseSourceProvider` with lazy import of protocol libraries.
+- Unit tests run with 100% pass rate in offline mode (`PYTHONPATH=. pytest`).
+- Zero hardcoded API keys; all credentials read from environment (`SLASHER_<COUNTRY>_<SERVICE>_API_KEY`).
+- DTO responses strictly conform to `SourceSearchResult` / `SourceEntityProps`.
 
 ---
 
-## 5. Sources & Références
+## 5. Sources & References
 
-- **Documentation Officielle CKAN :** [https://docs.ckan.org/en/latest/api/](https://docs.ckan.org/en/latest/api/)
-- **Documentation SDMX (pandaSDMX) :** [https://pandasdmx.readthedocs.io/](https://pandasdmx.readthedocs.io/)
-- **Guide SPARQLWrapper :** [https://rdflib.dev/sparqlwrapper/](https://rdflib.dev/sparqlwrapper/)
-- **OWSLib (Services Géospatiaux OGC) :** [https://geopython.github.io/OWSLib/](https://geopython.github.io/OWSLib/)
-- **Standards Python DINUM :** [`.skills/dinum-python.md`](dinum-python.md)
-- **Gestion des Quotas & Résilience :** [`.skills/quota-resilience.md`](quota-resilience.md)
+- **CKAN API Documentation:** [https://docs.ckan.org/en/latest/api/](https://docs.ckan.org/en/latest/api/)
+- **SDMX Python (pandaSDMX):** [https://pandasdmx.readthedocs.io/](https://pandasdmx.readthedocs.io/)
+- **SPARQLWrapper User Guide:** [https://rdflib.dev/sparqlwrapper/](https://rdflib.dev/sparqlwrapper/)
+- **OWSLib (OGC Web Services):** [https://geopython.github.io/OWSLib/](https://geopython.github.io/OWSLib/)
+- **DINUM Python Standards:** [`.skills/en/dinum-python.md`](dinum-python.md)
+- **Quota & Resilience Engine:** [`.skills/en/quota-resilience.md`](quota-resilience.md)

@@ -24,6 +24,10 @@ Each skill document is **100% self-contained** and structured into 5 sections:
 | **`code-review`** | Audit a Git diff or PR across 3 axes: regressions, requirement compliance, and secrets safety. | [`.skills/en/code-review.md`](code-review.md) | _"Apply code-review skill and review my current unstaged changes."_ |
 | **`architecture-review`** | Analyze system coupling, responsibility boundaries, and distributed flows (OIDC, CRDT, S3). | [`.skills/en/architecture-review.md`](architecture-review.md) | _"Apply architecture-review skill and evaluate the file-sharing architecture."_ |
 | **`design-change`** | Design a new feature or connector, compare options, and formalize an ADR. | [`.skills/en/design-change.md`](design-change.md) | _"Apply design-change skill and design the /law slash command in BlockNote."_ |
+| **`send-pr`** | Prepare, sign, and submit upstream Pull Requests with Gitlint & DCO. | [`.skills/en/send-pr.md`](send-pr.md) | _"Apply send-pr skill and open PR for remote server support."_ |
+| **`package-versioning`** | Manage SemVer versions, compile artifacts (.tgz, .whl), and release packages via CLI. | [`.skills/en/package-versioning.md`](package-versioning.md) | _"Apply package-versioning skill and bump packages to v1.0.1."_ |
+| **`quota-resilience`** | Audit provider rate limits, configure safety margins, and handle circuit breakers. | [`.skills/en/quota-resilience.md`](quota-resilience.md) | _"Apply quota-resilience skill and test HTTP 429 Retry-After handling."_ |
+| **`python-data-protocols`** | Integrate specialized public data libraries (CKAN, SDMX, SPARQL, OGC, SODA) with live keys & mocks. | [`.skills/en/python-data-protocols.md`](python-data-protocols.md) | _"Apply python-data-protocols skill and integrate ckanapi client for Open Data."_ |
 
 ---
 
