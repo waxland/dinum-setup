@@ -1,0 +1,1 @@
+Utilisation  des bibliothèques lourdes (ckanapi, pandasdmx, SPARQLWrapper, OWSLib) lorsque les clés d'API de production sont configurées en direct à la place des mocks certifiés.
