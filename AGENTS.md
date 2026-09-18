@@ -81,6 +81,7 @@ Before executing a task, load and read the detailed procedure from `.skills/en/`
 | **Package Versioning & Distribution** (SemVer, Wheels, Tarballs, CLI) | `package-versioning` | [`.skills/en/package-versioning.md`](.skills/en/package-versioning.md) | [`.skills/package-versioning.md`](.skills/package-versioning.md) |
 | **Quota Management & Resilience** (Rate Limits, Circuit Breaker, Caching) | `quota-resilience` | [`.skills/en/quota-resilience.md`](.skills/en/quota-resilience.md) | [`.skills/quota-resilience.md`](.skills/quota-resilience.md) |
 | **Sovereign Data Protocols & Client Libraries** (CKAN, SDMX, SPARQL, OGC) | `python-data-protocols` | [`.skills/en/python-data-protocols.md`](.skills/en/python-data-protocols.md) | [`.skills/python-data-protocols.md`](.skills/python-data-protocols.md) |
+| **Digital Public Goods (DPG) Compliance & Standard** (DPGA 9 Indicators, SDGs) | `dpg-review` | [`.skills/en/dpg-review.md`](.skills/en/dpg-review.md) | [`.skills/dpg-review.md`](.skills/dpg-review.md) |
 
 ---
 
