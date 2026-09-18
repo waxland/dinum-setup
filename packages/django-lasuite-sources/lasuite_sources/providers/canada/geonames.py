@@ -4,7 +4,7 @@ import logging
 import os
 from typing import List, Optional
 
-from lasuite_sources.base import BaseSourceProvider
+from lasuite_sources.demo import DemoSourceProvider
 from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
 
 logger = logging.getLogger(__name__)
@@ -28,7 +28,12 @@ MOCK_GEONAMES_RESULTS: List[SourceSearchResult] = [
         "summary": "Official geographic record for the city of Ottawa, Ontario, Canada.",
         "url": "https://geonames.nrcan.gc.ca/search-place-names/unique?id=FDZCS",
         "verified_at": "18/09/2026",
-        "raw_payload": {"cgndb_id": "FDZCS", "lat": 45.4215, "lon": -75.6972, "generic_term": "City"},
+        "raw_payload": {
+            "cgndb_id": "FDZCS",
+            "lat": 45.4215,
+            "lon": -75.6972,
+            "generic_term": "City",
+        },
     },
     {
         "source_id": "GEO-CA-EFKHO",
@@ -44,22 +49,31 @@ MOCK_GEONAMES_RESULTS: List[SourceSearchResult] = [
         "summary": "Official geographic record for the metropolis of Montreal, Quebec, Canada.",
         "url": "https://geonames.nrcan.gc.ca/search-place-names/unique?id=EFKHO",
         "verified_at": "18/09/2026",
-        "raw_payload": {"cgndb_id": "EFKHO", "lat": 45.5017, "lon": -73.5673, "generic_term": "Ville"},
+        "raw_payload": {
+            "cgndb_id": "EFKHO",
+            "lat": 45.5017,
+            "lon": -73.5673,
+            "generic_term": "Ville",
+        },
     },
 ]
 
 
-class GeoNamesCanadaSourceProvider(BaseSourceProvider):
+class GeoNamesCanadaSourceProvider(DemoSourceProvider):
     """Canadian Geographical Names Database (CGNDB) REST API provider."""
 
     source_type = "geonames_ca"
     name = "GeoNames Canada (RNCan / NRCan)"
 
     def __init__(self):
-        self.mock_mode = os.getenv("GEONAMES_CA_MOCK_ENABLED", "true").lower() in ("true", "1", "yes")
+        self.mock_mode = os.getenv("GEONAMES_CA_MOCK_ENABLED", "true").lower() in (
+            "true",
+            "1",
+            "yes",
+        )
 
     def is_enabled(self) -> bool:
-        return True
+        return super().is_enabled()
 
     def suggest(self, query: str, limit: int = 5) -> List[SourceSuggestResult]:
         results = self.search(query=query, limit=limit)
@@ -74,19 +88,10 @@ class GeoNamesCanadaSourceProvider(BaseSourceProvider):
         ]
 
     def search(self, query: str, limit: int = 10) -> List[SourceSearchResult]:
-        q = query.lower()
-        matched = [
-            item
-            for item in MOCK_GEONAMES_RESULTS
-            if q in item["title"].lower()
-            or (item["subtitle"] and q in item["subtitle"].lower())
-            or (item.get("excerpt") and q in item["excerpt"].lower())
-            or (item["meta1"] and q in item["meta1"].lower())
-        ]
-        return matched[:limit] if matched else MOCK_GEONAMES_RESULTS[:limit]
+        return self.demo_search(MOCK_GEONAMES_RESULTS, query, limit)
 
     def get_detail(self, source_id: str) -> Optional[SourceSearchResult]:
         for item in MOCK_GEONAMES_RESULTS:
             if item["source_id"] == source_id:
-                return item
+                return self.demo_results([item])[0]
         return None

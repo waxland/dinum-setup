@@ -1,6 +1,7 @@
 """Tests for European Union sovereign source providers."""
 
 import pytest
+
 from lasuite_sources.providers.europe import (
     CordisSourceProvider,
     CuriaSourceProvider,

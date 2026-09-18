@@ -4,9 +4,7 @@ import logging
 import os
 from typing import List, Optional
 
-import requests
-
-from lasuite_sources.base import BaseSourceProvider
+from lasuite_sources.demo import DemoSourceProvider
 from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
 
 logger = logging.getLogger(__name__)
@@ -46,7 +44,7 @@ MOCK_ALBERT_RESULTS: List[SourceSearchResult] = [
 ]
 
 
-class AlbertSourceProvider(BaseSourceProvider):
+class AlbertSourceProvider(DemoSourceProvider):
     """
     Sovereign RAG AI provider using Albert API (Etalab / DINUM).
     Provides factual, source-backed answers to administrative & legal questions.
@@ -58,10 +56,14 @@ class AlbertSourceProvider(BaseSourceProvider):
     def __init__(self):
         self.api_url = os.getenv("ALBERT_API_URL", ALBERT_DEFAULT_URL).rstrip("/")
         self.api_key = os.getenv("ALBERT_API_KEY", "")
-        self.mock_mode = os.getenv("ALBERT_MOCK_ENABLED", "true").lower() in ("true", "1", "yes")
+        self.mock_mode = os.getenv("ALBERT_MOCK_ENABLED", "true").lower() in (
+            "true",
+            "1",
+            "yes",
+        )
 
     def is_enabled(self) -> bool:
-        return self.mock_mode or bool(self.api_key)
+        return super().is_enabled()
 
     def suggest(self, query: str, limit: int = 5) -> List[SourceSuggestResult]:
         results = self.search(query=query, limit=limit)
@@ -76,35 +78,10 @@ class AlbertSourceProvider(BaseSourceProvider):
         ]
 
     def search(self, query: str, limit: int = 10) -> List[SourceSearchResult]:
-        if not self.mock_mode and self.api_key:
-            try:
-                resp = requests.post(
-                    f"{self.api_url}/search",
-                    headers={"Authorization": f"Bearer {self.api_key}"},
-                    json={"query": query, "limit": limit},
-                    timeout=4.0,
-                )
-                if resp.status_code == 200:
-                    data = resp.json()
-                    items = data.get("data", [])
-                    if items:
-                        return items
-            except Exception as e:
-                logger.warning("Albert API call failed, falling back to mock: %s", e)
-
-        q = query.lower()
-        matched = [
-            item
-            for item in MOCK_ALBERT_RESULTS
-            if q in item["title"].lower()
-            or (item["subtitle"] and q in item["subtitle"].lower())
-            or (item["excerpt"] and q in item["excerpt"].lower())
-            or (item["summary"] and q in item["summary"].lower())
-        ]
-        return matched[:limit] if matched else MOCK_ALBERT_RESULTS[:limit]
+        return self.demo_search(MOCK_ALBERT_RESULTS, query, limit)
 
     def get_detail(self, source_id: str) -> Optional[SourceSearchResult]:
         for item in MOCK_ALBERT_RESULTS:
             if item["source_id"] == source_id:
-                return item
+                return self.demo_results([item])[0]
         return None

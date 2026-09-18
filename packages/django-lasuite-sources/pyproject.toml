@@ -41,6 +41,9 @@ dependencies = [
     "django>=4.2",
     "djangorestframework>=3.14.0",
     "requests>=2.31.0",
+    "aiohttp>=3.14.3,<4",
+    "aiodns>=3.2,<5",
+    "redis>=5,<8",
 ]
 
 [project.urls]
@@ -118,4 +121,3 @@ django = ["django", "rest_framework"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["S101", "PLR2004", "T201"] # Autorise assert, magic numbers et print dans les tests
-

@@ -1,5 +1,11 @@
 """Pytest test setup and standalone Django test settings for lasuite_sources."""
 
+import secrets
+
+from django.core.cache import cache
+
+import pytest
+
 DEBUG = True
 DATABASES = {
     "default": {
@@ -24,9 +30,16 @@ CACHES = {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
     }
 }
-SECRET_KEY = "test-secret-key-for-lasuite-sources"
+SECRET_KEY = secrets.token_urlsafe(32)
 ALLOWED_HOSTS = ["*"]
 USE_TZ = True
+LASUITE_SOURCES_DEMO = True
 
 
-
+@pytest.fixture(autouse=True)
+def isolated_local_cache(settings):
+    """Unit tests explicitly opt into the process-local quota implementation."""
+    settings.DEBUG = True
+    cache.clear()
+    yield
+    cache.clear()

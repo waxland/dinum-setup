@@ -35,7 +35,7 @@
     "build": "tsup",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "npx vitest run tests/unit/",
+    "test": "vitest run tests/unit/",
     "test:e2e": "playwright test",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
@@ -54,6 +54,12 @@
     "insee",
     "albert"
   ],
+  "dependencies": {
+    "@codegouvfr/react-dsfr": "^1.35.0",
+    "@suitenumerique/slash-sources-sdk": "^1.0.0",
+    "@react-pdf/renderer": "^4.3.1",
+    "docx": "^9.5.1"
+  },
   "peerDependencies": {
     "@blocknote/core": ">=0.54.0",
     "@blocknote/react": ">=0.54.0",
@@ -62,6 +68,11 @@
     "styled-components": ">=6.0.0"
   },
   "devDependencies": {
+    "fflate": "^0.8.2",
+    "@storybook/test": "^8.6.18",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/dom": "^10.4.1",
+    "jsdom": "^26.1.0",
     "@axe-core/playwright": "^4.13.0",
     "@blocknote/core": "^0.54.2",
     "@blocknote/react": "^0.54.2",
@@ -83,6 +94,7 @@
     "storybook": "^8.6.18",
     "styled-components": "^6.1.15",
     "tsup": "^8.3.6",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vitest": "4.1.11"
   }
 }

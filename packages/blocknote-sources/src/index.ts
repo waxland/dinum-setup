@@ -7,6 +7,8 @@ export * from './mockData';
 export * from './mockSources';
 export * from './SourceBlock';
 export * from './types';
-
+export * from './searchClient';
+export * from './demoSearchClient';
+export * from './SourceSearchContext';
 
 

@@ -38,6 +38,10 @@ class SourceSearchResult(TypedDict):
     """Structured result returned by source providers."""
 
     source_id: str
+    provider: NotRequired[str]
+    origin: NotRequired[Literal["demo", "upstream"]]
+    delivery: NotRequired[Literal["live", "cache"]]
+    retrieved_at: NotRequired[str]
     entity_type: SourceEntityType
     display_mode: DisplayMode
     title: str

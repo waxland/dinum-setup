@@ -3,7 +3,7 @@
 import logging
 from typing import List, Optional
 
-from lasuite_sources.base import BaseSourceProvider
+from lasuite_sources.demo import DemoSourceProvider
 from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
 
 logger = logging.getLogger(__name__)
@@ -49,14 +49,14 @@ MOCK_PARLIAMENT_RESULTS: List[SourceSearchResult] = [
 ]
 
 
-class ParliamentSourceProvider(BaseSourceProvider):
+class ParliamentSourceProvider(DemoSourceProvider):
     """Parliamentary data connector (claire.vite / Tricoteuse)."""
 
     source_type = "parliament"
     name = "Assemblée Nationale"
 
     def is_enabled(self) -> bool:
-        return True
+        return super().is_enabled()
 
     def suggest(self, query: str, limit: int = 5) -> List[SourceSuggestResult]:
         results = self.search(query=query, limit=limit)
@@ -71,20 +71,10 @@ class ParliamentSourceProvider(BaseSourceProvider):
         ]
 
     def search(self, query: str, limit: int = 10) -> List[SourceSearchResult]:
-        q = query.lower()
-        matched = [
-            item
-            for item in MOCK_PARLIAMENT_RESULTS
-            if q in item.get("title", "").lower()
-            or (item.get("subtitle") and q in str(item.get("subtitle")).lower())
-            or (item.get("excerpt") and q in str(item.get("excerpt")).lower())
-            or (item.get("summary") and q in str(item.get("summary")).lower())
-            or (item.get("meta1") and q in str(item.get("meta1")).lower())
-        ]
-        return matched[:limit] if matched else MOCK_PARLIAMENT_RESULTS[:limit]
+        return self.demo_search(MOCK_PARLIAMENT_RESULTS, query, limit)
 
     def get_detail(self, source_id: str) -> Optional[SourceSearchResult]:
         for item in MOCK_PARLIAMENT_RESULTS:
             if item["source_id"] == source_id:
-                return item
+                return self.demo_results([item])[0]
         return None

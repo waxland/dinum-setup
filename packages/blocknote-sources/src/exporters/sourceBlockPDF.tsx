@@ -114,7 +114,7 @@ export const blockMappingSourceBlockPDF = (
         <Text style={styles.footerTag}>
           {props.verifiedAt
             ? `Verified on ${props.verifiedAt}`
-            : 'Official verified source'}
+            : 'Verification not provided'}
         </Text>
         {props.url ? (
           <Link src={props.url} style={styles.link}>

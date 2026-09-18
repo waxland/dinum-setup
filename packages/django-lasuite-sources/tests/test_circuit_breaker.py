@@ -1,16 +1,19 @@
 """Tests verifying Circuit Breaker and timeout fallback behavior in sovereign providers."""
 
-import pytest
 from unittest.mock import MagicMock
-from lasuite_sources.registry import SourceProviderRegistry
+
+import pytest
+
 from lasuite_sources.base import BaseSourceProvider
+from lasuite_sources.errors import SourceUnavailable
+from lasuite_sources.registry import SourceProviderRegistry
 from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
 
 
 class MockFailingProvider(BaseSourceProvider):
     """Simulates a remote API encountering timeouts or 5xx errors."""
 
-    source_type = "custom"
+    source_type = "test-failing-provider"
     name = "Mock Failing Provider"
 
     def is_enabled(self) -> bool:
@@ -33,11 +36,13 @@ def test_registry_handles_provider_timeout_gracefully():
     registry.register(failing_provider)
 
     # Search must return an empty list without propagating unhandled exceptions
-    results = registry.search_with_cache(source_type="custom", query="test timeout", limit=5)
-    assert isinstance(results, list)
-    assert len(results) == 0
+    with pytest.raises(SourceUnavailable, match="operation unavailable"):
+        registry.search_with_cache(
+            source_type=failing_provider.source_type, query="test timeout", limit=5
+        )
 
     # Suggest must also return an empty list without crashing
-    suggestions = registry.suggest_with_cache(source_type="custom", query="test timeout", limit=3)
-    assert isinstance(suggestions, list)
-    assert len(suggestions) == 0
+    with pytest.raises(SourceUnavailable, match="operation unavailable"):
+        registry.suggest_with_cache(
+            source_type=failing_provider.source_type, query="test timeout", limit=3
+        )

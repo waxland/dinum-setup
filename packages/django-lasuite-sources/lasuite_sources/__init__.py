@@ -13,7 +13,11 @@ from lasuite_sources.quota import (
 )
 from lasuite_sources.registry import SourceProviderRegistry, source_registry
 from lasuite_sources.tasks import check_laws_validity_task
-from lasuite_sources.types import SourceEntityType, SourceSearchResult, SourceSuggestResult
+from lasuite_sources.types import (
+    SourceEntityType,
+    SourceSearchResult,
+    SourceSuggestResult,
+)
 
 __all__ = [
     "BaseSourceProvider",

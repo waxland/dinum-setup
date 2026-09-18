@@ -2,6 +2,7 @@ SHELL := /usr/bin/env bash
 
 ROOT_DIR := $(CURDIR)
 SRC_DIR ?= $(ROOT_DIR)/LaSuite
+PYTHON ?= python3
 
 # Default repository list (customizable)
 # Example:
@@ -46,7 +47,7 @@ help:
 	@printf "  make deploy-docs-en     Deploie uniquement le portail Zudoku EN International sur Vercel\n"
 	@printf "  make deploy-storybook   Deploie uniquement le Storybook sur Vercel\n\n"
 	@printf "Commandes Clones LaSuite:\n"
-	@printf "  make install            Installe les dependances systeme (Docker plugins, etc.)\n"
+	@printf "  make install            Verifie Node et installe les dependances npm verrouillees\n"
 	@printf "  make clone              Clone les depots dans ./LaSuite\n"
 	@printf "  make pull               Met a jour les depots deja clones dans ./LaSuite\n"
 	@printf "  make env                Prepare les fichiers .env locaux connus\n"
@@ -75,7 +76,8 @@ prepare-docker:
 
 .PHONY: install
 install:
-	@./install.sh
+	@node scripts/check-runtime.mjs
+	@npm ci
 
 .PHONY: clone
 clone: check-tools
@@ -235,7 +237,7 @@ packages-build:
 	@echo "🏗️ Compilation des packages TypeScript (@suitenumerique/*)..."
 	@npm run packages:build
 	@echo "🏗️ Compilation du package Python (django-lasuite-sources)..."
-	@cd packages/django-lasuite-sources && (python3 -m build 2>/dev/null || echo "ℹ️ Python package build optionnel (hatchling)")
+	@cd packages/django-lasuite-sources && $(PYTHON) -m build
 
 .PHONY: packages-pack
 packages-pack: packages-build
@@ -332,13 +334,20 @@ deploy-vercel: deploy-demo deploy-storybook deploy-docs deploy-docs-en
 # -----------------------------------------------------------------------------
 
 .PHONY: check
-check: packages-build packages-test demo-build
+check:
+	@node scripts/check-runtime.mjs
+	@npm audit --audit-level=low
+	@npm run lint
+	@npm run typecheck
+	@$(PYTHON) -m ruff check packages/django-lasuite-sources
+	@$(PYTHON) -m ruff format --check packages/django-lasuite-sources
+	@npm run packages:test
+	@cd packages/django-lasuite-sources && PYTHONPATH=. $(PYTHON) -m pytest
+	@$(MAKE) packages-build
+	@npm run demo:build
 	@echo "🧪 Execution des tests E2E Playwright..."
 	@npm --prefix packages/blocknote-sources run test:e2e
-	@echo "🐍 Execution des tests pytest backend..."
-	@(cd packages/django-lasuite-sources && PYTHONPATH=. pytest)
+	@npm --prefix packages/blocknote-sources run build-storybook
 	@echo "📚 Compilation de la documentation Zudoku (SSR)..."
 	@npm run docs:build
-	@echo "\n✅ Quality Gate Valide : Tous les builds, tests et verifications SSR sont 100% verts !"
-
-
+	@echo "Quality gate termine : commandes executees avec succes (ne constitue pas un audit RGAA complet)."

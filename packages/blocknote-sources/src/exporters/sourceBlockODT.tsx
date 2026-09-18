@@ -77,6 +77,13 @@ export const blockMappingSourceBlockODT = (
     );
   }
 
+  if (props.url) {
+    contentElements.push(
+      React.createElement('text:line-break', { key: 'br-url' }),
+      React.createElement('text:a', { key: 'url', 'xlink:href': props.url, 'xlink:type': 'simple' }, props.url),
+    );
+  }
+
   return React.createElement(
     'text:p',
     {

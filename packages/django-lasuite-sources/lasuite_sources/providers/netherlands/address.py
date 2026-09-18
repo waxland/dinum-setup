@@ -4,7 +4,7 @@ import logging
 import os
 from typing import List, Optional
 
-from lasuite_sources.base import BaseSourceProvider
+from lasuite_sources.demo import DemoSourceProvider
 from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
 
 logger = logging.getLogger(__name__)
@@ -24,22 +24,30 @@ MOCK_BAG_ADDRESSES: List[SourceSearchResult] = [
         "summary": "Hoofdvestiging van het Ministerie van BZK te Den Haag.",
         "url": "https://bagviewer.kadaster.nl/",
         "verified_at": "18/09/2026",
-        "raw_payload": {"bag_id": "0503200000123456", "postcode": "2511DP", "huisnummer": 147},
+        "raw_payload": {
+            "bag_id": "0503200000123456",
+            "postcode": "2511DP",
+            "huisnummer": 147,
+        },
     },
 ]
 
 
-class BagSourceProvider(BaseSourceProvider):
+class BagSourceProvider(DemoSourceProvider):
     """Kadaster BAG API v2 (Geonovum / PDOK) provider."""
 
     source_type = "bag"
     name = "Kadaster BAG (Adressen en Gebouwen)"
 
     def __init__(self):
-        self.mock_mode = os.getenv("BAG_MOCK_ENABLED", "true").lower() in ("true", "1", "yes")
+        self.mock_mode = os.getenv("BAG_MOCK_ENABLED", "true").lower() in (
+            "true",
+            "1",
+            "yes",
+        )
 
     def is_enabled(self) -> bool:
-        return True
+        return super().is_enabled()
 
     def suggest(self, query: str, limit: int = 5) -> List[SourceSuggestResult]:
         results = self.search(query=query, limit=limit)
@@ -54,18 +62,10 @@ class BagSourceProvider(BaseSourceProvider):
         ]
 
     def search(self, query: str, limit: int = 10) -> List[SourceSearchResult]:
-        q = query.lower()
-        matched = [
-            item
-            for item in MOCK_BAG_ADDRESSES
-            if q in item["title"].lower()
-            or (item["subtitle"] and q in item["subtitle"].lower())
-            or (item["meta1"] and q in item["meta1"].lower())
-        ]
-        return matched[:limit] if matched else MOCK_BAG_ADDRESSES[:limit]
+        return self.demo_search(MOCK_BAG_ADDRESSES, query, limit)
 
     def get_detail(self, source_id: str) -> Optional[SourceSearchResult]:
         for item in MOCK_BAG_ADDRESSES:
             if item["source_id"] == source_id:
-                return item
+                return self.demo_results([item])[0]
         return None

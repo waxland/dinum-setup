@@ -3,14 +3,17 @@
 import logging
 from typing import List, Optional
 
-import requests
+from django.conf import settings
+from django.utils import timezone
 
 from lasuite_sources.base import BaseSourceProvider
+from lasuite_sources.errors import SourceUnavailable
+from lasuite_sources.transport import get_json
 from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
 
 logger = logging.getLogger(__name__)
 
-BAN_API_URL = "https://api-adresse.data.gouv.fr/search/"
+BAN_API_URL = "https://data.geopf.fr/geocodage/search"
 
 MOCK_ADDRESS_RESULTS: List[SourceSearchResult] = [
     {
@@ -49,74 +52,87 @@ MOCK_ADDRESS_RESULTS: List[SourceSearchResult] = [
 
 
 class AddressSourceProvider(BaseSourceProvider):
-    """Base Adresse Nationale (BAN) provider using Etalab Addok API."""
+    """BAN addresses served by the IGN Geoplateforme; no implicit fixtures."""
 
     source_type = "address"
-    name = "Base Adresse Nationale (BAN)"
+    name = "BAN / Geoplateforme"
 
     def is_enabled(self) -> bool:
         return True
 
     def suggest(self, query: str, limit: int = 5) -> List[SourceSuggestResult]:
-        results = self.search(query=query, limit=limit)
         return [
             {
-                "id": r["source_id"],
-                "title": r["title"],
-                "subtitle": r["subtitle"] or "",
+                "id": item["source_id"],
+                "title": item["title"],
+                "subtitle": item.get("subtitle") or "",
                 "type": "address",
             }
-            for r in results
+            for item in self.search(query, limit)
         ]
 
     def search(self, query: str, limit: int = 10) -> List[SourceSearchResult]:
-        try:
-            resp = requests.get(
-                BAN_API_URL,
-                params={"q": query, "limit": limit, "autocomplete": 1},
-                timeout=3.0,
+        if getattr(settings, "LASUITE_SOURCES_DEMO", False):
+            return [
+                {
+                    **item,
+                    "origin": "demo",
+                    "provider": self.source_type,
+                    "verified_at": None,
+                    "status": "Demonstration",
+                }
+                for item in MOCK_ADDRESS_RESULTS
+                if query.lower() in item["title"].lower()
+            ][:limit]
+        data = get_json(
+            BAN_API_URL,
+            allowed_hosts=frozenset({"data.geopf.fr"}),
+            params={"q": query, "limit": min(limit, 50), "index": "address"},
+        )
+        if not isinstance(data, dict) or not isinstance(data.get("features"), list):
+            raise SourceUnavailable("Invalid Geoplateforme response")
+        results: List[SourceSearchResult] = []
+        for feature in data["features"][:limit]:
+            if not isinstance(feature, dict):
+                raise SourceUnavailable("Invalid address feature")
+            props = feature.get("properties")
+            if not isinstance(props, dict):
+                raise SourceUnavailable("Missing address properties")
+            identifier, label = props.get("id"), props.get("label")
+            if (
+                not isinstance(identifier, str)
+                or not identifier
+                or not isinstance(label, str)
+            ):
+                raise SourceUnavailable("Missing address identity")
+            results.append(
+                {
+                    "source_id": identifier,
+                    "entity_type": "address",
+                    "display_mode": "card",
+                    "title": label,
+                    "subtitle": props.get("city"),
+                    "status": "BAN",
+                    "status_color": "blue",
+                    "provider": self.source_type,
+                    "origin": "upstream",
+                    "verified_at": None,
+                    "retrieved_at": timezone.now().isoformat(),
+                    "raw_payload": props,
+                    "url": "https://adresse.data.gouv.fr/",
+                }
             )
-            if resp.status_code == 200:
-                data = resp.json()
-                features = data.get("features", [])
-                results: List[SourceSearchResult] = []
-                for f in features:
-                    props = f.get("properties", {})
-                    geom = f.get("geometry", {})
-                    coords = geom.get("coordinates", [0, 0])
-                    results.append(
-                        {
-                            "source_id": props.get("id", f"ADR-{props.get('citycode', '')}"),
-                            "entity_type": "address",
-                            "display_mode": "card",
-                            "title": props.get("label", ""),
-                            "subtitle": f"Code Postal : {props.get('postcode', '')} {props.get('city', '')}",
-                            "status": "BAN Certifiée",
-                            "status_color": "green",
-                            "meta1": f"INSEE : {props.get('citycode', '')}",
-                            "meta2": f"GPS : {coords[1]:.4f}, {coords[0]:.4f}",
-                            "meta3": f"Score : {props.get('score', 0):.2f}",
-                            "summary": f"Adresse référencée dans la commune de {props.get('city', '')}.",
-                            "url": f"https://adresse.data.gouv.fr/base-adresse-nationale/{props.get('id', '')}",
-                            "verified_at": "17/09/2026",
-                            "raw_payload": props,
-                        }
-                    )
-                if results:
-                    return results
-        except Exception as e:
-            logger.warning("BAN API lookup failed, falling back to mock: %s", e)
-
-        q = query.lower()
-        matched = [
-            item
-            for item in MOCK_ADDRESS_RESULTS
-            if q in item["title"].lower() or (item["subtitle"] and q in item["subtitle"].lower())
-        ]
-        return matched[:limit] if matched else MOCK_ADDRESS_RESULTS[:limit]
+        return results
 
     def get_detail(self, source_id: str) -> Optional[SourceSearchResult]:
-        for item in MOCK_ADDRESS_RESULTS:
-            if item["source_id"] == source_id:
-                return item
+        if getattr(settings, "LASUITE_SOURCES_DEMO", False):
+            return next(
+                (
+                    item
+                    for item in self.search("", 50)
+                    if item["source_id"] == source_id
+                ),
+                None,
+            )
+        # This search service has no documented ID detail endpoint.
         return None

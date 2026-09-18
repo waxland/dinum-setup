@@ -13,6 +13,8 @@ import {
   MOCK_FRANCE_SOURCES,
   MOCK_GERMANY_SOURCES,
   SourceBlock,
+  SourceSearchProvider,
+  demoSearchClient,
   SourceIcon,
   SourceInlineContent,
   getLocaleDictionary,
@@ -55,7 +57,9 @@ const convertEntityToBlockProps = (
   sourceId: item.sourceId || item.id || "",
   title: item.title || "",
   subtitle: item.subtitle || "",
-  status: item.statusLabel || (typeof item.status === "string" ? item.status : "") || "",
+  status: "Demonstration",
+  origin: "demo",
+  country: item.country || "",
   statusColor: item.statusColor || "blue",
   meta1: item.meta1 || (item.metadataFields?.[0]?.value ? String(item.metadataFields[0].value) : ""),
   meta2: item.meta2 || (item.metadataFields?.[1]?.value ? String(item.metadataFields[1].value) : ""),
@@ -63,7 +67,7 @@ const convertEntityToBlockProps = (
   excerpt: item.excerpt || item.snippet || "",
   summary: item.summary || "",
   url: item.url || "",
-  verifiedAt: item.verifiedAt || item.updatedAt || "",
+  verifiedAt: "",
   rawPayload: typeof item.rawPayload === "string" ? item.rawPayload : JSON.stringify(item.rawPayload || {}),
 });
 
@@ -164,7 +168,7 @@ export const App: React.FC = () => {
               status: "En vigueur",
               url: "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000037812976",
               excerpt: "Un marché est un contrat conclu par un ou plusieurs acheteurs...",
-              verifiedAt: "17/09/2026",
+              verifiedAt: "",
             },
           },
           {
@@ -182,7 +186,7 @@ export const App: React.FC = () => {
               status: "In bonis",
               url: "https://annuaire-entreprises.data.gouv.fr/entreprise/direction-interministerielle-du-numerique-dinum-130025265",
               excerpt: "Conçoit et met en œuvre la stratégie numérique de l’État...",
-              verifiedAt: "17/09/2026",
+              verifiedAt: "",
             },
           },
           {
@@ -210,32 +214,6 @@ export const App: React.FC = () => {
   const handleCountryChange = (country: SupportedCountry) => {
     setCurrentCountry(country);
     setCurrentLocale(COUNTRY_PRESETS[country].defaultLocale);
-
-    if (!editor) {
-      return;
-    }
-    const countryData = ALL_INTERNATIONAL_MOCK_SOURCES.filter((s) => s.country === country);
-    if (countryData.length > 0) {
-      editor.replaceBlocks(editor.document, [
-        {
-          type: "paragraph",
-          content: [
-            {
-              type: "text",
-              text: `${COUNTRY_PRESETS[country].flag} Sovereign Dataset Loaded: ${COUNTRY_PRESETS[country].name}`,
-              styles: { bold: true },
-            },
-          ],
-        },
-        ...countryData.map((item, idx) => ({
-          type: "sourceBlock" as const,
-          props: convertEntityToBlockProps(
-            item,
-            (idx === 0 ? "callout" : idx === 1 ? "card" : "link") as ExternalSourceDisplayMode
-          ),
-        })),
-      ]);
-    }
   };
 
   const customSlashMenuItems = useMemo(() => {
@@ -393,7 +371,7 @@ export const App: React.FC = () => {
                 "",
               url: item.url || "",
               excerpt: item.excerpt || item.snippet || "",
-              verifiedAt: item.verifiedAt || item.updatedAt || "",
+              verifiedAt: "",
             },
           },
           " ",
@@ -440,7 +418,7 @@ export const App: React.FC = () => {
               src={isDark ? "/lasuite-dark.svg" : "/lasuite.svg"}
               alt="La Suite"
               onError={(e) => {
-                (e.currentTarget as HTMLElement).style.display = "none";
+                e.currentTarget.style.display = "none";
               }}
             />
             <span className="clean-brand-name">Docs</span>
@@ -491,7 +469,7 @@ export const App: React.FC = () => {
           <span className="clean-hero-tag">Démonstrateur Interactif</span>
           <h1>Connecteurs Souverains & BlockNote</h1>
           <p>
-            Explorez les données certifiées de l'État (Légifrance, Annuaire Entreprises, BAN, BOAMP, Albert IA) directement dans l'éditeur.
+            Données de démonstration uniquement. Aucun résultat présenté ici ne constitue une vérification auprès d'un service public.
           </p>
 
           {/* Filtres discrets par pays */}
@@ -529,6 +507,7 @@ export const App: React.FC = () => {
 
         {/* Éditeur BlockNote Fluide */}
         <div className="clean-editor-wrap">
+          <SourceSearchProvider value={{ client: demoSearchClient, country: currentCountry }}>
           <BlockNoteView
             editor={editor}
             theme={isDark ? "dark" : "light"}
@@ -560,6 +539,7 @@ export const App: React.FC = () => {
               }
             />
           </BlockNoteView>
+          </SourceSearchProvider>
         </div>
 
         {/* Footer Minimaliste */}
@@ -568,11 +548,10 @@ export const App: React.FC = () => {
             La Suite Numérique • Direction Interministérielle du Numérique (DINUM)
           </div>
           <div>
-            Licence MIT • RGAA v4.1 AA
+            Licence MIT • Accessibilité en cours de validation
           </div>
         </footer>
       </main>
     </div>
   );
 };
-

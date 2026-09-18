@@ -4,7 +4,7 @@ import logging
 import os
 from typing import List, Optional
 
-from lasuite_sources.base import BaseSourceProvider
+from lasuite_sources.demo import DemoSourceProvider
 from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
 
 logger = logging.getLogger(__name__)
@@ -29,17 +29,21 @@ MOCK_INSPIRE_ADDRESSES: List[SourceSearchResult] = [
 ]
 
 
-class InspireAddressFederatedProvider(BaseSourceProvider):
+class InspireAddressFederatedProvider(DemoSourceProvider):
     """INSPIRE European Addresses Federated Provider."""
 
     source_type = "eu_address"
     name = "INSPIRE European Address Federation"
 
     def __init__(self):
-        self.mock_mode = os.getenv("INSPIRE_ADR_MOCK_ENABLED", "true").lower() in ("true", "1", "yes")
+        self.mock_mode = os.getenv("INSPIRE_ADR_MOCK_ENABLED", "true").lower() in (
+            "true",
+            "1",
+            "yes",
+        )
 
     def is_enabled(self) -> bool:
-        return True
+        return super().is_enabled()
 
     def suggest(self, query: str, limit: int = 5) -> List[SourceSuggestResult]:
         results = self.search(query=query, limit=limit)
@@ -54,18 +58,10 @@ class InspireAddressFederatedProvider(BaseSourceProvider):
         ]
 
     def search(self, query: str, limit: int = 10) -> List[SourceSearchResult]:
-        q = query.lower()
-        matched = [
-            item
-            for item in MOCK_INSPIRE_ADDRESSES
-            if q in item["title"].lower()
-            or (item["subtitle"] and q in item["subtitle"].lower())
-            or (item["meta1"] and q in item["meta1"].lower())
-        ]
-        return matched[:limit] if matched else MOCK_INSPIRE_ADDRESSES[:limit]
+        return self.demo_search(MOCK_INSPIRE_ADDRESSES, query, limit)
 
     def get_detail(self, source_id: str) -> Optional[SourceSearchResult]:
         for item in MOCK_INSPIRE_ADDRESSES:
             if item["source_id"] == source_id:
-                return item
+                return self.demo_results([item])[0]
         return None

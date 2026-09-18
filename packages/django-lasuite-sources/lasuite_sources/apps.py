@@ -10,4 +10,4 @@ class LaSuiteSourcesConfig(AppConfig):
 
     def ready(self):
         # Auto-import providers to trigger registration
-        import lasuite_sources.providers  # noqa: F401
+        import lasuite_sources.providers  # noqa: PLC0415 - registration requires the app registry to be ready

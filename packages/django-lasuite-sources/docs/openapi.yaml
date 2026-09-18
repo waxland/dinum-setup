@@ -1,218 +1,188 @@
 openapi: 3.0.3
 info:
-  title: La Suite Sovereign Sources API (django-lasuite-sources)
-  description: >-
-    Official OpenAPI 3.0 specification for search, autocomplete, and detail REST endpoints
-    covering sovereign data connectors.
+  title: La Suite Sources API
   version: 1.0.0
-  contact:
-    name: Direction Interministérielle du Numérique (DINUM)
-    url: https://github.com/suitenumerique/docs
-
+  description: Authenticated source search. Demonstration data is explicitly labeled, never a fallback.
 servers:
   - url: /api/v1.0/sources
-    description: Local / Production API server
-
+security:
+  - session: []
 paths:
   /search/:
     get:
-      summary: Paginated full-text search across sovereign sources
-      description: >-
-        Performs full-text search with 24h deterministic Redis caching (SHA-256 key hashing)
-        on the specified connector (law, address, company, parliament, albert, etc.).
+      summary: Search one registered provider
       parameters:
-        - name: type
-          in: query
-          required: true
-          schema:
-            type: string
-            enum:
-              - law
-              - address
-              - company
-              - parliament
-              - albert
-              - procurement
-              - grant
-              - insee
-              - agent
-              - cadastre
-              - demarche
-              - opendata
-              - custom
-            default: law
-          description: Sovereign connector type identifier
-        - name: q
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Search keywords or query string
+        - $ref: '#/components/parameters/Provider'
+        - $ref: '#/components/parameters/Query'
         - name: limit
           in: query
-          required: false
-          schema:
-            type: integer
-            default: 10
-            maximum: 50
-          description: Maximum number of results to return
+          schema: {type: integer, minimum: 1, maximum: 50, default: 10}
       responses:
         '200':
-          description: Matching search results found
+          description: Results, including an empty list when no match exists
           content:
             application/json:
               schema:
                 type: object
+                required: [type, query, count, health, results]
                 properties:
-                  type:
-                    type: string
-                    example: law
-                  query:
-                    type: string
-                    example: public procurement
-                  count:
-                    type: integer
-                    example: 1
+                  type: {type: string}
+                  query: {type: string}
+                  count: {type: integer}
+                  health: {$ref: '#/components/schemas/Health'}
                   results:
                     type: array
-                    items:
-                      $ref: '#/components/schemas/SourceSearchResult'
-        '401':
-          description: Unauthorized (user session or JWT token required)
-
+                    items: {$ref: '#/components/schemas/SourceSearchResult'}
+        '400': {$ref: '#/components/responses/Invalid'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Unauthorized'}
+        '429': {$ref: '#/components/responses/Throttled'}
+        '503': {$ref: '#/components/responses/Unavailable'}
   /suggest/:
     get:
-      summary: Fast real-time autocomplete (< 100ms)
-      description: >-
-        Provides instant as-you-type suggestions to populate the
-        BlockNote editor floating Popover search palette.
+      summary: Provider suggestions (no guaranteed latency)
       parameters:
-        - name: type
-          in: query
-          required: true
-          schema:
-            type: string
-            default: law
-          description: Sovereign source connector type
-        - name: q
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Partial input query prefix
+        - $ref: '#/components/parameters/Provider'
+        - $ref: '#/components/parameters/Query'
         - name: limit
           in: query
-          required: false
-          schema:
-            type: integer
-            default: 5
-            maximum: 20
-          description: Maximum suggestions count
+          schema: {type: integer, minimum: 1, maximum: 20, default: 5}
       responses:
         '200':
-          description: Autocomplete suggestions list
+          description: Suggestions
           content:
             application/json:
               schema:
                 type: object
+                required: [type, query, health, suggestions]
                 properties:
-                  type:
-                    type: string
-                    example: law
-                  query:
-                    type: string
-                    example: art
+                  type: {type: string}
+                  query: {type: string}
+                  health: {$ref: '#/components/schemas/Health'}
                   suggestions:
                     type: array
-                    items:
-                      $ref: '#/components/schemas/SourceSuggestResult'
-
+                    items: {$ref: '#/components/schemas/SourceSuggestResult'}
+        '400': {$ref: '#/components/responses/Invalid'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Unauthorized'}
+        '429': {$ref: '#/components/responses/Throttled'}
+        '503': {$ref: '#/components/responses/Unavailable'}
   /{source_type}/{source_id}/:
     get:
-      summary: Certified detail entity record
-      description: >-
-        Retrieves complete metadata, official excerpt, and verified links
-        for an entity identified by its unique ID.
+      summary: Retrieve a source snapshot when the provider supports detail
       parameters:
         - name: source_type
           in: path
           required: true
-          schema:
-            type: string
-          description: Source connector type (e.g., law, company, address)
+          schema: {type: string}
         - name: source_id
           in: path
           required: true
-          schema:
-            type: string
-          description: Unique entity identifier (e.g., LEGIARTI000038814944)
+          schema: {type: string, maxLength: 256}
       responses:
         '200':
-          description: Detailed entity record
+          description: Source snapshot, not necessarily verified
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/SourceSearchResult'}
+        '400': {$ref: '#/components/responses/Invalid'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Unauthorized'}
+        '404': {description: Unknown or disabled provider, or missing entity}
+        '429': {$ref: '#/components/responses/Throttled'}
+        '503': {$ref: '#/components/responses/Unavailable'}
+  /status/:
+    get:
+      summary: Local admission policy for enabled providers, not an upstream health probe
+      responses:
+        '200':
+          description: Provider policies
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SourceSearchResult'
-        '404':
-          description: Entity or connector not found
-
+                type: object
+                properties:
+                  count: {type: integer}
+                  providers:
+                    type: object
+                    additionalProperties: {$ref: '#/components/schemas/Health'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Unauthorized'}
+        '503': {$ref: '#/components/responses/Unavailable'}
 components:
+  securitySchemes:
+    session: {type: apiKey, in: cookie, name: sessionid}
+  parameters:
+    Provider:
+      name: type
+      in: query
+      description: Registered provider ID or alias; plugins may add identifiers
+      schema: {type: string, maxLength: 100, default: law}
+    Query:
+      name: q
+      in: query
+      schema: {type: string, maxLength: 500, default: ''}
+  responses:
+    Invalid: {description: Invalid parameters; field errors or invalid_source_id code}
+    Unauthorized: {description: Authentication or permission required; exact status follows host DRF authentication}
+    Unavailable:
+      description: Provider, quota service, circuit or budget unavailable
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [code]
+            properties:
+              code: {type: string, enum: [provider_unavailable, quota_service_unavailable]}
+    Throttled:
+      description: User request limit reached
+      headers:
+        Retry-After:
+          schema: {type: string}
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code: {type: string, enum: [rate_limited]}
   schemas:
+    Health:
+      type: object
+      properties:
+        status: {type: string, enum: [healthy, degraded, cached_only, rate_limited, quota_exhausted, disabled]}
+        message: {type: string}
+        is_live: {type: boolean, description: Admission policy permits live requests, not proof of upstream availability}
+        remaining_quota_percent: {type: integer}
+        circuit_open_until: {type: number, nullable: true}
+        last_error: {type: string, nullable: true}
     SourceSearchResult:
       type: object
-      required:
-        - sourceId
-        - entityType
-        - title
+      required: [source_id, entity_type, display_mode, title]
       properties:
-        sourceId:
-          type: string
-          example: LEGIARTI000038814944
-        entityType:
-          type: string
-          example: law
-        title:
-          type: string
-          example: Article L. 111-1 du Code de la commande publique
-        subtitle:
-          type: string
-          example: Code de la commande publique - Titre Ier
-        url:
-          type: string
-          format: uri
-          example: https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000038814944
-        badgeText:
-          type: string
-          example: In effect
-        badgeVariant:
-          type: string
-          enum: [success, warning, info, neutral, error]
-          example: success
-        excerpt:
-          type: string
-          example: Buyers and contracting authorities freely choose the procurement procedure...
-        metadata:
-          type: object
-          additionalProperties: true
-
+        source_id: {type: string, minLength: 1}
+        entity_type: {type: string}
+        display_mode: {type: string, enum: [callout, card, link]}
+        title: {type: string}
+        subtitle: {type: string, nullable: true}
+        status: {type: string, nullable: true}
+        status_color: {type: string, nullable: true, enum: [blue, green, yellow, red, purple, gray, null]}
+        meta1: {type: string, nullable: true}
+        meta2: {type: string, nullable: true}
+        meta3: {type: string, nullable: true}
+        excerpt: {type: string, nullable: true}
+        summary: {type: string, nullable: true}
+        url: {type: string, nullable: true}
+        verified_at: {type: string, nullable: true, description: Business verification time, never invented at rendering}
+        retrieved_at: {type: string}
+        provider: {type: string}
+        origin: {type: string, enum: [demo, upstream]}
+        delivery: {type: string, enum: [live, cache]}
+        raw_payload: {type: object, nullable: true, additionalProperties: true}
     SourceSuggestResult:
       type: object
-      required:
-        - sourceId
-        - title
+      required: [id, title, type]
       properties:
-        sourceId:
-          type: string
-          example: LEGIARTI000038814944
-        title:
-          type: string
-          example: Code de la commande publique - Art. L. 111-1
-        subtitle:
-          type: string
-          example: Légifrance • DILA
-        badgeText:
-          type: string
-          example: Law
-        badgeVariant:
-          type: string
-          example: success
+        id: {type: string}
+        title: {type: string}
+        subtitle: {type: string}
+        type: {type: string}

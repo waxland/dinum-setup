@@ -4,7 +4,7 @@ import logging
 import os
 from typing import List, Optional
 
-from lasuite_sources.base import BaseSourceProvider
+from lasuite_sources.demo import DemoSourceProvider
 from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
 
 logger = logging.getLogger(__name__)
@@ -33,17 +33,21 @@ MOCK_YOUR_EUROPE: List[SourceSearchResult] = [
 ]
 
 
-class YourEuropeSourceProvider(BaseSourceProvider):
+class YourEuropeSourceProvider(DemoSourceProvider):
     """Your Europe Single Digital Gateway provider."""
 
     source_type = "your_europe"
     name = "Your Europe (Single Digital Gateway)"
 
     def __init__(self):
-        self.mock_mode = os.getenv("YOUR_EUROPE_MOCK_ENABLED", "true").lower() in ("true", "1", "yes")
+        self.mock_mode = os.getenv("YOUR_EUROPE_MOCK_ENABLED", "true").lower() in (
+            "true",
+            "1",
+            "yes",
+        )
 
     def is_enabled(self) -> bool:
-        return True
+        return super().is_enabled()
 
     def suggest(self, query: str, limit: int = 5) -> List[SourceSuggestResult]:
         results = self.search(query=query, limit=limit)
@@ -58,19 +62,10 @@ class YourEuropeSourceProvider(BaseSourceProvider):
         ]
 
     def search(self, query: str, limit: int = 10) -> List[SourceSearchResult]:
-        q = query.lower()
-        matched = [
-            item
-            for item in MOCK_YOUR_EUROPE
-            if q in item["title"].lower()
-            or (item["subtitle"] and q in item["subtitle"].lower())
-            or (item.get("excerpt") and q in item["excerpt"].lower())
-            or (item["meta1"] and q in item["meta1"].lower())
-        ]
-        return matched[:limit] if matched else MOCK_YOUR_EUROPE[:limit]
+        return self.demo_search(MOCK_YOUR_EUROPE, query, limit)
 
     def get_detail(self, source_id: str) -> Optional[SourceSearchResult]:
         for item in MOCK_YOUR_EUROPE:
             if item["source_id"] == source_id:
-                return item
+                return self.demo_results([item])[0]
         return None

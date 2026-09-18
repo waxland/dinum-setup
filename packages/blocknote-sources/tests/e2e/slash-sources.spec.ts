@@ -1,76 +1,38 @@
 import { expect, test } from '@playwright/test';
 
-test.describe('@suitenumerique/blocknote-sources End-to-End Suite', () => {
-  test('it displays sovereign sources in slash suggestion menu and inserts a law callout', async ({
-    page,
-  }) => {
-    await page.goto('/');
+test('searches, selects with the keyboard and changes the inserted block format', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Réinitialiser', exact: true }).click();
+  await page.getByRole('button', { name: '/loi', exact: true }).click();
+  const input = page.getByRole('combobox', { name: 'Rechercher une source' });
+  await expect(input).toBeFocused();
+  await input.fill('commande');
+  const option = page.getByRole('option').filter({ hasText: 'Article L. 111-1' });
+  await expect(option).toBeVisible();
+  await expect(input).toHaveAttribute('aria-activedescendant', await option.getAttribute('id') || 'missing');
+  await input.press('Enter');
+  await expect(input).toHaveCount(0);
+  await expect(page.getByText('Article L. 111-1 du Code de la commande publique', { exact: true }).first()).toBeVisible();
+  await expect(page.getByText('Demonstration', { exact: true }).first()).toBeVisible();
+  await page.getByRole('button', { name: 'Carte', exact: true }).click();
+  await page.getByRole('button', { name: 'Lien', exact: true }).click();
+  await expect(page.locator('a[href*="legifrance.gouv.fr"]').first()).toBeVisible();
+});
 
-    // 1. Trigger insertion of a law block via preset button or slash command
-    const lawBtn = page.getByRole('button', { name: /loi/i }).first();
-    if (await lawBtn.isVisible()) {
-      await lawBtn.click();
-    } else {
-      const editor = page.locator('.ProseMirror, .bn-editor').first();
-      await editor.click();
-      await page.keyboard.type('/loi');
-      await page.keyboard.press('Enter');
-    }
-
-    // 2. Search popover must be visible with combobox role
-    const searchInput = page.getByRole('combobox');
-    await expect(searchInput).toBeVisible();
-
-    // 3. Keyword search and keyboard confirmation
-    await searchInput.fill('commande publique');
-    await page.keyboard.press('Enter');
-
-    // 4. Verify Marianne callout block is displayed
-    await expect(
-      page.getByText('Article L. 111-1 du Code de la commande publique').first(),
-    ).toBeVisible();
-    await expect(page.getByText('En vigueur').first()).toBeVisible();
-
-    // 5. Switch to Card format
-    const cardBtn = page.getByRole('button', { name: /Card/i }).first();
-    if (await cardBtn.isVisible()) {
-      await cardBtn.click();
-      await expect(page.getByText(/Reference|Référence/i).first()).toBeVisible();
-    }
-
-    // 6. Switch to Link format
-    const linkBtn = page.getByRole('button', { name: /Link|Lien/i }).first();
-    if (await linkBtn.isVisible()) {
-      await linkBtn.click();
-      await expect(page.locator('a[href*="legifrance.gouv.fr"]').first()).toBeVisible();
-    }
-  });
-
-  test('it supports inline @mention interlinking and preview popover on hover', async ({
-    page,
-  }) => {
-    await page.goto('/');
-
-    // 1. Verify pre-rendered inline source link
-    const inlineBadge = page.locator('.bn-inline-source-badge-wrap').first();
-    await expect(inlineBadge).toBeVisible();
-
-    // 2. Hover over inline badge to trigger floating preview dialog
-    await inlineBadge.hover();
-    const previewDialog = page.getByRole('dialog').first();
-    await expect(previewDialog).toBeVisible();
-    await expect(page.getByText('Consulter la source ↗').first()).toBeVisible();
-
-    // 3. Test @mention typing in editor
-    const editor = page.locator('.ProseMirror, .bn-editor').first();
-    await editor.click();
-    await page.keyboard.type(' @DINUM');
-
-    // 4. Select suggestion in @ menu
-    const suggestion = page.locator('.bn-suggestion-menu-item, [role="option"]').filter({ hasText: /DINUM/i }).first();
-    if (await suggestion.isVisible()) {
-      await suggestion.click();
-      await expect(page.getByText(/DINUM/i).first()).toBeVisible();
-    }
-  });
+test('changing country preserves existing text and passes the country to search', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Réinitialiser', exact: true }).click();
+  const editor = page.locator('.tiptap[contenteditable="true"]');
+  await editor.press('ControlOrMeta+End');
+  await editor.pressSequentially('Texte a conserver');
+  await page.getByRole('button', { name: /Canada/, exact: false }).click();
+  await expect(editor).toContainText('Texte a conserver');
+  await page.getByRole('button', { name: '/canlaw', exact: true }).click();
+  await expect(page.getByRole('combobox', { name: 'Pays', exact: true })).toHaveValue('ca');
+  await page.getByRole('combobox', { name: 'Rechercher une source' }).fill('PIPEDA');
+  await expect(page.getByRole('listbox')).toContainText(/PIPEDA/);
+  await page.getByRole('combobox', { name: 'Rechercher une source' }).press('Escape');
+  await expect(page.getByRole('region', { name: 'Recherche de sources' })).toHaveCount(0);
+  await expect(editor).toBeFocused();
+  await expect(editor).toContainText('Texte a conserver');
 });

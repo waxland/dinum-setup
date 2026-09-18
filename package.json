@@ -11,7 +11,8 @@
   "scripts": {
     "dev": "npm --prefix documentation run dev",
     "build": "npm --prefix packages/slash-sources-sdk run build && npm --prefix packages/blocknote-sources run build && npm --prefix documentation run build && npm --prefix documentation-international run build",
-    "check": "npm run lint && npm run typecheck && npm run packages:test && npm run demo:build && npm --prefix packages/blocknote-sources run test:e2e && npm run docs:build",
+    "check": "make check",
+    "preinstall": "node scripts/check-runtime.mjs",
     "lint": "npm --prefix packages/slash-sources-sdk run lint && npm --prefix packages/blocknote-sources run lint && npm --prefix demo run lint && npm --prefix documentation run lint && npm --prefix documentation-international run lint",
     "typecheck": "npm --prefix packages/slash-sources-sdk run typecheck && npm --prefix packages/blocknote-sources run typecheck && npm --prefix demo run typecheck && npm --prefix documentation run typecheck && npm --prefix documentation-international run typecheck",
     "docs:nav": "npm --prefix documentation run docs:nav && npm --prefix documentation-international run docs:nav",
@@ -39,7 +40,15 @@
   "devDependencies": {
     "typescript": "^5.9.2"
   },
+  "overrides": {
+    "esbuild@>=0.27.0 <0.28.1": "0.28.1",
+    "hono": "4.13.5",
+    "toml": "4.2.0",
+    "uuid@9.0.1": "11.1.1"
+  },
   "engines": {
-    "node": ">=22.0.0"
-  }
+    "node": ">=22.23.2",
+    "npm": ">=11.11.0"
+  },
+  "packageManager": "npm@11.11.0"
 }

@@ -3,7 +3,11 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from lasuite_sources.types import SourceEntityType, SourceSearchResult, SourceSuggestResult
+from lasuite_sources.types import (
+    SourceEntityType,
+    SourceSearchResult,
+    SourceSuggestResult,
+)
 
 
 class BaseSourceProvider(ABC):

@@ -157,7 +157,7 @@ export const SourceCalloutFormat: React.FC<SourceCalloutFormatProps> = ({ props 
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <span>{props.verifiedAt ? `Verified on ${props.verifiedAt}` : 'Official verified source'}</span>
+          <span>{props.verifiedAt ? `Verified on ${props.verifiedAt}` : 'Verification not provided'}</span>
           {props.freshness === 'cached' && (
             <span style={{ fontSize: '10px', color: '#b45309', background: '#fef3c7', padding: '1px 5px', borderRadius: '3px' }}>
               Cached Mode

@@ -10,6 +10,7 @@ from typing import Any, Callable, Dict, Iterator, List, Optional
 from urllib.parse import urlparse
 
 from django.core.cache import cache
+
 from lasuite_sources.types import SourceSearchResult
 
 logger = logging.getLogger(__name__)
@@ -65,7 +66,9 @@ class BulkDatasetIngestionEngine:
                     if "source_id" in mapped:
                         self._index[mapped["source_id"]] = mapped
             except json.JSONDecodeError as err:
-                logger.warning("Skipping malformed JSON line in %s: %s", self.dataset_name, err)
+                logger.warning(
+                    "Skipping malformed JSON line in %s: %s", self.dataset_name, err
+                )
         return results
 
     def search_index(self, query: str, limit: int = 10) -> List[SourceSearchResult]:

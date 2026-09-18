@@ -63,6 +63,10 @@ const SourceComponent: React.FC<SourceComponentProps> = ({ block, editor }) => {
     summary: block.props.summary,
     url: block.props.url,
     verifiedAt: block.props.verifiedAt,
+    provider: block.props.provider,
+    origin: block.props.origin === 'demo' || block.props.origin === 'upstream' ? block.props.origin : undefined,
+    country: block.props.country,
+    retrievedAt: block.props.retrievedAt,
     rawPayload: block.props.rawPayload,
   };
   const hasSelectedEntity = Boolean(props.sourceId && props.title);
@@ -87,9 +91,14 @@ const SourceComponent: React.FC<SourceComponentProps> = ({ block, editor }) => {
         summary: entity.summary || '',
         url: entity.url || '',
         verifiedAt: entity.verifiedAt || '',
+        provider: entity.provider || '',
+        origin: entity.origin || '',
+        country: entity.country || '',
+        retrievedAt: entity.retrievedAt || '',
         rawPayload: entity.rawPayload || '',
       },
     });
+    editor.focus();
   };
 
   const handleCancelSearch = () => {
@@ -97,6 +106,7 @@ const SourceComponent: React.FC<SourceComponentProps> = ({ block, editor }) => {
       return;
     }
     editor.removeBlocks([block]);
+    editor.focus();
   };
 
   const handleModeChange = (mode: DisplayMode) => {
@@ -165,6 +175,10 @@ export const SourceBlock = createReactBlockSpec(
       summary: { default: '' },
       url: { default: '' },
       verifiedAt: { default: '' },
+      provider: { default: '' },
+      origin: { default: '' },
+      country: { default: '' },
+      retrievedAt: { default: '' },
       rawPayload: { default: '' },
       textAlignment: defaultProps.textAlignment,
       backgroundColor: defaultProps.backgroundColor,

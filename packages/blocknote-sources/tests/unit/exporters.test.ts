@@ -1,82 +1,45 @@
-import { describe, expect, it, vi } from 'vitest';
-
-vi.mock('@react-pdf/renderer', () => ({
-  StyleSheet: {
-    create: (styles: unknown) => styles,
-  },
-  Text: (props: unknown) => ({ type: 'Text', props }),
-  View: (props: unknown) => ({ type: 'View', props }),
-  Link: (props: unknown) => ({ type: 'Link', props }),
-}));
-
-vi.mock('docx', () => ({
-  Paragraph: class MockParagraph {
-    options: unknown;
-    constructor(options: unknown) {
-      this.options = options;
-    }
-  },
-  TextRun: class MockTextRun {
-    options: unknown;
-    constructor(options: unknown) {
-      this.options = options;
-    }
-  },
-  ExternalHyperlink: class MockExternalHyperlink {
-    options: unknown;
-    constructor(options: unknown) {
-      this.options = options;
-    }
-  },
-}));
-
-import {
-    blockMappingSourceBlockDocx,
-    blockMappingSourceBlockODT,
-    blockMappingSourceBlockPDF,
-} from '../../src/exporters';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { Document as PdfDocument, Page, renderToBuffer } from '@react-pdf/renderer';
+import { Document, Packer } from 'docx';
+import { strFromU8, unzipSync } from 'fflate';
+import { expect, it } from 'vitest';
+import { blockMappingSourceBlockDocx, blockMappingSourceBlockODT, blockMappingSourceBlockPDF } from '../../src/exporters';
 import { SourceBlockExportBlock } from '../../src/types';
 
-describe('SourceBlock Exporters Mapping', () => {
-  const mockBlock: SourceBlockExportBlock = {
-    id: 'block-01',
-    type: 'sourceBlock',
-    props: {
-      entityType: 'law',
-      displayMode: 'callout',
-      sourceId: 'LEGIARTI000037812976',
-      title: 'Article L. 111-1 du Code de la commande publique',
-      subtitle: 'Code de la commande publique',
-      status: 'En vigueur',
-      statusColor: 'green',
-      meta1: 'LEGIARTI000037812976',
-      meta2: 'Ordonnance n° 2018-1074',
-      meta3: 'Entrée en vigueur : 01/04/2019',
-      excerpt: 'Un marché est un contrat conclu...',
-      summary: 'Définit les marchés publics.',
-      url: 'https://www.legifrance.gouv.fr',
-      verifiedAt: '17/09/2026',
-      rawPayload: '',
-      textAlignment: 'left',
-      backgroundColor: 'default',
-    },
-    content: [],
-    children: [],
-  };
+const block: SourceBlockExportBlock = {
+  id: 'export-test', type: 'sourceBlock', content: [], children: [],
+  props: {
+    entityType: 'law', displayMode: 'callout', sourceId: 'external-id',
+    title: 'Titre exporte', subtitle: 'Sous-titre', status: 'Demonstration',
+    statusColor: 'gray', meta1: 'Identifiant', meta2: '', meta3: '',
+    excerpt: 'Contenu de la citation', summary: '', url: 'https://example.org/source',
+    verifiedAt: '', provider: 'test-provider', origin: 'demo', country: 'fr', retrievedAt: '',
+    rawPayload: '', textAlignment: 'left', backgroundColor: 'default',
+  },
+};
 
-  it('PDF exporter should generate a valid View structure', () => {
-    const pdfElement = blockMappingSourceBlockPDF(mockBlock);
-    expect(pdfElement).toBeDefined();
-    expect(pdfElement.type).toBeDefined();
-  });
+it('generates a real DOCX with citation, border and external relationship', async () => {
+  const document = new Document({ sections: [{ children: [blockMappingSourceBlockDocx(block)] }] });
+  const entries = unzipSync(await Packer.toBuffer(document));
+  const xml = strFromU8(entries['word/document.xml']);
+  expect(xml).toContain('Titre exporte');
+  expect(xml).toContain('Contenu de la citation');
+  expect(xml).toContain('w:val="single"');
+  expect(strFromU8(entries['word/_rels/document.xml.rels'])).toContain('https://example.org/source');
+});
 
-  it('Docx exporter should generate a valid Paragraph structure', () => {
-    const docxElement = blockMappingSourceBlockDocx(mockBlock);
-    expect(docxElement).toBeDefined();
-  });
+it('generates a real PDF containing the source link', async () => {
+  const document = createElement(PdfDocument, {}, createElement(Page, {}, blockMappingSourceBlockPDF(block)));
+  const bytes = await renderToBuffer(document);
+  expect(bytes.subarray(0, 5).toString()).toBe('%PDF-');
+  expect(bytes.toString()).toContain('https://example.org/source');
+  expect(bytes.byteLength).toBeGreaterThan(1000);
+});
 
-  it('ODT exporter should generate a valid ODF XML element', () => {
-    const odtElement = blockMappingSourceBlockODT(mockBlock);
-    expect(odtElement).toBeDefined();
-  });
+it('serializes ODF text and links, escaping untrusted markup', () => {
+  const xml = renderToStaticMarkup(blockMappingSourceBlockODT({ ...block, props: { ...block.props, title: '<script>unsafe</script>' } }));
+  expect(xml).toContain('&lt;script&gt;unsafe&lt;/script&gt;');
+  expect(xml).toContain('Contenu de la citation');
+  expect(xml).toContain('xlink:href="https://example.org/source"');
 });

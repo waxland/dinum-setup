@@ -1,43 +1,21 @@
+import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-test.describe('Automated Accessibility Audit (WCAG 2.1 Level AA & RGAA v4.1)', () => {
-  test('verifies ARIA landmarks, roles, and focus contrast without critical violations', async ({
-    page,
-  }) => {
+for (const width of [1280, 390]) {
+  test(`search palette passes Axe and fits a ${width}px viewport`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
     await page.goto('/');
-
-    // 1. Open editor and trigger search popover
-    const editor = page.locator('.ProseMirror, .bn-editor').first();
-    await editor.click();
-
-    const lawBtn = page.getByRole('button', { name: /loi/i }).first();
-    if (await lawBtn.isVisible()) {
-      await lawBtn.click();
-    } else {
-      await page.keyboard.type('/loi');
-      await page.keyboard.press('Enter');
-    }
-
-    const searchInput = page.getByRole('combobox');
-    await expect(searchInput).toBeVisible();
-
-    // 2. Verify popover accessibility criteria
-    // - aria-autocomplete attribute must be list or inline
-    // - Search input must have an explicit accessible label
-    const ariaLabel = await searchInput.getAttribute('aria-label');
-    const placeholder = await searchInput.getAttribute('placeholder');
-    expect(ariaLabel || placeholder).toBeTruthy();
-
-    // 3. Validate keyboard insertion and accessible toolbar presence
-    await page.keyboard.press('Enter');
-
-    const toolbar = page.getByRole('toolbar', {
-      name: "Source display modes",
-    });
-    if (await toolbar.isVisible()) {
-      const buttons = toolbar.getByRole('button');
-      const count = await buttons.count();
-      expect(count).toBeGreaterThanOrEqual(3);
-    }
+    await page.getByRole('button', { name: 'Réinitialiser', exact: true }).click();
+    await page.getByRole('button', { name: '/loi', exact: true }).click();
+    await page.getByRole('combobox', { name: 'Rechercher une source' }).fill('commande');
+    await expect(page.getByRole('listbox')).toContainText('Article L. 111-1');
+    const results = await new AxeBuilder({ page }).include('section[aria-label="Recherche de sources"]')
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
+    expect(results.violations).toEqual([]);
+    const palette = page.getByRole('region', { name: 'Recherche de sources' });
+    const bounds = await palette.boundingBox();
+    expect(bounds).not.toBeNull();
+    expect((bounds?.x || 0) + (bounds?.width || 0)).toBeLessThanOrEqual(width);
+    await page.screenshot({ path: `test-results/palette-${width}.png`, fullPage: true });
   });
-});
+}

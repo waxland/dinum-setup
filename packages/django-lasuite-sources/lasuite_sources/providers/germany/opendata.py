@@ -4,7 +4,7 @@ import logging
 import os
 from typing import List, Optional
 
-from lasuite_sources.base import BaseSourceProvider
+from lasuite_sources.demo import DemoSourceProvider
 from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
 
 logger = logging.getLogger(__name__)
@@ -29,17 +29,21 @@ MOCK_GOVDATA_RESULTS: List[SourceSearchResult] = [
 ]
 
 
-class GovDataSourceProvider(BaseSourceProvider):
+class GovDataSourceProvider(DemoSourceProvider):
     """GovData.de CKAN API provider."""
 
     source_type = "govdata"
     name = "GovData Deutschland"
 
     def __init__(self):
-        self.mock_mode = os.getenv("GOVDATA_MOCK_ENABLED", "true").lower() in ("true", "1", "yes")
+        self.mock_mode = os.getenv("GOVDATA_MOCK_ENABLED", "true").lower() in (
+            "true",
+            "1",
+            "yes",
+        )
 
     def is_enabled(self) -> bool:
-        return True
+        return super().is_enabled()
 
     def suggest(self, query: str, limit: int = 5) -> List[SourceSuggestResult]:
         results = self.search(query=query, limit=limit)
@@ -54,18 +58,10 @@ class GovDataSourceProvider(BaseSourceProvider):
         ]
 
     def search(self, query: str, limit: int = 10) -> List[SourceSearchResult]:
-        q = query.lower()
-        matched = [
-            item
-            for item in MOCK_GOVDATA_RESULTS
-            if q in item["title"].lower()
-            or (item["subtitle"] and q in item["subtitle"].lower())
-            or (item["meta1"] and q in item["meta1"].lower())
-        ]
-        return matched[:limit] if matched else MOCK_GOVDATA_RESULTS[:limit]
+        return self.demo_search(MOCK_GOVDATA_RESULTS, query, limit)
 
     def get_detail(self, source_id: str) -> Optional[SourceSearchResult]:
         for item in MOCK_GOVDATA_RESULTS:
             if item["source_id"] == source_id:
-                return item
+                return self.demo_results([item])[0]
         return None

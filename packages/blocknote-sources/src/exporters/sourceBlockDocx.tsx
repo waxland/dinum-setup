@@ -1,4 +1,4 @@
-import { ExternalHyperlink, Paragraph, TextRun } from 'docx';
+import { BorderStyle, ExternalHyperlink, Paragraph, TextRun } from 'docx';
 
 import { SourceBlockExportBlock } from '../types';
 
@@ -98,7 +98,7 @@ export const blockMappingSourceBlockDocx = (
       left: {
         color: '000091',
         space: 10,
-        value: 'single',
+        style: BorderStyle.SINGLE,
         size: 24,
       },
     },

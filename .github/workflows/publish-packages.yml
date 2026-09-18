@@ -6,7 +6,11 @@ on:
       - 'v*'
 
 jobs:
+  quality:
+    uses: ./.github/workflows/ci-packages.yml
+
   publish-npm:
+    needs: quality
     name: Publish npm packages
     runs-on: ubuntu-latest
     steps:
@@ -16,12 +20,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version-file: .nvmrc
           registry-url: 'https://registry.npmjs.org/'
 
       - name: Install dependencies & Build
         run: |
-          npm ci || npm install
+          npm install --global npm@11.11.0
+          npm ci
           npm run packages:build
 
       - name: Publish slash-sources-sdk
@@ -39,6 +44,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-pypi:
+    needs: quality
     name: Publish django-lasuite-sources to PyPI
     runs-on: ubuntu-latest
     steps:

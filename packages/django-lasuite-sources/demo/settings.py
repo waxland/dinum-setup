@@ -1,13 +1,15 @@
 """Settings for standalone demo of django-lasuite-sources."""
 
 import os
+import secrets
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 
-SECRET_KEY = "demo-insecure-secret-key-for-local-testing-only"
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY") or secrets.token_urlsafe(50)
 DEBUG = True
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]"]
+LASUITE_SOURCES_DEMO = True
 
 INSTALLED_APPS = [
     "django.contrib.auth",

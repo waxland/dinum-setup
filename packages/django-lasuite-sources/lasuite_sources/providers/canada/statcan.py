@@ -4,7 +4,7 @@ import logging
 import os
 from typing import List, Optional
 
-from lasuite_sources.base import BaseSourceProvider
+from lasuite_sources.demo import DemoSourceProvider
 from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
 
 logger = logging.getLogger(__name__)
@@ -28,22 +28,30 @@ MOCK_STATCAN_RESULTS: List[SourceSearchResult] = [
         "summary": "Official monthly Canadian consumer price inflation index and key economic indicators.",
         "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1810000401",
         "verified_at": "18/09/2026",
-        "raw_payload": {"product_id": "1810000401", "geo": "Canada", "frequency": "Monthly"},
+        "raw_payload": {
+            "product_id": "1810000401",
+            "geo": "Canada",
+            "frequency": "Monthly",
+        },
     },
 ]
 
 
-class StatCanSourceProvider(BaseSourceProvider):
+class StatCanSourceProvider(DemoSourceProvider):
     """Statistics Canada Web Data Service (WDS) API provider."""
 
     source_type = "statcan"
     name = "Statistics Canada / StatCan"
 
     def __init__(self):
-        self.mock_mode = os.getenv("STATCAN_MOCK_ENABLED", "true").lower() in ("true", "1", "yes")
+        self.mock_mode = os.getenv("STATCAN_MOCK_ENABLED", "true").lower() in (
+            "true",
+            "1",
+            "yes",
+        )
 
     def is_enabled(self) -> bool:
-        return True
+        return super().is_enabled()
 
     def suggest(self, query: str, limit: int = 5) -> List[SourceSuggestResult]:
         results = self.search(query=query, limit=limit)
@@ -58,19 +66,10 @@ class StatCanSourceProvider(BaseSourceProvider):
         ]
 
     def search(self, query: str, limit: int = 10) -> List[SourceSearchResult]:
-        q = query.lower()
-        matched = [
-            item
-            for item in MOCK_STATCAN_RESULTS
-            if q in item["title"].lower()
-            or (item["subtitle"] and q in item["subtitle"].lower())
-            or (item.get("excerpt") and q in item["excerpt"].lower())
-            or (item["meta1"] and q in item["meta1"].lower())
-        ]
-        return matched[:limit] if matched else MOCK_STATCAN_RESULTS[:limit]
+        return self.demo_search(MOCK_STATCAN_RESULTS, query, limit)
 
     def get_detail(self, source_id: str) -> Optional[SourceSearchResult]:
         for item in MOCK_STATCAN_RESULTS:
             if item["source_id"] == source_id:
-                return item
+                return self.demo_results([item])[0]
         return None

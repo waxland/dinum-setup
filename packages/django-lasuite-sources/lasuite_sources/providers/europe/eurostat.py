@@ -4,7 +4,7 @@ import logging
 import os
 from typing import List, Optional
 
-from lasuite_sources.base import BaseSourceProvider
+from lasuite_sources.demo import DemoSourceProvider
 from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
 
 logger = logging.getLogger(__name__)
@@ -28,7 +28,11 @@ MOCK_EUROSTAT_RESULTS: List[SourceSearchResult] = [
         "summary": "Monthly consumer price inflation statistics harmonized across EU Member States.",
         "url": "https://ec.europa.eu/eurostat/web/main/data/database",
         "verified_at": "18/09/2026",
-        "raw_payload": {"dataset": "prc_hicp_manr", "geo": "EA20", "unit": "Percentage change"},
+        "raw_payload": {
+            "dataset": "prc_hicp_manr",
+            "geo": "EA20",
+            "unit": "Percentage change",
+        },
     },
     {
         "source_id": "EUROSTAT-DEMO-GIND-2026",
@@ -49,17 +53,21 @@ MOCK_EUROSTAT_RESULTS: List[SourceSearchResult] = [
 ]
 
 
-class EurostatSourceProvider(BaseSourceProvider):
+class EurostatSourceProvider(DemoSourceProvider):
     """Eurostat Statistics REST & SDMX API provider."""
 
     source_type = "eurostat"
     name = "Eurostat"
 
     def __init__(self):
-        self.mock_mode = os.getenv("EUROSTAT_MOCK_ENABLED", "true").lower() in ("true", "1", "yes")
+        self.mock_mode = os.getenv("EUROSTAT_MOCK_ENABLED", "true").lower() in (
+            "true",
+            "1",
+            "yes",
+        )
 
     def is_enabled(self) -> bool:
-        return True
+        return super().is_enabled()
 
     def suggest(self, query: str, limit: int = 5) -> List[SourceSuggestResult]:
         results = self.search(query=query, limit=limit)
@@ -74,19 +82,10 @@ class EurostatSourceProvider(BaseSourceProvider):
         ]
 
     def search(self, query: str, limit: int = 10) -> List[SourceSearchResult]:
-        q = query.lower()
-        matched = [
-            item
-            for item in MOCK_EUROSTAT_RESULTS
-            if q in item["title"].lower()
-            or (item["subtitle"] and q in item["subtitle"].lower())
-            or (item.get("excerpt") and q in item["excerpt"].lower())
-            or (item["meta1"] and q in item["meta1"].lower())
-        ]
-        return matched[:limit] if matched else MOCK_EUROSTAT_RESULTS[:limit]
+        return self.demo_search(MOCK_EUROSTAT_RESULTS, query, limit)
 
     def get_detail(self, source_id: str) -> Optional[SourceSearchResult]:
         for item in MOCK_EUROSTAT_RESULTS:
             if item["source_id"] == source_id:
-                return item
+                return self.demo_results([item])[0]
         return None

@@ -1,4 +1,6 @@
 import type { Preview } from '@storybook/react';
+import '@codegouvfr/react-dsfr/dsfr/dsfr.min.css';
+import '@codegouvfr/react-dsfr/dsfr/utility/icons/icons.min.css';
 
 const preview: Preview = {
   parameters: {

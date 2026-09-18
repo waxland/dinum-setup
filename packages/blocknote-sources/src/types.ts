@@ -124,6 +124,10 @@ export interface SourceEntityProps {
   summary?: string;
   url?: string;
   verifiedAt?: string;
+  provider?: string;
+  country?: string;
+  retrievedAt?: string;
+  origin?: 'demo' | 'upstream';
   freshness?: 'live' | 'cached' | 'offline_index';
   rawPayload?: string;
 }
@@ -164,6 +168,10 @@ export type CreateSourceBlockConfig = BlockConfig<
     summary: { default: '' };
     url: { default: '' };
     verifiedAt: { default: '' };
+    provider: { default: '' };
+    origin: { default: '' };
+    country: { default: '' };
+    retrievedAt: { default: '' };
     rawPayload: { default: '' };
     textAlignment: typeof defaultProps.textAlignment;
     backgroundColor: typeof defaultProps.backgroundColor;

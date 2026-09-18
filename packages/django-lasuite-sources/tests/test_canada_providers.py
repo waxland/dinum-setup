@@ -1,6 +1,7 @@
 """Tests for Canadian Federal sovereign source providers."""
 
 import pytest
+
 from lasuite_sources.providers.canada import (
     CanadaBuysSourceProvider,
     CanadaGrantsSourceProvider,

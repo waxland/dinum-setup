@@ -1,7 +1,9 @@
 """Official Canadian Federal API Slashers (Canada / Gouvernement du Canada)."""
 
 from lasuite_sources.providers.canada.canadabuys import CanadaBuysSourceProvider
-from lasuite_sources.providers.canada.corporations import CorporationsCanadaSourceProvider
+from lasuite_sources.providers.canada.corporations import (
+    CorporationsCanadaSourceProvider,
+)
 from lasuite_sources.providers.canada.geonames import GeoNamesCanadaSourceProvider
 from lasuite_sources.providers.canada.grants import CanadaGrantsSourceProvider
 from lasuite_sources.providers.canada.law import JusticeLawsSourceProvider

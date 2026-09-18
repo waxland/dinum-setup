@@ -1,6 +1,7 @@
 """Tests for Germany, Netherlands, Spain, International & Federated sovereign source providers."""
 
 import pytest
+
 from lasuite_sources.providers.federation import (
     BrisFederatedSourceProvider,
     InspireAddressFederatedProvider,

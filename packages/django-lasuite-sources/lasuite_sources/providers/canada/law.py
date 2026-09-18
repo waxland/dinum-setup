@@ -4,7 +4,7 @@ import logging
 import os
 from typing import List, Optional
 
-from lasuite_sources.base import BaseSourceProvider
+from lasuite_sources.demo import DemoSourceProvider
 from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
 
 logger = logging.getLogger(__name__)
@@ -53,17 +53,21 @@ MOCK_JUSTICE_LAWS_RESULTS: List[SourceSearchResult] = [
 ]
 
 
-class JusticeLawsSourceProvider(BaseSourceProvider):
+class JusticeLawsSourceProvider(DemoSourceProvider):
     """Justice Laws Canada XML & REST API provider with offline mock fallback."""
 
     source_type = "canlaw"
     name = "Justice Laws Canada / Lois Codifiées"
 
     def __init__(self):
-        self.mock_mode = os.getenv("JUSTICE_LAWS_MOCK_ENABLED", "true").lower() in ("true", "1", "yes")
+        self.mock_mode = os.getenv("JUSTICE_LAWS_MOCK_ENABLED", "true").lower() in (
+            "true",
+            "1",
+            "yes",
+        )
 
     def is_enabled(self) -> bool:
-        return True
+        return super().is_enabled()
 
     def suggest(self, query: str, limit: int = 5) -> List[SourceSuggestResult]:
         results = self.search(query=query, limit=limit)
@@ -78,19 +82,10 @@ class JusticeLawsSourceProvider(BaseSourceProvider):
         ]
 
     def search(self, query: str, limit: int = 10) -> List[SourceSearchResult]:
-        q = query.lower()
-        matched = [
-            item
-            for item in MOCK_JUSTICE_LAWS_RESULTS
-            if q in item["title"].lower()
-            or (item["subtitle"] and q in item["subtitle"].lower())
-            or (item.get("excerpt") and q in item["excerpt"].lower())
-            or (item["meta1"] and q in item["meta1"].lower())
-        ]
-        return matched[:limit] if matched else MOCK_JUSTICE_LAWS_RESULTS[:limit]
+        return self.demo_search(MOCK_JUSTICE_LAWS_RESULTS, query, limit)
 
     def get_detail(self, source_id: str) -> Optional[SourceSearchResult]:
         for item in MOCK_JUSTICE_LAWS_RESULTS:
             if item["source_id"] == source_id:
-                return item
+                return self.demo_results([item])[0]
         return None

@@ -9,8 +9,8 @@ export default defineConfig({
   workers: 1,
   reporter: 'list',
   use: {
-    baseURL: 'http://127.0.0.1:5173',
-    trace: 'on-first-retry',
+    baseURL: 'http://127.0.0.1:5181',
+    trace: 'retain-on-failure',
     headless: true,
   },
   projects: [
@@ -20,9 +20,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm --prefix ../../demo run dev -- --host 127.0.0.1 --port 5173',
-    url: 'http://127.0.0.1:5173',
-    reuseExistingServer: true,
+    command: 'npm --prefix ../../demo run dev -- --host 127.0.0.1 --port 5181 --strictPort',
+    url: 'http://127.0.0.1:5181',
+    reuseExistingServer: false,
     timeout: 30000,
   },
 });

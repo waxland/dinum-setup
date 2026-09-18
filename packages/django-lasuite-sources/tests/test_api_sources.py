@@ -1,6 +1,5 @@
 """Tests for sovereign sources registry and standalone API views."""
 
-import pytest
 from django.contrib.auth.models import User
 from rest_framework.status import (
     HTTP_200_OK,
@@ -8,6 +7,8 @@ from rest_framework.status import (
     HTTP_404_NOT_FOUND,
 )
 from rest_framework.test import APIClient
+
+import pytest
 
 from lasuite_sources.registry import source_registry
 from lasuite_sources.tasks import check_laws_validity_task
@@ -60,7 +61,7 @@ def test_source_search_authenticated():
     assert "Article L. 111-1" in data["results"][0]["title"]
 
     # Search address provider
-    response = client.get("/sources/search/?type=address&q=segur")
+    response = client.get("/sources/search/", {"type": "address", "q": "Ségur"})
     assert response.status_code == HTTP_200_OK
     data = response.json()
     assert data["type"] == "address"
@@ -94,6 +95,13 @@ def test_source_search_authenticated():
     assert data["type"] == "grant"
     assert len(data["results"]) > 0
 
+
+def test_source_search_other_authenticated_providers():
+    """Additional demo providers filter using the submitted query."""
+    client = APIClient()
+    user = User.objects.create_user(username="agent.other")
+    client.force_authenticate(user=user)
+
     # Search insee provider
     response = client.get("/sources/search/?type=insee&q=paris")
     assert response.status_code == HTTP_200_OK
@@ -116,7 +124,7 @@ def test_source_search_authenticated():
     assert len(data["results"]) > 0
 
     # Search demarche provider
-    response = client.get("/sources/search/?type=demarche&q=lasuite")
+    response = client.get("/sources/search/?type=demarche&q=habilitation")
     assert response.status_code == HTTP_200_OK
     data = response.json()
     assert data["type"] == "demarche"
@@ -130,7 +138,7 @@ def test_source_search_authenticated():
     assert len(data["results"]) > 0
 
     # Search Albert RAG provider
-    response = client.get("/sources/search/?type=custom&q=rgaa")
+    response = client.get("/sources/search/?type=custom&q=preavis")
     assert response.status_code == HTTP_200_OK
     data = response.json()
     assert data["type"] == "custom"
@@ -164,7 +172,9 @@ def test_source_detail_endpoint():
     data = response.json()
     assert data["source_id"] == "LEGIARTI000037812976"
     assert "Article L. 111-1" in data["title"]
-    assert data["status"] == "En vigueur"
+    assert data["status"] == "Demonstration"
+    assert data["origin"] == "demo"
+    assert data["verified_at"] is None
 
     # Non-existent ID returns 404
     response_404 = client.get("/sources/law/UNKNOWN_ID/")

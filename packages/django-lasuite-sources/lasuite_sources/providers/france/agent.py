@@ -4,7 +4,7 @@ import logging
 import os
 from typing import List, Optional
 
-from lasuite_sources.base import BaseSourceProvider
+from lasuite_sources.demo import DemoSourceProvider
 from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
 
 logger = logging.getLogger(__name__)
@@ -37,18 +37,24 @@ MOCK_AGENT_RESULTS: List[SourceSearchResult] = [
 ]
 
 
-class AgentSourceProvider(BaseSourceProvider):
+class AgentSourceProvider(DemoSourceProvider):
     """Public administration directory and institutional contact provider."""
 
     source_type = "agent"
     name = "Annuaire du Service Public"
 
     def __init__(self):
-        self.api_url = os.getenv("ANNUAIRE_DILA_API_URL", "https://api-lannuaire.service-public.fr/v1")
-        self.mock_mode = os.getenv("ANNUAIRE_DILA_MOCK_ENABLED", "true").lower() in ("true", "1", "yes")
+        self.api_url = os.getenv(
+            "ANNUAIRE_DILA_API_URL", "https://api-lannuaire.service-public.fr/v1"
+        )
+        self.mock_mode = os.getenv("ANNUAIRE_DILA_MOCK_ENABLED", "true").lower() in (
+            "true",
+            "1",
+            "yes",
+        )
 
     def is_enabled(self) -> bool:
-        return True
+        return super().is_enabled()
 
     def suggest(self, query: str, limit: int = 5) -> List[SourceSuggestResult]:
         results = self.search(query=query, limit=limit)
@@ -63,19 +69,10 @@ class AgentSourceProvider(BaseSourceProvider):
         ]
 
     def search(self, query: str, limit: int = 10) -> List[SourceSearchResult]:
-        q = query.lower()
-        matched = [
-            item
-            for item in MOCK_AGENT_RESULTS
-            if q in item["title"].lower()
-            or (item["subtitle"] and q in item["subtitle"].lower())
-            or (item["meta1"] and q in item["meta1"].lower())
-            or (item["summary"] and q in item["summary"].lower())
-        ]
-        return matched[:limit] if matched else MOCK_AGENT_RESULTS[:limit]
+        return self.demo_search(MOCK_AGENT_RESULTS, query, limit)
 
     def get_detail(self, source_id: str) -> Optional[SourceSearchResult]:
         for item in MOCK_AGENT_RESULTS:
             if item["source_id"] == source_id:
-                return item
+                return self.demo_results([item])[0]
         return None

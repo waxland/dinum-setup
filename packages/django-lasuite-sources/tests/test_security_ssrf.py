@@ -1,78 +1,142 @@
-"""Security tests verifying anti-SSRF defenses and URL validation in sovereign providers."""
+"""Exercise production URL/DNS controls, with no requests to private services."""
 
-import ipaddress
+import asyncio
+from datetime import datetime, timedelta, timezone
+from email.utils import format_datetime
+from unittest.mock import AsyncMock, MagicMock
+
 import pytest
-from urllib.parse import urlparse
 
-# Private and reserved IP ranges strictly forbidden from external requests
-FORBIDDEN_IP_NETWORKS = [
-    ipaddress.ip_network("127.0.0.0/8"),      # Local loopback
-    ipaddress.ip_network("10.0.0.0/8"),       # Class A private network
-    ipaddress.ip_network("172.16.0.0/12"),    # Class B private network
-    ipaddress.ip_network("192.168.0.0/16"),   # Class C private network
-    ipaddress.ip_network("169.254.0.0/16"),   # Link-Local & AWS/GCP Metadata
-    ipaddress.ip_network("0.0.0.0/8"),        # Broadcast / unspecified
-    ipaddress.ip_network("::1/128"),          # IPv6 loopback
-]
-
-
-def is_safe_external_url(url: str) -> bool:
-    """Helper validating that a destination URL does not resolve to a private or internal network."""
-    parsed = urlparse(url)
-    if parsed.scheme not in ("http", "https"):
-        return False
-
-    hostname = parsed.hostname
-    if not hostname:
-        return False
-
-    # 1. Check reserved local hostnames
-    if hostname.lower() in ("localhost", "internal", "local", "metadata.google.internal"):
-        return False
-
-    # 2. Check direct IP addresses
-    try:
-        ip = ipaddress.ip_address(hostname)
-        for forbidden in FORBIDDEN_IP_NETWORKS:
-            if ip in forbidden:
-                return False
-    except ValueError:
-        # Valid domain name, not a raw IP
-        pass
-
-    return True
+from lasuite_sources.errors import UnsafeDestination, UpstreamError
+from lasuite_sources.transport import (
+    PublicResolver,
+    get_json,
+    parse_retry_after,
+    validate_destination,
+)
 
 
 @pytest.mark.parametrize(
-    "malicious_url",
+    "url",
     [
-        "http://127.0.0.1:8000/internal-admin",
-        "http://localhost:8080/metrics",
-        "http://10.0.0.1/secrets.env",
-        "http://172.17.0.2:5432/",
-        "http://192.168.1.1/router-config",
-        "http://169.254.169.254/latest/meta-data/",
-        "http://[::1]:8080/debug",
-        "ftp://api.gouv.fr/data",
+        "https://127.0.0.1/",
+        "https://10.0.0.1/",
+        "https://[::1]/",
+        "https://169.254.169.254/",
+        "https://[::ffff:127.0.0.1]/",
+        "http://public.example/",
+        "https://user:secret@public.example/",
+        "https://public.example:8443/",
         "file:///etc/passwd",
+        "https://unapproved.example/",
     ],
 )
-def test_anti_ssrf_rejects_malicious_urls(malicious_url):
-    """Ensure all internal, metadata and local URLs are systematically rejected."""
-    assert is_safe_external_url(malicious_url) is False
+def test_forbidden_url_never_creates_a_session(url, monkeypatch):
+    session = MagicMock()
+    monkeypatch.setattr("aiohttp.ClientSession", session)
+    with pytest.raises(UnsafeDestination):
+        get_json(
+            url,
+            allowed_hosts=frozenset(
+                {
+                    "public.example",
+                    "127.0.0.1",
+                    "10.0.0.1",
+                    "::1",
+                    "169.254.169.254",
+                    "::ffff:127.0.0.1",
+                }
+            ),
+            params={},
+        )
+    session.assert_not_called()
 
 
 @pytest.mark.parametrize(
-    "legitimate_url",
-    [
-        "https://api.piste.gouv.fr/dila/legifrance/v1",
-        "https://api-adresse.data.gouv.fr/search",
-        "https://recherche-entreprises.api.gouv.fr/search",
-        "https://api.insee.fr/donnees-locales/V0.1",
-        "https://aides-territoires.beta.gouv.fr/api/aides/",
-        "https://albert.api.etalab.gouv.fr/v1/chat/completions",
-    ],
+    "addresses",
+    [["127.0.0.1"], ["8.8.8.8", "10.1.2.3"], ["::ffff:192.168.1.1"], ["fe80::1"]],
 )
-def test_anti_ssrf_allows_legitimate_sovereign_apis(legitimate_url):
-    """Ensure official public service API endpoints are permitted."""
-    assert is_safe_external_url(legitimate_url) is True
+def test_actual_connector_rejects_nonpublic_dns_before_connect(addresses, monkeypatch):
+    resolver = AsyncMock(
+        return_value=[
+            {
+                "host": address,
+                "hostname": "public.example",
+                "port": 443,
+                "family": 2,
+                "proto": 0,
+                "flags": 0,
+            }
+            for address in addresses
+        ]
+    )
+    connection = AsyncMock()
+    monkeypatch.setattr("aiohttp.resolver.AsyncResolver.resolve", resolver)
+    monkeypatch.setattr("aiohttp.TCPConnector._wrap_create_connection", connection)
+    with pytest.raises(UnsafeDestination):
+        get_json(
+            "https://public.example/",
+            allowed_hosts=frozenset({"public.example"}),
+            params={},
+        )
+    resolver.assert_awaited_once()
+    connection.assert_not_called()
+
+
+def test_resolver_returns_the_validated_addresses_without_second_resolution(
+    monkeypatch,
+):
+    addresses = [
+        {
+            "host": "8.8.8.8",
+            "hostname": "public.example",
+            "port": 443,
+            "family": 2,
+            "proto": 0,
+            "flags": 0,
+        }
+    ]
+    underlying = AsyncMock(return_value=addresses)
+    monkeypatch.setattr("aiohttp.resolver.AsyncResolver.resolve", underlying)
+
+    async def run():
+        resolver = PublicResolver()
+        try:
+            assert await resolver.resolve("public.example", 443) is addresses
+        finally:
+            await resolver.close()
+
+    asyncio.run(run())
+    underlying.assert_awaited_once()
+
+
+def test_http_429_preserves_retry_after_and_never_follows_redirects(monkeypatch):
+    response = MagicMock(status=429, headers={"Retry-After": "45"})
+    session = MagicMock()
+    session.get.return_value.__aenter__ = AsyncMock(return_value=response)
+    factory = MagicMock()
+    factory.return_value.__aenter__ = AsyncMock(return_value=session)
+    monkeypatch.setattr("aiohttp.ClientSession", factory)
+    with pytest.raises(UpstreamError) as failure:
+        get_json(
+            "https://public.example/",
+            allowed_hosts=frozenset({"public.example"}),
+            params={},
+        )
+    assert failure.value.status_code == 429
+    assert failure.value.retry_after == 45
+    assert session.get.call_args.kwargs["allow_redirects"] is False
+    assert factory.call_args.kwargs["trust_env"] is False
+    assert factory.call_args.kwargs["timeout"].total == 3.5
+    asyncio.run(factory.call_args.kwargs["connector"].close())
+
+
+def test_retry_after_handles_http_dates_and_invalid_values():
+    assert parse_retry_after("45") == 45
+    assert parse_retry_after("invalid") is None
+    assert parse_retry_after(None) is None
+    future = format_datetime(datetime.now(timezone.utc) + timedelta(seconds=30))
+    assert 29 <= parse_retry_after(future) <= 30
+    validate_destination(
+        "https://data.geopf.fr/geocodage/search", frozenset({"data.geopf.fr"})
+    )

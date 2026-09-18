@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
+import { demoSearchClient } from '../demoSearchClient';
 import { SourceSearchPopover } from '../components/SourceSearchPopover';
 
 const meta: Meta<typeof SourceSearchPopover> = {
@@ -8,6 +10,7 @@ const meta: Meta<typeof SourceSearchPopover> = {
     layout: 'centered',
   },
   tags: ['autodocs'],
+  args: { client: demoSearchClient, onSelect: fn(), onCancel: fn() },
 };
 
 export default meta;
@@ -16,23 +19,17 @@ type Story = StoryObj<typeof SourceSearchPopover>;
 export const DefaultLawSearch: Story = {
   args: {
     initialType: 'law',
-    onSelect: (entity) => console.log('Selected entity:', entity),
-    onCancel: () => console.log('Search cancelled'),
   },
 };
 
 export const CompanySearch: Story = {
   args: {
     initialType: 'company',
-    onSelect: (entity) => console.log('Selected entity:', entity),
-    onCancel: () => console.log('Search cancelled'),
   },
 };
 
 export const ProcurementSearch: Story = {
   args: {
     initialType: 'procurement',
-    onSelect: (entity) => console.log('Selected entity:', entity),
-    onCancel: () => console.log('Search cancelled'),
   },
 };
