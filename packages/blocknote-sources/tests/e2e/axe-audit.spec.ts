@@ -2,9 +2,11 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 for (const width of [1280, 390]) {
-  test(`search palette passes Axe and fits a ${width}px viewport`, async ({ page }) => {
+  for (const dark of [false, true]) {
+  test(`search palette passes Axe at ${width}px, dark=${dark}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/');
+    if (dark) { await page.getByRole('button', { name: 'Thème sombre', exact: true }).click(); }
     await page.getByRole('button', { name: 'Réinitialiser', exact: true }).click();
     await page.getByRole('button', { name: '/loi', exact: true }).click();
     await page.getByRole('combobox', { name: 'Rechercher une source' }).fill('commande');
@@ -16,6 +18,8 @@ for (const width of [1280, 390]) {
     const bounds = await palette.boundingBox();
     expect(bounds).not.toBeNull();
     expect((bounds?.x || 0) + (bounds?.width || 0)).toBeLessThanOrEqual(width);
-    await page.screenshot({ path: `test-results/palette-${width}.png`, fullPage: true });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+    await page.screenshot({ path: `test-results/palette-${width}-${dark ? 'dark' : 'light'}.png`, fullPage: true });
   });
+  }
 }

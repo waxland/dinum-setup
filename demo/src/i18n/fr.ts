@@ -11,10 +11,10 @@ export const frTranslations: DemoTranslations = {
     selectLanguage: "Langue de l'interface",
   },
   hero: {
-    tag: "Démonstrateur Officiel",
+    tag: "Démonstrateur",
     title: "Connecteurs Souverains & BlockNote",
     description:
-      "Intégration directe des données certifiées de l'État et d'Europe (Légifrance, Annuaire Entreprises, BAN, BOAMP, EUR-Lex, Albert IA) au cœur de l'éditeur.",
+      "Données de démonstration uniquement. Aucun résultat présenté ici ne constitue une vérification auprès d'un service public.",
     countryLabel: "Sélectionner un jeu de données souverain :",
     quickInsertLabel: "Insertion rapide :",
   },
@@ -31,6 +31,6 @@ export const frTranslations: DemoTranslations = {
   },
   footer: {
     entity: "La Suite Numérique • Direction Interministérielle du Numérique (DINUM)",
-    compliance: "Licence MIT • Conforme RGAA v4.1 AA",
+    compliance: "Licence MIT • Accessibilité en cours de validation",
   },
 };

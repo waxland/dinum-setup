@@ -2,7 +2,7 @@
 
 import logging
 import re
-from typing import Any, Dict, List
+from collections.abc import Mapping, Sequence
 
 from django.conf import settings
 from django.core.cache import caches
@@ -14,7 +14,9 @@ from lasuite_sources.registry import source_registry
 logger = logging.getLogger(__name__)
 
 
-def check_laws_validity_task(document_contents: List[Dict[str, Any]]) -> Dict[str, Any]:
+def check_laws_validity_task(
+    document_contents: Sequence[Mapping[str, object]],
+) -> dict[str, object]:
     """
     Task scanning document contents for legal citations (Légifrance LEGIARTI / JORFTEXT IDs)
     and verifying their current validity against the LawSourceProvider.
@@ -29,7 +31,7 @@ def check_laws_validity_task(document_contents: List[Dict[str, Any]]) -> Dict[st
     total_docs_scanned = 0
     total_laws_checked = 0
     unknown_laws = 0
-    abrogated_laws_found: List[Dict[str, str]] = []
+    abrogated_laws_found: list[dict[str, str]] = []
 
     for doc in document_contents:
         total_docs_scanned += 1
@@ -77,7 +79,7 @@ def check_laws_validity_task(document_contents: List[Dict[str, Any]]) -> Dict[st
                 abrogated_laws_found.append(
                     {
                         "document_id": str(doc.get("id", "")),
-                        "document_title": doc.get("title", ""),
+                        "document_title": str(doc.get("title", "")),
                         "source_id": source_id,
                         "law_title": detail.get("title", ""),
                         "status": detail.get("status", ""),

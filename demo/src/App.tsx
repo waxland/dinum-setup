@@ -60,6 +60,7 @@ export const App: React.FC = () => {
   const t = useMemo(() => getDemoTranslations(currentLocale), [currentLocale]);
 
   useEffect(() => {
+    document.documentElement.dataset.frTheme = isDark ? 'dark' : 'light';
     if (isDark) {
       document.body.classList.add("dark");
     } else {

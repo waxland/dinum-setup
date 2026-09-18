@@ -27,7 +27,7 @@ export const Header: React.FC<HeaderProps> = ({
             alt=""
             aria-hidden="true"
             onError={(e) => {
-              (e.currentTarget as HTMLElement).style.display = "none";
+              e.currentTarget.style.display = "none";
             }}
           />
           <span className="sober-brand-name">{t.title}</span>
@@ -58,7 +58,9 @@ export const Header: React.FC<HeaderProps> = ({
             <select
               id="language-select"
               value={currentLocale}
-              onChange={(e) => onLocaleChange(e.target.value as DemoLocale)}
+              onChange={(e) => {
+                if (e.target.value === 'fr' || e.target.value === 'en') { onLocaleChange(e.target.value); }
+              }}
               className="sober-select"
             >
               <option value="fr">FR</option>

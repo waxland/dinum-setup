@@ -17,6 +17,7 @@ export const Hero: React.FC<HeroProps> = ({
   t,
 }) => {
   const activePreset = COUNTRY_PRESETS[currentCountry];
+  const presets = Object.values(COUNTRY_PRESETS);
 
   return (
     <section className="sober-hero" aria-labelledby="hero-title">
@@ -27,13 +28,25 @@ export const Hero: React.FC<HeroProps> = ({
       <div className="sober-toolbar">
         <span className="sober-toolbar-label">{t.countryLabel}</span>
         <div className="sober-btn-group" role="radiogroup" aria-label={t.countryLabel}>
-          {(Object.keys(COUNTRY_PRESETS) as SupportedCountry[]).map((c) => (
+          {Object.values(COUNTRY_PRESETS).map(({ country: c }) => (
             <button
               key={c}
               type="button"
               role="radio"
               aria-checked={currentCountry === c}
+              tabIndex={currentCountry === c ? 0 : -1}
               onClick={() => onCountryChange(c)}
+              onKeyDown={(event) => {
+                if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) { return; }
+                event.preventDefault();
+                const direction = event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? -1 : 1;
+                const index = (presets.findIndex((preset) => preset.country === c) + direction + presets.length) % presets.length;
+                const next = presets[index];
+                if (next) {
+                  onCountryChange(next.country);
+                  event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="radio"]')[index]?.focus();
+                }
+              }}
               className={`sober-chip ${currentCountry === c ? "active" : ""}`}
             >
               <span aria-hidden="true">{COUNTRY_PRESETS[c].flag}</span>

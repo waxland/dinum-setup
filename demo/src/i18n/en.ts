@@ -11,10 +11,10 @@ export const enTranslations: DemoTranslations = {
     selectLanguage: "Interface language",
   },
   hero: {
-    tag: "Official Playground",
+    tag: "Playground",
     title: "Sovereign Connectors & BlockNote",
     description:
-      "Direct integration of certified European and national public data registries (Légifrance, Handelsregister, EUR-Lex, Open Data) inside the editor.",
+      "Demonstration data only. Results displayed here have not been verified with a public service.",
     countryLabel: "Select a sovereign dataset:",
     quickInsertLabel: "Quick insert:",
   },
@@ -31,6 +31,6 @@ export const enTranslations: DemoTranslations = {
   },
   footer: {
     entity: "La Suite Numérique • French Interministerial Digital Directorate (DINUM)",
-    compliance: "MIT License • RGAA v4.1 / WCAG 2.1 AA Compliant",
+    compliance: "MIT License • Accessibility validation in progress",
   },
 };

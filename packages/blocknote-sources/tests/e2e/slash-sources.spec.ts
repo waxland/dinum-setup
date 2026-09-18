@@ -25,7 +25,9 @@ test('changing country preserves existing text and passes the country to search'
   const editor = page.locator('.tiptap[contenteditable="true"]');
   await editor.press('ControlOrMeta+End');
   await editor.pressSequentially('Texte a conserver');
-  await page.getByRole('button', { name: /Canada/, exact: false }).click();
+  await page.getByRole('radio', { name: 'France', exact: true }).focus();
+  await page.keyboard.press('ArrowLeft');
+  await expect(page.getByRole('radio', { name: 'Canada', exact: true })).toBeChecked();
   await expect(editor).toContainText('Texte a conserver');
   await page.getByRole('button', { name: '/canlaw', exact: true }).click();
   await expect(page.getByRole('combobox', { name: 'Pays', exact: true })).toHaveValue('ca');

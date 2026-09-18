@@ -2,14 +2,14 @@
   "name": "@suitenumerique/blocknote-sources",
   "version": "1.0.0",
   "description": "Official BlockNote.js extension connecting La Suite Docs to sovereign public data sources with 100% Cunningham and DSFR rendering.",
-  "main": "./dist/index.js",
+  "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "require": "./dist/index.mjs"
     },
     "./exporters": {
       "types": "./dist/exporters/index.d.ts",
@@ -20,6 +20,7 @@
   "files": [
     "dist"
   ],
+  "engines": { "node": ">=22.23.2" },
   "author": "waxland",
   "license": "MIT",
   "homepage": "https://github.com/waxland/dinum-setup/tree/main/packages/blocknote-sources",
