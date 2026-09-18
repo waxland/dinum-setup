@@ -28,8 +28,12 @@ help:
 	@printf "  make demo-dev           Lance le demonstrateur web standalone (http://localhost:5173)\n"
 	@printf "  make demo-build         Compile le demonstrateur web standalone\n"
 	@printf "  make storybook          Lance le Storybook des composants BlockNote (http://localhost:6006)\n"
-	@printf "  make packages-build     Compile les packages TypeScript (@suitenumerique/*)\n"
-	@printf "  make packages-test      Execute les 15 tests unitaires et RGAA\n\n"
+	@printf "\nCommandes Packages Souverains (Build, Test, Pack & Release):\n"
+	@printf "  make packages-test      Execute l'ensemble des tests (15 TS Vitest + 22 Django Pytest)\n"
+	@printf "  make packages-build     Compile les bundles TypeScript (ESM, CJS, DTS) et Python (Wheel)\n"
+	@printf "  make packages-pack      Genere tous les packages distribuables (.tgz pour npm, .whl pour Python)\n"
+	@printf "  make packages-clean     Nettoie tous les artefacts de compilation et archives\n"
+	@printf "  make packages-release   Publie une release GitHub avec les 4 binaires (ex: VERSION=v1.0.1 make packages-release)\n\n"
 	@printf "Commandes Deploiement Vercel:\n"
 	@printf "  make vercel-login       Authentifie le CLI sur votre compte Vercel\n"
 	@printf "  make vercel-init        Cree, configure et lie les 3 projets (Docs, Demo, Storybook) a GitHub\n"
@@ -188,13 +192,51 @@ demo-build:
 storybook:
 	npm run storybook
 
-.PHONY: packages-build
-packages-build:
-	npm run packages:build
+# -----------------------------------------------------------------------------
+# Gestion des Packages Souverains (Build, Test, Pack & Release 100% CLI)
+# -----------------------------------------------------------------------------
+
+VERSION ?= v1.0.0
+
+.PHONY: packages-clean
+packages-clean:
+	@echo "🧹 Nettoyage des artefacts de compilation des packages..."
+	@rm -rf packages/*/dist packages/*/*.tgz packages/django-lasuite-sources/build packages/django-lasuite-sources/*.egg-info packages/django-lasuite-sources/.pytest_cache
+	@echo "✅ Nettoyage terminé."
 
 .PHONY: packages-test
 packages-test:
-	npm run packages:test
+	@echo "🧪 Exécution des tests unitaires TypeScript (Vitest)..."
+	@npm run packages:test
+	@echo "\n🧪 Exécution des tests unitaires Django Backend (Pytest)..."
+	@cd packages/django-lasuite-sources && PYTHONPATH=. .venv/bin/pytest
+
+.PHONY: packages-build
+packages-build:
+	@echo "🏗️ Compilation des packages TypeScript (@suitenumerique/*)..."
+	@npm run packages:build
+	@echo "🏗️ Compilation du package Python (django-lasuite-sources)..."
+	@cd packages/django-lasuite-sources && .venv/bin/python -m build
+
+.PHONY: packages-pack
+packages-pack: packages-build
+	@echo "📦 Génération des archives tarballs npm (.tgz)..."
+	@cd packages/slash-sources-sdk && npm pack
+	@cd packages/blocknote-sources && npm pack
+	@echo "✅ Tous les packages (.tgz, .whl, .tar.gz) sont générés et prêts !"
+	@ls -lh packages/slash-sources-sdk/*.tgz packages/blocknote-sources/*.tgz packages/django-lasuite-sources/dist/*
+
+.PHONY: packages-release
+packages-release: packages-pack
+	@echo "🚀 Publication de la release $(VERSION) sur GitHub avec les 4 binaires..."
+	@gh release create $(VERSION) \
+		packages/slash-sources-sdk/suitenumerique-slash-sources-sdk-*.tgz \
+		packages/blocknote-sources/suitenumerique-blocknote-sources-*.tgz \
+		packages/django-lasuite-sources/dist/django_lasuite_sources-*-py3-none-any.whl \
+		packages/django-lasuite-sources/dist/django_lasuite_sources-*.tar.gz \
+		--title "$(VERSION) — Sovereign Slasher Packages Release" \
+		--notes "Official release of sovereign packages $(VERSION) for La Suite Numérique and BlockNote." || echo "ℹ️ Note: La release $(VERSION) existe déjà ou a été mise à jour."
+	@echo "🔗 Release disponible sur : https://github.com/$(GITHUB_REPO)/releases"
 
 # -----------------------------------------------------------------------------
 # Gestion Multi-Projets Vercel (CLI Express & Automatisation)
