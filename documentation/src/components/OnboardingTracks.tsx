@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 export type RoleType = "frontend" | "backend" | "devops" | "product";
 

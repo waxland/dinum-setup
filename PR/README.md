@@ -72,17 +72,17 @@ flowchart TD
 
 | PR ID | Target Repo | Title & Scope | Status | Key Benefit |
 | :--- | :--- | :--- | :---: | :--- |
-| **PR-01** | [`suitenumerique/docs`](https://github.com/suitenumerique/docs) | Remote server & VM support (`API_ORIGIN`) | 🟢 [PR #2703](https://github.com/suitenumerique/docs/pull/2703) | Instant deployment on VM/Cloud without OIDC blocking |
-| **PR-02** | [`suitenumerique/docs`](https://github.com/suitenumerique/docs) | Sovereign packages & progressive activation | 🟡 Ready to submit | Zero in-tree pollution, granular command opt-in |
-| **PR-03** | [`TypeCellOS/BlockNote`](https://github.com/TypeCellOS/BlockNote) | External Data Blocks RFC & Multi-Format extension | 🟡 Ready to submit | Open source standardization, path to official ecosystem |
-| **REF-04**| *Internal Arbitrage* | Decision Guide & Arbitrage Matrix | Reference | Comparative analysis: In-Tree Monolith vs Decoupled Packages |
+| **[PR-0001](./PR-0001-TO-SUITENUMERIQUE-DOCS.md)** | [`suitenumerique/docs`](https://github.com/suitenumerique/docs) | Remote server & VM support (`API_ORIGIN`) | 🟢 [PR #2703](https://github.com/suitenumerique/docs/pull/2703) | Instant deployment on VM/Cloud without OIDC blocking |
+| **[PR-0002](./PR-0002-TO-SUITENUMERIQUE-DOCS.md)** | [`suitenumerique/docs`](https://github.com/suitenumerique/docs) | Sovereign packages & progressive activation | 🟡 Ready to submit | Zero in-tree pollution, granular command opt-in |
+| **[PR-0003](./PR-0003-TO-TYPECELLOS-BLOCKNOTE.md)** | [`TypeCellOS/BlockNote`](https://github.com/TypeCellOS/BlockNote) | External Data Blocks RFC & Multi-Format extension | 🟡 Ready to submit | Open source standardization, path to official ecosystem |
+| **[REF-04](./04-guide-d-arbitrage.md)** | *Internal Arbitrage* | Decision Guide & Arbitrage Matrix | Reference | Comparative analysis: In-Tree Monolith vs Decoupled Packages |
 
 ---
 
 ## 🚀 4. Detailed PR Dossiers
 
-Access the complete ready-to-submit dossiers for opening Pull Requests:
-- 🔗 [PR 1 Dossier: Remote Servers & Cloud VMs Support (suitenumerique/docs — PR #2703)](https://github.com/suitenumerique/docs/pull/2703) • [Local Spec](/09-PR/01-docs-serveur-config)
-- 🔗 [PR 2 Dossier: Sovereign Packages Integration & Progressive Rollout (suitenumerique/docs)](/09-PR/02-docs-packages-souverains)
-- 🔗 [PR 3 Dossier: BlockNote RFC & Community Extension (TypeCellOS/BlockNote)](/09-PR/03-blocknote-external-sources)
-- 🔗 [Strategic Arbitrage Guide & Decision Matrix](/09-PR/04-guide-d-arbitrage-et-migration)
+Access the complete ready-to-submit dossiers with exact `gh` CLI commands:
+- 🔗 **[PR 1: Remote Servers & Cloud VMs Support (suitenumerique/docs — PR #2703)](./PR-0001-TO-SUITENUMERIQUE-DOCS.md)**
+- 🔗 **[PR 2: Sovereign Packages Integration & Progressive Rollout (suitenumerique/docs)](./PR-0002-TO-SUITENUMERIQUE-DOCS.md)**
+- 🔗 **[PR 3: BlockNote RFC & Community Extension (TypeCellOS/BlockNote)](./PR-0003-TO-TYPECELLOS-BLOCKNOTE.md)**
+- 🔗 **[Strategic Arbitrage Guide & Decision Matrix](./04-guide-d-arbitrage.md)**

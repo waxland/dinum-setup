@@ -199,7 +199,7 @@ This integration adheres strictly to the **`quota-resilience`** and **`python-da
 
 ---
 
-## 🚀 4. How to Submit via GitHub CLI (`gh`)
+## 🚀 4. Exact GitHub CLI Command to Open this PR
 
 ```bash
 # 1. Navigate to your Docs clone/fork
@@ -207,106 +207,19 @@ cd LaSuite/docs
 
 # 2. Create feature branch from upstream main
 git fetch upstream
-git checkout -b feature/sovereign-sources upstream/main
+git checkout -b feature/sovereign-sources-packages upstream/main
 
-# 3. Apply the 3 minor file changes above, then commit with DCO signoff & Gitmoji
+# 3. Stage modified files and commit with DCO signoff & Gitmoji
 git commit -S -s -m "✨(sources) integrate modular sovereign sources with staged rollout"
 
 # 4. Push to personal fork
-git push -u origin feature/sovereign-sources
+git push -u origin feature/sovereign-sources-packages
 
-# 5. Open upstream PR
+# 5. Open upstream PR via GitHub CLI
 gh pr create \
   --repo suitenumerique/docs \
   --title "✨(sources) integrate modular sovereign sources with staged rollout" \
-  --body-file ../../PR/02-docs-packages-souverains.md \
+  --body-file ../../PR/PR-0002-TO-SUITENUMERIQUE-DOCS.md \
   --base main \
-  --head waxland:feature/sovereign-sources
+  --head waxland:feature/sovereign-sources-packages
 ```
-
-
-#### 2. `src/backend/impress/settings.py`
-```diff
---- a/src/backend/impress/settings.py
-+++ b/src/backend/impress/settings.py
-@@ -120,6 +120,7 @@ INSTALLED_APPS = [
-     "rest_framework",
-     "core",
-+    "lasuite_sources",
- ]
-```
-
-#### 3. `src/backend/impress/urls.py`
-```diff
---- a/src/backend/impress/urls.py
-+++ b/src/backend/impress/urls.py
-@@ -35,6 +35,7 @@ urlpatterns = [
-     path(f"api/{settings.API_VERSION}/", include("core.urls")),
-+    path(f"api/{settings.API_VERSION}/", include("lasuite_sources.urls")),
- ]
-```
-
----
-
-### 📦 2.2. Next.js Frontend (`src/frontend/apps/impress/`)
-
-#### 1. `src/frontend/apps/impress/package.json`
-```diff
---- a/src/frontend/apps/impress/package.json
-+++ b/src/frontend/apps/impress/package.json
-@@ -52,6 +52,7 @@
-     "@blocknote/core": "^0.54.2",
-     "@blocknote/react": "^0.54.2",
-+    "@suitenumerique/blocknote-sources": "^1.0.0",
-     "@tanstack/react-query": "^5.28.4",
-     "cunningham": "2.2.0"
-   }
-```
-
-#### 2. `src/frontend/apps/impress/src/features/docs/doc-editor/components/BlockNoteEditor.tsx`
-```diff
---- a/src/frontend/apps/impress/src/features/docs/doc-editor/components/BlockNoteEditor.tsx
-+++ b/src/frontend/apps/impress/src/features/docs/doc-editor/components/BlockNoteEditor.tsx
-@@ -18,6 +18,7 @@ import {
-   defaultBlockSpecs,
- } from '@blocknote/core';
-+import { SourceBlock } from '@suitenumerique/blocknote-sources';
- 
- const baseBlockNoteSchema = withPageBreak(
-   BlockNoteSchema.create({
-     blockSpecs: {
-       ...defaultBlockSpecs,
-       callout: CalloutBlock(),
-+      sourceBlock: SourceBlock(),
-     },
-   })
- );
-```
-
-#### 3. `src/frontend/apps/impress/src/features/docs/doc-editor/components/BlockNoteSuggestionMenu.tsx`
-```diff
---- a/src/frontend/apps/impress/src/features/docs/doc-editor/components/BlockNoteSuggestionMenu.tsx
-+++ b/src/frontend/apps/impress/src/features/docs/doc-editor/components/BlockNoteSuggestionMenu.tsx
-@@ -12,6 +12,7 @@ import {
-   filterSuggestionItems,
- } from '@blocknote/core';
-+import { getSourceReactSlashMenuItems } from '@suitenumerique/blocknote-sources';
- 
- export const BlockNoteSuggestionMenu = ({ editor }: { editor: BlockNoteEditor }) => {
-   const { t } = useTranslation();
-@@ -25,6 +26,7 @@ export const BlockNoteSuggestionMenu = ({ editor }: { editor: BlockNoteEditor }) => {
-     return combineByGroup(
-       defaultMenu,
-+      getSourceReactSlashMenuItems(editor, t, t('Sovereign Sources')),
-     );
-   }, [editor, t]);
-```
-
----
-
-## 🛡️ 3. Technical Compliance & Guarantees
-
-- 🔒 **Anti-SSRF Defense:** Strict blocking of private IP ranges (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `127.0.0.1`, `169.254.169.254`).
-- ⚡ **Deterministic SHA-256 Cache:** 24h Redis cache delivering cached responses in under 5 ms.
-- ♿ **RGAA v4.1 (AA) Accessibility:** Full keyboard navigation (`↑`, `↓`, `Enter`, `Escape`), zero `@mantine/core` in UI.
-- 🎨 **Export Fidelity:** Native mapping for `@react-pdf/renderer` (vector PDF), Word (DOCX), and LibreOffice (ODT).

@@ -160,16 +160,13 @@ We would be thrilled to submit this contribution to the BlockNote community!
 
 ---
 
-## 🚀 5. How to Submit this RFC Upstream
+## 🚀 5. Exact GitHub CLI Command to Submit this RFC
 
 ```bash
-# Open an RFC Discussion on GitHub Discussions for TypeCellOS/BlockNote
-gh repo set-default TypeCellOS/BlockNote
-
-# Post the RFC in the Ideas / RFCs category
+# 1. Open an RFC Issue / Discussion on TypeCellOS/BlockNote
 gh issue create \
   --repo TypeCellOS/BlockNote \
-  --title "RFC: Standardized External Data Sources Extension (@blocknote/xl-external-sources)" \
-  --body-file PR/03-blocknote-slasher-rfc.md
+  --title "RFC: Standardized External Data Sources & Multi-Format Connected Blocks (@blocknote/xl-external-sources)" \
+  --body-file PR/PR-0003-TO-TYPECELLOS-BLOCKNOTE.md \
+  --label "enhancement,rfc,community-extension"
 ```
-
