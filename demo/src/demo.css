@@ -1,106 +1,477 @@
+/* ==========================================================================
+   DINUM / La Suite Docs — Design System & Thème Démonstrateur
+   Conforme aux standards Cunningham Tokens & DSFR (République Française)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
-  --blue-france: #000091;
-  --blue-france-hover: #1212ff;
-  --red-marianne: #e1000f;
-  --font-family-base: Marianne, system-ui, -apple-system, sans-serif;
+  /* --- Couleurs Institutionnelles État / DSFR --- */
+  --blue-france-sun-113: #000091;
+  --blue-france-sun-113-hover: #1212ff;
+  --blue-france-sun-113-active: #2323ff;
+  --blue-france-975: #f5f5fe;
+  --blue-france-925: #e3e3fd;
+  --blue-france-main-525: #6a6af4;
+  --red-marianne-425: #e1000f;
+  --red-marianne-425-hover: #ff2736;
+  --red-marianne-975: #ffe8e5;
+
+  /* --- Sémantique DSFR --- */
+  --background-default-grey: #ffffff;
+  --background-alt-grey: #f6f6f6;
+  --background-alt-raised-grey: #ffffff;
+  --background-contrast-info: #e8edff;
+  --text-default-grey: #161616;
+  --text-mention-grey: #666666;
+  --text-disabled-grey: #929292;
+  --border-default-grey: #dddddd;
+  --border-active-blue-france: #000091;
+
+  /* --- Cunningham Tokens (Light) --- */
+  --c--globals--colors--brand-primary: #000091;
+  --c--globals--colors--brand-primary-hover: #1212ff;
+  --c--globals--colors--brand-accent: #e1000f;
+  --c--contextuals--background--surface--primary: #ffffff;
+  --c--contextuals--background--surface--secondary: #f8f8fb;
+  --c--contextuals--background--surface--tertiary: #f0f0f5;
+  --c--contextuals--border--surface--primary: #e5e5e5;
+  --c--contextuals--border--surface--secondary: #dddddd;
+  --c--contextuals--content--semantic--neutral--primary: #161616;
+  --c--contextuals--content--semantic--neutral--secondary: #666666;
+  --c--contextuals--content--semantic--neutral--tertiary: #929292;
+
+  /* --- Typographie & Espacements --- */
+  --font-family-base: Marianne, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family-heading: Marianne, Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-serif: Spectral, Georgia, serif;
+  --font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+body.dark {
+  /* --- Couleurs Institutionnelles État (Dark) --- */
+  --blue-france-sun-113: #8585f6;
+  --blue-france-sun-113-hover: #a2a2f8;
+  --blue-france-sun-113-active: #b8b8fa;
+  --blue-france-975: #1e1e40;
+  --blue-france-925: #28285a;
+  --red-marianne-425: #ff6868;
+  --red-marianne-975: #411818;
+
+  /* --- Sémantique DSFR (Dark) --- */
+  --background-default-grey: #161616;
+  --background-alt-grey: #1e1e1e;
+  --background-alt-raised-grey: #242424;
+  --background-contrast-info: #1b254b;
+  --text-default-grey: #eeeeee;
+  --text-mention-grey: #aaaaaa;
+  --text-disabled-grey: #666666;
+  --border-default-grey: #383838;
+  --border-active-blue-france: #8585f6;
+
+  /* --- Cunningham Tokens (Dark) --- */
+  --c--globals--colors--brand-primary: #8585f6;
+  --c--globals--colors--brand-primary-hover: #a2a2f8;
+  --c--globals--colors--brand-accent: #ff6868;
+  --c--contextuals--background--surface--primary: #1e1e1e;
+  --c--contextuals--background--surface--secondary: #262626;
+  --c--contextuals--background--surface--tertiary: #2e2e2e;
+  --c--contextuals--border--surface--primary: #383838;
+  --c--contextuals--border--surface--secondary: #4a4a4a;
+  --c--contextuals--content--semantic--neutral--primary: #eeeeee;
+  --c--contextuals--content--semantic--neutral--secondary: #bbbbbb;
+  --c--contextuals--content--semantic--neutral--tertiary: #777777;
+}
+
+/* ==========================================================================
+   Base Layout & Reset
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
   padding: 0;
   font-family: var(--font-family-base);
-  background-color: #f6f6f6;
-  color: #1e1e1e;
+  background-color: var(--background-alt-grey);
+  color: var(--text-default-grey);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-body.dark {
-  background-color: #0b0f19;
-  color: #f1f5f9;
+/* ==========================================================================
+   Header Officiel — La Suite Numérique / Marianne
+   ========================================================================== */
+
+.lasuite-header {
+  background-color: var(--background-default-grey);
+  border-bottom: 1px solid var(--border-default-grey);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-.demo-container {
-  max-width: 1100px;
+.lasuite-header-container {
+  max-width: 1320px;
   margin: 0 auto;
-  padding: 24px 16px 64px 16px;
-}
-
-.demo-header {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 20px 24px;
-  margin-bottom: 24px;
+  padding: 12px 24px;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  flex-wrap: wrap;
 }
 
-body.dark .demo-header {
-  background: #1e293b;
-  border-color: #334155;
+.lasuite-brand-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
-.demo-title-group h1 {
-  margin: 0;
-  font-size: 1.25rem;
+.lasuite-marianne-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-right: 20px;
+  border-right: 1px solid var(--border-default-grey);
+}
+
+.lasuite-marianne-logo {
+  height: 38px;
+  width: auto;
+  display: block;
+}
+
+.lasuite-marianne-text {
+  font-size: 0.68rem;
   font-weight: 700;
-  color: #000091;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--text-default-grey);
+  letter-spacing: 0.02em;
+}
+
+.lasuite-marianne-subtext {
+  font-size: 0.58rem;
+  font-weight: 500;
+  color: var(--text-mention-grey);
+  text-transform: none;
+  margin-top: 2px;
+}
+
+.lasuite-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lasuite-product-logo {
+  height: 28px;
+  width: auto;
+}
+
+.lasuite-product-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--blue-france-sun-113);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: -0.01em;
+}
+
+.lasuite-product-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background-color: var(--blue-france-975);
+  color: var(--blue-france-sun-113);
+  border: 1px solid var(--blue-france-925);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.lasuite-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   Barre de Contrôles & Presets Internationaux
+   ========================================================================== */
+
+.lasuite-country-segmented {
+  display: inline-flex;
+  background: var(--background-alt-grey);
+  border: 1px solid var(--border-default-grey);
+  border-radius: 6px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.lasuite-country-tab {
+  font-family: var(--font-family-base);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  color: var(--text-mention-grey);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.lasuite-country-tab:hover {
+  color: var(--text-default-grey);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+body.dark .lasuite-country-tab:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.lasuite-country-tab.active {
+  background: var(--background-default-grey);
+  color: var(--blue-france-sun-113);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  font-weight: 700;
+}
+
+body.dark .lasuite-country-tab.active {
+  background: var(--background-alt-raised-grey);
+  color: var(--blue-france-sun-113);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.lasuite-locale-group {
+  display: inline-flex;
+  background: var(--background-alt-grey);
+  border: 1px solid var(--border-default-grey);
+  border-radius: 6px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.lasuite-locale-btn {
+  font-family: var(--font-family-base);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  color: var(--text-mention-grey);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.lasuite-locale-btn:hover {
+  color: var(--text-default-grey);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+body.dark .lasuite-locale-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.lasuite-locale-btn.active {
+  background: var(--background-default-grey);
+  color: var(--blue-france-sun-113);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  font-weight: 700;
+}
+
+body.dark .lasuite-locale-btn.active {
+  background: var(--background-alt-raised-grey);
+  color: var(--blue-france-sun-113);
+}
+
+.lasuite-btn {
+  font-family: var(--font-family-base);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border-default-grey);
+  background: var(--background-default-grey);
+  color: var(--text-default-grey);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.lasuite-btn:hover {
+  background: var(--background-alt-grey);
+  border-color: var(--border-active-blue-france);
+  color: var(--blue-france-sun-113);
+}
+
+.lasuite-btn-danger {
+  color: #c9191e;
+  border-color: rgba(225, 0, 15, 0.25);
+  background: var(--background-default-grey);
+}
+
+.lasuite-btn-danger:hover {
+  background: var(--red-marianne-975);
+  border-color: var(--red-marianne-425);
+  color: var(--red-marianne-425);
+}
+
+.lasuite-btn-primary {
+  background: var(--blue-france-sun-113);
+  color: #ffffff !important;
+  border-color: transparent;
+}
+
+.lasuite-btn-primary:hover {
+  background: var(--blue-france-sun-113-hover);
+}
+
+/* ==========================================================================
+   Conteneur Principal & Document Workspace
+   ========================================================================== */
+
+.demo-workspace {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 24px 24px 64px 24px;
+}
+
+/* --- Barre de Contexte & Breadcrumb --- */
+.lasuite-context-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.lasuite-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--text-mention-grey);
+}
+
+.lasuite-breadcrumb a {
+  color: var(--text-mention-grey);
+  text-decoration: none;
+}
+
+.lasuite-breadcrumb a:hover {
+  color: var(--blue-france-sun-113);
+  text-decoration: underline;
+}
+
+.lasuite-breadcrumb-separator {
+  opacity: 0.5;
+}
+
+.lasuite-breadcrumb-current {
+  color: var(--text-default-grey);
+  font-weight: 600;
+}
+
+.lasuite-meta-badges {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-body.dark .demo-title-group h1 {
-  color: #8585f6;
-}
-
-.demo-title-group p {
-  margin: 4px 0 0 0;
-  font-size: 0.85rem;
-  color: #64748b;
-}
-
-body.dark .demo-title-group p {
-  color: #94a3b8;
-}
-
-.demo-toolbar {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+.lasuite-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 8px;
   border-radius: 12px;
+  background: var(--background-default-grey);
+  border: 1px solid var(--border-default-grey);
+  color: var(--text-mention-grey);
+}
+
+.lasuite-chip-success {
+  background: #e8f7ee;
+  border-color: #9de2b8;
+  color: #0e793c;
+}
+
+body.dark .lasuite-chip-success {
+  background: #0d3820;
+  border-color: #1a6b3e;
+  color: #6ee7b7;
+}
+
+/* --- Barre de Commandes Rapides (Connecteurs Souverains) --- */
+.lasuite-toolbar {
+  background: var(--background-default-grey);
+  border: 1px solid var(--border-default-grey);
+  border-radius: 10px;
   padding: 14px 18px;
-  margin-bottom: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
-body.dark .demo-toolbar {
-  background: #1e293b;
-  border-color: #334155;
-}
-
-.demo-btn-group {
+.lasuite-toolbar-header {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+}
+
+.lasuite-toolbar-title {
+  font-weight: 700;
+  color: var(--text-default-grey);
+  display: flex;
   align-items: center;
   gap: 6px;
 }
 
-.demo-btn {
+.lasuite-toolbar-hint {
+  color: var(--text-mention-grey);
   font-size: 0.75rem;
+}
+
+.lasuite-connector-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.demo-btn {
+  font-family: var(--font-family-base);
+  font-size: 0.78rem;
   font-weight: 600;
-  padding: 6px 10px;
+  padding: 6px 11px;
   border-radius: 6px;
-  border: 1px solid #cbd5e1;
-  background: #ffffff;
-  color: #1e293b;
+  border: 1px solid var(--border-default-grey);
+  background: var(--background-alt-grey);
+  color: var(--text-default-grey);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -109,33 +480,124 @@ body.dark .demo-toolbar {
 }
 
 .demo-btn:hover {
-  background: #f1f5f9;
-  border-color: #000091;
-  color: #000091;
-}
-
-body.dark .demo-btn {
-  background: #334155;
-  border-color: #475569;
-  color: #f8fafc;
+  background: var(--blue-france-975);
+  border-color: var(--blue-france-sun-113);
+  color: var(--blue-france-sun-113);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 145, 0.08);
 }
 
 body.dark .demo-btn:hover {
-  background: #475569;
-  border-color: #8585f6;
-  color: #8585f6;
+  background: var(--blue-france-975);
+  border-color: var(--blue-france-sun-113);
+  color: var(--blue-france-sun-113);
 }
+
+/* ==========================================================================
+   Document Sheet Style ("La Suite Docs" Sheet Canvas)
+   ========================================================================== */
 
 .demo-editor-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--background-default-grey);
+  border: 1px solid var(--border-default-grey);
   border-radius: 12px;
-  min-height: 500px;
-  padding: 24px;
-  box-shadow: 0 4px 16px rgba(0, 0, 145, 0.04);
+  box-shadow: 0 8px 30px rgba(0, 0, 145, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+  min-height: 650px;
+  padding: 48px 56px;
+  transition: all 0.2s ease;
+  position: relative;
 }
 
-body.dark .demo-editor-card {
-  background: #0f172a;
-  border-color: #334155;
+@media (max-width: 768px) {
+  .demo-editor-card {
+    padding: 24px 18px;
+  }
+}
+
+.docs-sheet-header {
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-default-grey);
+}
+
+.docs-sheet-title-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-family: var(--font-family-heading);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-default-grey);
+  background: transparent;
+  padding: 0;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.docs-sheet-title-input::placeholder {
+  color: var(--text-disabled-grey);
+}
+
+.docs-sheet-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.78rem;
+  color: var(--text-mention-grey);
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   Overriding BlockNote Editor to match La Suite Docs Aesthetics
+   ========================================================================== */
+
+.bn-container {
+  font-family: var(--font-family-base) !important;
+  color: var(--text-default-grey) !important;
+}
+
+.bn-editor {
+  padding: 0 !important;
+}
+
+.bn-block-content {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.bn-block-content p {
+  margin: 0.5em 0;
+}
+
+/* ==========================================================================
+   Footer & Status Bar
+   ========================================================================== */
+
+.lasuite-footer {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-default-grey);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 0.78rem;
+  color: var(--text-mention-grey);
+}
+
+.lasuite-footer-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.lasuite-footer-links a {
+  color: var(--text-mention-grey);
+  text-decoration: none;
+}
+
+.lasuite-footer-links a:hover {
+  color: var(--blue-france-sun-113);
+  text-decoration: underline;
 }
