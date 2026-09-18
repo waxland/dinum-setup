@@ -216,19 +216,32 @@ body {
   padding: 3px 8px;
 }
 
-.sober-editor-wrap {
-  min-height: 400px;
-  padding-top: 16px;
+.sober-editor-card {
+  background: var(--bg-page);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  min-height: 550px;
+  padding: 32px 36px;
+  margin-top: 16px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .sober-editor-card {
+    padding: 20px 16px;
+  }
 }
 
 .bn-container {
   font-family: var(--font-family) !important;
   color: var(--text-primary) !important;
   background: transparent !important;
+  min-height: 480px;
 }
 
 .bn-editor {
   padding: 0 !important;
+  min-height: 480px;
 }
 
 .sober-footer {

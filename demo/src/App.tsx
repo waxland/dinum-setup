@@ -1,27 +1,27 @@
 import { BlockNoteSchema, defaultBlockSpecs, defaultInlineContentSpecs } from "@blocknote/core";
 import { BlockNoteView } from "@blocknote/mantine";
 import {
-  SuggestionMenuController,
-  getDefaultReactSlashMenuItems,
-  useCreateBlockNote,
+    SuggestionMenuController,
+    getDefaultReactSlashMenuItems,
+    useCreateBlockNote,
 } from "@blocknote/react";
 import React, { useEffect, useMemo, useState } from "react";
 
 import {
-  ALL_INTERNATIONAL_MOCK_SOURCES,
-  MOCK_EUROPE_SOURCES,
-  MOCK_FRANCE_SOURCES,
-  MOCK_GERMANY_SOURCES,
-  SourceBlock,
-  SourceIcon,
-  SourceInlineContent,
-  type ExternalSourceDisplayMode,
-  type ExternalSourceEntity,
-  type SourceEntityType,
-  type SupportedCountry,
+    ALL_INTERNATIONAL_MOCK_SOURCES,
+    MOCK_EUROPE_SOURCES,
+    MOCK_FRANCE_SOURCES,
+    MOCK_GERMANY_SOURCES,
+    SourceBlock,
+    SourceIcon,
+    SourceInlineContent,
+    type ExternalSourceDisplayMode,
+    type ExternalSourceEntity,
+    type SourceEntityType,
+    type SupportedCountry,
 } from "@suitenumerique/blocknote-sources";
 
-import { Header, Hero, Footer } from "./components";
+import { Footer, Header, Hero } from "./components";
 import { useLocaleRouter } from "./hooks/useLocaleRouter";
 import { getDemoTranslations } from "./i18n";
 import { COUNTRY_PRESETS } from "./presets.config";
@@ -445,7 +445,7 @@ export const App: React.FC = () => {
           t={t.hero}
         />
 
-        <div className="sober-editor-wrap">
+        <div className="sober-editor-card">
           <BlockNoteView
             editor={editor}
             theme={isDark ? "dark" : "light"}
