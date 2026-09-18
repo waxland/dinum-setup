@@ -62,8 +62,8 @@ L'ensemble de notre configuration s'aligne sur les fichiers sources du dépôt o
 
 | Domaine | Outils Officiels La Suite | Configuration Locale Monorepo | Règles Clés Appliquées |
 | :--- | :--- | :--- | :--- |
-| **TypeScript / React** | ESLint 9 + Prettier | `tooling/eslint/` | • `@typescript-eslint/no-explicit-any: error`<br>• Pas de casts forcé (`as ...`) non justifiés<br>• Accessibilité JSX A11y stricte<br>• Exhaustive dependencies sur les hooks |
-| **Python / Django** | Ruff + pytest + coverage | `packages/django-lasuite-sources/pyproject.toml` | • Longueur de ligne : 88 caractères<br>• Règles : `B`, `BLE`, `C4`, `DJ`, `I`, `PLC`, `PLE`, `PLR`, `PLW`, `RUF100`, `S`, `SLF`, `T20`<br>• Tri isort ordonné en 6 sections |
+| **TypeScript / React** | ESLint 9 + Prettier | `tooling/eslint/` | • `@typescript-eslint/no-explicit-any: error`<br />• Pas de casts forcé (`as ...`) non justifiés<br />• Accessibilité JSX A11y stricte<br />• Exhaustive dependencies sur les hooks |
+| **Python / Django** | Ruff + pytest + coverage | `packages/django-lasuite-sources/pyproject.toml` | • Longueur de ligne : 88 caractères<br />• Règles : `B`, `BLE`, `C4`, `DJ`, `I`, `PLC`, `PLE`, `PLR`, `PLW`, `RUF100`, `S`, `SLF`, `T20`<br />• Tri isort ordonné en 6 sections |
 | **Tests E2E & RGAA** | Playwright | `packages/blocknote-sources/playwright.config.ts` | • 4 tests E2E validant la navigation clavier, les rôles ARIA et le déclencheur `@mention` |
 | **Documentation SSR** | Zudoku + MDX | `documentation/zudoku.config.tsx` | • 284 routes pré-rendues statiquement (0 erreur SSR) |
 
