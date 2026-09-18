@@ -29,7 +29,9 @@ export function CodeTabs({ items, defaultTab, title }: CodeTabsProps) {
   const currentItem = items[activeTab] || items[0];
 
   const handleCopy = async () => {
-    if (!currentItem) return;
+    if (!currentItem) {
+      return;
+    }
     try {
       await navigator.clipboard.writeText(currentItem.code);
       setCopied(true);

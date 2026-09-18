@@ -32,10 +32,11 @@
 | 20 | `documentation/src/components/slash-preview/SourceBlockSpec.tsx` | Wrapper Playground | **10/10** | 🌟 Exemplaire |
 | 21 | `documentation/zudoku.config.tsx` | Configuration Portail | **10/10** | 🌟 Exemplaire |
 | 22 | `documentation/zudoku.navigation.tsx` | Navigation Bilingue | **10/10** | 🌟 Exemplaire |
-| 23 | `packages/blocknote-sources/src/stories/SourceCalloutFormat.stories.tsx` | Storybook Callout | **9.8/10** | 🌟 Conforme |
-| 24 | `packages/blocknote-sources/src/stories/SourceCardFormat.stories.tsx` | Storybook Card | **9.8/10** | 🌟 Conforme |
-| 25 | `packages/blocknote-sources/src/stories/SourceLinkFormat.stories.tsx` | Storybook Link | **9.8/10** | 🌟 Conforme |
-| 26 | `packages/blocknote-sources/src/stories/SourceSearchPopover.stories.tsx` | Storybook Popover | **9.8/10** | 🌟 Conforme |
+| 23 | `documentation/src/components/CodeTabs.tsx` | Système d'Onglets Code | **10/10** | 🌟 Exemplaire (A11y + Keyboard) |
+| 24 | `packages/blocknote-sources/src/stories/SourceCalloutFormat.stories.tsx` | Storybook Callout | **9.8/10** | 🌟 Conforme |
+| 25 | `packages/blocknote-sources/src/stories/SourceCardFormat.stories.tsx` | Storybook Card | **9.8/10** | 🌟 Conforme |
+| 26 | `packages/blocknote-sources/src/stories/SourceLinkFormat.stories.tsx` | Storybook Link | **9.8/10** | 🌟 Conforme |
+| 27 | `packages/blocknote-sources/src/stories/SourceSearchPopover.stories.tsx` | Storybook Popover | **9.8/10** | 🌟 Conforme |
 
 ---
 
@@ -213,7 +214,16 @@
 
 ---
 
-#### 23-26. Stories Storybook (`packages/blocknote-sources/src/stories/*.stories.tsx`)
+#### 23. `documentation/src/components/CodeTabs.tsx`
+* **Note :** **10 / 10**
+* **Points Forts :**
+  - Navigation d'onglets au clavier avec gestion des flèches gauche/droite et attributs ARIA complets (`role="tablist"`, `role="tab"`, `role="tabpanel"`).
+  - Bouton de copie avec feedback visuel accessible (`aria-label`).
+  - Blocs d'instructions stricts avec accolades systématiques.
+
+---
+
+#### 24-27. Stories Storybook (`packages/blocknote-sources/src/stories/*.stories.tsx`)
 * **Note :** **9.5 / 10**
 * **Points Forts :**
   - Spécifications Storybook v8 complètes (`Meta`, `StoryObj`) couvrant les 3 formats et la palette de recherche.
