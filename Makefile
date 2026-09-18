@@ -21,55 +21,33 @@ export accounts_URL ?= https://github.com/suitenumerique/accounts.git
 
 .PHONY: help
 help:
-	@printf "DINUM / La Suite dev setup (4-Pillar Monorepo)
-
-"
-	@printf "Documentation & Demo Commands:
-"
-	@printf "  make docs-dev           Launch Zudoku documentation portal (http://localhost:3000)
-"
-	@printf "  make docs-build         Build Zudoku documentation (SSR 270 routes)
-"
-	@printf "  make demo-dev           Launch standalone web demo (http://localhost:5173)
-"
-	@printf "  make demo-build         Build standalone web demo
-"
-	@printf "  make storybook          Launch BlockNote components Storybook (http://localhost:6006)
-"
-	@printf "  make packages-build     Build TypeScript packages (@suitenumerique/*)
-"
-	@printf "  make packages-test      Run 15 unit and RGAA accessibility tests
-
-"
-	@printf "LaSuite Clones Commands:
-"
-	@printf "  make install            Install system dependencies (Docker plugins, etc.)
-"
-	@printf "  make clone              Clone repositories into ./LaSuite
-"
-	@printf "  make pull               Update already cloned repositories in ./LaSuite
-"
-	@printf "  make env                Prepare local .env files
-"
-	@printf "  make bootstrap          Bootstrap supported projects
-"
-	@printf "  make dev                Launch supported projects in dev mode
-"
-	@printf "  make stop               Stop known Docker stacks
-"
-	@printf "  make status             Display active Docker containers
-"
-	@printf "  make logs-docs          Tail Docs logs
-"
-	@printf "  make logs-projects      Tail Projects logs
-"
-	@printf "
-Examples:
-"
-	@printf "  REPOS="docs projects" make clone
-"
-	@printf "  SRC_DIR=/opt/lasuite/LaSuite make dev
-"
+	@printf "DINUM / La Suite dev setup (Monorepo 4 Piliers)\n\n"
+	@printf "Commandes Documentation & Demo:\n"
+	@printf "  make docs-dev           Lance le portail documentaire Zudoku (http://localhost:3000)\n"
+	@printf "  make docs-build         Compile la documentation Zudoku (SSR 270 routes)\n"
+	@printf "  make demo-dev           Lance le demonstrateur web standalone (http://localhost:5173)\n"
+	@printf "  make demo-build         Compile le demonstrateur web standalone\n"
+	@printf "  make storybook          Lance le Storybook des composants BlockNote (http://localhost:6006)\n"
+	@printf "  make packages-build     Compile les packages TypeScript (@suitenumerique/*)\n"
+	@printf "  make packages-test      Execute les 15 tests unitaires et RGAA\n"
+	@printf "  make deploy-vercel      Deploie l'ensemble (Demo, Storybook, Docs) sur Vercel\n"
+	@printf "  make deploy-demo        Deploie uniquement l'application Demo sur Vercel\n"
+	@printf "  make deploy-docs        Deploie uniquement le portail Zudoku sur Vercel\n"
+	@printf "  make deploy-storybook   Deploie uniquement le Storybook sur Vercel\n\n"
+	@printf "Commandes Clones LaSuite:\n"
+	@printf "  make install            Installe les dependances systeme (Docker plugins, etc.)\n"
+	@printf "  make clone              Clone les depots dans ./LaSuite\n"
+	@printf "  make pull               Met a jour les depots deja clones dans ./LaSuite\n"
+	@printf "  make env                Prepare les fichiers .env locaux connus\n"
+	@printf "  make bootstrap          Prepare les projets supportes\n"
+	@printf "  make dev                Lance les projets supportes en mode dev\n"
+	@printf "  make stop               Stoppe les stacks Docker connues\n"
+	@printf "  make status             Affiche les containers Docker actifs\n"
+	@printf "  make logs-docs          Suit les logs Docs\n"
+	@printf "  make logs-projects      Suit les logs Projects\n\n"
+	@printf "Exemples:\n"
+	@printf "  REPOS=\"docs projects\" make clone\n"
+	@printf "  SRC_DIR=/opt/lasuite/LaSuite make dev\n"
 
 .PHONY: check-tools
 check-tools:
@@ -213,3 +191,23 @@ packages-build:
 .PHONY: packages-test
 packages-test:
 	npm run packages:test
+
+.PHONY: deploy-demo
+deploy-demo:
+	@echo "🚀 Deploiement Demo sur Vercel..."
+	npx vercel --cwd demo --archive=tgz --prod --yes
+
+.PHONY: deploy-storybook
+deploy-storybook:
+	@echo "🚀 Deploiement Storybook sur Vercel..."
+	npx vercel --cwd packages/blocknote-sources --archive=tgz --prod --yes
+
+.PHONY: deploy-docs
+deploy-docs:
+	@echo "🚀 Deploiement Documentation Zudoku sur Vercel..."
+	npx vercel --archive=tgz --prod --yes
+
+.PHONY: deploy-vercel
+deploy-vercel: deploy-demo deploy-storybook deploy-docs
+	@echo "✅ Tous les projets ont ete deployes avec succes sur Vercel !"
+
