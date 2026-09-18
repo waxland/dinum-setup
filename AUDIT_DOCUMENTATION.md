@@ -74,19 +74,3 @@ gantt
 | **Moteur Zudoku & Build SSR** | 🟢 Excellent | **100%** | • 288 routes pré-rendues statiquement sans erreur.<br>• Zéro erreur d'hydratation React.<br>• Génération dynamique des menus avec icônes Lucide contextuelles. | • Déclarer la langue `ini` dans `syntaxHighlighting.languages` pour éliminer le warning Shiki. | Optimiser le bundle des librairies de diagrammes lourdes (cytoscape/mermaid). |
 
 ---
-
-## 🎯 3. Plan d'Action pour Rendre la Documentation encore Plus Lisible
-
-Pour maximiser la clarté et la vitesse d'apprentissage des développeurs et décideurs :
-
-1. **Tableaux de Synthèse & Badges "À retenir" en Début de Page :**
-   - Placer en haut de chaque page un encadré récapitulatif DSFR (`fr-callout`) avec : *Temps de lecture estimé*, *Public cible (Front / Back / DevOps)*, et *Prérequis techniques*.
-
-2. **Générateur d'Extraits de Code Dynamique (CodeTabs) :**
-   - Systématiser l'usage des `CodeTabs` pour présenter simultanément les commandes en **`pnpm`**, **`npm`**, **`yarn`** et **`bun`**, ainsi qu'en **TypeScript** et **Python (Django)**.
-
-3. **Complétion de la Documentation Internationale (`docs/en/`) :**
-   - Ajouter un guide pas-à-pas *"Build a sovereign connector in 15 minutes"* pour les développeurs européens et internationaux souhaitant brancher les registres de leur pays.
-
-4. **Amélioration du Thème & Navigation :**
-   - Ajouter la prise en charge explicite du langage de configuration `.ini` / `dotenv` dans `zudoku.config.tsx`.
