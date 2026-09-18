@@ -33,6 +33,8 @@ Before executing a task, load and read the detailed procedure from `.skills/en/`
 
 | Task Intent / Topic | Skill to Load | English File | French File |
 | ------------------- | ------------- | ------------ | ----------- |
+| **DINUM & beta.gouv React Standards** | `dinum-react` | [`.skills/en/dinum-react.md`](.skills/en/dinum-react.md) | [`.skills/dinum-react.md`](.skills/dinum-react.md) |
+| **DINUM & La Suite Python Standards** | `dinum-python` | [`.skills/en/dinum-python.md`](.skills/en/dinum-python.md) | [`.skills/dinum-python.md`](.skills/dinum-python.md) |
 | **TypeScript Standards, Cunningham & Zero any/cast** | `code-standards` | [`.skills/en/code-standards.md`](.skills/en/code-standards.md) | [`.skills/code-standards.md`](.skills/code-standards.md) |
 | **DSFR Component or View** (Buttons, alerts, forms, tokens, theme) | `dsfr` | [`.skills/en/dsfr.md`](.skills/en/dsfr.md) | [`.skills/dsfr.md`](.skills/dsfr.md) |
 | **Accessibility Audit or Fix** (Keyboard, ARIA, contrasts, RGAA) | `rgaa-review` | [`.skills/en/rgaa-review.md`](.skills/en/rgaa-review.md) | [`.skills/rgaa-review.md`](.skills/rgaa-review.md) |

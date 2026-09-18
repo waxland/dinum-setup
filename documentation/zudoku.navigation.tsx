@@ -167,6 +167,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "icon": "git-pull-request",
             "collapsed": false,
             "items": [
+              "/fr/01-onboarding/02-workflow-et-contribution/bonnes-pratiques-dinum",
               "/fr/01-onboarding/02-workflow-et-contribution/guide-du-premier-commit",
               "/fr/01-onboarding/02-workflow-et-contribution/securite-du-poste-developpeur",
               "/fr/01-onboarding/02-workflow-et-contribution/tests-et-qualite",
