@@ -48,3 +48,4 @@ packages/django-lasuite-sources/lasuite_sources/__pycache__/tasks.cpython-311.py
 packages/django-lasuite-sources/lasuite_sources/__pycache__/types.cpython-311.pyc
 packages/django-lasuite-sources/lasuite_sources/__pycache__/urls.cpython-311.pyc
 packages/django-lasuite-sources/lasuite_sources/__pycache__/views.cpython-311.pyc
+packages/django-lasuite-sources/lasuite_sources/__pycache__/registry.cpython-311.pyc

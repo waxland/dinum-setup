@@ -43,8 +43,15 @@ export function FeatureCard({
   );
 
   if (href) {
+    const isExternal = href.startsWith("http://") || href.startsWith("https://");
     return (
-      <a href={href} className="no-underline block group">
+      <a
+        href={href}
+        className="no-underline block group"
+        aria-label={`${title} — ${description}`}
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noopener noreferrer" : undefined}
+      >
         {content}
       </a>
     );

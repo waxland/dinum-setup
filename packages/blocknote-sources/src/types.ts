@@ -1,10 +1,10 @@
 import {
-  BlockConfig,
-  BlockNoDefaults,
-  BlockNoteEditor,
-  InlineContentSchema,
-  StyleSchema,
-  defaultProps,
+    BlockConfig,
+    BlockNoDefaults,
+    BlockNoteEditor,
+    InlineContentSchema,
+    StyleSchema,
+    defaultProps,
 } from '@blocknote/core';
 import type {
     ExternalSourceDisplayMode,
