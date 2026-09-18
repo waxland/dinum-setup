@@ -71,6 +71,22 @@ gantt
 | **Section Anglaise (`docs/en/`)** | 🟡 En cours | **65%** | • Vision globale et architecture 3-tiers.<br>• Contrats TypeScript du SDK.<br>• Documentation de sécurité anti-SSRF, quotas et résilience.<br>• RFC upstream formelle pour BlockNote. | • Traduire les tutoriels pas-à-pas d'intégration pour les développeurs internationaux.<br>• Ajouter les fiches détaillées des connecteurs EU/CA/DE/NL/ES. | Unifier la barre latérale pour basculer facilement d'une langue à l'autre sur la même page. |
 | **Composants Interactifs (`src/components/`)** | 🟢 Terminé | **95%** | • **`BlockNoteSlashPlayground`** : Éditeur temps réel dans la doc.<br>• **`Mermaid`** : Rendu dynamique clair/sombre avec mode plein écran, pan & zoom.<br>• **`LawSlashPreview`** : Aperçu interactif des 4 formats DSFR.<br>• **`DSFRPreviews`** : Showcase exhaustif des composants d'État. | • Connecter le bac à sable à d'autres mocks (BAN, BOAMP, INSEE). | Ajouter un bouton "Copier le composant" sur chaque démo DSFR. |
 | **Accessibilité & RGAA (v4.1 AA)** | 🟢 Conforme | **90%** | • Navigation 100% clavier sur les composants interactifs.<br>• Contrastes $\ge 4.5:1$ sur les thèmes clairs/sombres.<br>• Pièges au focus évités avec gestion de la touche <kbd>Échap</kbd>. | • Compléter certains micro-attributs `aria-expanded` sur les modales simulées dans la doc. | Passer un audit automatisé Axe-core dédié sur les pages de composants Zudoku. |
-| **Moteur Zudoku & Build SSR** | 🟢 Excellent | **100%** | • 288 routes pré-rendues statiquement sans erreur.<br>• Zéro erreur d'hydratation React.<br>• Génération dynamique des menus avec icônes Lucide contextuelles. | • Déclarer la langue `ini` dans `syntaxHighlighting.languages` pour éliminer le warning Shiki. | Optimiser le bundle des librairies de diagrammes lourdes (cytoscape/mermaid). |
+| **Moteur Zudoku & Build SSR** | 🟢 Excellent | **100%** | • 288 routes pré-rendues statiquement sans erreur.<br>• Zéro erreur d'hydratation React.<br>• Génération dynamique des menus avec icônes Lucide contextuelles.<br>• Coloration syntaxique complète (`ini`, `dotenv`, `make`, `docker`, `nginx`, `mermaid`). | — | Optimiser le bundle des librairies de diagrammes lourdes (cytoscape/mermaid). |
 
 ---
+
+## 🎯 3. Plan d'Action & Réalisations d'Amélioration
+
+Pour maximiser la clarté et la vitesse d'apprentissage des développeurs et décideurs :
+
+1. **Tableaux de Synthèse & Badges "À retenir" en Début de Page :**
+   - Placer en haut de chaque page un encadré récapitulatif DSFR (`fr-callout`) avec : *Temps de lecture estimé*, *Public cible (Front / Back / DevOps)*, et *Prérequis techniques*.
+
+2. **Générateur d'Extraits de Code Dynamique (CodeTabs) :**
+   - ✅ **Fait :** Systématisation de l'usage des `CodeTabs`, `PackageInstallTabs` (`pnpm`, `npm`, `yarn`, `bun`), `PythonInstallTabs` (`uv`, `pip`, `poetry`, `pipenv`) et `DualLanguageTabs`.
+
+3. **Complétion de la Documentation Internationale (`docs/en/`) :**
+   - ✅ **Fait :** Guide pas-à-pas complet *"Build a Sovereign Country Connector in 15 Minutes"* (`/en/02-provider-sdk/build-provider-in-15-min.mdx`) reliant l'ensemble des 41 connecteurs souverains internationaux.
+
+4. **Amélioration du Thème, Shiki & Navigation :**
+   - ✅ **Fait :** Prise en charge native et explicite des langages de configuration `ini` et `dotenv` dans Shiki (`zudoku.config.tsx`). 0 warning au build.
