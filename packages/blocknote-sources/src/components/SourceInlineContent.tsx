@@ -5,31 +5,39 @@ import { SOURCE_ENTITY_TYPES, SourceEntityType } from '../types';
 
 export const SOURCE_INLINE_ICONS: Record<SourceEntityType, string> = {
   law: '⚖️',
+  'case-law': '📜',
   company: '🏢',
   parliament: '🏛️',
   address: '📍',
+  place: '🗺️',
   procurement: '🛍️',
   grant: '💶',
+  statistics: '📈',
   insee: '📊',
   agent: '👤',
   cadastre: '🗺️',
   demarche: '📝',
   opendata: '🌐',
+  research: '🔬',
   custom: '🧠',
 };
 
 export const SOURCE_INLINE_LABELS: Record<SourceEntityType, string> = {
   law: 'Légifrance',
+  'case-law': 'Jurisprudence',
   company: 'RNE / Entreprise',
   parliament: 'Assemblée Nationale',
   address: 'Base Adresse Nationale',
+  place: 'Lieu / POI',
   procurement: 'Marchés Publics',
   grant: 'Aides-Territoires',
+  statistics: 'Statistiques Publiques',
   insee: 'INSEE',
   agent: 'Service Public',
   cadastre: 'Cadastre DGFiP',
   demarche: 'Démarches-Simplifiées',
   opendata: 'data.gouv.fr',
+  research: 'Recherche Publique',
   custom: 'Albert IA',
 };
 
