@@ -54,7 +54,7 @@ export function CodeTabs({ items, defaultTab, title }: CodeTabsProps) {
   };
 
   return (
-    <div className="my-5 rounded-xl border border-gray-200 dark:border-gray-800 bg-[#0d1117] text-gray-100 overflow-hidden shadow-sm font-mono text-sm">
+    <div className="my-5 bg-[#0d1117] text-gray-100 font-mono text-xs">
       {/* Header bar with tabs & copy button */}
       <div className="flex items-center justify-between border-b border-gray-800 bg-[#161b22] px-3 py-1.5 select-none">
         <div
@@ -77,16 +77,16 @@ export function CodeTabs({ items, defaultTab, title }: CodeTabsProps) {
                 tabIndex={isActive ? 0 : -1}
                 onClick={() => setActiveTab(idx)}
                 onKeyDown={(e) => handleKeyDown(e, idx)}
-                className={`flex items-center gap-1.5 px-3 py-1 text-xs rounded-md transition-all font-sans font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-sans font-medium transition-colors ${
                   isActive
-                    ? "bg-[#0d1117] text-white border border-gray-700 shadow-xs"
-                    : "text-gray-400 hover:text-gray-200 hover:bg-gray-800/60"
+                    ? "bg-[#0d1117] text-white"
+                    : "text-gray-400 hover:text-gray-200"
                 }`}
               >
                 {item.icon && <span>{item.icon}</span>}
                 <span>{item.label}</span>
                 {item.language && (
-                  <span className="text-[10px] px-1.5 py-0.2 rounded bg-gray-800 text-gray-400 uppercase">
+                  <span className="text-[10px] px-1 py-0.2 bg-gray-800 text-gray-400 uppercase">
                     {item.language}
                   </span>
                 )}
@@ -98,7 +98,7 @@ export function CodeTabs({ items, defaultTab, title }: CodeTabsProps) {
         <button
           onClick={handleCopy}
           aria-label={copied ? "Copié dans le presse-papier" : "Copier le code"}
-          className="flex items-center gap-1 text-xs px-2.5 py-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-300 transition-colors font-sans focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+          className="flex items-center gap-1 text-xs px-2 py-0.5 bg-gray-800 hover:bg-gray-700 text-gray-300 transition-colors font-sans cursor-pointer"
         >
           {copied ? (
             <>
@@ -118,7 +118,7 @@ export function CodeTabs({ items, defaultTab, title }: CodeTabsProps) {
       <div
         role="tabpanel"
         tabIndex={0}
-        className="p-4 overflow-x-auto text-[13px] leading-relaxed"
+        className="p-3.5 overflow-x-auto text-[12px] leading-relaxed"
       >
         <pre className="m-0 p-0 bg-transparent text-gray-100 font-mono whitespace-pre">
           <code>{currentItem?.code}</code>

@@ -15,20 +15,11 @@ export function DocHeaderSummary({
   roles = ["Frontend", "Backend"],
   prerequisites = ["Docker", "Git"],
   status = "Production Ready",
-  statusColor = "success",
   takeaway,
 }: DocHeaderSummaryProps) {
-  const statusClasses = {
-    success:
-      "bg-emerald-500/10 text-emerald-400 border-emerald-500/30 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800",
-    info: "bg-blue-500/10 text-blue-400 border-blue-500/30 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-800",
-    warning:
-      "bg-amber-500/10 text-amber-400 border-amber-500/30 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800",
-  }[statusColor];
-
   return (
-    <div className="not-prose my-6 p-4 rounded-xl border border-blue-200 dark:border-blue-900/60 bg-blue-50/40 dark:bg-[#0c1322] shadow-xs">
-      <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-blue-100 dark:border-blue-900/40 text-xs">
+    <div className="not-prose my-5 p-4 bg-gray-50 dark:bg-gray-900 text-xs">
+      <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-gray-200 dark:border-gray-800">
         <div className="flex items-center gap-3 text-gray-700 dark:text-gray-300 font-medium">
           <span className="flex items-center gap-1">
             <span>⏱️</span>
@@ -42,24 +33,22 @@ export function DocHeaderSummary({
         </div>
 
         {status && (
-          <span
-            className={`px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wide border ${statusClasses}`}
-          >
-            ● {status}
+          <span className="px-2 py-0.2 text-[10px] font-mono uppercase bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+            {status}
           </span>
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-3 text-xs">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2.5">
         <div>
           <span className="font-semibold text-gray-900 dark:text-gray-200 block mb-1">
             🎯 Public cible :
           </span>
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap gap-1">
             {roles.map((role) => (
               <span
                 key={role}
-                className="px-2 py-0.5 rounded-md bg-white dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-[11px] font-medium"
+                className="px-1.5 py-0.2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-[11px]"
               >
                 {role}
               </span>
@@ -71,11 +60,11 @@ export function DocHeaderSummary({
           <span className="font-semibold text-gray-900 dark:text-gray-200 block mb-1">
             🛠️ Prérequis :
           </span>
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap gap-1">
             {prerequisites.map((req) => (
               <span
                 key={req}
-                className="px-2 py-0.5 rounded-md bg-blue-100/60 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-300 text-[11px] font-mono"
+                className="px-1.5 py-0.2 bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 text-[11px] font-mono"
               >
                 {req}
               </span>
@@ -85,9 +74,9 @@ export function DocHeaderSummary({
       </div>
 
       {takeaway && (
-        <div className="mt-3 pt-2.5 border-t border-blue-100 dark:border-blue-900/40 text-xs text-gray-800 dark:text-gray-200 flex items-start gap-1.5">
-          <span className="text-blue-600 dark:text-blue-400 font-bold">💡 En résumé :</span>
-          <span className="italic">{takeaway}</span>
+        <div className="mt-2.5 pt-2 border-t border-gray-200 dark:border-gray-800 text-gray-800 dark:text-gray-300 flex items-start gap-1.5">
+          <span className="font-semibold text-gray-900 dark:text-gray-100">💡 En résumé :</span>
+          <span>{takeaway}</span>
         </div>
       )}
     </div>

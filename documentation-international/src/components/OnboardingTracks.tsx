@@ -157,32 +157,32 @@ export function OnboardingTracks() {
   const currentTrack = TRACKS.find((t) => t.id === selectedRole) || TRACKS[0];
 
   return (
-    <div className="not-prose my-8 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
-      <div className="text-center max-w-xl mx-auto mb-6">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 m-0">
-          🧭 Choisissez votre Parcours Guidé
+    <div className="not-prose my-6 p-4 bg-gray-50 dark:bg-gray-900">
+      <div className="mb-4">
+        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 m-0">
+          🧭 Parcours Guidé par Profil
         </h3>
-        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 m-0">
-          Sélectionnez votre profil pour afficher les étapes de lecture et tutoriels prioritaires :
+        <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5 m-0 font-sans">
+          Sélectionnez votre profil technique ou métier pour afficher la feuille de route :
         </p>
       </div>
 
       {/* Role Tabs */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 mb-4">
         {TRACKS.map((track) => {
           const isSelected = track.id === selectedRole;
           return (
             <button
               key={track.id}
               onClick={() => setSelectedRole(track.id)}
-              className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+              className={`p-2.5 text-left transition-colors cursor-pointer flex flex-col justify-between ${
                 isSelected
-                  ? "bg-blue-50/80 dark:bg-blue-950/50 border-blue-500 dark:border-blue-400 shadow-xs"
-                  : "bg-gray-50/60 dark:bg-gray-800/40 border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700"
+                  ? "bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                  : "bg-transparent text-gray-500 hover:text-gray-900 dark:hover:text-gray-200"
               }`}
             >
-              <div className="text-2xl mb-1">{track.icon}</div>
-              <div className="font-bold text-xs text-gray-900 dark:text-gray-100">
+              <div className="text-lg mb-0.5">{track.icon}</div>
+              <div className="font-semibold text-xs font-sans">
                 {track.title}
               </div>
             </button>
@@ -191,46 +191,45 @@ export function OnboardingTracks() {
       </div>
 
       {/* Track Details */}
-      <div className="p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/60">
-        <div className="mb-4">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">{currentTrack.icon}</span>
-            <h4 className="text-sm font-bold text-gray-900 dark:text-gray-100 m-0">
-              Parcours Recommandé : {currentTrack.title}
+      <div className="p-3 bg-white dark:bg-gray-800/60">
+        <div className="mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center gap-1.5">
+            <span className="text-base">{currentTrack.icon}</span>
+            <h4 className="text-xs font-semibold text-gray-900 dark:text-gray-100 m-0">
+              {currentTrack.title}
             </h4>
           </div>
-          <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 m-0">
+          <p className="text-[11px] text-gray-600 dark:text-gray-400 mt-0.5 m-0 font-sans">
             {currentTrack.subtitle}
           </p>
         </div>
 
-        <div className="space-y-2.5">
+        <div className="space-y-1.5">
           {currentTrack.steps.map((step, idx) => (
             <a
               key={step.title}
               href={step.link}
-              className="group flex items-center justify-between p-3 rounded-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-blue-400 dark:hover:border-blue-500 no-underline transition-all shadow-2xs"
+              className="group flex items-center justify-between p-2.5 bg-gray-50 dark:bg-gray-900/80 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors no-underline"
             >
-              <div className="flex items-start gap-3">
-                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 font-bold text-[11px] shrink-0 mt-0.5">
-                  {idx + 1}
-                </div>
+              <div className="flex items-start gap-2.5">
+                <span className="text-xs font-mono font-bold text-gray-400 dark:text-gray-500 shrink-0 mt-0.5">
+                  0{idx + 1}.
+                </span>
                 <div>
-                  <div className="text-xs font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  <div className="text-xs font-medium text-gray-900 dark:text-gray-100 group-hover:underline">
                     {step.title}
                   </div>
-                  <div className="text-[11px] text-gray-600 dark:text-gray-400 mt-0.5">
+                  <div className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5 font-sans">
                     {step.description}
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 shrink-0 ml-3">
-                <span className="text-[10px] px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 font-medium">
-                  {step.badge}
-                </span>
-                <span className="text-[10px] text-gray-400">⏱️ {step.time}</span>
-                <span className="text-xs text-blue-500 group-hover:translate-x-0.5 transition-transform">
+              <div className="flex items-center gap-2 shrink-0 ml-2 font-mono text-[10px] text-gray-500 dark:text-gray-400">
+                <span>{step.badge}</span>
+                <span>•</span>
+                <span>{step.time}</span>
+                <span className="text-xs text-gray-400 group-hover:translate-x-0.5 transition-transform">
                   →
                 </span>
               </div>
