@@ -1,4 +1,4 @@
-# 🏛️ Plan d'Itération & Audit d'Architecture Documentaire (`DOC_ITERATION_ARCHI.md`)
+@c# 🏛️ Plan d'Itération & Audit d'Architecture Documentaire (`DOC_ITERATION_ARCHI.md`)
 
 > **Projet :** **Slasher** (`@blocknote/xl-external-sources` & Presets Souverains DINUM)  
 > **Destinataires :** Direction Interministérielle du Numérique (DINUM), TypeCellOS/BlockNote, Développeurs & Rédacteurs Techniques  
