@@ -155,17 +155,17 @@ export type SourceEntityType =
   - *Type Slasher :* Middleware d'enrichissement multilingue temps réel préservant la version officielle d'origine.
 
 #### P1 — Connecteurs EU Fédérés (Résolution par Délégation Nationale)
-- [ ] **T-210 : BRIS European Companies Federation (`/eu-company`)**
+- [x] **T-210 : BRIS European Companies Federation (`/eu-company`)**
   - *Architecture :* Détection du préfixe pays $\to$ Délégation au provider national souverain (FR $\to$ RNE, DE $\to$ Handelsregister, NL $\to$ KVK, ES $\to$ Registro Mercantil) $\to$ Préservation de l'identifiant européen **EUID**.
-- [ ] **T-211 : INSPIRE European Address Federation (`/eu-address`)**
+- [x] **T-211 : INSPIRE European Address Federation (`/eu-address`)**
   - *Architecture :* Résolution par pays auprès des API d'adresses High-Value Datasets (HVD) nationales.
-- [ ] **T-212 : INSPIRE European Cadastral Parcels (`/eu-cadastre`)**
+- [x] **T-212 : INSPIRE European Cadastral Parcels (`/eu-cadastre`)**
   - *Architecture :* Modèle harmonisé INSPIRE déléguant aux couches cadastrales géospatiales souveraines.
 
 #### P2 — Démarches & Enrichissement
-- [ ] **T-213 : Your Europe / Single Digital Gateway (`/your-europe`, `/demarche-eu`)**
+- [x] **T-213 : Your Europe / Single Digital Gateway (`/your-europe`, `/demarche-eu`)**
   - *Type Slasher :* `demarche` (Guides et démarches transfrontalières pour citoyens et entreprises de l'UE).
-- [ ] **T-214 : eTranslation Multilingual Enrichment Service**
+- [x] **T-214 : eTranslation Multilingual Enrichment Service**
   - *Type Slasher :* Middleware d'enrichissement multilingue temps réel préservant la version officielle d'origine.
 
 ---
@@ -209,20 +209,20 @@ export type SourceEntityType =
   - *Interface :* REST API avec recherche par nom, code de province, coordonnées GPS et bounding box (Ottawa, Montréal).
 
 #### P2 — Fédérations Provinciales Canadiennes
-- [ ] **T-309 : Canadian Corporate & Address Provincial Federation (`/address-ca`, `/company-provincial-ca`)**
+- [x] **T-309 : Canadian Corporate & Address Provincial Federation (`/address-ca`, `/company-provincial-ca`)**
   - *Architecture :* Routage provincial (Québec $\to$ Registraire des entreprises du Québec / Données Québec, Ontario, Colombie-Britannique).
 
 ---
 
 ### 🇩🇪 🇳🇱 🇪🇸 🇬🇧 🌍 Phase 4 : Presets Fédéraux & Organisations Internationales
 
-- [ ] **T-401 : Allemagne Fédérale (`/gesetz`, `/register`, `/bundestag`, `/destatis`)**
-  - Connecteurs *Gesetze im Internet*, *Handelsregister*, *Bundestag DIP REST API* et *Destatis Genesis*.
-- [ ] **T-402 : Pays-Bas (`/wet`, `/kvk`, `/bag`, `/cbs`)**
-  - Connecteurs *KOOP Wettenbank*, *KVK Handelsregister*, *Kadaster BAG API v2* et *CBS StatLine*.
-- [ ] **T-403 : Espagne (`/ley`, `/empresa`, `/licitacion`, `/catastro`, `/ine`)**
-  - Connecteurs *BOE Open Data*, *Registro Mercantil*, *PLACSP Marchés* et *Sede Catastro*.
-- [ ] **T-404 : Organisations Internationales**
+- [x] **T-401 : Allemagne Fédérale (`/gesetz`, `/register`, `/bundestag`, `/destatis`, `/govdata`)**
+  - Connecteurs *Gesetze im Internet*, *Handelsregister*, *Bundestag DIP REST API*, *Destatis Genesis* et *GovData.de*.
+- [x] **T-402 : Pays-Bas (`/wet`, `/kvk`, `/bag`, `/cbs`, `/dataoverheid`)**
+  - Connecteurs *KOOP Wettenbank*, *KVK Handelsregister*, *Kadaster BAG API v2*, *CBS StatLine* et *Data.overheid.nl*.
+- [x] **T-403 : Espagne (`/ley`, `/empresa`, `/licitacion`, `/catastro`, `/ine`, `/datosgob`)**
+  - Connecteurs *BOE Open Data*, *Registro Mercantil*, *PLACSP Marchés*, *Sede Catastro*, *INEbase* et *Datos.gob.es*.
+- [x] **T-404 : Organisations Internationales**
   - *Banque Mondiale :* `/worldbank` (Indicateurs macro-économiques mondiaux WDI).
   - *OCDE :* `/oecd` (Données statistiques et études comparatives).
   - *OMS :* `/who` (Indicateurs sanitaires mondiaux).
