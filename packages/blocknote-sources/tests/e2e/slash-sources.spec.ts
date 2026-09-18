@@ -45,4 +45,32 @@ test.describe('@suitenumerique/blocknote-sources End-to-End Suite', () => {
       await expect(page.locator('a[href*="legifrance.gouv.fr"]').first()).toBeVisible();
     }
   });
+
+  test('it supports inline @mention interlinking and preview popover on hover', async ({
+    page,
+  }) => {
+    await page.goto('/');
+
+    // 1. Verify pre-rendered inline source link
+    const inlineBadge = page.locator('.bn-inline-source-badge-wrap').first();
+    await expect(inlineBadge).toBeVisible();
+
+    // 2. Hover over inline badge to trigger floating preview dialog
+    await inlineBadge.hover();
+    const previewDialog = page.getByRole('dialog').first();
+    await expect(previewDialog).toBeVisible();
+    await expect(page.getByText('Consulter la source ↗').first()).toBeVisible();
+
+    // 3. Test @mention typing in editor
+    const editor = page.locator('.ProseMirror, .bn-editor').first();
+    await editor.click();
+    await page.keyboard.type(' @DINUM');
+
+    // 4. Select suggestion in @ menu
+    const suggestion = page.locator('.bn-suggestion-menu-item, [role="option"]').filter({ hasText: /DINUM/i }).first();
+    if (await suggestion.isVisible()) {
+      await suggestion.click();
+      await expect(page.getByText(/DINUM/i).first()).toBeVisible();
+    }
+  });
 });

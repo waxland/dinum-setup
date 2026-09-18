@@ -1,4 +1,4 @@
-import { BlockNoteSchema, defaultBlockSpecs } from "@blocknote/core";
+import { BlockNoteSchema, defaultBlockSpecs, defaultInlineContentSpecs } from "@blocknote/core";
 import { BlockNoteView } from "@blocknote/mantine";
 import {
     SuggestionMenuController,
@@ -7,7 +7,7 @@ import {
 } from "@blocknote/react";
 import React, { useEffect, useMemo, useState } from "react";
 
-import { SourceBlock } from "./SourceBlockSpec";
+import { SourceBlock, SourceInlineContent } from "./SourceBlockSpec";
 import { MOCK_SOURCES } from "./mockData";
 import { SourceEntityType } from "./types";
 
@@ -83,6 +83,10 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       blockSpecs: {
         ...defaultBlockSpecs,
         sourceBlock: SourceBlock(),
+      },
+      inlineContentSpecs: {
+        ...defaultInlineContentSpecs,
+        sourceLink: SourceInlineContent,
       },
     });
   }, []);
@@ -333,6 +337,36 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
     return [...customItems, ...getDefaultReactSlashMenuItems(editor)];
   }, [editor]);
 
+  // Menu de suggestions @mention pour interlinking direct
+  const customMentionMenuItems = useMemo(() => {
+    if (!editor) return [];
+
+    const allItems = Object.values(MOCK_SOURCES).flat();
+
+    return allItems.map((item) => ({
+      title: item.title,
+      subtext: `${item.subtitle || ""} (${item.entityType})`,
+      onItemClick: () => {
+        editor.insertInlineContent([
+          {
+            type: "sourceLink" as const,
+            props: {
+              sourceId: item.sourceId || "",
+              title: item.title || "",
+              subtitle: item.subtitle || "",
+              entityType: item.entityType || "law",
+              status: item.status || "",
+              url: item.url || "",
+              excerpt: item.excerpt || "",
+              verifiedAt: item.verifiedAt || "",
+            },
+          },
+          " ",
+        ]);
+      },
+    }));
+  }, [editor]);
+
   // Insert helper from toolbar buttons
   const handleInsert = (type: SourceEntityType) => {
     if (!editor) return;
@@ -485,6 +519,16 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
                   item.aliases?.some((a) =>
                     a.toLowerCase().includes(query.toLowerCase())
                   )
+              )
+            }
+          />
+          <SuggestionMenuController
+            triggerCharacter={"@"}
+            getItems={async (query) =>
+              customMentionMenuItems.filter(
+                (item) =>
+                  item.title.toLowerCase().includes(query.toLowerCase()) ||
+                  item.subtext?.toLowerCase().includes(query.toLowerCase())
               )
             }
           />
