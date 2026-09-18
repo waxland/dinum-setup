@@ -87,6 +87,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "file": "en/04-presets/index.mdx",
             "path": "/en/04-presets"
           },
+          "/en/04-presets/canada",
           "/en/04-presets/european-union",
           "/en/04-presets/germany-bund",
           "/en/04-presets/netherlands-gov",

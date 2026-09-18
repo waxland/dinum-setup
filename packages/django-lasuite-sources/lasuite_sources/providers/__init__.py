@@ -1,5 +1,15 @@
 """Providers package initializing and registering built-in source providers."""
 
+from lasuite_sources.providers.canada import (
+    CanadaBuysSourceProvider,
+    CanadaGrantsSourceProvider,
+    CorporationsCanadaSourceProvider,
+    GeoNamesCanadaSourceProvider,
+    JusticeLawsSourceProvider,
+    OpenCanadaSourceProvider,
+    ParliamentCanadaSourceProvider,
+    StatCanSourceProvider,
+)
 from lasuite_sources.providers.europe import (
     CordisSourceProvider,
     CuriaSourceProvider,
@@ -52,6 +62,16 @@ source_registry.register(WhoiswhoSourceProvider())
 source_registry.register(CordisSourceProvider())
 source_registry.register(CuriaSourceProvider())
 
+# Auto-register Canada federal providers
+source_registry.register(JusticeLawsSourceProvider())
+source_registry.register(CorporationsCanadaSourceProvider())
+source_registry.register(ParliamentCanadaSourceProvider())
+source_registry.register(StatCanSourceProvider())
+source_registry.register(OpenCanadaSourceProvider())
+source_registry.register(CanadaBuysSourceProvider())
+source_registry.register(CanadaGrantsSourceProvider())
+source_registry.register(GeoNamesCanadaSourceProvider())
+
 
 __all__ = [
     "LawSourceProvider",
@@ -75,4 +95,12 @@ __all__ = [
     "WhoiswhoSourceProvider",
     "CordisSourceProvider",
     "CuriaSourceProvider",
+    "JusticeLawsSourceProvider",
+    "CorporationsCanadaSourceProvider",
+    "ParliamentCanadaSourceProvider",
+    "StatCanSourceProvider",
+    "OpenCanadaSourceProvider",
+    "CanadaBuysSourceProvider",
+    "CanadaGrantsSourceProvider",
+    "GeoNamesCanadaSourceProvider",
 ]

@@ -111,6 +111,22 @@ const COUNTRY_PRESETS: Record<SupportedCountry, CountryPresetConfig> = {
       { type: "case-law", label: "/curia", icon: "⚖️", desc: "CURIA & ECLI (CJEU Case Law)" },
     ],
   },
+  ca: {
+    country: "ca",
+    name: "Canada",
+    flag: "🇨🇦",
+    defaultLocale: "en",
+    description: "Canadian Federal Sovereign Connectors (Justice Laws, Corporations Canada, LEGISinfo, StatCan, GeoNames...)",
+    buttons: [
+      { type: "law", label: "/canlaw", icon: "⚖️", desc: "Justice Laws Canada (Statutes & Regulations)" },
+      { type: "company", label: "/corporation-ca", icon: "🏢", desc: "Corporations Canada Federal Registry" },
+      { type: "parliament", label: "/parliament-ca", icon: "🏛️", desc: "House of Commons & LEGISinfo" },
+      { type: "statistics", label: "/statcan", icon: "📊", desc: "Statistics Canada (StatCan WDS)" },
+      { type: "opendata", label: "/opencanada", icon: "🌐", desc: "Open Government Canada (CKAN)" },
+      { type: "procurement", label: "/canadabuys", icon: "🛍️", desc: "CanadaBuys Federal Procurement" },
+      { type: "place", label: "/geonames-ca", icon: "📍", desc: "GeoNames Canada (RNCan)" },
+    ],
+  },
 };
 
 
