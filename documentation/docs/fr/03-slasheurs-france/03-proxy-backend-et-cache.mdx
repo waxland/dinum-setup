@@ -134,6 +134,65 @@ class SourceSearchView(APIView):
 
 ---
 
+## ⚡ Gestion Distribuée des Quotas & Circuit Breaker
+
+Pour protéger les quotas des APIs ministérielles et garantir qu'un document ne soit jamais bloqué en cas de panne d'un fournisseur tiers, le backend intègre le **`DistributedQuotaManager`** (`lasuite_sources/quota.py`) :
+
+<Mermaid chart={`stateDiagram-v2
+    [*] --> HEALTHY
+    HEALTHY --> DEGRADED : Quota journalier > 80% consommé
+    DEGRADED --> HEALTHY : Réinitialisation quotidienne du quota
+    DEGRADED --> QUOTA_EXHAUSTED : Quota journalier 100% consommé
+    HEALTHY --> QUOTA_EXHAUSTED : Quota 100% consommé
+    
+    HEALTHY --> CIRCUIT_OPEN : Échecs 5xx répétés (3x) ou Timeout (3.5s)
+    HEALTHY --> CIRCUIT_OPEN : HTTP 429 Too Many Requests (avec Retry-After)
+    DEGRADED --> CIRCUIT_OPEN : HTTP 429 / 5xx
+    
+    CIRCUIT_OPEN --> HALF_OPEN : Délai de refroidissement écoulé (30s à 60s)
+    HALF_OPEN --> HEALTHY : Requête de test réussie
+    HALF_OPEN --> CIRCUIT_OPEN : Échec de la requête de test
+`} />
+
+### 🛡️ Niveaux de Protection & Règles de Résilience :
+
+1. **Seuil de Sécurité à 80% :** À 80% du quota consommé, le connecteur bascule en mode `DEGRADED` (recherche en cache prioritaire) pour conserver 20% de marge pour les résolutions détaillées critiques.
+2. **Rate Limiting Burst par Utilisateur :** Limitation à 60 requêtes/minute par utilisateur/IP pour empêcher qu'un client n'épuise le quota global partagé.
+3. **Interception HTTP 429 & `Retry-After` :** Le circuit breaker s'ouvre immédiatement pour la durée demandée par le fournisseur distant sans relancer d'appels réseau inutiles.
+4. **Persistance Immuable du Bloc :** Toute entité insérée dans BlockNote conserve un instantané complet (`title`, `excerpt`, `meta1..3`, `url`, `verifiedAt`) : le document s'affiche toujours parfaitement même si l'API est indisponible.
+
+---
+
+## 📡 Endpoint de Télémétrie et d'État (`/sources/status/`)
+
+L'endpoint `GET /api/v1.0/sources/status/` fournit en temps réel l'état de santé et la consommation de chaque connecteur :
+
+```json
+{
+  "count": 41,
+  "providers": {
+    "law": {
+      "status": "healthy",
+      "message": "Live API operational.",
+      "remaining_quota_percent": 94,
+      "circuit_open_until": null,
+      "last_error": null,
+      "is_live": true
+    },
+    "company": {
+      "status": "degraded",
+      "message": "Quota warning (>80% used). Operating in degraded mode.",
+      "remaining_quota_percent": 15,
+      "circuit_open_until": null,
+      "last_error": null,
+      "is_live": true
+    }
+  }
+}
+```
+
+---
+
 ## ⚡ Feature Flagging Centralisé
 
 L'endpoint `/api/v1/config/features/` liste dynamiquement les providers actifs à destination du frontend :
