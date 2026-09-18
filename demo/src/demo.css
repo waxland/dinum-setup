@@ -1,51 +1,257 @@
 /* ==========================================================================
-   DINUM / La Suite Docs — Design System & Thème Démonstrateur
-   Conforme aux standards Cunningham Tokens & DSFR (République Française)
+   DINUM / La Suite Docs — Design Minimaliste & Épuré (Inspiré de beta.gouv.fr)
+   Zéro bordure lourde, typographie aérée, contrastes sobres et mise en page fluide.
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  /* --- Couleurs Institutionnelles État / DSFR --- */
-  --blue-france-sun-113: #000091;
-  --blue-france-sun-113-hover: #1212ff;
-  --blue-france-sun-113-active: #2323ff;
-  --blue-france-975: #f5f5fe;
-  --blue-france-925: #e3e3fd;
-  --blue-france-main-525: #6a6af4;
-  --red-marianne-425: #e1000f;
-  --red-marianne-425-hover: #ff2736;
-  --red-marianne-975: #ffe8e5;
+  /* --- Palette Sobre & Institutionnelle --- */
+  --blue-france: #000091;
+  --blue-france-hover: #1212ff;
+  --blue-france-light: #f5f5fe;
+  --text-primary: #161616;
+  --text-secondary: #555555;
+  --text-muted: #888888;
+  --bg-page: #ffffff;
+  --bg-subtle: #f9f9fb;
+  --border-subtle: #f0f0f2;
+  --font-family: Marianne, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  /* --- Sémantique DSFR --- */
-  --background-default-grey: #ffffff;
-  --background-alt-grey: #f6f6f6;
-  --background-alt-raised-grey: #ffffff;
-  --background-contrast-info: #e8edff;
-  --text-default-grey: #161616;
-  --text-mention-grey: #666666;
-  --text-disabled-grey: #929292;
-  --border-default-grey: #dddddd;
-  --border-active-blue-france: #000091;
-
-  /* --- Cunningham Tokens (Light) --- */
+  /* Cunningham Tokens */
   --c--globals--colors--brand-primary: #000091;
-  --c--globals--colors--brand-primary-hover: #1212ff;
-  --c--globals--colors--brand-accent: #e1000f;
   --c--contextuals--background--surface--primary: #ffffff;
   --c--contextuals--background--surface--secondary: #f8f8fb;
-  --c--contextuals--background--surface--tertiary: #f0f0f5;
-  --c--contextuals--border--surface--primary: #e5e5e5;
-  --c--contextuals--border--surface--secondary: #dddddd;
+  --c--contextuals--border--surface--primary: transparent;
   --c--contextuals--content--semantic--neutral--primary: #161616;
   --c--contextuals--content--semantic--neutral--secondary: #666666;
-  --c--contextuals--content--semantic--neutral--tertiary: #929292;
+}
 
-  /* --- Typographie & Espacements --- */
-  --font-family-base: Marianne, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-family-heading: Marianne, Inter, -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-family-serif: Spectral, Georgia, serif;
-  --font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+body.dark {
+  --blue-france: #8585f6;
+  --blue-france-hover: #a2a2f8;
+  --blue-france-light: #181c2e;
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --bg-page: #0f172a;
+  --bg-subtle: #1e293b;
+  --border-subtle: #334155;
+
+  --c--globals--colors--brand-primary: #8585f6;
+  --c--contextuals--background--surface--primary: #1e293b;
+  --c--contextuals--background--surface--secondary: #0f172a;
+  --c--contextuals--content--semantic--neutral--primary: #f3f4f6;
+  --c--contextuals--content--semantic--neutral--secondary: #9ca3af;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   Header Minimaliste (Navbar fluide sans bordure agressive)
+   ========================================================================== */
+
+.clean-nav {
+  width: 100%;
+  background: var(--bg-page);
+  border-bottom: 1px solid var(--border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.clean-nav-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.clean-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.clean-brand img {
+  height: 24px;
+  width: auto;
+}
+
+.clean-brand-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--blue-france);
+}
+
+.clean-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.clean-link-btn {
+  font-family: var(--font-family);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.clean-link-btn:hover {
+  color: var(--blue-france);
+  background: var(--bg-subtle);
+}
+
+/* ==========================================================================
+   Hero & Contexte Épuré
+   ========================================================================== */
+
+.clean-main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 24px 96px 24px;
+}
+
+.clean-hero {
+  margin-bottom: 40px;
+}
+
+.clean-hero-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--blue-france);
+  background: var(--blue-france-light);
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+
+.clean-hero h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+  margin: 0 0 12px 0;
+  color: var(--text-primary);
+}
+
+.clean-hero p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin: 0;
+  max-width: 720px;
+  line-height: 1.6;
+}
+
+.clean-pills-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.clean-pill {
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: none;
+  background: var(--bg-subtle);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.clean-pill:hover,
+.clean-pill.active {
+  background: var(--blue-france-light);
+  color: var(--blue-france);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Éditeur BlockNote (Canvas Blanc Fluide sans encadrement lourd)
+   ========================================================================== */
+
+.clean-editor-wrap {
+  background: var(--bg-page);
+  min-height: 480px;
+  padding: 24px 0;
+}
+
+.bn-container {
+  font-family: var(--font-family) !important;
+  color: var(--text-primary) !important;
+  background: transparent !important;
+}
+
+.bn-editor {
+  padding: 0 !important;
+}
+
+.bn-block-content {
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.bn-block-content p {
+  margin: 0.6em 0;
+}
+
+/* ==========================================================================
+   Footer Minimaliste
+   ========================================================================== */
+
+.clean-footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.clean-footer a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.clean-footer a:hover {
+  color: var(--blue-france);
 }
 
 body.dark {
