@@ -10,6 +10,7 @@ from django.conf import settings
 from django.core.cache import cache
 
 from lasuite_sources.base import BaseSourceProvider
+from lasuite_sources.quota import quota_manager
 from lasuite_sources.types import SourceEntityType, SourceSearchResult, SourceSuggestResult
 
 logger = logging.getLogger(__name__)
@@ -119,52 +120,80 @@ class SourceProviderRegistry:
         ]
 
     def search_with_cache(
-        self, source_type: str, query: str, limit: int = 10
+        self, source_type: str, query: str, limit: int = 10, user_id: Optional[str] = None
     ) -> List[SourceSearchResult]:
-        """Search a provider with 24h Redis cache and circuit breaker safety."""
+        """Search a provider with quota awareness, 24h Redis cache, and circuit breaker safety."""
         provider = self.get_provider(source_type)
         if not provider:
             return []
+
+        # Check burst rate limit per user
+        if user_id and not quota_manager.check_user_rate_limit(user_id, source_type):
+            logger.warning("Burst rate limit tripped for user %s on %s. Serving cache.", user_id, source_type)
 
         query_normalized = query.strip().lower()
         query_hash = hashlib.sha256(query_normalized.encode("utf-8")).hexdigest()[:16]
         cache_key = f"source:search:{source_type}:{query_hash}:{limit}"
 
         cached_results = cache.get(cache_key)
+        health = quota_manager.get_health_status(source_type)
+
+        # If cache hit and provider is degraded or cached_only, return cache immediately
         if cached_results is not None:
+            if not health["is_live"]:
+                return cached_results
             return cached_results
+
+        # If no cache but circuit is open or quota exhausted, return empty list safely
+        if not health["is_live"]:
+            logger.info("Provider %s is %s. Cannot execute live search.", source_type, health["status"])
+            return []
 
         try:
             results = provider.search(query=query_normalized, limit=limit)
+            quota_manager.record_request_success(source_type)
             cache.set(cache_key, results, timeout=CACHE_TTL_DEFAULT)
             return results
         except Exception as err:
             logger.error("Error executing search for provider %s: %s", source_type, err)
-            return []
+            status_code = getattr(err, "status_code", None)
+            retry_after = getattr(err, "retry_after", None)
+            quota_manager.record_request_failure(source_type, status_code=status_code, retry_after=retry_after)
+            return cached_results if cached_results is not None else []
 
     def suggest_with_cache(
-        self, source_type: str, query: str, limit: int = 5
+        self, source_type: str, query: str, limit: int = 5, user_id: Optional[str] = None
     ) -> List[SourceSuggestResult]:
-        """Fast autocomplete suggestions with short caching."""
+        """Fast autocomplete suggestions with quota awareness and short caching."""
         provider = self.get_provider(source_type)
         if not provider:
             return []
+
+        if user_id and not quota_manager.check_user_rate_limit(user_id, source_type):
+            logger.warning("Burst rate limit tripped for user %s on %s suggest.", user_id, source_type)
 
         query_normalized = query.strip().lower()
         query_hash = hashlib.sha256(query_normalized.encode("utf-8")).hexdigest()[:16]
         cache_key = f"source:suggest:{source_type}:{query_hash}:{limit}"
 
         cached_results = cache.get(cache_key)
+        health = quota_manager.get_health_status(source_type)
+
         if cached_results is not None:
             return cached_results
 
+        if not health["is_live"]:
+            return []
+
         try:
             results = provider.suggest(query=query_normalized, limit=limit)
+            quota_manager.record_request_success(source_type)
             cache.set(cache_key, results, timeout=3600)
             return results
         except Exception as err:
             logger.error("Error executing suggest for provider %s: %s", source_type, err)
-            return []
+            quota_manager.record_request_failure(source_type)
+            return cached_results if cached_results is not None else []
 
 
 # Global singleton instance

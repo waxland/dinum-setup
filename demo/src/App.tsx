@@ -477,8 +477,8 @@ export const App: React.FC = () => {
 
     return currentPool.map((item) => ({
       title: item.title,
-      subtext: `${item.subtitle || ""} (${item.entityType})`,
-      icon: <SourceIcon type={item.entityType} size={15} color="var(--blue-france-sun-113, #000091)" />,
+      subtext: `${item.subtitle || ""} (${item.entityType || "law"})`,
+      icon: <SourceIcon type={item.entityType || "law"} size={15} color="var(--blue-france-sun-113, #000091)" />,
       onItemClick: () => {
         editor.insertInlineContent([
           {

@@ -5,6 +5,23 @@
 
 export type ExternalSourceDisplayMode = 'callout' | 'card' | 'link';
 
+export type ProviderHealthStatus =
+  | 'healthy'
+  | 'degraded'
+  | 'cached_only'
+  | 'rate_limited'
+  | 'quota_exhausted'
+  | 'disabled';
+
+export interface ProviderHealthInfo {
+  status: ProviderHealthStatus;
+  message: string;
+  remaining_quota_percent: number;
+  circuit_open_until?: number | null;
+  last_error?: string | null;
+  is_live: boolean;
+}
+
 export type ExternalSourceStatus =
   | 'valid'       // e.g., En vigueur / In force / In Kraft / Geldend
   | 'repealed'    // e.g., Abrogé / Repealed / Außer Kraft / Vervallen
@@ -47,6 +64,7 @@ export interface ExternalSourceEntity {
   metadataFields?: ExternalSourceMetadataField[];
   updatedAt?: string;
   verifiedAt?: string;
+  freshness?: 'live' | 'cached' | 'offline_index';
   rawPayload?: Record<string, unknown> | string;
   // Legacy compatibility fields
   entityType?: SourceEntityType;

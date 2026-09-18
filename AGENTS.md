@@ -41,6 +41,9 @@ Before executing a task, load and read the detailed procedure from `.skills/en/`
 | **Code Review / PR Audit** (Bugs, regressions, conventions, secrets) | `code-review` | [`.skills/en/code-review.md`](.skills/en/code-review.md) | [`.skills/code-review.md`](.skills/code-review.md) |
 | **Architecture Review** (Coupling, responsibilities, real-time/S3 flows) | `architecture-review` | [`.skills/en/architecture-review.md`](.skills/en/architecture-review.md) | [`.skills/architecture-review.md`](.skills/architecture-review.md) |
 | **Evolution Design & ADR** (New feature, option trade-offs, ADR) | `design-change` | [`.skills/en/design-change.md`](.skills/en/design-change.md) | [`.skills/design-change.md`](.skills/design-change.md) |
+| **Pull Request Submission & CI Validation** (Gitlint, Gitmoji, DCO) | `send-pr` | [`.skills/en/send-pr.md`](.skills/en/send-pr.md) | [`.skills/send-pr.md`](.skills/send-pr.md) |
+| **Package Versioning & Distribution** (SemVer, Wheels, Tarballs, CLI) | `package-versioning` | [`.skills/en/package-versioning.md`](.skills/en/package-versioning.md) | [`.skills/package-versioning.md`](.skills/package-versioning.md) |
+| **Quota Management & Resilience** (Rate Limits, Circuit Breaker, Caching) | `quota-resilience` | [`.skills/en/quota-resilience.md`](.skills/en/quota-resilience.md) | [`.skills/quota-resilience.md`](.skills/quota-resilience.md) |
 
 ---
 

@@ -6,6 +6,8 @@ import type {
     ExternalSourceProviderDefinition,
     ExternalSourceStatus,
     ExternalSourceSuggestResult,
+    ProviderHealthInfo,
+    ProviderHealthStatus,
 } from '@suitenumerique/slash-sources-sdk';
 
 export type {
@@ -14,7 +16,9 @@ export type {
     ExternalSourceMetadataField,
     ExternalSourceProviderDefinition,
     ExternalSourceStatus,
-    ExternalSourceSuggestResult
+    ExternalSourceSuggestResult,
+    ProviderHealthInfo,
+    ProviderHealthStatus
 };
 
 export type SourceEntityType =
@@ -113,6 +117,7 @@ export interface SourceEntityProps {
   summary?: string;
   url?: string;
   verifiedAt?: string;
+  freshness?: 'live' | 'cached' | 'offline_index';
   rawPayload?: string;
 }
 

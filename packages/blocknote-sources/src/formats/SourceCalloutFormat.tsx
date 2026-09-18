@@ -156,7 +156,14 @@ export const SourceCalloutFormat: React.FC<SourceCalloutFormatProps> = ({ props 
           color: 'var(--c--contextuals--content--semantic--neutral--tertiary, #929292)',
         }}
       >
-        <span>{props.verifiedAt ? `Verified on ${props.verifiedAt}` : 'Official verified source'}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <span>{props.verifiedAt ? `Verified on ${props.verifiedAt}` : 'Official verified source'}</span>
+          {props.freshness === 'cached' && (
+            <span style={{ fontSize: '10px', color: '#b45309', background: '#fef3c7', padding: '1px 5px', borderRadius: '3px' }}>
+              Cached Mode
+            </span>
+          )}
+        </div>
         {props.url && (
           <a
             href={props.url}
