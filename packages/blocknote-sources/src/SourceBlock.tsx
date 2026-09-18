@@ -44,31 +44,38 @@ interface SourceComponentProps {
 const getSourceTypeLabel = (type: SourceEntityType): string => {
   switch (type) {
     case 'law':
-      return 'Légifrance / DILA';
+      return 'Légifrance / Law';
+    case 'case-law':
+      return 'Jurisprudence / Case Law';
     case 'company':
-      return 'Annuaire des Entreprises / RNE';
+      return 'Annuaire des Entreprises / Company';
     case 'parliament':
-      return 'Assemblée Nationale';
+      return 'Assemblée Nationale / Parliament';
     case 'address':
-      return 'Base Adresse Nationale (BAN)';
+      return 'Base Adresse Nationale (BAN) / Address';
+    case 'place':
+      return 'Lieu Géographique / GeoNames';
     case 'procurement':
-      return 'Marchés Publics / BOAMP';
+      return 'Marchés Publics / Procurement';
     case 'grant':
-      return 'Aides-Territoires / Subventions';
+      return 'Aides-Territoires / Grants';
+    case 'statistics':
     case 'insee':
-      return 'Données Locales INSEE';
+      return 'Statistiques Officielles / Statistics';
     case 'agent':
-      return 'Annuaire du Service Public';
+      return 'Annuaire du Service Public / Directory';
     case 'cadastre':
-      return 'Cadastre & Parcelles DGFiP';
+      return 'Cadastre & Parcelles / Land Registry';
     case 'demarche':
-      return 'Démarches-Simplifiées';
+      return 'Démarches Administratives / Procedures';
     case 'opendata':
       return 'data.gouv.fr / Open Data';
+    case 'research':
+      return 'Recherche & Innovation / Research';
     case 'custom':
-      return 'Albert IA Souveraine';
+      return 'Albert IA Souveraine / Custom';
     default:
-      return 'Source Souveraine';
+      return 'Source Connectée';
   }
 };
 

@@ -16,7 +16,7 @@ pytestmark = pytest.mark.django_db
 
 
 def test_source_registry_registration():
-    """Verify built-in providers are auto-registered."""
+    """Verify built-in providers are auto-registered and aliases work."""
     enabled = source_registry.list_enabled_types()
     assert "law" in enabled
     assert "address" in enabled
@@ -30,6 +30,11 @@ def test_source_registry_registration():
     assert "demarche" in enabled
     assert "opendata" in enabled
     assert "custom" in enabled
+
+    # Test universal aliases
+    assert source_registry.get_provider("statistics") is not None
+    assert source_registry.get_provider("case-law") is not None
+    assert source_registry.get_provider("place") is not None
 
 
 def test_source_search_anonymous():

@@ -19,16 +19,20 @@ export type {
 
 export type SourceEntityType =
   | 'law'
+  | 'case-law'
   | 'company'
   | 'parliament'
   | 'address'
+  | 'place'
   | 'procurement'
   | 'grant'
+  | 'statistics'
   | 'insee'
   | 'agent'
   | 'cadastre'
   | 'demarche'
   | 'opendata'
+  | 'research'
   | 'custom';
 
 export type DisplayMode = ExternalSourceDisplayMode;
@@ -44,16 +48,20 @@ export type StatusColor =
 
 export const SOURCE_ENTITY_TYPES = [
   'law',
+  'case-law',
   'company',
   'parliament',
   'address',
+  'place',
   'procurement',
   'grant',
+  'statistics',
   'insee',
   'agent',
   'cadastre',
   'demarche',
   'opendata',
+  'research',
   'custom',
 ] as const;
 

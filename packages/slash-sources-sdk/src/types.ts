@@ -87,16 +87,20 @@ export interface ExternalSourceProviderDefinition {
 
 export type SourceEntityType =
   | 'law'
+  | 'case-law'
   | 'company'
   | 'parliament'
   | 'address'
+  | 'place'
   | 'procurement'
   | 'grant'
+  | 'statistics'
   | 'insee'
   | 'agent'
   | 'cadastre'
   | 'demarche'
   | 'opendata'
+  | 'research'
   | 'custom'
   | string;
 

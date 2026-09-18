@@ -41,3 +41,10 @@ storybook-static/
 
 .vercel
 .env*
+packages/django-lasuite-sources/lasuite_sources/__pycache__/apps.cpython-311.pyc
+packages/django-lasuite-sources/lasuite_sources/__pycache__/base.cpython-311.pyc
+packages/django-lasuite-sources/lasuite_sources/__pycache__/registry.cpython-311.pyc
+packages/django-lasuite-sources/lasuite_sources/__pycache__/tasks.cpython-311.pyc
+packages/django-lasuite-sources/lasuite_sources/__pycache__/types.cpython-311.pyc
+packages/django-lasuite-sources/lasuite_sources/__pycache__/urls.cpython-311.pyc
+packages/django-lasuite-sources/lasuite_sources/__pycache__/views.cpython-311.pyc

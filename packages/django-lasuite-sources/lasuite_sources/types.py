@@ -4,16 +4,20 @@ from typing import Literal, NotRequired, Optional, TypedDict
 
 SourceEntityType = Literal[
     "law",
+    "case-law",
     "company",
     "parliament",
     "address",
+    "place",
     "procurement",
     "grant",
+    "statistics",
     "insee",
     "agent",
     "cadastre",
     "demarche",
     "opendata",
+    "research",
     "custom",
 ]
 
