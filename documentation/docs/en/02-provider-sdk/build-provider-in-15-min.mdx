@@ -1,40 +1,304 @@
 ---
-title: "Build a Custom Slasher in 15 Minutes"
-sidebar_label: "15-Min Tutorial"
-description: Step-by-step tutorial to create a live GitHub repository or public API slasher connector.
+title: "Build a Sovereign Country Connector in 15 Minutes"
+sidebar_label: "Sovereign Connector Guide"
+description: "Step-by-step tutorial for international and European developers to connect national registries (CKAN, SDMX, SPARQL, OGC API) to the Universal BlockNote Standard."
 ---
 
+import { Mermaid } from "../../../src/components/Mermaid";
+import { PackageInstallTabs, PythonInstallTabs, DualLanguageTabs } from "../../../src/components/CodeTabs";
 import { FeatureCard, FeatureGrid } from "../../../src/components/Cards";
 
-# ⚡ Build a Custom Slasher in 15 Minutes
+# 🌍 Build a Sovereign Country Connector in 15 Minutes
 
-Follow this quick guide to build, test, and register a custom Slasher provider connecting to a remote public API.
+This guide explains how **European and international public engineering teams** can build, test, and register a **national sovereign data connector** (e.g. National Laws, Companies, Procurement, Geospatial, or Statistics) into the **Universal Slasher & BlockNote ecosystem**.
 
 ---
 
-## 🛠️ Step 1: Declare the Provider
+## 🏛️ Architecture Overview
+
+The Sovereign Connector framework operates across **three decoupled layers**:
+
+<Mermaid chart={`flowchart LR
+    subgraph Client["1. Client Editor (Browser)"]
+        Slash["Slash Trigger (/country-law, /country-company)"]
+        Popover["Accessible Search Popover (WAI-ARIA AA)"]
+        Block["Universal CustomBlock (Callout, Card, Link)"]
+    end
+
+    subgraph SDK["2. Universal SDK"]
+        TS_Contract["@suitenumerique/slash-sources-sdk"]
+    end
+
+    subgraph Backend["3. Resilient Backend Engine"]
+        DjangoEngine["django-lasuite-sources"]
+        QuotaMgr["Distributed Quota Manager & Circuit Breaker"]
+        Cache[("Redis SHA-256 Cache (TTL 24h)")]
+    end
+
+    subgraph NationalAPI["4. Public Sovereign Registry"]
+        OpenData["CKAN / SDMX / SPARQL / OGC APIs"]
+    end
+
+    Slash --> Popover --> Block
+    Block --> TS_Contract
+    TS_Contract --> DjangoEngine
+    DjangoEngine --> QuotaMgr --> Cache
+    QuotaMgr --> NationalAPI
+`} />
+
+---
+
+## 📦 Step 1: Install Dependencies
+
+Choose your runtime environment to install the universal contracts:
+
+### Frontend TypeScript SDK
+
+<PackageInstallTabs packages="@suitenumerique/slash-sources-sdk @suitenumerique/blocknote-sources" />
+
+### Backend Python Engine
+
+<PythonInstallTabs packages="django-lasuite-sources" />
+
+---
+
+## 🛠️ Step 2: Implement the Python Provider
+
+Create a new file in your Django application or package (e.g. `my_country/providers/law.py`) inheriting from `BaseSourceProvider`:
+
+```python
+import requests
+from lasuite_sources.base import BaseSourceProvider, SourceSearchResult
+from lasuite_sources.security import is_safe_external_url
+
+class CountryLawSourceProvider(BaseSourceProvider):
+    provider_id = "country_law"
+    source_type = "law"  # Universal alias mapped automatically to 'law' and 'case-law'
+    API_URL = "https://api.legislation.country.gov/v1/search"
+
+    def is_enabled(self) -> bool:
+        return True
+
+    def search(self, query: str, limit: int = 5) -> list[SourceSearchResult]:
+        if not is_safe_external_url(self.API_URL):
+            raise ValueError(f"Unsafe external API URL: {self.API_URL}")
+
+        try:
+            resp = requests.get(
+                self.API_URL,
+                params={"q": query, "limit": limit},
+                headers={"Accept": "application/json"},
+                timeout=3.5,  # Non-negotiable DINUM resilience rule
+            )
+            resp.raise_for_status()
+            data = resp.json().get("results", [])
+        except Exception:
+            # Automatic graceful fallback to mock data on network error
+            return self.get_mock_search_results(query, limit)
+
+        results: list[SourceSearchResult] = []
+        for item in data:
+            results.append({
+                "source_id": str(item.get("id", "")),
+                "source_type": "law",
+                "provider": "National Gazette & Legal Registry",
+                "title": item.get("title", ""),
+                "subtitle": f"Act n°{item.get('number', '')} • Enacted on {item.get('date', '')}",
+                "status": "IN FORCE",
+                "status_badge_color": "success",
+                "content_html": f"<blockquote>{item.get('text', '')}</blockquote>",
+                "summary": item.get("description", ""),
+                "meta_field_1_label": "Official ID",
+                "meta_field_1_value": str(item.get("id", "")),
+                "meta_field_2_label": "Jurisdiction",
+                "meta_field_2_value": item.get("jurisdiction", "Federal"),
+                "meta_field_3_label": "Status",
+                "meta_field_3_value": "Consolidated",
+                "url": f"https://legislation.country.gov/acts/{item.get('id', '')}",
+            })
+        return results
+
+    def get_mock_search_results(self, query: str, limit: int = 5) -> list[SourceSearchResult]:
+        return [
+            {
+                "source_id": "ACT-2026-001",
+                "source_type": "law",
+                "provider": "National Gazette (Mock Fallback)",
+                "title": f"Digital Sovereignty & Public Data Act ({query})",
+                "subtitle": "Act n°2026-001 • Section 12",
+                "status": "IN FORCE",
+                "status_badge_color": "success",
+                "content_html": "<p>All official public registries must be accessible via open standards.</p>",
+                "summary": "Mandatory standard for public administration interoperability.",
+                "meta_field_1_label": "Official ID",
+                "meta_field_1_value": "ACT-2026-001",
+                "meta_field_2_label": "Status",
+                "meta_field_2_value": "Active",
+                "meta_field_3_label": "Language",
+                "meta_field_3_value": "EN",
+                "url": "https://legislation.country.gov/mock/ACT-2026-001",
+            }
+        ]
+```
+
+---
+
+## ⚡ Step 3: Register Dynamic Plugin Discovery (`pyproject.toml`)
+
+No hardcoded modifications in the core engine are required. Register your provider dynamically using standard Python `entry_points`:
+
+```toml
+# pyproject.toml of your package or country extension
+[project.entry-points."lasuite_sources.providers"]
+country_law = "my_country.providers.law:CountryLawSourceProvider"
+country_company = "my_country.providers.company:CountryCompanySourceProvider"
+country_stats = "my_country.providers.statistics:CountryStatsSourceProvider"
+```
+
+The `SourceRegistry` singleton discovers and loads your connector automatically at boot time!
+
+---
+
+## ⚛️ Step 4: Frontend Provider Definition (TypeScript SDK)
+
+On the client side, declare the slash trigger and auto-completion palette:
 
 ```typescript
-import { defineSourceProvider } from "@slasher/sdk";
+import { defineSourceProvider } from "@suitenumerique/slash-sources-sdk";
 
-export const npmPackageSlasher = defineSourceProvider({
-  name: "npm Packages",
-  slashCommand: "npm",
-  icon: "📦",
-  description: "Insert live npm package metadata into documents",
-  suggest: async (query) => {
-    const res = await fetch(`https://api.npms.io/v2/search/suggestions?q=${encodeURIComponent(query)}`);
-    const results = await res.json();
-    return results.map((pkg: any) => ({
-      id: pkg.package.name,
-      title: pkg.package.name,
-      subtitle: pkg.package.description,
-      type: "custom",
+export const countryLawProvider = defineSourceProvider({
+  type: "law",
+  name: "National Legal Gazette",
+  iconName: "scale",
+  slashCommand: "law",
+  slashAliases: ["act", "gazette", "code", "statute"],
+  description: "Search and insert consolidated national acts & legislation",
+
+  suggest: async (query: string, limit = 5) => {
+    const res = await fetch(`/api/v1.0/sources/suggest/?type=law&q=${encodeURIComponent(query)}&limit=${limit}`);
+    const data = await res.json();
+    return data.map((item: any) => ({
+      id: item.source_id,
+      title: item.title,
+      subtitle: item.subtitle,
+      type: "law",
     }));
   },
-  search: async (query) => {
-    // Return formatted ExternalSourceEntity array
-    return [];
+
+  search: async (query: string, limit = 10) => {
+    const res = await fetch(`/api/v1.0/sources/search/?type=law&q=${encodeURIComponent(query)}&limit=${limit}`);
+    const data = await res.json();
+    return data.results.map((item: any) => ({
+      entityType: "law",
+      displayMode: "callout",
+      sourceId: item.source_id,
+      title: item.title,
+      subtitle: item.subtitle,
+      status: item.status,
+      contentHtml: item.content_html,
+      summary: item.summary,
+      metaField1Label: item.meta_field_1_label,
+      metaField1Value: item.meta_field_1_value,
+      url: item.url,
+    }));
   },
 });
 ```
+
+---
+
+## 🔄 Step 5: Dual-Language Full-Stack Overview
+
+Here is the complete contract symmetry between TypeScript and Python:
+
+<DualLanguageTabs
+  tsTitle="Frontend BlockNote SDK"
+  pyTitle="Backend Django Provider"
+  tsCode={`// TypeScript contract
+export interface SourceItem {
+  readonly id: string;
+  readonly title: string;
+  readonly subtitle?: string;
+  readonly type: SourceEntityType;
+  readonly status?: string;
+  readonly freshness?: "live" | "cache" | "mock";
+}`}
+  pyCode={`# Python Django contract
+class SourceSearchResult(TypedDict):
+    source_id: str
+    source_type: str
+    provider: str
+    title: str
+    subtitle: Optional[str]
+    status: str
+    status_badge_color: str
+    freshness: Optional[str]  # 'live' | 'cache' | 'mock'`}
+/>
+
+---
+
+## 🧪 Step 6: Automated Testing & Validation
+
+Validate your connector against the complete resilience and quality suite:
+
+```bash
+# Run Django backend tests (SSRF, Circuit Breakers, Quotas)
+pytest packages/django-lasuite-sources/tests/
+
+# Run TypeScript Vitest tests
+npm run packages:test
+
+# Verify SSR Documentation build (0 hydration errors)
+npm run docs:build
+```
+
+---
+
+## 🚀 Existing Certified Sovereign Country Presets
+
+Explore the official preset configurations already available in this monorepo:
+
+<FeatureGrid cols={3}>
+  <FeatureCard
+    icon="🇪🇺"
+    title="European Union (13 Connectors)"
+    description="EUR-Lex, Eurostat, TED (Tenders), CORDIS, CURIA Case Law, data.europa.eu, and EU Whoiswho."
+    href="/en/04-presets/european-union"
+    badge="13 Connectors"
+  />
+  <FeatureCard
+    icon="🇨🇦"
+    title="Canada Federal (8 Connectors)"
+    description="Justice Laws, Corporations Canada, Parliament LEGISinfo, StatCan, Open Canada CKAN, CanadaBuys."
+    href="/en/04-presets/canada"
+    badge="8 Connectors"
+  />
+  <FeatureCard
+    icon="🇩🇪"
+    title="Germany Bund (5 Connectors)"
+    description="Gesetze im Internet, GovData.de CKAN, Destatis Genesis-Online, Bundestag DIP, Unternehmensregister."
+    href="/en/04-presets/germany-bund"
+    badge="5 Connectors"
+  />
+  <FeatureCard
+    icon="🇳🇱"
+    title="Netherlands Gov (5 Connectors)"
+    description="Wetten.nl, Data.overheid.nl CKAN, CBS StatLine, BAG Address, KVK Handelsregister."
+    href="/en/04-presets/netherlands-gov"
+    badge="5 Connectors"
+  />
+  <FeatureCard
+    icon="🇪🇸"
+    title="Spain BOE & Gob (6 Connectors)"
+    description="BOE Boletín Oficial, Datos.gob.es CKAN, INE Statistics, Sede Catastro, PLACSP Procurement."
+    href="/en/04-presets/spain-boe"
+    badge="6 Connectors"
+  />
+  <FeatureCard
+    icon="🌍"
+    title="International & UN (4 Connectors)"
+    description="World Bank Open Data, OECD Data Explorer, WHO Global Observatory, HUDOC Human Rights."
+    href="/en/04-presets/international"
+    badge="4 Connectors"
+  />
+</FeatureGrid>
