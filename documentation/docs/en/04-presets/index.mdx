@@ -10,25 +10,35 @@ import { FeatureCard, FeatureGrid } from "../../../src/components/Cards";
 
 Slasher includes ready-to-use, verified datasets and API configurations for European sovereign data providers:
 
-<FeatureGrid cols={2}>
+<FeatureGrid cols={3}>
+  <FeatureCard
+    title="🇪🇺 European Union (EU Native & Federated)"
+    description="EUR-Lex laws, European Parliament Open Data, TED procurement, Eurostat statistics, Funding & Tenders, and CORDIS research."
+    icon="globe"
+  />
+  <FeatureCard
+    title="🇨🇦 Canada (Federal Registries)"
+    description="Justice Laws statutes, Corporations Canada registries, LEGISinfo bills, StatCan WDS statistics, and CanadaBuys tenders."
+    icon="shield"
+  />
   <FeatureCard
     title="🇩🇪 Deutschland (Federal Registers)"
-    description="Laws via Gesetze im Internet (BMJ), corporate entities via Handelsregister, and public tenders via Bund.de."
+    description="Gesetze im Internet (BMJ), Handelsregister companies, Bundestag DIP parliamentary open data, and Destatis statistics."
     icon="landmark"
   />
   <FeatureCard
     title="🇳🇱 Nederland (National Registers)"
-    description="Statutory acts via Wettenbank (KOOP / Overheid.nl), KVK Handelsregister, and BAG address registry."
+    description="Wettenbank acts (KOOP / Overheid.nl), KVK Handelsregister, Kadaster BAG addresses, and CBS StatLine data."
     icon="building-2"
   />
   <FeatureCard
     title="🇪🇸 España (Registros Estatales)"
-    description="Organic laws via BOE (LOPDGDD), corporate records via Registro Mercantil, and public contracts via Plataforma de Contratación."
+    description="BOE legislation (LOPDGDD), Registro Mercantil corporate data, PLACSP public contracts, Sede Catastro, and INEbase."
     icon="scale"
   />
   <FeatureCard
-    title="🇪🇺 European Union (Pan-European APIs)"
-    description="EU Regulations and Directives via EUR-Lex (GDPR, NIS 2) and eProcurement notices via TED."
-    icon="globe"
+    title="🌍 International Organizations"
+    description="World Bank World Development Indicators (WDI), OECD Data Explorer, WHO Global Health Observatory, and CEDH/HUDOC."
+    icon="globe-2"
   />
 </FeatureGrid>

@@ -1,0 +1,34 @@
+---
+title: "🌍 International Organizations Sovereign Slasher Preset"
+sidebar_label: "🌍 International"
+description: Connectors for World Bank Open Data, OECD Data Explorer, WHO Global Health Observatory, and Council of Europe ECHR/HUDOC.
+---
+
+import { FeatureCard, FeatureGrid } from "../../../src/components/Cards";
+
+# 🌍 International Organizations Slasher Preset
+
+Connect your BlockNote documents directly to global intergovernmental data repositories:
+
+<FeatureGrid cols={2}>
+  <FeatureCard
+    title="/worldbank (World Bank Open Data)"
+    description="Global macroeconomic indicators, GDP, poverty metrics, and Sustainable Development Goals (SDG) from the World Bank API v2."
+    icon="globe"
+  />
+  <FeatureCard
+    title="/oecd (OECD Data Explorer)"
+    description="Harmonized economic studies, international taxation, and PISA educational evaluations from the OECD SDMX REST API."
+    icon="bar-chart-3"
+  />
+  <FeatureCard
+    title="/who (World Health Organization)"
+    description="Worldwide health indicators, life expectancy, and epidemiological surveillance datasets from the WHO Global Health Observatory (GHO)."
+    icon="heart-pulse"
+  />
+  <FeatureCard
+    title="/hudoc (ECHR / CEDH Case Law)"
+    description="Human rights jurisprudence and landmark rulings from the European Court of Human Rights (Council of Europe)."
+    icon="scale"
+  />
+</FeatureGrid>

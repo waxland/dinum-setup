@@ -90,6 +90,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           "/en/04-presets/canada",
           "/en/04-presets/european-union",
           "/en/04-presets/germany-bund",
+          "/en/04-presets/international",
           "/en/04-presets/netherlands-gov",
           "/en/04-presets/spain-boe"
         ]
