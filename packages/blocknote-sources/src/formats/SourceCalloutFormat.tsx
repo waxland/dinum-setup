@@ -1,4 +1,5 @@
 import React from 'react';
+import { SourceIcon } from '../components/SourceIcon';
 import { SourceEntityProps } from '../types';
 
 interface SourceCalloutFormatProps {
@@ -11,7 +12,7 @@ export const SourceCalloutFormat: React.FC<SourceCalloutFormatProps> = ({ props 
       contentEditable={false}
       style={{
         padding: '16px',
-        borderRadius: '4px',
+        borderRadius: '6px',
         borderLeft: '4px solid var(--c--globals--colors--brand-primary, #000091)',
         borderTop: '1px solid var(--c--contextuals--border--surface--primary, #e5e5e5)',
         borderRight: '1px solid var(--c--contextuals--border--surface--primary, #e5e5e5)',
@@ -26,10 +27,25 @@ export const SourceCalloutFormat: React.FC<SourceCalloutFormatProps> = ({ props 
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: '8px',
-          marginBottom: '6px',
+          marginBottom: '8px',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
+          <div
+            style={{
+              width: '26px',
+              height: '26px',
+              borderRadius: '6px',
+              background: 'var(--blue-france-975, #f5f5fe)',
+              color: 'var(--blue-france-sun-113, #000091)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}
+          >
+            <SourceIcon type={props.entityType} size={15} color="currentColor" />
+          </div>
           <span
             style={{
               fontSize: '14px',

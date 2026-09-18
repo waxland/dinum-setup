@@ -1,4 +1,5 @@
 import React from 'react';
+import { SourceIcon } from '../components/SourceIcon';
 import { SourceEntityProps } from '../types';
 
 interface SourceCardFormatProps {
@@ -11,7 +12,7 @@ export const SourceCardFormat: React.FC<SourceCardFormatProps> = ({ props }) => 
       contentEditable={false}
       style={{
         padding: '16px',
-        borderRadius: '4px',
+        borderRadius: '6px',
         border: '1px solid var(--c--contextuals--border--surface--primary, #e5e5e5)',
         background: 'var(--c--contextuals--background--surface--primary, #ffffff)',
         boxShadow: '0 1px 4px rgba(0, 0, 145, 0.08)',
@@ -22,29 +23,46 @@ export const SourceCardFormat: React.FC<SourceCardFormatProps> = ({ props }) => 
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          marginBottom: '8px',
+          marginBottom: '10px',
         }}
       >
-        <div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
           <div
             style={{
-              fontSize: '14px',
-              fontWeight: 700,
-              color: 'var(--c--contextuals--content--semantic--neutral--primary, #1e1e1e)',
+              width: '26px',
+              height: '26px',
+              borderRadius: '6px',
+              background: 'var(--blue-france-975, #f5f5fe)',
+              color: 'var(--blue-france-sun-113, #000091)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
             }}
           >
-            {props.title}
+            <SourceIcon type={props.entityType} size={15} color="currentColor" />
           </div>
-          {props.subtitle && (
+          <div>
             <div
               style={{
-                fontSize: '11px',
-                color: 'var(--c--contextuals--content--semantic--neutral--secondary, #666666)',
+                fontSize: '14px',
+                fontWeight: 700,
+                color: 'var(--c--contextuals--content--semantic--neutral--primary, #1e1e1e)',
               }}
             >
-              {props.subtitle}
+              {props.title}
             </div>
-          )}
+            {props.subtitle && (
+              <div
+                style={{
+                  fontSize: '11px',
+                  color: 'var(--c--contextuals--content--semantic--neutral--secondary, #666666)',
+                }}
+              >
+                {props.subtitle}
+              </div>
+            )}
+          </div>
         </div>
 
         {props.status && (

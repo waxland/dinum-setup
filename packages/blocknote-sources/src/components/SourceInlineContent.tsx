@@ -2,25 +2,7 @@ import { createReactInlineContentSpec } from '@blocknote/react';
 import React, { useState } from 'react';
 
 import { SOURCE_ENTITY_TYPES, SourceEntityType } from '../types';
-
-export const SOURCE_INLINE_ICONS: Record<SourceEntityType, string> = {
-  law: '⚖️',
-  'case-law': '📜',
-  company: '🏢',
-  parliament: '🏛️',
-  address: '📍',
-  place: '🗺️',
-  procurement: '🛍️',
-  grant: '💶',
-  statistics: '📈',
-  insee: '📊',
-  agent: '👤',
-  cadastre: '🗺️',
-  demarche: '📝',
-  opendata: '🌐',
-  research: '🔬',
-  custom: '🧠',
-};
+import { SourceIcon } from './SourceIcon';
 
 export const SOURCE_INLINE_LABELS: Record<SourceEntityType, string> = {
   law: 'Légifrance',
@@ -60,7 +42,6 @@ export const SourceInlineBadge: React.FC<SourceInlineProps> = ({ inlineContent }
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const { sourceId, title, subtitle, entityType, status, url, excerpt, verifiedAt } = inlineContent.props;
-  const icon = SOURCE_INLINE_ICONS[entityType] || '📜';
   const providerName = SOURCE_INLINE_LABELS[entityType] || 'Source Souveraine';
 
   const handleCopy = (e: React.MouseEvent) => {
@@ -118,7 +99,9 @@ export const SourceInlineBadge: React.FC<SourceInlineProps> = ({ inlineContent }
           boxShadow: '0 1px 2px rgba(0, 0, 145, 0.05)',
         }}
       >
-        <span style={{ fontSize: '1.1em' }}>{icon}</span>
+        <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+          <SourceIcon type={entityType} size={13} color="currentColor" />
+        </span>
         <span
           style={{
             maxWidth: '220px',
@@ -171,8 +154,22 @@ export const SourceInlineBadge: React.FC<SourceInlineProps> = ({ inlineContent }
         >
           {/* Header du Popover */}
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px', marginBottom: '8px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ fontSize: '18px' }}>{icon}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div
+                style={{
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '6px',
+                  background: 'var(--blue-france-975, #f5f5fe)',
+                  color: 'var(--blue-france-sun-113, #000091)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <SourceIcon type={entityType} size={16} color="currentColor" />
+              </div>
               <div>
                 <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--blue-france-sun-113, #000091)', textTransform: 'uppercase' }}>
                   {providerName}

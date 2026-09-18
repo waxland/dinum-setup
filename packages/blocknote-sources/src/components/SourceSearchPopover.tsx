@@ -3,6 +3,7 @@ import React, { KeyboardEvent, useEffect, useId, useRef, useState } from 'react'
 import { ALL_INTERNATIONAL_MOCK_SOURCES, InternationalSourceItem, SupportedCountry } from '../mockData';
 import { MOCK_SOURCES } from '../mockSources';
 import { SourceEntityProps, SourceEntityType } from '../types';
+import { SourceIcon } from './SourceIcon';
 
 interface SourceSearchPopoverProps {
   initialType?: SourceEntityType;
@@ -397,8 +398,22 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0 }}>
-                      <span style={{ fontSize: '15px' }}>{catConfig?.icon || '📜'}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
+                      <div
+                        style={{
+                          width: '26px',
+                          height: '26px',
+                          borderRadius: '6px',
+                          background: isSelected ? 'var(--blue-france-975, #f5f5fe)' : 'rgba(0, 0, 145, 0.04)',
+                          color: 'var(--blue-france-sun-113, #000091)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0,
+                        }}
+                      >
+                        <SourceIcon type={item.entityType} size={15} color="currentColor" />
+                      </div>
                       <span
                         style={{
                           fontWeight: 700,

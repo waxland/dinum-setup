@@ -1,13 +1,13 @@
 import { BlockNoteSchema, defaultBlockSpecs, defaultInlineContentSpecs } from "@blocknote/core";
 import { BlockNoteView } from "@blocknote/mantine";
 import {
-    SuggestionMenuController,
-    getDefaultReactSlashMenuItems,
-    useCreateBlockNote,
+  SuggestionMenuController,
+  getDefaultReactSlashMenuItems,
+  useCreateBlockNote,
 } from "@blocknote/react";
 import React, { useEffect, useMemo, useState } from "react";
 
-import { SourceBlock, SourceInlineContent } from "./SourceBlockSpec";
+import { SourceBlock, SourceIcon, SourceInlineContent } from "./SourceBlockSpec";
 import { MOCK_SOURCES } from "./mockData";
 import { SourceEntityType } from "./types";
 
@@ -175,7 +175,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
         },
         aliases: ["loi", "law", "legifrance", "code", "article", "decret"],
         group: "Sovereign & Official Sources",
-        icon: <span>⚖️</span>,
+        icon: <SourceIcon type="law" size={16} color="var(--blue-france-sun-113, #000091)" />,
         subtext: "Insert a certified legal article from Légifrance",
       },
       {
@@ -189,7 +189,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
         },
         aliases: ["entreprise", "pappers", "siren", "siret", "societe", "kbis"],
         group: "Sovereign & Official Sources",
-        icon: <span>🏢</span>,
+        icon: <SourceIcon type="company" size={16} color="var(--blue-france-sun-113, #000091)" />,
         subtext: "Insert certified business registry data (SIREN, managers)",
       },
       {
@@ -203,7 +203,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
         },
         aliases: ["assemblee", "assemble", "an", "amendement", "depute"],
         group: "Sovereign & Official Sources",
-        icon: <span>🏛️</span>,
+        icon: <SourceIcon type="parliament" size={16} color="var(--blue-france-sun-113, #000091)" />,
         subtext: "Track a parliamentary amendment or legislative bill",
       },
       {
@@ -217,7 +217,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
         },
         aliases: ["adresse", "address", "ban", "geo", "rue"],
         group: "Sovereign & Official Sources",
-        icon: <span>📍</span>,
+        icon: <SourceIcon type="address" size={16} color="var(--blue-france-sun-113, #000091)" />,
         subtext: "Certified autocomplete from National Address Base",
       },
       {
@@ -231,7 +231,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
         },
         aliases: ["marche", "boamp", "achat", "dce", "dae"],
         group: "Sovereign & Official Sources",
-        icon: <span>🛍️</span>,
+        icon: <SourceIcon type="procurement" size={16} color="var(--blue-france-sun-113, #000091)" />,
         subtext: "Insert an official public procurement notice (BOAMP)",
       },
       {
@@ -245,7 +245,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
         },
         aliases: ["subvention", "aides", "fonds-vert", "detr", "dsil", "anct"],
         group: "Sovereign & Official Sources",
-        icon: <span>💶</span>,
+        icon: <SourceIcon type="grant" size={16} color="var(--blue-france-sun-113, #000091)" />,
         subtext: "Insert a territorial funding or grant program",
       },
       {
@@ -259,7 +259,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
         },
         aliases: ["insee", "stats", "population", "territoire"],
         group: "Sovereign & Official Sources",
-        icon: <span>📊</span>,
+        icon: <SourceIcon type="insee" size={16} color="var(--blue-france-sun-113, #000091)" />,
         subtext: "Insert official INSEE demographic indicators",
       },
       {
@@ -273,7 +273,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
         },
         aliases: ["agent", "annuaire", "service-public", "contact"],
         group: "Sovereign & Official Sources",
-        icon: <span>👤</span>,
+        icon: <SourceIcon type="agent" size={16} color="var(--blue-france-sun-113, #000091)" />,
         subtext: "Insert official contact details of a public administration",
       },
       {
@@ -287,7 +287,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
         },
         aliases: ["cadastre", "parcelle", "foncier", "dgfip"],
         group: "Sovereign & Official Sources",
-        icon: <span>🗺️</span>,
+        icon: <SourceIcon type="cadastre" size={16} color="var(--blue-france-sun-113, #000091)" />,
         subtext: "Insert a certified DGFiP land registry parcel",
       },
       {
@@ -301,7 +301,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
         },
         aliases: ["demarche", "formulaire", "usager", "procedure"],
         group: "Sovereign & Official Sources",
-        icon: <span>📝</span>,
+        icon: <SourceIcon type="demarche" size={16} color="var(--blue-france-sun-113, #000091)" />,
         subtext: "Insert a simplified online administrative procedure",
       },
       {
@@ -315,7 +315,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
         },
         aliases: ["opendata", "dataset", "datagouv", "donnees"],
         group: "Sovereign & Official Sources",
-        icon: <span>🌐</span>,
+        icon: <SourceIcon type="opendata" size={16} color="var(--blue-france-sun-113, #000091)" />,
         subtext: "Insert a certified open dataset from data.gouv.fr",
       },
       {
@@ -329,7 +329,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
         },
         aliases: ["albert", "ia", "rag", "etalab", "service-public"],
         group: "Sovereign & Official Sources",
-        icon: <span>🧠</span>,
+        icon: <SourceIcon type="custom" size={16} color="var(--blue-france-sun-113, #000091)" />,
         subtext: "Ask an administrative query to Albert Sovereign AI",
       },
     ];
@@ -346,6 +346,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
     return allItems.map((item) => ({
       title: item.title,
       subtext: `${item.subtitle || ""} (${item.entityType})`,
+      icon: <SourceIcon type={item.entityType} size={15} color="var(--blue-france-sun-113, #000091)" />,
       onItemClick: () => {
         editor.insertInlineContent([
           {
@@ -471,10 +472,14 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
                 background: isDark ? "#334155" : "#ffffff",
                 color: isDark ? "#f8fafc" : "#1e1e1e",
                 cursor: "pointer",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "5px",
                 transition: "all 0.15s ease",
               }}
             >
-              {btn.icon} {btn.label}
+              <SourceIcon type={btn.type} size={13} color="currentColor" />
+              <span>{btn.label}</span>
             </button>
           ))}
           <div style={{ width: "1px", height: "16px", background: "#cccccc", margin: "0 4px" }} />

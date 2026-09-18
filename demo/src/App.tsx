@@ -13,6 +13,7 @@ import {
   MOCK_FRANCE_SOURCES,
   MOCK_GERMANY_SOURCES,
   SourceBlock,
+  SourceIcon,
   SourceInlineContent,
   getLocaleDictionary,
   type ExternalSourceDisplayMode,
@@ -357,7 +358,7 @@ export const App: React.FC = () => {
         },
         aliases: ["loi", "law", "legifrance", "code", "article", "decret", "gesetz", "wet", "eurlex"],
         group: "Sovereign & Official Sources",
-        icon: <span>⚖️</span>,
+        icon: <SourceIcon type="law" size={16} color="var(--blue-france-sun-113, #000091)" />,
         subtext: "Insert a certified official legal text",
       },
       {
@@ -371,7 +372,7 @@ export const App: React.FC = () => {
         },
         aliases: ["entreprise", "company", "pappers", "siren", "siret", "societe", "kbis", "register", "kvk"],
         group: "Sovereign & Official Sources",
-        icon: <span>🏢</span>,
+        icon: <SourceIcon type="company" size={16} color="var(--blue-france-sun-113, #000091)" />,
         subtext: "Insert certified commercial registry data",
       },
       {
@@ -385,7 +386,7 @@ export const App: React.FC = () => {
         },
         aliases: ["assemblee", "parliament", "assemble", "an", "amendement", "depute", "bundestag", "dip"],
         group: "Sovereign & Official Sources",
-        icon: <span>🏛️</span>,
+        icon: <SourceIcon type="parliament" size={16} color="var(--blue-france-sun-113, #000091)" />,
         subtext: "Track a parliamentary amendment or bill in session",
       },
       {
@@ -399,7 +400,7 @@ export const App: React.FC = () => {
         },
         aliases: ["adresse", "address", "ban", "geo", "rue", "bag"],
         group: "Sovereign & Official Sources",
-        icon: <span>📍</span>,
+        icon: <SourceIcon type="address" size={16} color="var(--blue-france-sun-113, #000091)" />,
         subtext: "Certified autocomplete from national address registries",
       },
       {
@@ -413,7 +414,7 @@ export const App: React.FC = () => {
         },
         aliases: ["marche", "boamp", "achat", "dce", "dae", "ted", "procurement"],
         group: "Sovereign & Official Sources",
-        icon: <span>🛍️</span>,
+        icon: <SourceIcon type="procurement" size={16} color="var(--blue-france-sun-113, #000091)" />,
         subtext: "Insert an official public procurement notice",
       },
       {
@@ -427,7 +428,7 @@ export const App: React.FC = () => {
         },
         aliases: ["subvention", "grant", "aides", "fonds-vert", "detr", "dsil", "anct", "subsidies"],
         group: "Sovereign & Official Sources",
-        icon: <span>💶</span>,
+        icon: <SourceIcon type="grant" size={16} color="var(--blue-france-sun-113, #000091)" />,
         subtext: "Insert a public funding or territorial grant program",
       },
       {
@@ -441,7 +442,7 @@ export const App: React.FC = () => {
         },
         aliases: ["insee", "stats", "population", "territoire", "destatis", "cbs", "eurostat"],
         group: "Sovereign & Official Sources",
-        icon: <span>📊</span>,
+        icon: <SourceIcon type="insee" size={16} color="var(--blue-france-sun-113, #000091)" />,
         subtext: "Insert official demographic indicators",
       },
       {
@@ -455,7 +456,7 @@ export const App: React.FC = () => {
         },
         aliases: ["opendata", "dataset", "datagouv", "donnees", "govdata", "dataeuropa"],
         group: "Sovereign & Official Sources",
-        icon: <span>🌐</span>,
+        icon: <SourceIcon type="opendata" size={16} color="var(--blue-france-sun-113, #000091)" />,
         subtext: "Insert a certified open dataset record",
       },
     ];
@@ -477,7 +478,7 @@ export const App: React.FC = () => {
     return currentPool.map((item) => ({
       title: item.title,
       subtext: `${item.subtitle || ""} (${item.entityType})`,
-      icon: <span>{item.entityType === "law" ? "⚖️" : item.entityType === "company" ? "🏢" : item.entityType === "parliament" ? "🏛️" : item.entityType === "address" ? "📍" : item.entityType === "procurement" ? "🛍️" : item.entityType === "grant" ? "💶" : item.entityType === "insee" ? "📊" : item.entityType === "agent" ? "👤" : item.entityType === "cadastre" ? "🗺️" : item.entityType === "demarche" ? "📝" : item.entityType === "opendata" ? "🌐" : "🧠"}</span>,
+      icon: <SourceIcon type={item.entityType} size={15} color="var(--blue-france-sun-113, #000091)" />,
       onItemClick: () => {
         editor.insertInlineContent([
           {
@@ -696,7 +697,9 @@ export const App: React.FC = () => {
                 className="demo-btn"
                 title={btn.desc}
               >
-                <span>{btn.icon}</span>
+                <span style={{ display: "inline-flex", alignItems: "center" }}>
+                  <SourceIcon type={btn.type} size={15} color="currentColor" />
+                </span>
                 <span>{btn.label}</span>
               </button>
             ))}

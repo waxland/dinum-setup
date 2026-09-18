@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { SourceIcon } from '../components/SourceIcon';
 import { SourceEntityProps } from '../types';
 
 interface SourceLinkFormatProps {
@@ -28,19 +29,22 @@ export const SourceLinkFormat: React.FC<SourceLinkFormatProps> = ({ props }) => 
         style={{
           display: 'inline-flex',
           alignItems: 'center',
-          gap: '4px',
+          gap: '6px',
           padding: '2px 8px',
           borderRadius: '4px',
-          background: 'var(--c--contextuals--background--surface--secondary, #e8edff)',
-          border: '1px solid var(--c--globals--colors--brand-primary, #000091)',
-          color: 'var(--c--globals--colors--brand-primary, #000091)',
+          background: 'var(--blue-france-975, #f5f5fe)',
+          border: '1px solid var(--blue-france-925, #e3e3fd)',
+          color: 'var(--blue-france-sun-113, #000091)',
           fontSize: '12px',
           fontWeight: 600,
           textDecoration: 'none',
           cursor: 'pointer',
+          transition: 'all 0.15s ease',
         }}
       >
-        <span>📌</span>
+        <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+          <SourceIcon type={props.entityType} size={13} color="currentColor" />
+        </span>
         <span style={{ maxWidth: '280px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {props.title}
         </span>
