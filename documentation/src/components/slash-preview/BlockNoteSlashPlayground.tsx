@@ -17,7 +17,9 @@ export const BlockNoteSlashPlayground: React.FC = () => {
 
   useEffect(() => {
     setMounted(true);
-    if (typeof document === "undefined") return;
+    if (typeof document === "undefined") {
+      return;
+    }
     setIsDark(document.documentElement.classList.contains("dark"));
 
     const observer = new MutationObserver(() => {
@@ -128,21 +130,21 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       {
         type: "sourceBlock",
         props: {
-          ...MOCK_SOURCES.law[0],
+          ...(MOCK_SOURCES.law?.[0] || {}),
           displayMode: "callout",
         },
       },
       {
         type: "sourceBlock",
         props: {
-          ...MOCK_SOURCES.company[0],
+          ...(MOCK_SOURCES.company?.[0] || {}),
           displayMode: "card",
         },
       },
       {
         type: "sourceBlock",
         props: {
-          ...MOCK_SOURCES.address[0],
+          ...(MOCK_SOURCES.address?.[0] || {}),
           displayMode: "link",
         },
       },
@@ -161,7 +163,9 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
 
   // Custom Slash Menu Items
   const customSlashMenuItems = useMemo(() => {
-    if (!editor) return [];
+    if (!editor) {
+      return [];
+    }
 
     const customItems = [
       {
@@ -339,7 +343,9 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
 
   // Menu de suggestions @mention pour interlinking direct
   const customMentionMenuItems = useMemo(() => {
-    if (!editor) return [];
+    if (!editor) {
+      return [];
+    }
 
     const allItems = Object.values(MOCK_SOURCES).flat();
 
@@ -370,7 +376,9 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
 
   // Insert helper from toolbar buttons
   const handleInsert = (type: SourceEntityType) => {
-    if (!editor) return;
+    if (!editor) {
+      return;
+    }
     const currentBlock =
       editor.getTextCursorPosition()?.block ||
       editor.document[editor.document.length - 1];
@@ -378,7 +386,9 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
   };
 
   const handleReset = () => {
-    if (!editor) return;
+    if (!editor) {
+      return;
+    }
     editor.replaceBlocks(editor.document, [
       {
         type: "paragraph",

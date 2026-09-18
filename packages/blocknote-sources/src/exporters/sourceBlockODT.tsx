@@ -12,7 +12,7 @@ export interface GenericExporterODT {
 
 export const blockMappingSourceBlockODT = (
   block: SourceBlockExportBlock,
-  exporter?: GenericExporterODT,
+  _exporter?: GenericExporterODT,
 ) => {
   const props = block.props;
   const metaParts = [props.meta1, props.meta2, props.meta3].filter(Boolean);

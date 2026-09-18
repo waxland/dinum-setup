@@ -101,7 +101,9 @@ const SourceComponent: React.FC<SourceComponentProps> = ({ block, editor }) => {
   const hasSelectedEntity = Boolean(props.sourceId && props.title);
 
   const handleSelectEntity = (entity: SourceEntityProps) => {
-    if (!isEditable) return;
+    if (!isEditable) {
+      return;
+    }
     editor.updateBlock(block, {
       props: {
         entityType: entity.entityType,
@@ -124,12 +126,16 @@ const SourceComponent: React.FC<SourceComponentProps> = ({ block, editor }) => {
   };
 
   const handleCancelSearch = () => {
-    if (!isEditable) return;
+    if (!isEditable) {
+      return;
+    }
     editor.removeBlocks([block]);
   };
 
   const handleModeChange = (mode: DisplayMode) => {
-    if (!isEditable) return;
+    if (!isEditable) {
+      return;
+    }
     editor.updateBlock(block, {
       props: {
         displayMode: mode,

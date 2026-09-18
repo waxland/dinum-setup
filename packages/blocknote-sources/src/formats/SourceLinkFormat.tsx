@@ -7,13 +7,19 @@ interface SourceLinkFormatProps {
 }
 
 export const SourceLinkFormat: React.FC<SourceLinkFormatProps> = ({ props }) => {
-  const [isHovered, setIsHovered] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   return (
     <span
       contentEditable={false}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={() => setIsVisible(true)}
+      onMouseLeave={() => setIsVisible(false)}
+      onFocus={() => setIsVisible(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+          setIsVisible(false);
+        }
+      }}
       style={{
         position: 'relative',
         display: 'inline-flex',
@@ -26,6 +32,8 @@ export const SourceLinkFormat: React.FC<SourceLinkFormatProps> = ({ props }) => 
         href={props.url || '#'}
         target={props.url ? '_blank' : undefined}
         rel={props.url ? 'noopener noreferrer' : undefined}
+        aria-haspopup="dialog"
+        aria-expanded={isVisible}
         style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -53,8 +61,10 @@ export const SourceLinkFormat: React.FC<SourceLinkFormatProps> = ({ props }) => 
         )}
       </a>
 
-      {isHovered && (props.subtitle || props.summary || props.excerpt) && (
+      {isVisible && (props.subtitle || props.summary || props.excerpt) && (
         <div
+          role="dialog"
+          aria-label={`Aperçu de la source ${props.title}`}
           style={{
             position: 'absolute',
             top: 'calc(100% + 4px)',
@@ -66,8 +76,7 @@ export const SourceLinkFormat: React.FC<SourceLinkFormatProps> = ({ props }) => 
             borderRadius: '4px',
             background: 'var(--c--contextuals--background--surface--primary, #ffffff)',
             border: '1px solid var(--c--contextuals--border--surface--primary, #e5e5e5)',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-            pointerEvents: 'none',
+            boxShadow: '0 4px 12px rgba(0, 0, 145, 0.12)',
           }}
         >
           {props.subtitle && (

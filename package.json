@@ -10,6 +10,9 @@
   "scripts": {
     "dev": "npm --prefix documentation run dev",
     "build": "npm --prefix packages/slash-sources-sdk run build && npm --prefix packages/blocknote-sources run build && npm --prefix documentation run build",
+    "check": "npm run lint && npm run typecheck && npm run packages:test && npm run demo:build && npm --prefix packages/blocknote-sources run test:e2e && npm run docs:build",
+    "lint": "npm --prefix packages/slash-sources-sdk run lint && npm --prefix packages/blocknote-sources run lint && npm --prefix demo run lint && npm --prefix documentation run lint",
+    "typecheck": "npm --prefix packages/slash-sources-sdk run typecheck && npm --prefix packages/blocknote-sources run typecheck && npm --prefix demo run typecheck && npm --prefix documentation run typecheck",
     "docs:nav": "npm --prefix documentation run docs:nav",
     "docs:dev": "npm --prefix documentation run dev",
     "docs:build": "npm run packages:build && npm --prefix documentation run build",

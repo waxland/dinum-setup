@@ -1,4 +1,11 @@
-import { BlockConfig, defaultProps } from '@blocknote/core';
+import {
+  BlockConfig,
+  BlockNoDefaults,
+  BlockNoteEditor,
+  InlineContentSchema,
+  StyleSchema,
+  defaultProps,
+} from '@blocknote/core';
 import type {
     ExternalSourceDisplayMode,
     ExternalSourceEntity,
@@ -163,8 +170,6 @@ export type CreateSourceBlockConfig = BlockConfig<
   },
   'none'
 >;
-
-import type { BlockNoDefaults, BlockNoteEditor, InlineContentSchema, StyleSchema } from '@blocknote/core';
 
 export type SourceBlockExportBlock = BlockNoDefaults<
   Record<'sourceBlock', CreateSourceBlockConfig>,

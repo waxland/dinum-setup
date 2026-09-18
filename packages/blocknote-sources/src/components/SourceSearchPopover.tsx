@@ -65,7 +65,7 @@ const THEMATIC_TABS: ThematicTab[] = [
   },
 ];
 
-const CATEGORIES: { type: SourceEntityType; label: string; icon: string; group: ThematicGroup }[] = [
+export const CATEGORIES: { type: SourceEntityType; label: string; icon: string; group: ThematicGroup }[] = [
   { type: 'law', label: 'Loi & Règlements', icon: '⚖️', group: 'legal' },
   { type: 'case-law', label: 'Jurisprudence', icon: '📜', group: 'legal' },
   { type: 'company', label: 'Fiche Entreprise (RNE)', icon: '🏢', group: 'economy' },
@@ -91,7 +91,7 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
   onCancel,
 }) => {
   const [selectedGroup, setSelectedGroup] = useState<ThematicGroup>('all');
-  const [selectedCategory, setSelectedCategory] = useState<SourceEntityType>(initialType);
+  const [selectedCategory] = useState<SourceEntityType>(initialType);
   const [selectedCountry, setSelectedCountry] = useState<SupportedCountry>(initialCountry);
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -144,7 +144,9 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
   }, [selectedCountry, selectedGroup, selectedCategory]);
 
   const items = allAvailableItems.filter((item) => {
-    if (!query.trim()) return true;
+    if (!query.trim()) {
+      return true;
+    }
     const q = query.toLowerCase();
     return (
       item.title.toLowerCase().includes(q) ||
@@ -381,7 +383,6 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
           ) : (
             items.map((item, index) => {
               const isSelected = index === selectedIndex;
-              const catConfig = CATEGORIES.find((c) => c.type === item.entityType);
               return (
                 <div
                   key={item.sourceId + index}

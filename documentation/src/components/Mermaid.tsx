@@ -27,7 +27,9 @@ export const Mermaid: React.FC<MermaidProps> = ({
     let isMounted = true;
 
     async function renderChart() {
-      if (typeof window === "undefined" || !content) return;
+      if (typeof window === "undefined" || !content) {
+        return;
+      }
 
       try {
         const mermaid = (await import("mermaid")).default;
@@ -109,7 +111,9 @@ export const Mermaid: React.FC<MermaidProps> = ({
 
   // Fullscreen keyboard & body scroll management
   useEffect(() => {
-    if (!isFullscreen) return;
+    if (!isFullscreen) {
+      return;
+    }
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {

@@ -41,7 +41,7 @@ interface SourceInlineProps {
 export const SourceInlineBadge: React.FC<SourceInlineProps> = ({ inlineContent }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
-  const { sourceId, title, subtitle, entityType, status, url, excerpt, verifiedAt } = inlineContent.props;
+  const { sourceId, title, subtitle, entityType, status, url, excerpt } = inlineContent.props;
   const providerName = SOURCE_INLINE_LABELS[entityType] || 'Source Souveraine';
 
   const handleCopy = (e: React.MouseEvent) => {
@@ -64,7 +64,31 @@ export const SourceInlineBadge: React.FC<SourceInlineProps> = ({ inlineContent }
       }}
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
+      onFocus={() => setIsOpen(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+          setIsOpen(false);
+        }
+      }}
     >
+      {/* Région live pour annoncer la copie aux lecteurs d'écran */}
+      <span
+        aria-live="polite"
+        style={{
+          position: 'absolute',
+          width: '1px',
+          height: '1px',
+          padding: 0,
+          margin: '-1px',
+          overflow: 'hidden',
+          clip: 'rect(0, 0, 0, 0)',
+          whiteSpace: 'nowrap',
+          border: 0,
+        }}
+      >
+        {copied ? `Lien officiel ${title} copié dans le presse-papier` : ''}
+      </span>
+
       {/* Badge Inline DSFR / Cunningham */}
       <span
         role="button"

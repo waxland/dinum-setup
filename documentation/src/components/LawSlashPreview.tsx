@@ -79,7 +79,6 @@ export function LawSlashPreview() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isBrowsingCode, setIsBrowsingCode] = useState(false);
-  const [searchStatus, setSearchStatus] = useState<"ready" | "loading" | "empty" | "error">("ready");
 
   // Mode selector popup state
   const [isModeMenuOpen, setIsModeMenuOpen] = useState(false);
@@ -89,7 +88,7 @@ export function LawSlashPreview() {
   const [isLinkBarOpen, setIsLinkBarOpen] = useState(true);
 
   // Active display mode for the block/inline
-  const [displayMode, setDisplayMode] = useState<"extrait" | "reference" | "lien">("extrait");
+  const [_displayMode, setDisplayMode] = useState<"extrait" | "reference" | "lien">("extrait");
 
   const currentResults = isBrowsingCode
     ? codeCivilArticles
