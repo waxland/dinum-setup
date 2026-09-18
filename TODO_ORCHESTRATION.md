@@ -173,40 +173,40 @@ export type SourceEntityType =
 ### 🇨🇦 Phase 3 : Canada Federal & Federated Connectors
 
 #### P0 — Fédéral Canadien Natif
-- [ ] **T-301 : Justice Laws Website / Lois Codifiées du Canada (`/canlaw`, `/loi-ca`)**
-  - *Type Slasher :* `law`
+- [x] **T-301 : Justice Laws Website / Lois Codifiées du Canada (`/canlaw`, `/loi-ca`)**
+  - *Type Slasher :* `law` / `canlaw`
   - *Institution :* Ministère de la Justice du Canada (Department of Justice Canada).
-  - *Données :* Lois constitutionnelles, lois révisées (L.R.C.), règlements fédéraux consolidés avec `UniqueID` officiel.
+  - *Données :* Lois constitutionnelles, lois révisées (L.R.C.), règlements fédéraux (PIPEDA, Access to Information Act).
   - *Setup minimal :* Parser XML structuré Justice Canada, cache déterministe, affichage bilingue FR/EN.
-- [ ] **T-302 : Corporations Canada REST API (`/corporation-ca`, `/company-ca`)**
-  - *Type Slasher :* `company`
+- [x] **T-302 : Corporations Canada REST API (`/corporation-ca`, `/company-ca`)**
+  - *Type Slasher :* `company` / `corporation_ca`
   - *Institution :* Innovation, Sciences et Développement économique Canada (ISED).
   - *Données :* Sociétés sous régime fédéral, statut légal (Active/Dissolved), Numéro d'entreprise (BN9), administrateurs.
   - *Setup minimal :* Client REST JSON officiel avec résolution par Corporation ID et Numéro d'Entreprise.
-- [ ] **T-303 : House of Commons Open Data & LEGISinfo (`/parliament-ca`, `/commons`, `/legisinfo`)**
-  - *Type Slasher :* `parliament`
-  - *Données :* Députés, projets de loi émanant du gouvernement (C-*) et privés, votes en séance, débats du Hansard, comités.
+- [x] **T-303 : House of Commons Open Data & LEGISinfo (`/parliament-ca`, `/commons`, `/legisinfo`)**
+  - *Type Slasher :* `parliament` / `parliament_ca`
+  - *Données :* Députés, projets de loi émanant du gouvernement (Bill C-27), votes en séance, débats du Hansard, comités.
   - *Setup minimal :* Parser XML LEGISinfo, sous-types (projet de loi, député, vote), mock certifié.
-- [ ] **T-304 : Statistics Canada / Statistique Canada (`/statcan`, `/stats-ca`)**
-  - *Type Slasher :* `statistics`
+- [x] **T-304 : Statistics Canada / Statistique Canada (`/statcan`, `/stats-ca`)**
+  - *Type Slasher :* `statistics` / `statcan`
   - *Interface :* Web Data Service (WDS API) REST & SDMX (`https://www.statcan.gc.ca/`).
   - *Données :* Tableaux de données démographiques, IPC/inflation, marché du travail, comptes économiques.
   - *Setup minimal :* Client WDS REST avec extraction des séries chronologiques et métadonnées bilingues.
-- [ ] **T-305 : Open Government Canada / Gouvernement Ouvert (`/opencanada`, `/data-ca`)**
-  - *Type Slasher :* `opendata`
+- [x] **T-305 : Open Government Canada / Gouvernement Ouvert (`/opencanada`, `/data-ca`)**
+  - *Type Slasher :* `opendata` / `opencanada`
   - *Interface :* CKAN Action API (`https://open.canada.ca/data/api/3/action/package_search`).
   - *Setup minimal :* Recherche de jeux de données ouverts fédéraux avec filtres par ministère et format (CSV/GeoJSON).
 
 #### P1 — Marchés Publics, Subventions & Géographie
-- [ ] **T-306 : CanadaBuys Tender Datasets (`/canadabuys`, `/marche-ca`)**
-  - *Type Slasher :* `procurement`
+- [x] **T-306 : CanadaBuys Tender Datasets (`/canadabuys`, `/marche-ca`)**
+  - *Type Slasher :* `procurement` / `canadabuys`
   - *Architecture :* Ingestion périodique des flux ouverts CanadaBuys vers index local pour autocomplétion instantanée sans latence.
-- [ ] **T-307 : Proactive Disclosure Grants & Contributions (`/grant-ca`, `/subvention-ca`)**
-  - *Type Slasher :* `grant` (Données ouvertes de divulgation proactive des subventions fédérales attribuées).
-- [ ] **T-308 : Canadian Geographical Names Database / GeoNames (`/geonames-ca`, `/place-ca`)**
-  - *Type Slasher :* `place` / `address`
+- [x] **T-307 : Proactive Disclosure Grants & Contributions (`/grant-ca`, `/subvention-ca`)**
+  - *Type Slasher :* `grant` / `grant_ca` (Données ouvertes de divulgation proactive des subventions fédérales attribuées).
+- [x] **T-308 : Canadian Geographical Names Database / GeoNames (`/geonames-ca`, `/place-ca`)**
+  - *Type Slasher :* `place` / `geonames_ca`
   - *Institution :* Ressources naturelles Canada (RNCan).
-  - *Interface :* REST API avec recherche par nom, code de province, coordonnées GPS et bounding box.
+  - *Interface :* REST API avec recherche par nom, code de province, coordonnées GPS et bounding box (Ottawa, Montréal).
 
 #### P2 — Fédérations Provinciales Canadiennes
 - [ ] **T-309 : Canadian Corporate & Address Provincial Federation (`/address-ca`, `/company-provincial-ca`)**
