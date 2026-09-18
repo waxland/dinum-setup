@@ -1,84 +1,127 @@
 ---
 title: Technical Documentation Authoring (MDX & Zudoku)
 sidebar_label: Docs MDX
-description: Author, structure, and maintain technical documentation in Zudoku using MDX, injected React components, and navigation scripts.
+description: MDX authoring rules for Zudoku, H1 title deduplication, mandatory interactive Mermaid component, and dynamic widgets (CodeTabs, DocHeaderSummary).
 ---
 
-This skill provides rules and best practices for writing and publishing clear, interactive technical documentation pages with the Zudoku framework.
+This skill provides mandatory engineering rules and styling standards for authoring clean, interactive, and error-free technical documentation in **Zudoku (Vite SSR + MDX)**.
 
 ---
 
 ## 1. When to Use
 
-- Creating or updating documentation pages in `documentation/docs/`.
-- Adding new React visual components in `documentation/src/components/` for MDX injection.
-- Regenerating sidebar navigation and redirects via `scripts/generate-docs-navigation.mjs`.
-- Fixing Zudoku build errors or React hydration mismatches.
+- Creating, updating, or refactoring documentation pages in `documentation/docs/en/` or `documentation/docs/fr/`.
+- Adding or modifying interactive React components in `documentation/src/components/`.
+- Harmonizing headings, syntax highlighting, and architecture diagrams.
+- Resolving Zudoku SSR build errors or React hydration mismatches.
 
 ---
 
-## 2. Context & Inputs
+## 2. Core MDX Authoring Rules
 
-- Global Zudoku configuration: `documentation/zudoku.config.tsx`.
-- Navigation generator script: `documentation/scripts/generate-docs-navigation.mjs`.
-- Available components catalog: `documentation/src/components/index.ts`.
-- Current navigation map: `documentation/zudoku.navigation.tsx`.
-
----
-
-## 3. Step-by-Step Procedure
-
-### Step 1: Structure the MDX File
-
-- Create the file with `.mdx` extension under the appropriate topic folder (e.g. `docs/en/...` or `docs/fr/...`).
-- Mandatory YAML frontmatter:
-  ```yaml
+### 🛑 Rule 1: Zero H1 Title Duplication (Frontmatter vs Markdown Heading)
+- **Principle:** Zudoku automatically renders the main page `<h1>` from the frontmatter `title` property.
+- **Strict Prohibition:** **NEVER** add a `# Page Title` (H1 Markdown heading) at the top of the body text after the frontmatter.
+- **Best Practice:**
+  ```mdx
   ---
-  title: Explicit Page Title
-  description: Concise one-sentence summary for SEO and navigation previews.
+  title: Universal Architecture Guide
+  sidebar_label: Architecture
+  description: Concise page summary for SEO and search indexing.
   ---
+
+  <!-- ✅ No "# Title" here! Start directly with <DocHeaderSummary> or introduction -->
+  <DocHeaderSummary
+    readingTime="5 min"
+    level="Intermediate"
+    roles={["Frontend", "Backend"]}
+    prerequisites={["Docker", "Node.js 22+"]}
+    status="Production Ready"
+    takeaway="3-tier modular architecture with Redis cache."
+  />
+
+  ## 🏛️ 1. Architecture Overview
   ```
 
-### Step 2: Use Injected React Components (Avoid Raw Problematic HTML)
+---
 
-- ⚠️ **Critical Rule:** Do not insert raw HTML blocks (`<div>`, `<p>`) containing empty line breaks inside MDX to prevent React hydration errors (`cannot appear as a descendant of <p>`).
-- Use global MDX components:
-  - `<FeatureGrid cols={2|3}>` and `<FeatureCard ... />`
-  - `<TrackCard trackNumber={1} ... />`
-  - `<TutorialCard ... />`
-  - `<Mermaid chart={\`...\`} />` (with fullscreen and dark mode support)
-  - DSFR previews: `<ButtonPreview />`, `<AlertPreview />`, `<TablePreview />`, etc.
+### 🎨 Rule 2: Mandatory `<Mermaid>` Component (Zero Raw Code Blocks)
+- **Principle:** **NEVER** use raw Markdown code blocks (```` ```mermaid ````) in `.mdx` files.
+- **Rationale:** The interactive `<Mermaid chart={`...`} />` component provides:
+  1. **Immersive Fullscreen Mode** with zoom, pan, and keyboard exit (<kbd>Escape</kbd>).
+  2. Dynamic light/dark theme adaptation using official French State tokens (`#000091`, `#f5f5fe`).
+  3. Prevention of layout shifts (CLS) and SSR hydration mismatches.
+- **Best Practice:**
+  ```mdx
+  <Mermaid chart={`flowchart TD
+      Client["BlockNote Editor"] --> SDK["@suitenumerique/slash-sources-sdk"]
+      SDK --> Backend["django-lasuite-sources"]
+      Backend --> API["Sovereign APIs"]
+  `} />
+  ```
 
-### Step 3: Organize Content Flow
+---
 
-For a project or component document, follow this standard structure:
+### 📦 Rule 3: Systematize Dynamic Tabs (`<CodeTabs>`)
+For installation commands and language comparisons, never use separate static snippets:
 
-1. **Overview & Official Links:** Purpose, GitHub repos, contacts, and maturity status.
-2. **Features / Visual Preview:** Screenshots, Mermaid architecture diagrams, or interactive widgets.
-3. **Architecture & Tech Stack:** Data flows, backend/frontend breakdown, database, and protocols.
-4. **Commands & Local Usage:** Step-by-step local testing with Makefile/Docker commands.
+1. **JavaScript/TypeScript Packages:**
+   ```mdx
+   <PackageInstallTabs packages="@suitenumerique/slash-sources-sdk @suitenumerique/blocknote-sources" />
+   ```
+2. **Python Environments:**
+   ```mdx
+   <PythonInstallTabs packages="django-lasuite-sources" />
+   ```
+3. **TypeScript $\leftrightarrow$ Python Comparative Snippets:**
+   ```mdx
+   <DualLanguageTabs
+     tsTitle="Frontend BlockNote"
+     pyTitle="Backend Django"
+     tsCode={`const source = defineSourceProvider({ ... });`}
+     pyCode={`class SourceProvider(BaseSourceProvider): ...`}
+   />
+   ```
 
-### Step 4: Regenerate Navigation & Validate Build
+---
+
+### 🛡️ Rule 4: JSX Purity & SSR Hydration Safety
+- ⚠️ **Self-closing Tags:** All HTML tags in MDX must be self-closing (e.g. `<br />`, `<hr />`, `<img ... />`).
+- **No Unparsed Empty Lines in HTML Blocks:** Avoid `<div>` containers enclosing raw paragraphs with blank lines (causes React `cannot appear as a descendant of <p>`).
+- Prefer reusable components: `<FeatureGrid cols={3}>`, `<FeatureCard ... />`, `<Kanban />`, `<LawSlashPreview />`.
+
+---
+
+## 3. Standard Page Structure
+
+Every new documentation page must adhere to the standard template:
+
+1. **YAML Frontmatter:** `title`, `sidebar_label`, `description`.
+2. **Header Summary:** `<DocHeaderSummary>` (reading time, difficulty level, target roles, prerequisites, takeaway).
+3. **Structured Body:**
+   - `## 1. Context & Problem Statement`
+   - `## 2. Architecture & Interactive Diagram (<Mermaid>)`
+   - `## 3. Installation & Setup (<PackageInstallTabs>)`
+   - `## 4. Implementation & Code (<CodeTabs> or <DualLanguageTabs>)`
+   - `## 5. Automated Tests & Validation`
+
+---
+
+## 4. Local Verification Workflow
 
 ```bash
-# 1. Regenerate zudoku.navigation.tsx with newly added routes and redirects
+# 1. Regenerate automatic navigation
 npm run docs:nav
 
-# 2. Build and validate zero hydration or pre-rendering errors
+# 2. Compile SSR and verify 0 hydration errors & 0 warnings
 npm run docs:build
 ```
 
 ---
 
-## 4. Deliverables & Verification
+## 5. Acceptance Checklist
 
-- `.mdx` file created or updated with valid internal links.
-- `npm run docs:build` passes with **0 errors and 0 warnings**.
-- The new page appears in the sidebar under the expected category.
-
----
-
-## 5. Sources & References
-
-- **Zudoku Documentation:** [https://zudoku.dev/](https://zudoku.dev/)
-- **MDX Specification:** [https://mdxjs.com/](https://mdxjs.com/)
+- [ ] 0 H1 title duplication (title comes exclusively from frontmatter).
+- [ ] 100% of Mermaid diagrams wrapped in `<Mermaid chart={`...`} />`.
+- [ ] Package install commands wrapped in `<PackageInstallTabs>` or `<PythonInstallTabs>`.
+- [ ] SSR build passes with `npm run docs:build` with 0 errors.
