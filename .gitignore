@@ -36,6 +36,8 @@ packages/*/.venv/
 **/__pycache__/
 *.pyc
 .pytest_cache/
+storybook-static/
+**/storybook-static/
 
 .vercel
 .env*
