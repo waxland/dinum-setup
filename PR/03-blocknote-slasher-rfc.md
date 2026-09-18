@@ -1,44 +1,44 @@
 ---
-title: "PR 3 : RFC & Extension Communautaire BlockNote (TypeCellOS/BlockNote)"
-sidebar_label: "PR 3 : Extension Amont BlockNote"
-description: Proposition de Request for Comments (RFC) et contribution du package d'extension communautaire @blocknote/xl-external-sources pour TypeCellOS/BlockNote.
+title: "PR 3: RFC & Community Extension for BlockNote (TypeCellOS/BlockNote)"
+sidebar_label: "PR 3: Upstream BlockNote Extension"
+description: Request for Comments (RFC) proposal and community extension package @blocknote/xl-external-sources for TypeCellOS/BlockNote.
 ---
 
 import { Mermaid } from "../../../src/components/Mermaid";
 import { FeatureCard, FeatureGrid } from "../../../src/components/Cards";
 
-Au-delà de l'intégration interne à La Suite Docs, les travaux conduits par la DINUM constituent une **contribution open source amont à destination de l'écosystème international [`TypeCellOS/BlockNote`](https://github.com/TypeCellOS/BlockNote)**.
+Beyond internal integration within La Suite Docs, this work represents an **upstream open source contribution to the international [`TypeCellOS/BlockNote`](https://github.com/TypeCellOS/BlockNote) ecosystem**.
 
 ---
 
-## 📌 Synthèse de la Démarche Upstream
+## 📌 Upstream Contribution Summary
 
-| Paramètre | Spécification |
+| Parameter | Specification |
 | :--- | :--- |
-| **Dépôt Cible** | [`TypeCellOS/BlockNote`](https://github.com/TypeCellOS/BlockNote) |
-| **Statut de Contribution** | **Package d'extension communautaire** dans un premier temps (`@blocknote/xl-external-sources`), avec demande formelle d'intégration dans la suite officielle à terme (`@blocknote/xl-*`). |
-| **Package Proposé** | `@blocknote/xl-external-sources` (TypeScript, React 18/19, zero-UI lock-in). |
-| **Bénéfice Communautaire** | Standardise l'insertion, la recherche flottante contextuelle et l'affichage multi-formats pour toutes données distantes connectées. |
+| **Target Repository** | [`TypeCellOS/BlockNote`](https://github.com/TypeCellOS/BlockNote) |
+| **Contribution Status** | **Community extension package** initially (`@blocknote/xl-external-sources`), with graduation path to official `@blocknote/xl-*` suite. |
+| **Proposed Package** | `@blocknote/xl-external-sources` (TypeScript, React 18/19, zero-UI lock-in). |
+| **Community Benefit** | Standardizes insertion, floating contextual search, and 3-format display for any connected remote data. |
 
 ---
 
-## 🧭 1. Vision & Plaidoyer Architectural
+## 🧭 1. Vision & Architectural Rationale
 
-Actuellement, l'écosystème BlockNote propose des blocs riches pour les équations mathématiques (`@blocknote/math-block`) et les diagrammes Mermaid (`@blocknote/diagram-block`), mais **aucun standard officiel** pour connecter des entités distantes (APIs publiques, registres légaux, bases SQL d'entreprise, RAG IA).
+Currently, the BlockNote ecosystem provides rich blocks for math equations (`@blocknote/math-block`) and Mermaid diagrams (`@blocknote/diagram-block`), but **no official standard** for referencing external entities (public APIs, legal registries, enterprise SQL databases, AI RAG).
 
 ```mermaid
 flowchart TD
-    subgraph Upstream["🌐 Écosystème TypeCellOS/BlockNote"]
+    subgraph Upstream["🌐 TypeCellOS/BlockNote Ecosystem"]
         Core["@blocknote/core"]
         React["@blocknote/react"]
-        CommunityExt["🌟 @blocknote/xl-external-sources (Proposé par DINUM)"]
+        CommunityExt["🌟 @blocknote/xl-external-sources (Proposed by DINUM)"]
     end
 
-    subgraph Features["✨ Fonctionnalités Standardisées"]
-        F1["createExternalSourceBlockSpec() (Factory universelle)"]
-        F2["3 Formats Permutables : Callout / Card / Inline Badge"]
-        F3["Adaptateurs Exportateurs : PDF (@react-pdf), Word (docx), ODF"]
-        F4["Hook React useExternalSourceSearch() avec debounce & abort"]
+    subgraph Features["✨ Standardized Features"]
+        F1["createExternalSourceBlockSpec() (Universal factory)"]
+        F2["3 Hot-Switchable Formats: Callout / Card / Inline Badge"]
+        F3["Export Adapters: PDF (@react-pdf), Word (docx), ODF"]
+        F4["React Hook useExternalSourceSearch() with debounce & abort"]
     end
 
     Core --> CommunityExt
@@ -48,34 +48,34 @@ flowchart TD
 
 ---
 
-## 🎨 2. Standardisation des 3 Formats & Configuration du Liseré
+## 🎨 2. Standardizing the 3 Formats & Border Customization
 
-Le composant supporte par défaut le style officiel du Design System de l'État (bleu Marianne `#000091`), tout en offrant un **paramètre optionnel de personnalisation de la couleur de bordure** (`borderColor`) permettant à n'importe quelle organisation publique ou privée d'adapter la charte graphique :
+The component defaults to a clean theme while supporting an **optional border color customization parameter** (`borderColor`) enabling any organization to match its design system:
 
 <FeatureGrid cols={3}>
   <FeatureCard
     icon="📢"
-    title="1. Mode Callout"
-    badge="Mise en avant"
-    description="Encadré avec liseré latéral personnalisable (ex: #000091), titre institutionnel cliquable et extrait de texte complet."
+    title="1. Callout Mode"
+    badge="Callout"
+    description="Highlighted container with customizable left accent border, clickable title, and full text excerpt."
   />
   <FeatureCard
     icon="🗂️"
-    title="2. Mode Card"
-    badge="Métadonnées"
-    description="Grille structurée 3 colonnes affichant les identifiants clés, la date d'effet, le statut et l'organisme émetteur."
+    title="2. Card Mode"
+    badge="Metadata"
+    description="Structured 3-column metadata grid displaying key identifiers, effective date, status, and issuing authority."
   />
   <FeatureCard
     icon="🔗"
-    title="3. Mode Inline Link"
-    badge="Pastille discrète"
-    description="Pastille compacte insérée dans la phrase avec infobulle interactive au survol révélant la métadonnée."
+    title="3. Inline Link Mode"
+    badge="Inline Badge"
+    description="Compact badge seamlessly embedded in prose with interactive hover tooltip revealing metadata."
   />
 </FeatureGrid>
 
 ---
 
-## 📝 3. Modèle de RFC GitHub Prêt à Soumettre sur `TypeCellOS/BlockNote`
+## 📝 3. GitHub RFC Template Ready to Submit to `TypeCellOS/BlockNote`
 
 ```markdown
 # RFC: Standardized External Data Sources Extension for BlockNote (@blocknote/xl-external-sources)

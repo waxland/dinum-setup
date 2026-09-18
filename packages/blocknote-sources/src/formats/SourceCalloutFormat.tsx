@@ -140,7 +140,7 @@ export const SourceCalloutFormat: React.FC<SourceCalloutFormatProps> = ({ props 
           color: 'var(--c--contextuals--content--semantic--neutral--tertiary, #929292)',
         }}
       >
-        <span>{props.verifiedAt ? `Vérifié le ${props.verifiedAt}` : 'Source certifiée État'}</span>
+        <span>{props.verifiedAt ? `Verified on ${props.verifiedAt}` : 'Official verified source'}</span>
         {props.url && (
           <a
             href={props.url}
@@ -152,7 +152,7 @@ export const SourceCalloutFormat: React.FC<SourceCalloutFormatProps> = ({ props 
               textDecoration: 'none',
             }}
           >
-            Consulter sur la plateforme officielle ↗
+            View on official platform ↗
           </a>
         )}
       </div>

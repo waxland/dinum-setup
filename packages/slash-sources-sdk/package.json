@@ -1,7 +1,7 @@
 {
   "name": "@suitenumerique/slash-sources-sdk",
   "version": "1.0.0",
-  "description": "SDK TypeScript officiel pour la création et le raccordement rapide de sources de données souveraines dans La Suite Numérique",
+  "description": "Official TypeScript SDK for fast creation and integration of sovereign data sources into La Suite Numérique",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

@@ -10,18 +10,18 @@ interface SourceSearchPopoverProps {
 }
 
 const CATEGORIES: { type: SourceEntityType; label: string; icon: string }[] = [
-  { type: 'law', label: 'Loi', icon: '⚖️' },
-  { type: 'company', label: 'Entreprise', icon: '🏢' },
-  { type: 'parliament', label: 'Assemblée', icon: '🏛️' },
-  { type: 'address', label: 'Adresse', icon: '📍' },
-  { type: 'procurement', label: 'Marché', icon: '🛍️' },
-  { type: 'grant', label: 'Subvention', icon: '💶' },
+  { type: 'law', label: 'Law', icon: '⚖️' },
+  { type: 'company', label: 'Company', icon: '🏢' },
+  { type: 'parliament', label: 'Parliament', icon: '🏛️' },
+  { type: 'address', label: 'Address', icon: '📍' },
+  { type: 'procurement', label: 'Procurement', icon: '🛍️' },
+  { type: 'grant', label: 'Grant', icon: '💶' },
   { type: 'insee', label: 'Stats', icon: '📊' },
-  { type: 'agent', label: 'Annuaire', icon: '👤' },
-  { type: 'cadastre', label: 'Cadastre', icon: '🗺️' },
-  { type: 'demarche', label: 'Démarche', icon: '📝' },
+  { type: 'agent', label: 'Directory', icon: '👤' },
+  { type: 'cadastre', label: 'Land Registry', icon: '🗺️' },
+  { type: 'demarche', label: 'Procedures', icon: '📝' },
   { type: 'opendata', label: 'Open Data', icon: '🌐' },
-  { type: 'custom', label: 'Albert IA', icon: '🧠' },
+  { type: 'custom', label: 'Albert AI', icon: '🧠' },
 ];
 
 export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
@@ -105,8 +105,8 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
           aria-expanded={true}
           aria-controls={dropdownId}
           aria-autocomplete="list"
-          aria-label="Rechercher une source souveraine"
-          placeholder={`Rechercher dans ${CATEGORIES.find((c) => c.type === selectedCategory)?.label}...`}
+          aria-label="Search connected source"
+          placeholder={`Search in ${CATEGORIES.find((c) => c.type === selectedCategory)?.label}...`}
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
@@ -132,7 +132,7 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
             fontSize: '14px',
             color: '#666666',
           }}
-          title="Annuler (Échap)"
+          title="Cancel (Esc)"
         >
           ✕
         </button>
@@ -212,7 +212,7 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
                 color: 'var(--c--contextuals--content--semantic--neutral--secondary, #666666)',
               }}
             >
-              Aucun résultat trouvé pour « {query} ».
+              No results found for "{query}".
             </div>
           ) : (
             items.map((item, index) => {
@@ -305,8 +305,8 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
             color: 'var(--c--contextuals--content--semantic--neutral--secondary, #666666)',
           }}
         >
-          <span>↑↓ Naviguer • Entrée Valider</span>
-          <span>Échap Annuler</span>
+          <span>↑↓ Navigate • Enter Select</span>
+          <span>Esc Cancel</span>
         </div>
       </div>
     </div>

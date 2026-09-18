@@ -1,6 +1,6 @@
 # 🛠️ `@suitenumerique/slash-sources-sdk`
 
-> SDK TypeScript officiel pour créer et raccorder facilement des sources de données souveraines à **La Suite Numérique** (`La Suite Docs`, `La Suite Projects`, etc.).
+> Official TypeScript SDK for easily creating and connecting sovereign data sources to **La Suite Numérique** (`La Suite Docs`, `La Suite Projects`, etc.).
 
 ---
 
@@ -8,24 +8,24 @@
 
 ```bash
 pnpm add @suitenumerique/slash-sources-sdk
-# ou
+# or
 npm install @suitenumerique/slash-sources-sdk
 ```
 
 ---
 
-## 🚀 Créer un Connecteur de Source en < 15 min
+## 🚀 Build a Source Connector in < 15 min
 
 ```typescript
 import { defineSourceProvider } from '@suitenumerique/slash-sources-sdk';
 
 export const justiceProvider = defineSourceProvider({
   type: 'custom',
-  name: 'Casier Judiciaire National',
+  name: 'National Criminal Record',
   iconName: 'gavel',
-  slashCommand: 'casier',
-  slashAliases: ['cjn', 'justice', 'bulletin'],
-  description: 'Consulter et référencer les textes officiels du Casier Judiciaire',
+  slashCommand: 'record',
+  slashAliases: ['justice', 'bulletin'],
+  description: 'Search and reference official Criminal Record notices',
 
   suggest: async (query, limit = 5) => {
     const response = await fetch(`/api/v1.0/sources/suggest/?type=justice&q=${encodeURIComponent(query)}&limit=${limit}`);
@@ -48,8 +48,8 @@ export const justiceProvider = defineSourceProvider({
 
 ---
 
-## 🛡️ Règles de Qualité & Typage Strict
+## 🛡️ Quality Standards & Strict Typing
 
-- **Zero `any`** : Toutes les interfaces sont typées de façon stricte.
-- **Zero cast `as ...`** : Les définitions sont validées à l'exécution et immuables (`Object.freeze`).
-- **Compatibilité Universelle** : Compatible Node.js 20+, navigateurs modernes et runtimes edge.
+- **Zero `any`**: All interfaces are strictly typed.
+- **Zero `as ...` cast**: Definitions are runtime-validated and immutable (`Object.freeze`).
+- **Universal Compatibility**: Compatible with Node.js 20+, modern browsers, and edge runtimes.

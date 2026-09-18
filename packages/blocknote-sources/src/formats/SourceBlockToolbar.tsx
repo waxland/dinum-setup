@@ -61,7 +61,7 @@ export const SourceBlockToolbar: React.FC<SourceBlockToolbarProps> = ({
             color: currentMode === 'callout' ? '#ffffff' : 'var(--c--contextuals--content--semantic--neutral--primary, #1e1e1e)',
             cursor: 'pointer',
           }}
-          title="Format Encadré / Callout"
+          title="Callout Format"
         >
           Encadré
         </button>
@@ -82,7 +82,7 @@ export const SourceBlockToolbar: React.FC<SourceBlockToolbarProps> = ({
             color: currentMode === 'card' ? '#ffffff' : 'var(--c--contextuals--content--semantic--neutral--primary, #1e1e1e)',
             cursor: 'pointer',
           }}
-          title="Format Carte / Card"
+          title="Card Format"
         >
           Carte
         </button>
@@ -103,7 +103,7 @@ export const SourceBlockToolbar: React.FC<SourceBlockToolbarProps> = ({
             color: currentMode === 'link' ? '#ffffff' : 'var(--c--contextuals--content--semantic--neutral--primary, #1e1e1e)',
             cursor: 'pointer',
           }}
-          title="Format Pastille / Lien"
+          title="Link Format"
         >
           Lien
         </button>
@@ -123,7 +123,7 @@ export const SourceBlockToolbar: React.FC<SourceBlockToolbarProps> = ({
               fontWeight: 600,
               fontSize: '11px',
             }}
-            title="Consulter la source officielle"
+            title="View official source"
           >
             Source ↗
           </a>

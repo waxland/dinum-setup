@@ -29,16 +29,16 @@ import "./zudoku.theme.css";
 
 const config: ZudokuConfig = {
   metadata: {
-    title: "%s | La Suite Numérique — Documentation & Onboarding",
+    title: "%s | Slasher — Universal BlockNote Standard & Sovereign Connectors",
     description:
-      "Portail d'accueil, guides pratiques, tutoriels, glossaire et documentation pour découvrir, lancer et contribuer à l'écosystème de La Suite numérique.",
+      "Documentation portal, technical guides, tutorials, and specifications for Slasher and La Suite sovereign connected sources.",
     favicon: "/favicon.ico",
   },
   site: {
     title: "Slasher — La Suite dev setup",
     banner: {
       message:
-        "📖 Slasher : Standard Universel BlockNote & Socle des Slasheurs Souverains (DINUM)",
+        "📖 Slasher: Universal BlockNote Standard & Sovereign Data Connectors (DINUM)",
       color: "info",
       dismissible: true,
     },

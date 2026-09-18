@@ -44,7 +44,7 @@ export const BlockNoteSlashPlayground: React.FC = () => {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", fontSize: "12px", color: "#666666" }}>
-          <span>Initialisation de l'éditeur interactif BlockNote.js...</span>
+          <span>Initializing interactive BlockNote.js editor...</span>
         </div>
       </div>
     );
@@ -96,7 +96,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
         content: [
           {
             type: "text",
-            text: "Bienvenue dans l'éditeur interactif de ",
+            text: "Welcome to the interactive editor of ",
             styles: {},
           },
           {
@@ -106,7 +106,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
           },
           {
             type: "text",
-            text: " ! Tapez ",
+            text: " ! Type ",
             styles: {},
           },
           {
@@ -116,7 +116,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
           },
           {
             type: "text",
-            text: " pour tester les commandes souveraines ou utilisez les boutons rapides ci-dessus :",
+            text: " to explore sovereign commands or use quick buttons above:",
             styles: {},
           },
         ],
@@ -147,7 +147,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
         content: [
           {
             type: "text",
-            text: "Essayez de survoler chaque bloc pour basculer en direct entre les formats 📢 Callout, 🗂️ Carte et 🔗 Lien.",
+            text: "Hover over each block to hot-switch between 📢 Callout, 🗂️ Card, and 🔗 Link formats.",
             styles: { italic: true },
           },
         ],
@@ -161,7 +161,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
 
     const customItems = [
       {
-        title: "Texte de Loi (Légifrance)",
+        title: "Legal Text (Légifrance)",
         onItemClick: () => {
           editor.insertBlocks(
             [createEmptySourceBlock("law")],
@@ -170,12 +170,12 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
           );
         },
         aliases: ["loi", "law", "legifrance", "code", "article", "decret"],
-        group: "Sources Souveraines de l'État",
+        group: "Sovereign & Official Sources",
         icon: <span>⚖️</span>,
-        subtext: "Insérer un article de loi certifié depuis Légifrance",
+        subtext: "Insert a certified legal article from Légifrance",
       },
       {
-        title: "Fiche Entreprise & SIREN",
+        title: "Company Record & SIREN",
         onItemClick: () => {
           editor.insertBlocks(
             [createEmptySourceBlock("company")],
@@ -184,12 +184,12 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
           );
         },
         aliases: ["entreprise", "pappers", "siren", "siret", "societe", "kbis"],
-        group: "Sources Souveraines de l'État",
+        group: "Sovereign & Official Sources",
         icon: <span>🏢</span>,
-        subtext: "Insérer les données certifiées du RNE (SIREN, dirigeants)",
+        subtext: "Insert certified business registry data (SIREN, managers)",
       },
       {
-        title: "Amendement Parlementaire",
+        title: "Parliamentary Amendment",
         onItemClick: () => {
           editor.insertBlocks(
             [createEmptySourceBlock("parliament")],
@@ -198,12 +198,12 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
           );
         },
         aliases: ["assemblee", "assemble", "an", "amendement", "depute"],
-        group: "Sources Souveraines de l'État",
+        group: "Sovereign & Official Sources",
         icon: <span>🏛️</span>,
-        subtext: "Suivre un amendement ou projet de loi en séance",
+        subtext: "Track a parliamentary amendment or legislative bill",
       },
       {
-        title: "Adresse Postale (BAN)",
+        title: "Postal Address (BAN)",
         onItemClick: () => {
           editor.insertBlocks(
             [createEmptySourceBlock("address")],
@@ -212,12 +212,12 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
           );
         },
         aliases: ["adresse", "address", "ban", "geo", "rue"],
-        group: "Sources Souveraines de l'État",
+        group: "Sovereign & Official Sources",
         icon: <span>📍</span>,
-        subtext: "Autocomplétion certifiée par la Base Adresse Nationale",
+        subtext: "Certified autocomplete from National Address Base",
       },
       {
-        title: "Avis de Marché Public (BOAMP)",
+        title: "Public Procurement Notice (BOAMP)",
         onItemClick: () => {
           editor.insertBlocks(
             [createEmptySourceBlock("procurement")],
@@ -226,12 +226,12 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
           );
         },
         aliases: ["marche", "boamp", "achat", "dce", "dae"],
-        group: "Sources Souveraines de l'État",
+        group: "Sovereign & Official Sources",
         icon: <span>🛍️</span>,
-        subtext: "Insérer un avis de marché public officiel (BOAMP)",
+        subtext: "Insert an official public procurement notice (BOAMP)",
       },
       {
-        title: "Dispositif d'Aide & Subvention",
+        title: "Public Grant & Subsidy",
         onItemClick: () => {
           editor.insertBlocks(
             [createEmptySourceBlock("grant")],
@@ -240,12 +240,12 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
           );
         },
         aliases: ["subvention", "aides", "fonds-vert", "detr", "dsil", "anct"],
-        group: "Sources Souveraines de l'État",
+        group: "Sovereign & Official Sources",
         icon: <span>💶</span>,
-        subtext: "Insérer un dispositif d'aide financière aux territoires",
+        subtext: "Insert a territorial funding or grant program",
       },
       {
-        title: "Statistiques Territoriales INSEE",
+        title: "Territorial Statistics INSEE",
         onItemClick: () => {
           editor.insertBlocks(
             [createEmptySourceBlock("insee")],
@@ -254,12 +254,12 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
           );
         },
         aliases: ["insee", "stats", "population", "territoire"],
-        group: "Sources Souveraines de l'État",
+        group: "Sovereign & Official Sources",
         icon: <span>📊</span>,
-        subtext: "Insérer des indicateurs officiels démographiques INSEE",
+        subtext: "Insert official INSEE demographic indicators",
       },
       {
-        title: "Annuaire du Service Public",
+        title: "Public Service Directory",
         onItemClick: () => {
           editor.insertBlocks(
             [createEmptySourceBlock("agent")],
@@ -268,12 +268,12 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
           );
         },
         aliases: ["agent", "annuaire", "service-public", "contact"],
-        group: "Sources Souveraines de l'État",
+        group: "Sovereign & Official Sources",
         icon: <span>👤</span>,
-        subtext: "Insérer les coordonnées officielles d'un service public",
+        subtext: "Insert official contact details of a public administration",
       },
       {
-        title: "Cadastre & Parcelles (DGFiP)",
+        title: "Land Registry & Parcels (DGFiP)",
         onItemClick: () => {
           editor.insertBlocks(
             [createEmptySourceBlock("cadastre")],
@@ -282,12 +282,12 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
           );
         },
         aliases: ["cadastre", "parcelle", "foncier", "dgfip"],
-        group: "Sources Souveraines de l'État",
+        group: "Sovereign & Official Sources",
         icon: <span>🗺️</span>,
-        subtext: "Insérer une parcelle cadastrale certifiée DGFiP",
+        subtext: "Insert a certified DGFiP land registry parcel",
       },
       {
-        title: "Démarches-Simplifiées.fr",
+        title: "Simplified Procedures",
         onItemClick: () => {
           editor.insertBlocks(
             [createEmptySourceBlock("demarche")],
@@ -296,9 +296,9 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
           );
         },
         aliases: ["demarche", "formulaire", "usager", "procedure"],
-        group: "Sources Souveraines de l'État",
+        group: "Sovereign & Official Sources",
         icon: <span>📝</span>,
-        subtext: "Insérer une téléprocédure Démarches-Simplifiées",
+        subtext: "Insert a simplified online administrative procedure",
       },
       {
         title: "data.gouv.fr / Open Data",
@@ -310,12 +310,12 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
           );
         },
         aliases: ["opendata", "dataset", "datagouv", "donnees"],
-        group: "Sources Souveraines de l'État",
+        group: "Sovereign & Official Sources",
         icon: <span>🌐</span>,
-        subtext: "Insérer un jeu de données certifié data.gouv.fr",
+        subtext: "Insert a certified open dataset from data.gouv.fr",
       },
       {
-        title: "Albert IA Souveraine & RAG",
+        title: "Albert Sovereign AI & RAG",
         onItemClick: () => {
           editor.insertBlocks(
             [createEmptySourceBlock("custom")],
@@ -324,9 +324,9 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
           );
         },
         aliases: ["albert", "ia", "rag", "etalab", "service-public"],
-        group: "Sources Souveraines de l'État",
+        group: "Sovereign & Official Sources",
         icon: <span>🧠</span>,
-        subtext: "Poser une question administrative à l'IA souveraine Albert",
+        subtext: "Ask an administrative query to Albert Sovereign AI",
       },
     ];
 
@@ -350,7 +350,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
         content: [
           {
             type: "text",
-            text: "Éditeur réinitialisé. Tapez / pour ajouter une commande souveraine.",
+            text: "Editor reset. Type / to insert a sovereign command.",
             styles: {},
           },
         ],
@@ -401,7 +401,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       >
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <span style={{ fontSize: "13px", fontWeight: 700, color: isDark ? "#8585f6" : "#000091" }}>
-            Démonstrateur Interactif BlockNote.js
+            Interactive BlockNote.js Demonstrator
           </span>
           <span
             style={{
@@ -414,14 +414,14 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
               border: "1px solid #b8c5ff",
             }}
           >
-            Socle Commun
+            Common Core
           </span>
         </div>
 
         {/* Quick Insert Buttons */}
         <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
           <span style={{ fontSize: "11px", color: "#666666", marginRight: "4px" }}>
-            Insertion rapide :
+            Quick insert:
           </span>
           {FAST_BUTTONS.map((btn) => (
             <button
@@ -455,9 +455,9 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
               cursor: "pointer",
               padding: "3px 6px",
             }}
-            title="Réinitialiser l'éditeur"
+            title="Reset editor"
           >
-            🗑️ Vider
+            🗑️ Reset
           </button>
         </div>
       </div>

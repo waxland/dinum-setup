@@ -1,13 +1,13 @@
 import { defineSourceProvider } from '../src';
 
 /**
- * Démonstration autonome du SDK : création d'un connecteur d'API souveraine
+ * Standalone SDK demonstration: creating an open data source connector
  */
 export const demoOpendataProvider = defineSourceProvider({
-  name: "data.gouv.fr / Jeux de Données",
+  name: "data.gouv.fr / Open Datasets",
   slashCommand: "/opendata",
   entityType: "opendata",
-  description: "Recherche de jeux de données ouverts de la République Française",
+  description: "Search open data datasets from official public portals",
   aliases: ["data", "datagouv", "open-data"],
 
   suggest: async (query: string) => {
@@ -15,8 +15,8 @@ export const demoOpendataProvider = defineSourceProvider({
     return [
       {
         sourceId: "dataset-budget-2026",
-        title: `Jeu de données : ${query}`,
-        subtitle: "data.gouv.fr • Direction du Budget",
+        title: `Dataset: ${query}`,
+        subtitle: "data.gouv.fr • Budget Directorate",
         badgeText: "Open Data",
         badgeVariant: "info",
       },
@@ -28,16 +28,16 @@ export const demoOpendataProvider = defineSourceProvider({
       {
         sourceId: "dataset-budget-2026",
         entityType: "opendata",
-        title: `Données Budgétaires Nationales 2026 - ${query}`,
-        subtitle: "Ministère de l'Économie et des Finances",
-        url: `https://www.data.gouv.fr/fr/datasets/budget-2026/`,
-        badgeText: "Licence Ouverte v2.0",
+        title: `National Budget Data 2026 - ${query}`,
+        subtitle: "Ministry of Economy and Finance",
+        url: `https://www.data.gouv.fr/en/datasets/budget-2026/`,
+        badgeText: "Open License v2.0",
         badgeVariant: "success",
-        excerpt: "Données consolidées des dépenses et recettes publiques pour l'exercice 2026.",
+        excerpt: "Consolidated public expenditure and revenue data for fiscal year 2026.",
         metadata: {
           format: "CSV / Parquet",
-          frequence: "Annuelle",
-          producteur: "DGFiP",
+          frequency: "Annual",
+          producer: "DGFiP",
         },
       },
     ];
@@ -47,14 +47,14 @@ export const demoOpendataProvider = defineSourceProvider({
     return {
       sourceId,
       entityType: "opendata",
-      title: "Jeu de données certifié data.gouv.fr",
-      url: `https://www.data.gouv.fr/fr/datasets/${sourceId}/`,
-      badgeText: "Certifié DINUM",
+      title: "Certified Open Dataset data.gouv.fr",
+      url: `https://www.data.gouv.fr/en/datasets/${sourceId}/`,
+      badgeText: "Certified DINUM",
       badgeVariant: "success",
-      excerpt: "Fiche détaillée du jeu de données avec documentation des schémas.",
+      excerpt: "Detailed dataset record with schema documentation.",
     };
   },
 });
 
-console.log("✅ Provider créé avec succès via defineSourceProvider() :");
+console.log("✅ Provider created successfully via defineSourceProvider():");
 console.log(demoOpendataProvider);

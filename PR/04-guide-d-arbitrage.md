@@ -1,44 +1,44 @@
 ---
-title: "Guide d'Arbitrage Stratégique & Matrice de Décision"
-sidebar_label: "04. Guide d'Arbitrage"
-description: Analyse comparative multicritères et matrice de décision pour la DINUM entre l'intégration monolithique in-tree et l'approche packagée modulaire.
+title: "Strategic Arbitrage Guide & Decision Matrix"
+sidebar_label: "04. Arbitrage Guide"
+description: Multi-criteria comparative analysis and decision matrix for DINUM between in-tree monolithic integration vs modular packaged approach.
 ---
 
 import { Mermaid } from "../../../src/components/Mermaid";
 
-Ce guide fournit la **matrice d'arbitrage multicritères** permettant à la gouvernance de la DINUM et aux mainteneurs de La Suite Docs de valider l'approche packagée low-code.
+This guide provides the **multi-criteria decision matrix** enabling DINUM leadership and La Suite Docs maintainers to validate the low-code packaged approach.
 
 ---
 
-## 📊 1. Matrice Comparative des Stratégies
+## 📊 1. Strategy Comparison Matrix
 
-| Dimension Stratégique | Typologie 1 : Monolithe In-Tree (+45 fichiers) | Typologie 2 : Packages Découplés (< 10 lignes) | Arbitrage Recommandé |
+| Strategic Dimension | Type 1: In-Tree Monolith (+45 files) | Type 2: Decoupled Packages (< 10 lines) | Recommended Arbitrage |
 | :--- | :--- | :--- | :---: |
-| **Empreinte sur `suitenumerique/docs`** | $+45$ fichiers créés dans le cœur de l'app | **$0$ nouveau fichier**, $9$ lignes modifiées | 🟢 **Typologie 2** |
-| **Charge de Revue de Code (PR Review)** | Élevée (~1 850 lignes à auditer) | Faible (< 10 lignes de câblage) | 🟢 **Typologie 2** |
-| **Dette Technique & Pollution Métier** | Forte (logique France injectée dans un outil international) | Nulle (application de Docs générique) | 🟢 **Typologie 2** |
-| **Agilité de Mise à Jour des APIs** | Re-publication complète de Docs à chaque fix d'API | Mise à jour indépendante du package en < 15 min | 🟢 **Typologie 2** |
-| **Réutilisation Transverse par l'État** | Confiné exclusivement à Docs | Réutilisable dans *Projects*, *Meet* et portails tiers | 🟢 **Typologie 2** |
-| **Activation Progressive (Staged Rollout)** | Tout ou rien | Activation au choix par commande (`/loi`, `/marche`...) | 🟢 **Typologie 2** |
+| **Footprint on `suitenumerique/docs`** | $+45$ files created in application core | **$0$ new files**, $9$ modified lines | 🟢 **Type 2** |
+| **PR Review Overhead** | High (~1,850 lines to audit) | Low (< 10 plumbing lines) | 🟢 **Type 2** |
+| **Technical Debt & Domain Pollution** | High (France-specific logic injected into generic international app) | None (Docs core remains clean) | 🟢 **Type 2** |
+| **API Maintenance Agility** | Full Docs release required for every external API change | Independent package updates in < 15 min | 🟢 **Type 2** |
+| **Cross-App Reusability across State** | Confined strictly to Docs | Reusable across *Projects*, *Meet*, and third-party portals | 🟢 **Type 2** |
+| **Progressive Staged Rollout** | All-or-nothing | Granular command-by-command opt-in (`/loi`, `/marche`...) | 🟢 **Type 2** |
 
 ---
 
-## 🏗️ 2. Schéma Décisionnel
+## 🏗️ 2. Decision Tree
 
 ```mermaid
 flowchart TD
-    Besoin["Besoin : Intégrer les sources souveraines (Légifrance, BOAMP, BAN, etc.)"]
+    Requirement["Requirement: Integrate sovereign sources (Légifrance, BOAMP, BAN, etc.)"]
     
-    Besoin --> Q1{"Doit-on modifier le cœur de Docs ?"}
-    Q1 -->|Oui : +45 fichiers in-tree| Monolithe["❌ Typologie 1 : Rejet probable upstream<br/>(Trop spécifique France, couplage lourd)"]
-    Q1 -->|Non : Découplage complet| Packages["✅ Typologie 2 : Packages Autonomes<br/>• django-lasuite-sources (PyPI)<br/>• @suitenumerique/blocknote-sources (npm)"]
+    Requirement --> Q1{"Should Docs core be modified directly?"}
+    Q1 -->|Yes: +45 in-tree files| Monolith["❌ Type 1: Probable upstream rejection<br/>(France-specific domain pollution, heavy coupling)"]
+    Q1 -->|No: Complete decoupling| Packages["✅ Type 2: Autonomous Packages<br/>• django-lasuite-sources (PyPI)<br/>• @suitenumerique/blocknote-sources (npm)"]
     
-    Packages --> Q2{"Déploiement en production ?"}
-    Q2 --> OptIn["PR Ultra-Légère (< 10 lignes)<br/>+ Activation progressive par commande"]
+    Packages --> Q2{"Production deployment approach?"}
+    Q2 --> OptIn["Ultra-lightweight PR (< 10 lines)<br/>+ Staged rollout per command"]
 ```
 
 ---
 
-## 📜 3. Recommandation Finale pour la DINUM
+## 📜 3. Final Recommendation
 
-La **Typologie 2 (Packages Découplés)** est unanimement recommandée car elle concilie l'autonomie des équipes françaises et l'intégrité de l'écosystème open source international de La Suite Numérique.
+**Type 2 (Decoupled Packages)** is strongly recommended as it combines independence for national public sector needs with upstream compatibility for La Suite's international open source community.

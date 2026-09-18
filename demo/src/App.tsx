@@ -1,26 +1,24 @@
 import { BlockNoteSchema, defaultBlockSpecs } from "@blocknote/core";
 import { BlockNoteView } from "@blocknote/mantine";
 import {
-    SuggestionMenuController,
-    getDefaultReactSlashMenuItems,
-    useCreateBlockNote,
+  SuggestionMenuController,
+  getDefaultReactSlashMenuItems,
+  useCreateBlockNote,
 } from "@blocknote/react";
 import React, { useEffect, useMemo, useState } from "react";
 
 import {
-    ALL_INTERNATIONAL_MOCK_SOURCES,
-    MOCK_EUROPE_SOURCES,
-    MOCK_FRANCE_SOURCES,
-    MOCK_GERMANY_SOURCES,
-    MOCK_NETHERLANDS_SOURCES,
-    MOCK_SPAIN_SOURCES,
-    SourceBlock,
-    getLocaleDictionary,
-    type ExternalSourceDisplayMode,
-    type ExternalSourceEntity,
-    type SourceEntityType,
-    type SupportedCountry,
-    type SupportedLocale,
+  ALL_INTERNATIONAL_MOCK_SOURCES,
+  MOCK_EUROPE_SOURCES,
+  MOCK_FRANCE_SOURCES,
+  MOCK_GERMANY_SOURCES,
+  SourceBlock,
+  getLocaleDictionary,
+  type ExternalSourceDisplayMode,
+  type ExternalSourceEntity,
+  type SourceEntityType,
+  type SupportedCountry,
+  type SupportedLocale
 } from "@suitenumerique/blocknote-sources";
 
 
@@ -266,7 +264,7 @@ export const App: React.FC = () => {
 
     const customItems = [
       {
-        title: "Texte de Loi (Légifrance / Gesetze / EUR-Lex)",
+        title: "Legal Text (Légifrance / Gesetze / EUR-Lex)",
         onItemClick: () => {
           editor.insertBlocks(
             [createEmptySourceBlock("law")],
@@ -275,12 +273,12 @@ export const App: React.FC = () => {
           );
         },
         aliases: ["loi", "law", "legifrance", "code", "article", "decret", "gesetz", "wet", "eurlex"],
-        group: "Sources Souveraines & Officielles",
+        group: "Sovereign & Official Sources",
         icon: <span>⚖️</span>,
-        subtext: "Insérer un texte de loi officiel certifié",
+        subtext: "Insert a certified official legal text",
       },
       {
-        title: "Fiche Entreprise (RNE / Handelsregister / KVK)",
+        title: "Company Record (RNE / Handelsregister / KVK)",
         onItemClick: () => {
           editor.insertBlocks(
             [createEmptySourceBlock("company")],
@@ -288,13 +286,13 @@ export const App: React.FC = () => {
             "after"
           );
         },
-        aliases: ["entreprise", "pappers", "siren", "siret", "societe", "kbis", "register", "kvk"],
-        group: "Sources Souveraines & Officielles",
+        aliases: ["entreprise", "company", "pappers", "siren", "siret", "societe", "kbis", "register", "kvk"],
+        group: "Sovereign & Official Sources",
         icon: <span>🏢</span>,
-        subtext: "Insérer les données certifiées du registre du commerce",
+        subtext: "Insert certified commercial registry data",
       },
       {
-        title: "Amendement & Débat Parlementaire",
+        title: "Parliamentary Amendment & Debate",
         onItemClick: () => {
           editor.insertBlocks(
             [createEmptySourceBlock("parliament")],
@@ -302,13 +300,13 @@ export const App: React.FC = () => {
             "after"
           );
         },
-        aliases: ["assemblee", "assemble", "an", "amendement", "depute", "bundestag", "dip"],
-        group: "Sources Souveraines & Officielles",
+        aliases: ["assemblee", "parliament", "assemble", "an", "amendement", "depute", "bundestag", "dip"],
+        group: "Sovereign & Official Sources",
         icon: <span>🏛️</span>,
-        subtext: "Suivre un amendement ou projet de loi en séance",
+        subtext: "Track a parliamentary amendment or bill in session",
       },
       {
-        title: "Adresse Postale (BAN / BAG)",
+        title: "Postal Address (BAN / BAG)",
         onItemClick: () => {
           editor.insertBlocks(
             [createEmptySourceBlock("address")],
@@ -317,12 +315,12 @@ export const App: React.FC = () => {
           );
         },
         aliases: ["adresse", "address", "ban", "geo", "rue", "bag"],
-        group: "Sources Souveraines & Officielles",
+        group: "Sovereign & Official Sources",
         icon: <span>📍</span>,
-        subtext: "Autocomplétion certifiée par le registre d'adresses national",
+        subtext: "Certified autocomplete from national address registries",
       },
       {
-        title: "Avis de Marché Public (BOAMP / TED)",
+        title: "Public Procurement Notice (BOAMP / TED)",
         onItemClick: () => {
           editor.insertBlocks(
             [createEmptySourceBlock("procurement")],
@@ -331,12 +329,12 @@ export const App: React.FC = () => {
           );
         },
         aliases: ["marche", "boamp", "achat", "dce", "dae", "ted", "procurement"],
-        group: "Sources Souveraines & Officielles",
+        group: "Sovereign & Official Sources",
         icon: <span>🛍️</span>,
-        subtext: "Insérer un avis de marché public officiel",
+        subtext: "Insert an official public procurement notice",
       },
       {
-        title: "Dispositif d'Aide & Subvention",
+        title: "Public Grant & Subsidy Program",
         onItemClick: () => {
           editor.insertBlocks(
             [createEmptySourceBlock("grant")],
@@ -344,13 +342,13 @@ export const App: React.FC = () => {
             "after"
           );
         },
-        aliases: ["subvention", "aides", "fonds-vert", "detr", "dsil", "anct", "subsidies"],
-        group: "Sources Souveraines & Officielles",
+        aliases: ["subvention", "grant", "aides", "fonds-vert", "detr", "dsil", "anct", "subsidies"],
+        group: "Sovereign & Official Sources",
         icon: <span>💶</span>,
-        subtext: "Insérer un dispositif d'aide financière publique",
+        subtext: "Insert a public funding or territorial grant program",
       },
       {
-        title: "Statistiques Officielles & Démographie",
+        title: "Official Statistics & Demographics",
         onItemClick: () => {
           editor.insertBlocks(
             [createEmptySourceBlock("insee")],
@@ -359,9 +357,9 @@ export const App: React.FC = () => {
           );
         },
         aliases: ["insee", "stats", "population", "territoire", "destatis", "cbs", "eurostat"],
-        group: "Sources Souveraines & Officielles",
+        group: "Sovereign & Official Sources",
         icon: <span>📊</span>,
-        subtext: "Insérer des indicateurs officiels démographiques",
+        subtext: "Insert official demographic indicators",
       },
       {
         title: "Open Data Portal (data.gouv.fr / GovData / EU Data)",
@@ -373,9 +371,9 @@ export const App: React.FC = () => {
           );
         },
         aliases: ["opendata", "dataset", "datagouv", "donnees", "govdata", "dataeuropa"],
-        group: "Sources Souveraines & Officielles",
+        group: "Sovereign & Official Sources",
         icon: <span>🌐</span>,
-        subtext: "Insérer un jeu de données certifié Open Data",
+        subtext: "Insert a certified open dataset record",
       },
     ];
 

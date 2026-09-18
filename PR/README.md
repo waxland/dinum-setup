@@ -1,88 +1,88 @@
 ---
-title: "Hub des Pull Requests & Contributions Officielles"
-sidebar_label: "09. Hub des PRs & Contributions"
-description: Panorama des Pull Requests officielles catégorisées par dépôt cible (suitenumerique/docs et TypeCellOS/BlockNote) avec guides d'arbitrage et diffs prêts à soumettre.
+title: "Pull Requests & Upstream Contributions Hub"
+sidebar_label: "09. PR Hub & Contributions"
+description: Overview of official Pull Requests categorized by destination repository (suitenumerique/docs and TypeCellOS/BlockNote) with decision matrix and ready-to-submit diffs.
 ---
 
 import { Mermaid } from "../../../src/components/Mermaid";
 import { FeatureCard, FeatureGrid } from "../../../src/components/Cards";
 
-L'ensemble des travaux d'ingénierie et d'optimisation réalisés dans le cadre de `dinum-setup` se matérialise par des **Pull Requests (PR) formelles, ciblées et catégorisées par dépôt de destination**.
+All engineering and optimization work carried out in `dinum-setup` is formalized through **targeted, structured Pull Requests (PR) categorized by target repository**.
 
-Ce hub centralise les spécifications complètes, les contextes de contribution, les diffs de code et les protocoles de recette pour chaque projet amont.
+This hub centralizes complete specifications, contribution contexts, code diffs, and verification procedures for each upstream project.
 
 ---
 
-## 🧭 1. Panorama des Contributions par Dépôt Cible
+## 🧭 1. Overview of Contributions by Target Repository
 
 <FeatureGrid cols={3}>
   <FeatureCard
     icon="🌐"
-    title="PR 1 : Docs — Support Serveurs Distants & VMs"
+    title="PR 1: Docs — Remote Servers & Cloud VMs Support"
     badge="suitenumerique/docs"
-    description="Rendre La Suite Docs compatible avec les déploiements distants et VMs sans modifier le code source (Hairpin NAT & API_ORIGIN)."
+    description="Make La Suite Docs compatible with remote deployments and VMs without modifying source code (Hairpin NAT & dynamic API_ORIGIN)."
     href="/09-PR/01-docs-serveur-config"
   />
   <FeatureCard
     icon="📦"
-    title="PR 2 : Docs — Intégration Socle Souverain"
+    title="PR 2: Docs — Sovereign Foundation Integration"
     badge="suitenumerique/docs"
-    description="Intégration modulaire low-code (< 10 lignes) des packages souverains avec activation progressive par étape des commandes."
+    description="Low-code (< 10 lines) modular integration of sovereign packages with staged progressive activation of slash commands."
     href="/09-PR/02-docs-packages-souverains"
   />
   <FeatureCard
     icon="📝"
-    title="PR 3 : BlockNote — Extension Sources Externes"
+    title="PR 3: BlockNote — External Data Sources Extension"
     badge="TypeCellOS/BlockNote"
-    description="RFC et package communautaire @blocknote/xl-external-sources standardisant les blocs de données distantes aux 3 formats."
+    description="RFC and community package @blocknote/xl-external-sources standardizing 3-format remote data blocks."
     href="/09-PR/03-blocknote-external-sources"
   />
 </FeatureGrid>
 
 ---
 
-## 🏗️ 2. Cartographie des Contributions Amont & Flux Git
+## 🏗️ 2. Upstream Contributions Map & Git Workflow
 
 ```mermaid
 flowchart TD
-    subgraph DinumSetup["🏛️ Dépôt d'Orchestration dinum-setup"]
+    subgraph DinumSetup["🏛️ dinum-setup Orchestration Monorepo"]
         Pkg_Py["🐍 django-lasuite-sources (PyPI)"]
         Pkg_UI["📦 @suitenumerique/blocknote-sources (npm)"]
         Pkg_SDK["🛠️ @suitenumerique/slash-sources-sdk (npm)"]
-        Dev_VM["⚙️ Configuration Réseau & Hairpin NAT"]
+        Dev_VM["⚙️ Network Configuration & Hairpin NAT"]
     end
 
-    subgraph RepoDocs["🐙 Dépôt Upstream suitenumerique/docs"]
-        PR1["PR 1 : Support Serveurs Distants & VMs<br/>• Variable dynamique API_ORIGIN<br/>• Configuration Hairpin NAT OIDC"]
-        PR2["PR 2 : Intégration Packages Souverains<br/>• Dépendances légères & Opt-in 1-clic<br/>• Activation progressive par commande (/loi, /entreprise...)"]
+    subgraph RepoDocs["🐙 Upstream Repository suitenumerique/docs"]
+        PR1["PR 1: Remote Servers & Cloud VMs Support<br/>• Dynamic API_ORIGIN variable<br/>• OIDC Hairpin NAT resolution"]
+        PR2["PR 2: Sovereign Packages Integration<br/>• Lightweight & 1-click opt-in dependencies<br/>• Staged rollout per command (/loi, /entreprise...)"]
     end
 
-    subgraph RepoBN["🌐 Dépôt Upstream TypeCellOS/BlockNote"]
-        PR3["PR 3 : RFC & Extension Communautaire<br/>• Package @blocknote/xl-external-sources<br/>• Standardisation des 3 formats d'affichage"]
+    subgraph RepoBN["🌐 Upstream Repository TypeCellOS/BlockNote"]
+        PR3["PR 3: RFC & Community Extension<br/>• @blocknote/xl-external-sources package<br/>• 3-format display standardization"]
     end
 
-    Dev_VM -->|"Soumission PR 1"| PR1
-    Pkg_Py & Pkg_UI -->|"Soumission PR 2"| PR2
-    Pkg_SDK & Pkg_UI -->|"Soumission PR 3 (Community -> Core)"| PR3
+    Dev_VM -->|"Submit PR 1"| PR1
+    Pkg_Py & Pkg_UI -->|"Submit PR 2"| PR2
+    Pkg_SDK & Pkg_UI -->|"Submit PR 3 (Community -> Core)"| PR3
 ```
 
 ---
 
-## 📊 3. Tableau Récapitulatif des Contributions
+## 📊 3. Summary Table of Contributions
 
-| ID PR | Dépôt Cible | Intitulé & Portée | Lignes Modifiées | Bénéfice Clé |
+| PR ID | Target Repo | Title & Scope | Modified Lines | Key Benefit |
 | :--- | :--- | :--- | :---: | :--- |
-| **PR-01** | [`suitenumerique/docs`](https://github.com/suitenumerique/docs) | Support des VM & serveurs distants (`API_ORIGIN`) | `~15` lignes | Déploiement instantané sur VM/Cloud sans erreur OIDC |
-| **PR-02** | [`suitenumerique/docs`](https://github.com/suitenumerique/docs) | Packages souverains & activation progressive | `< 10` lignes | Zéro pollution in-tree, activation par étape des commandes |
-| **PR-03** | [`TypeCellOS/BlockNote`](https://github.com/TypeCellOS/BlockNote) | RFC Blocs de Données Externes & Multi-Formats | Package externe | Standardisation open source, passerelle vers l'écosystème officiel |
-| **REF-04**| *Arbitrage Interne* | Guide d'Arbitrage & Matrice de Décision | Référentiel | Tableau comparatif Monolithe vs Packages Découplés |
+| **PR-01** | [`suitenumerique/docs`](https://github.com/suitenumerique/docs) | Remote server & VM support (`API_ORIGIN`) | `~15` lines | Instant deployment on VM/Cloud without OIDC blocking |
+| **PR-02** | [`suitenumerique/docs`](https://github.com/suitenumerique/docs) | Sovereign packages & progressive activation | `< 10` lines | Zero in-tree pollution, granular command opt-in |
+| **PR-03** | [`TypeCellOS/BlockNote`](https://github.com/TypeCellOS/BlockNote) | External Data Blocks RFC & Multi-Format extension | External package | Open source standardization, path to official ecosystem |
+| **REF-04**| *Internal Arbitrage* | Decision Guide & Arbitrage Matrix | Reference | Comparative analysis: In-Tree Monolith vs Decoupled Packages |
 
 ---
 
-## 🚀 4. Accès Détaillé aux Dossiers de PR
+## 🚀 4. Detailed PR Dossiers
 
-Consultez les dossiers complets prêts à copier-coller pour l'ouverture des Pull Requests :
-- 🔗 [Dossier PR 1 : Support des Serveurs Distants & VMs (suitenumerique/docs)](/09-PR/01-docs-serveur-config)
-- 🔗 [Dossier PR 2 : Intégration des Packages Souverains & Activation Progressive (suitenumerique/docs)](/09-PR/02-docs-packages-souverains)
-- 🔗 [Dossier PR 3 : RFC & Extension Communautaire BlockNote (TypeCellOS/BlockNote)](/09-PR/03-blocknote-external-sources)
-- 🔗 [Guide d'Arbitrage Stratégique & Matrice de Décision](/09-PR/04-guide-d-arbitrage-et-migration)
+Access the complete ready-to-submit dossiers for opening Pull Requests:
+- 🔗 [PR 1 Dossier: Remote Servers & Cloud VMs Support (suitenumerique/docs)](/09-PR/01-docs-serveur-config)
+- 🔗 [PR 2 Dossier: Sovereign Packages Integration & Progressive Rollout (suitenumerique/docs)](/09-PR/02-docs-packages-souverains)
+- 🔗 [PR 3 Dossier: BlockNote RFC & Community Extension (TypeCellOS/BlockNote)](/09-PR/03-blocknote-external-sources)
+- 🔗 [Strategic Arbitrage Guide & Decision Matrix](/09-PR/04-guide-d-arbitrage-et-migration)

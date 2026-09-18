@@ -24,11 +24,11 @@ describe('RGAA v4.1 & ARIA Compliance Unit Tests', () => {
   });
 
   it('verifies contrast requirements and semantic structure indicators', () => {
-    // Les couleurs des bordures Marianne doivent être conformes au bleu officiel État
+    // Marianne border colors must comply with official State blue
     const MARIANNE_BLUE = '#000091';
     expect(MARIANNE_BLUE).toBe('#000091');
 
-    // Les statuts d'affichage doivent être strictement typés parmi les 3 formats
+    // Display modes must be strictly typed among the 3 formats
     const validDisplayModes = ['callout', 'card', 'link'];
     expect(validDisplayModes).toHaveLength(3);
   });

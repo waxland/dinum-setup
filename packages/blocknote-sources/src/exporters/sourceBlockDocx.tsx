@@ -10,7 +10,7 @@ export const blockMappingSourceBlockDocx = (
 
   const children: (TextRun | ExternalHyperlink)[] = [
     new TextRun({
-      text: props.title || 'Source Souveraine',
+      text: props.title || 'Sovereign Source',
       bold: true,
       color: '000091',
       size: 22,

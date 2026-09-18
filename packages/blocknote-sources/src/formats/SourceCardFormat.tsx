@@ -79,7 +79,7 @@ export const SourceCardFormat: React.FC<SourceCardFormatProps> = ({ props }) => 
       >
         <div>
           <div style={{ color: '#666666', fontWeight: 600, textTransform: 'uppercase' }}>
-            Référence
+            Reference
           </div>
           <div style={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {props.meta1 || props.sourceId || '—'}
@@ -88,7 +88,7 @@ export const SourceCardFormat: React.FC<SourceCardFormatProps> = ({ props }) => 
 
         <div>
           <div style={{ color: '#666666', fontWeight: 600, textTransform: 'uppercase' }}>
-            Attribut Clé
+            Key Attribute
           </div>
           <div style={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {props.meta2 || '—'}
@@ -97,7 +97,7 @@ export const SourceCardFormat: React.FC<SourceCardFormatProps> = ({ props }) => 
 
         <div>
           <div style={{ color: '#666666', fontWeight: 600, textTransform: 'uppercase' }}>
-            Date / Validité
+            Date / Validity
           </div>
           <div style={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {props.meta3 || props.verifiedAt || '—'}

@@ -86,7 +86,7 @@ export const blockMappingSourceBlockPDF = (
   return (
     <View wrap={false} style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>{props.title || 'Source Souveraine'}</Text>
+        <Text style={styles.title}>{props.title || 'Sovereign Source'}</Text>
         {props.status ? (
           <Text style={styles.status}>{props.status}</Text>
         ) : null}
@@ -113,8 +113,8 @@ export const blockMappingSourceBlockPDF = (
       <View style={styles.footer}>
         <Text style={styles.footerTag}>
           {props.verifiedAt
-            ? `Vérifié le ${props.verifiedAt}`
-            : 'Source certifiée État'}
+            ? `Verified on ${props.verifiedAt}`
+            : 'Official verified source'}
         </Text>
         {props.url ? (
           <Link src={props.url} style={styles.link}>

@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "django-lasuite-sources"
 version = "1.0.0"
-description = "Application Django réutilisable connectant La Suite Numérique aux sources de données souveraines de l'État (Légifrance, BAN, BOAMP, Aides-Territoires, INSEE, Albert RAG, etc.)"
+description = "Reusable Django application connecting La Suite Numérique to sovereign and public data sources (Légifrance, BAN, BOAMP, Aides-Territoires, INSEE, Albert RAG, etc.)"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.12"

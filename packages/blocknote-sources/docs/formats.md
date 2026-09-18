@@ -1,81 +1,81 @@
-# 🎨 Spécification des 3 Formats d'Affichage DSFR & Personnalisation (`formats.md`)
+# 🎨 3-Format Display Specification & Customization (`formats.md`)
 
-> **Package :** `@suitenumerique/blocknote-sources`  
-> **Auteur :** Direction Interministérielle du Numérique (DINUM)  
-> **Conformité :** DSFR (`@codegouvfr/react-dsfr`), Cunningham (`@openfun/cunningham-tokens`), RGAA v4.1 (Niveau AA)
+> **Package:** `@suitenumerique/blocknote-sources`  
+> **Author:** Direction Interministérielle du Numérique (DINUM)  
+> **Compliance:** DSFR (`@codegouvfr/react-dsfr`), Cunningham (`@openfun/cunningham-tokens`), RGAA v4.1 (Level AA)
 
 ---
 
-## 🧭 1. Le Pattern Multi-Formats Permutable sans Perte
+## 🧭 1. Lossless Hot-Switchable Multi-Format Pattern
 
-Le bloc `SourceBlock` implémente un pattern d'affichage universel à **3 modes permutables à chaud** via la barre d'outils de survol (`SourceBlockToolbar`) :
+The `SourceBlock` implements a universal display pattern with **3 hot-switchable display modes** via the hover toolbar (`SourceBlockToolbar`):
 
 ```mermaid
 flowchart LR
-    Block["SourceBlock (Données DTO)"] --> Mode1["📢 Mode 1 : Callout Marianne<br/>(Bordure #000091 + Extrait complet)"]
-    Block --> Mode2["🗂️ Mode 2 : Carte 3 Colonnes<br/>(Grille de métadonnées + Fond gris 975)"]
-    Block --> Mode3["🔗 Mode 3 : Pastille Lien Inline<br/>(Pastille compacte + Infobulle au survol)"]
+    Block["SourceBlock (DTO Data)"] --> Mode1["📢 Mode 1: Marianne Callout<br/>(Border #000091 + Full excerpt)"]
+    Block --> Mode2["🗂️ Mode 2: 3-Column Card<br/>(Metadata grid + Gray 975 background)"]
+    Block --> Mode3["🔗 Mode 3: Inline Link Badge<br/>(Compact badge + Hover tooltip)"]
 ```
 
 ---
 
-## 📢 2. Mode 1 : Encadré Callout Marianne (`callout`)
+## 📢 2. Mode 1: Marianne Callout (`callout`)
 
-### Usage & Sémantique
-Recommandé pour les citations de textes juridiques (`/loi`), décisions de justice, extraits de rapports de marchés publics (`/marche`) ou fiches d'aides territoriales (`/subvention`).
+### Usage & Semantics
+Recommended for legal text citations (`/loi`), judicial rulings, public procurement extracts (`/marche`), or territorial grant summaries (`/subvention`).
 
-### Caractéristiques Graphiques & Tokens
-- **Liseré latéral gauche :** Largeur `4px`, couleur par défaut **Bleu Marianne `#000091`** (`var(--c--contextuals--border--primary)`).
-- **Fond de surface :** Blanc en thème clair, gris sombre en dark mode (`var(--c--globals--colors--gray-975)`).
-- **Badge de statut officiel :** En haut à droite (`En vigueur`, `Certifié`, `Clôturé`).
-- **Lien hypertexte sécurisé :** Lien officiel vers Légifrance, BOAMP ou data.gouv.fr avec icône externe accessible.
-
----
-
-## 🗂️ 3. Mode 2 : Carte Structurée 3 Colonnes (`card`)
-
-### Usage & Sémantique
-Recommandé pour les fiches entreprises (`/entreprise`), statistiques démographiques (`/stats`), parcelles foncières (`/cadastre`) et avis de marchés (`/marche`).
-
-### Caractéristiques Graphiques & Tokens
-- **Grille de données :** Répartition en 3 colonnes égales de métadonnées (ex: Numéro SIREN, Statut RCS, Date de création).
-- **Typographie :** Libellés secondaires en gris 500, valeurs principales en gras.
-- **Bordure intégrale :** Liseré fin `1px` neutre (`var(--c--globals--colors--gray-200)`).
+### Graphical Attributes & CSS Tokens
+- **Left Accent Border:** Width `4px`, default color **Marianne Blue `#000091`** (`var(--c--contextuals--border--primary)`).
+- **Surface Background:** White in light theme, dark gray in dark mode (`var(--c--globals--colors--gray-975)`).
+- **Official Status Badge:** Top-right (`In effect`, `Certified`, `Closed`).
+- **Secure Hyperlink:** Official link to Légifrance, BOAMP, or data.gouv.fr with accessible external link icon.
 
 ---
 
-## 🔗 4. Mode 3 : Pastille Lien Inline (`link`)
+## 🗂️ 3. Mode 2: Structured 3-Column Card (`card`)
 
-### Usage & Sémantique
-Recommandé pour insérer une référence discrète au fil du texte sans rompre la lecture du paragraphe (ex: *« Conformément à l'Article L. 111-1 du Code de la commande publique, nous avons procédé... »*).
+### Usage & Semantics
+Recommended for enterprise company profiles (`/entreprise`), demographic statistics (`/stats`), land registry parcels (`/cadastre`), and tender notices (`/marche`).
 
-### Caractéristiques Graphiques & Tokens
-- **Affichage inline :** Pastille compacte avec icône thématique et libellé.
-- **Infobulle interactive (Tooltip) :** Révèle au survol ou au focus clavier l'extrait textuel complet et l'organisme émetteur.
+### Graphical Attributes & CSS Tokens
+- **Metadata Grid:** 3-column equal distribution of key metadata (e.g., SIREN number, RCS status, registration date).
+- **Typography:** Secondary labels in gray-500, primary values in bold.
+- **Full Border:** Thin `1px` neutral border (`var(--c--globals--colors--gray-200)`).
 
 ---
 
-## 🎨 5. Personnalisation du Liseré Institutionnel (`borderColor`)
+## 🔗 4. Mode 3: Inline Link Badge (`link`)
 
-Pour les organisations partenaires (collectivités territoriales, administrations francophones comme la Belgique, la Suisse ou le Canada, ou entreprises privées), le composant accepte une prop optionnelle `borderColor` :
+### Usage & Semantics
+Recommended for inserting a discrete in-text reference without breaking paragraph flow (e.g., *"Pursuant to Article L. 111-1 of the Public Procurement Code, the commission decided..."*).
+
+### Graphical Attributes & CSS Tokens
+- **Inline Display:** Compact badge with thematic icon and title label.
+- **Interactive Tooltip:** Displays full text excerpt and issuing body on hover or keyboard focus.
+
+---
+
+## 🎨 5. Customizing Institutional Accent Border (`borderColor`)
+
+For partner institutions (local governments, administrations such as Belgium, Switzerland, Germany, Spain, Netherlands, or private organizations), the component accepts an optional `borderColor` prop:
 
 ```tsx
 import { SourceBlock } from '@suitenumerique/blocknote-sources';
 
-// Instanciation personnalisée avec liseré spécifique (ex: Vert ANCT #008000 ou Rouge #D32F2F)
+// Custom instantiation with custom border accent (e.g. Green #008000 or Red #D32F2F)
 const customSourceBlock = SourceBlock({
   defaultDisplayMode: 'callout',
-  borderColor: '#008000', // Surcharge du bleu Marianne
+  borderColor: '#008000', // Overrides Marianne blue
 });
 ```
 
 ---
 
-## ♿ 6. Conformité Accessibilité RGAA v4.1 (Niveau AA)
+## ♿ 6. Accessibility Compliance RGAA v4.1 / WCAG 2.1 (Level AA)
 
-| Critère RGAA | Implémentation dans `@suitenumerique/blocknote-sources` | Statut |
+| Criterion | Implementation in `@suitenumerique/blocknote-sources` | Status |
 | :--- | :--- | :---: |
-| **Contraste des textes** | Ratio de contraste $\ge 4.5:1$ en thème clair et sombre | ✅ Conforme |
-| **Navigation clavier** | Commutation des formats via boutons accessibles (`Tab` + `Enter`) | ✅ Conforme |
-| **Rôles ARIA** | `role="toolbar"`, `aria-label="Modes d'affichage de la source"` | ✅ Conforme |
-| **Infobulles** | `role="tooltip"` lié par `aria-describedby` | ✅ Conforme |
+| **Text Contrast** | Contrast ratio $\ge 4.5:1$ in both light and dark modes | ✅ Compliant |
+| **Keyboard Navigation** | Accessible format switching via buttons (`Tab` + `Enter`) | ✅ Compliant |
+| **ARIA Roles** | `role="toolbar"`, `aria-label="Source display modes"` | ✅ Compliant |
+| **Tooltips** | `role="tooltip"` bound via `aria-describedby` | ✅ Compliant |

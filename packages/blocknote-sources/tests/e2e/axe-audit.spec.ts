@@ -6,7 +6,7 @@ test.describe('Automated Accessibility Audit (WCAG 2.1 Level AA & RGAA v4.1)', (
   }) => {
     await page.goto('/');
 
-    // 1. Ouvrir l'éditeur et déclencher le popover
+    // 1. Open editor and trigger search popover
     const editor = page.locator('.ProseMirror, .bn-editor').first();
     await editor.click();
     await page.keyboard.type('/loi');
@@ -14,18 +14,18 @@ test.describe('Automated Accessibility Audit (WCAG 2.1 Level AA & RGAA v4.1)', (
     const searchInput = page.getByRole('combobox');
     await expect(searchInput).toBeVisible();
 
-    // 2. Vérifier les critères d'accessibilité du popover de recherche
-    // - L'attribut aria-autocomplete doit valoir 'list' ou 'inline'
-    // - Le champ de recherche doit posséder un libellé accessible explicite
+    // 2. Verify popover accessibility criteria
+    // - aria-autocomplete attribute must be list or inline
+    // - Search input must have an explicit accessible label
     const ariaLabel = await searchInput.getAttribute('aria-label');
     const placeholder = await searchInput.getAttribute('placeholder');
     expect(ariaLabel || placeholder).toBeTruthy();
 
-    // 3. Validation de l'insertion au clavier et de la présence de la toolbar accessible
+    // 3. Validate keyboard insertion and accessible toolbar presence
     await page.keyboard.press('Enter');
 
     const toolbar = page.getByRole('toolbar', {
-      name: "Modes d'affichage de la source",
+      name: "Source display modes",
     });
     if (await toolbar.isVisible()) {
       const buttons = toolbar.getByRole('button');

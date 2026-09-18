@@ -10,22 +10,22 @@ test.describe('RGAA v4.1 (Level AA) Accessibility Tests', () => {
     await editor.click();
     await page.keyboard.type('/loi');
 
-    // Vérifier les attributs ARIA du popover
+    // Check popover ARIA attributes
     const searchInput = page.getByRole('combobox');
     await expect(searchInput).toBeVisible();
     await expect(searchInput).toHaveAttribute('aria-expanded', 'true');
 
-    // Vérifier la navigation au clavier sans souris
+    // Check mouse-free keyboard navigation
     await page.keyboard.press('ArrowDown');
     await page.keyboard.press('ArrowUp');
     await page.keyboard.press('Enter');
 
-    // Vérifier que le bloc inséré est focusable et accessible
+    // Verify inserted block is focusable and accessible
     const calloutBlock = page.locator('[data-display-mode="callout"]').first();
     if (await calloutBlock.isVisible()) {
       await expect(calloutBlock).toBeVisible();
       const toolbar = page.getByRole('toolbar', {
-        name: "Modes d'affichage de la source",
+        name: "Source display modes",
       });
       await expect(toolbar).toBeDefined();
     }

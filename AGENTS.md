@@ -1,52 +1,53 @@
-# 🤖 Instructions Générales pour les Agents (`AGENTS.md`)
+# 🤖 General Instructions for AI Agents (`AGENTS.md`)
 
-Ce document définit les règles d'intervention, les normes de sécurité et la table d'orientation vers les **skills spécialisés** pour le dépôt d'orchestration `dinum-setup`.
-
----
-
-## 🏛️ 1. Périmètre du Dépôt
-
-Le dépôt est composé de trois couches distinctes à ne pas confondre :
-
-1. **Orchestration Racine :** Le `Makefile`, les configurations Docker (`docker-compose*.yml`) et les scripts d'environnement qui coordonnent les services locaux.
-2. **Portail Documentaire Zudoku (`documentation/`) :** L'application de documentation (`documentation/docs/`, `documentation/zudoku.config.tsx`, `documentation/zudoku.navigation.tsx`, `documentation/src/components/`, `documentation/public/`).
-3. **Dépôts Clones (`LaSuite/*`) :** Les applications indépendantes de La Suite (`docs`, `projects`, `meet`, `transfers`, `people`, `accounts`). Chaque application possède sa propre stack (Django, Next.js, Sails, etc.) et ses propres commandes.
+This document defines operating rules, security standards, and the routing table for **specialized skills** within the `dinum-setup` monorepo.
 
 ---
 
-## 🛡️ 2. Règles Fondamentales & Bonnes Pratiques
+## 🏛️ 1. Repository Scope
 
-- 🔒 **Hygiène des Secrets :** Ne jamais commiter de mot de passe, clé privée SSH/PGP ou jeton en clair. Utiliser systématiquement `.env.example` ou le chiffrement SOPS/age.
-- 🛑 **Typage Strict & Pureté UI :** Zéro `any`, zéro type assertion/cast abusif (`as ...`), zéro Tailwind CSS, et zéro `@mantine/core` dans les composants d'interface utilisateur. Utiliser exclusivement le Design System Cunningham (`@openfun/cunningham-tokens`, `<Box>`), le DSFR (`@codegouvfr/react-dsfr`), et `react-aria-components`.
-- ♿ **Accessibilité Universelle :** Tout composant ou page web doit respecter les critères **RGAA v4.1 (Niveau AA)** et être utilisable à 100% au clavier sans modale bloquante.
-- 🎨 **Design System de l'État :** Utiliser exclusivement les composants officiels `@codegouvfr/react-dsfr`, les tokens Cunningham, et les classes `fr-*` du DSFR.
-- 🔄 **Idempotence :** Les scripts et cibles `Makefile` doivent pouvoir être réexécutés sans écraser silencieusement des configurations existantes ni détruire de données locales.
-- ✅ **Validation Obligatoire :** Toute modification de la documentation doit être validée par `npm run docs:build` (0 erreur d'hydratation ou de build tolérée).
+The repository consists of distinct layers:
 
----
-
-## 🧭 3. Table de Routage des Skills Spécialisés / Specialized Skills Routing
-
-Avant d'effectuer une tâche, chargez et lisez la procédure détaillée dans le fichier correspondant du dossier racine `.skills/` (version française ou version anglaise dans `.skills/en/`) :
-
-| Intention / Type de Tâche | Skill à charger | Fichier FR | English File |
-| ------------------------- | --------------- | ---------- | ------------ |
-| **Normes TypeScript, Cunningham & Zéro any/cast** | `code-standards` | [`.skills/code-standards.md`](.skills/code-standards.md) | [`.skills/en/code-standards.md`](.skills/en/code-standards.md) |
-| **Composant ou vue DSFR** (Bouton, alerte, formulaire, tokens, thème) | `dsfr` | [`.skills/dsfr.md`](.skills/dsfr.md) | [`.skills/en/dsfr.md`](.skills/en/dsfr.md) |
-| **Audit ou correction d'accessibilité** (Clavier, ARIA, contrastes, RGAA) | `rgaa-review` | [`.skills/rgaa-review.md`](.skills/rgaa-review.md) | [`.skills/en/rgaa-review.md`](.skills/en/rgaa-review.md) |
-| **Orchestration & Démarrage local** (Makefile, Docker, PostgreSQL, ports) | `lasuite-dev` | [`.skills/lasuite-dev.md`](.skills/lasuite-dev.md) | [`.skills/en/lasuite-dev.md`](.skills/en/lasuite-dev.md) |
-| **Rédaction documentaire MDX** (Zudoku, navigation, composants React) | `docs-mdx` | [`.skills/docs-mdx.md`](.skills/docs-mdx.md) | [`.skills/en/docs-mdx.md`](.skills/en/docs-mdx.md) |
-| **Revue de code / PR** (Bugs, régressions, conventions, secrets) | `code-review` | [`.skills/code-review.md`](.skills/code-review.md) | [`.skills/en/code-review.md`](.skills/en/code-review.md) |
-| **Audit d'architecture** (Couplage, responsabilités, flux temps réel/S3) | `architecture-review` | [`.skills/architecture-review.md`](.skills/architecture-review.md) | [`.skills/en/architecture-review.md`](.skills/en/architecture-review.md) |
-| **Conception d'évolution** (Nouvelle feature, comparaison d'options, ADR) | `design-change` | [`.skills/design-change.md`](.skills/design-change.md) | [`.skills/en/design-change.md`](.skills/en/design-change.md) |
-
+1. **Root Orchestration:** The `Makefile`, Docker configurations (`docker-compose*.yml`), and environment scripts coordinating local services.
+2. **Open Source Packages (`packages/`):** Universal SDK (`slash-sources-sdk`), BlockNote extension (`blocknote-sources`), and Django backend (`django-lasuite-sources`).
+3. **Zudoku Documentation Portal (`documentation/`):** The documentation application (`documentation/docs/`, `documentation/zudoku.config.tsx`, `documentation/zudoku.navigation.tsx`, `documentation/src/components/`, `documentation/public/`).
+4. **Standalone Web Demo (`demo/`):** The interactive playground for BlockNote and sovereign connectors.
+5. **Git Clone Workspace (`LaSuite/*`):** Upstream independent applications of La Suite (`docs`, `projects`, `meet`, `transfers`, `people`, `accounts`).
 
 ---
 
-## 📋 4. Mémoire de Session & Suivi Structuré
+## 🛡️ 2. Core Rules & Engineering Standards
 
-Pour toute mission multi-étapes ou complexe, créer ou mettre à jour les fichiers de suivi dans le dossier **`.sessions/`** (inclus dans le `.gitignore`) :
+- 🔒 **Secrets Hygiene:** Never commit plaintext passwords, SSH/PGP private keys, or API tokens. Always use `.env.example` or SOPS/age encryption.
+- 🛑 **Strict Typing & UI Purity:** Zero `any`, zero abusive type assertions/casts (`as ...`), zero Tailwind CSS, and zero `@mantine/core` in user-facing UI components. Exclusively use Cunningham Design System (`@openfun/cunningham-tokens`, `<Box>`), DSFR (`@codegouvfr/react-dsfr`), and `react-aria-components`.
+- ♿ **Universal Accessibility:** Every web page or component must comply with **RGAA v4.1 / WCAG 2.1 Level AA** and be 100% navigable by keyboard with no trapping modals.
+- 🎨 **Official Design System:** Exclusively use official `@codegouvfr/react-dsfr` components, Cunningham tokens, and DSFR `fr-*` classes.
+- 🔄 **Idempotency:** Makefile targets and scripts must be re-runnable without silently overwriting existing developer configurations or destroying local data.
+- ✅ **Mandatory Validation:** Any documentation or code change must pass `npm run docs:build` (0 hydration errors, 0 build failures).
 
-- **`.sessions/RETOUR_EXEC_<SUJET>.md`** : Journal des commandes exécutées, résultats observés, décisions d'arbitrage (`DEC-001`) et point de reprise.
-- **`.sessions/AUDIT_<SUJET>.md`** : Relevé des constats (`AUD-001`), sévérités, scénarios de test et preuves de validation.
-- **`.sessions/TODO_<SUJET>.md`** : Découpage unitaire des tâches (`T-001`), dépendances et critères d'acceptation observables.
+---
+
+## 🧭 3. Specialized Skills Routing Table
+
+Before executing a task, load and read the detailed procedure from `.skills/en/` (or `.skills/` for French):
+
+| Task Intent / Topic | Skill to Load | English File | French File |
+| ------------------- | ------------- | ------------ | ----------- |
+| **TypeScript Standards, Cunningham & Zero any/cast** | `code-standards` | [`.skills/en/code-standards.md`](.skills/en/code-standards.md) | [`.skills/code-standards.md`](.skills/code-standards.md) |
+| **DSFR Component or View** (Buttons, alerts, forms, tokens, theme) | `dsfr` | [`.skills/en/dsfr.md`](.skills/en/dsfr.md) | [`.skills/dsfr.md`](.skills/dsfr.md) |
+| **Accessibility Audit or Fix** (Keyboard, ARIA, contrasts, RGAA) | `rgaa-review` | [`.skills/en/rgaa-review.md`](.skills/en/rgaa-review.md) | [`.skills/rgaa-review.md`](.skills/rgaa-review.md) |
+| **Local Orchestration & Dev** (Makefile, Docker, PostgreSQL, ports) | `lasuite-dev` | [`.skills/en/lasuite-dev.md`](.skills/en/lasuite-dev.md) | [`.skills/lasuite-dev.md`](.skills/lasuite-dev.md) |
+| **MDX Documentation Authoring** (Zudoku, navigation, React components) | `docs-mdx` | [`.skills/en/docs-mdx.md`](.skills/en/docs-mdx.md) | [`.skills/docs-mdx.md`](.skills/docs-mdx.md) |
+| **Code Review / PR Audit** (Bugs, regressions, conventions, secrets) | `code-review` | [`.skills/en/code-review.md`](.skills/en/code-review.md) | [`.skills/code-review.md`](.skills/code-review.md) |
+| **Architecture Review** (Coupling, responsibilities, real-time/S3 flows) | `architecture-review` | [`.skills/en/architecture-review.md`](.skills/en/architecture-review.md) | [`.skills/architecture-review.md`](.skills/architecture-review.md) |
+| **Evolution Design & ADR** (New feature, option trade-offs, ADR) | `design-change` | [`.skills/en/design-change.md`](.skills/en/design-change.md) | [`.skills/design-change.md`](.skills/design-change.md) |
+
+---
+
+## 📋 4. Session Tracking & Structured Memory
+
+For complex or multi-step missions, create or update tracking files in the **`.sessions/`** directory (ignored by git):
+
+- **`.sessions/RETOUR_EXEC_<TOPIC>.md`**: Log of executed commands, observed results, architectural decisions (`DEC-001`), and resumption checkpoints.
+- **`.sessions/AUDIT_<TOPIC>.md`**: Log of findings (`AUD-001`), severity ratings, test scenarios, and verification proofs.
+- **`.sessions/TODO_<TOPIC>.md`**: Atomic task breakdown (`T-001`), dependencies, and observable acceptance criteria.

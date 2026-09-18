@@ -1,246 +1,242 @@
-# 🏛️ Projet Slasher — DINUM / La Suite Dev Setup (Monorepo 4 Piliers)
+# 🏛️ Slasher Project — DINUM / La Suite Dev Setup (4-Pillar Monorepo)
 
-> **Slasher** : Standard universel de blocs de données distantes pour BlockNote (`@blocknote/xl-external-sources`), SDK zéro-dépendance (`@blocknote/source-provider-sdk`) et socle souverain des sources connectées de l'État français (DINUM / Hackathon 42 Oléron).  
-> Proposé à l'écosystème open source international **TypeCellOS/BlockNote**.
-
+> **Slasher**: Universal remote data block standard for BlockNote (`@blocknote/xl-external-sources`), zero-dependency SDK (`@blocknote/source-provider-sdk`), and sovereign connected source backbone for the French State (DINUM / Hackathon 42 Oléron).  
+> Proposed to the international open source ecosystem **TypeCellOS/BlockNote**.
 
 ---
 
-## 🧭 1. Architecture du Monorepo en 4 Piliers
+## 🧭 1. 4-Pillar Monorepo Architecture
 
-Le dépôt est structuré en **4 piliers étanches et indépendants** :
+The repository is structured into **4 isolated, autonomous pillars**:
 
 ```mermaid
 flowchart TD
-    subgraph P1["🎮 1. demo/ (Démonstrateur Web Standalone)"]
-        WebDemo["Application Vite 6 + React 19 (Port 5173)<br/>• Sélecteur de pays interactif (🇫🇷 🇩🇪 🇳🇱 🇪🇺)<br/>• Sélecteur de langue (en, fr, de, nl)<br/>• Permutation des 3 formats (Callout / Card / Link)<br/>• Testable sans Docker ni conteneur"]
+    subgraph P1["🎮 1. demo/ (Standalone Web Demonstrator)"]
+        WebDemo["Vite 6 + React 19 Application (Port 5173)<br/>• Interactive country selector (🇫🇷 🇩🇪 🇳🇱 🇪🇸 🇪🇺)<br/>• Language selector (en, fr, de, nl, es)<br/>• Hot format switching (Callout / Card / Link)<br/>• Testable without Docker or local container"]
     end
 
-    subgraph P2["📦 2. packages/ (Bibliothèques Open Source)"]
-        SDK["🛠️ @suitenumerique/slash-sources-sdk (&lt; 5 kB)<br/>SDK TypeScript universel déclaratif immuable"]
-        BN["🧩 @suitenumerique/blocknote-sources<br/>Extension BlockNote multi-formats & Storybook (Port 6006)"]
-        DJ["🐍 django-lasuite-sources (PyPI)<br/>Proxy DRF, cache Redis SHA-256 & anti-SSRF (Port 8000)"]
+    subgraph P2["📦 2. packages/ (Open Source Libraries)"]
+        SDK["🛠️ @suitenumerique/slash-sources-sdk (&lt; 5 kB)<br/>Declarative, immutable universal TypeScript SDK"]
+        BN["🧩 @suitenumerique/blocknote-sources<br/>Multi-format BlockNote extension & Storybook (Port 6006)"]
+        DJ["🐍 django-lasuite-sources (PyPI)<br/>DRF proxy, deterministic SHA-256 Redis cache & anti-SSRF (Port 8000)"]
     end
 
-    subgraph P3["📚 3. documentation/ (Portail Zudoku SSR)"]
-        Zudoku["Portail Documentaire Zudoku 0.86 (Port 3000)<br/>• 152 fichiers MDX normés / 270 routes pré-rendues<br/>• Guides techniques, ADRs & Dossiers de PR"]
+    subgraph P3["📚 3. documentation/ (Zudoku SSR Portal)"]
+        Zudoku["Zudoku 0.86 Documentation Portal (Port 3000)<br/>• 152 standardized MDX files / 270 pre-rendered routes<br/>• Technical guides, ADRs & PR submission dossiers"]
     end
 
-    subgraph P4["🐙 4. LaSuite/ (Espace Clones Git)"]
-        Clones["Clones applicatifs indépendants<br/>(docs, projects, meet, transfers, people, accounts)<br/>Pilotés par le Makefile et Docker Compose"]
+    subgraph P4["🐙 4. LaSuite/ (Git Clones Workspace)"]
+        Clones["Autonomous application clones<br/>(docs, projects, meet, transfers, people, accounts)<br/>Orchestrated via Makefile and Docker Compose"]
     end
 
     SDK --> BN
     BN --> WebDemo
-    DJ -.->|API REST| BN
+    DJ -.->|REST API| BN
     P2 --> Zudoku
     P2 --> Clones
 ```
 
 ---
 
-## ⚡ 2. Démarrage Rapide & Tableau des Commandes
+## ⚡ 2. Quickstart & Command Matrix
 
-| Action / Composant | Commande npm | Commande Make | URL / Port |
+| Action / Component | npm Command | Make Command | URL / Port |
 | :--- | :--- | :--- | :---: |
-| **🎮 Démonstrateur Web Standalone** | `npm run demo:dev` | `make demo-dev` | [`http://localhost:5173`](http://localhost:5173) |
-| **📚 Portail Documentaire Zudoku** | `npm run docs:dev` | `make docs-dev` | [`http://localhost:3000`](http://localhost:3000) |
-| **🎨 Storybook Composants BlockNote** | `npm run storybook` | `make storybook` | [`http://localhost:6006`](http://localhost:6006) |
-| **🐍 Sandbox Django Demo Server** | `cd packages/django-lasuite-sources/demo && PYTHONPATH=.. ../.venv/bin/python manage.py runserver 8000` | - | [`http://localhost:8000`](http://localhost:8000) |
-| **🧪 Tests Unitaires TypeScript (15/15)** | `npm run packages:test` | `make packages-test` | - |
-| **🧪 Tests Unitaires Django (22/22)** | `cd packages/django-lasuite-sources && PYTHONPATH=. .venv/bin/pytest` | `make -C packages/django-lasuite-sources test` | - |
-| **🏗️ Build Packages TypeScript** | `npm run packages:build` | `make packages-build` | `packages/*/dist/` |
-| **🏗️ Build Démonstrateur Web** | `npm run demo:build` | `make demo-build` | `demo/dist/` |
+| **🎮 Standalone Web Demo** | `npm run demo:dev` | `make demo-dev` | [`http://localhost:5173`](http://localhost:5173) |
+| **📚 Zudoku Documentation Portal** | `npm run docs:dev` | `make docs-dev` | [`http://localhost:3000`](http://localhost:3000) |
+| **🎨 BlockNote Component Storybook** | `npm run storybook` | `make storybook` | [`http://localhost:6006`](http://localhost:6006) |
+| **🐍 Django Sandbox Demo Server** | `cd packages/django-lasuite-sources/demo && PYTHONPATH=.. ../.venv/bin/python manage.py runserver 8000` | - | [`http://localhost:8000`](http://localhost:8000) |
+| **🧪 TypeScript Unit Tests (15/15)** | `npm run packages:test` | `make packages-test` | - |
+| **🧪 Django Unit Tests (22/22)** | `cd packages/django-lasuite-sources && PYTHONPATH=. .venv/bin/pytest` | `make -C packages/django-lasuite-sources test` | - |
+| **🏗️ Build TypeScript Packages** | `npm run packages:build` | `make packages-build` | `packages/*/dist/` |
+| **🏗️ Build Web Demonstrator** | `npm run demo:build` | `make demo-build` | `demo/dist/` |
 | **🏗️ Build Documentation (270 routes)** | `npm run docs:build` | `make docs-build` | `documentation/dist/` |
 
 ---
 
-## 🎮 3. Lancer le Démonstrateur Web Standalone (`demo/`)
+## 🎮 3. Running the Standalone Web Demo (`demo/`)
 
-Le démonstrateur web est une application autonome moderne (Vite 6 + React 19) qui embarque l'éditeur BlockNote.js et permet de tester tous les connecteurs souverains **sans nécessiter Docker ni backend local**.
+The web demonstrator is a modern autonomous web application (Vite 6 + React 19) embedding the BlockNote.js editor to test all sovereign connectors **without requiring Docker or a local backend**.
 
-### 🚀 Démarrage en Mode Développement :
+### 🚀 Development Mode:
 
 ```bash
 # Via npm
 npm run demo:dev
 
-# Ou via Make
+# Or via Make
 make demo-dev
 ```
 
-👉 Ouvrez [`http://localhost:5173`](http://localhost:5173) dans votre navigateur.
+👉 Open [`http://localhost:5173`](http://localhost:5173) in your browser.
 
-### ✨ Fonctionnalités du Démonstrateur :
-- **🌍 Sélecteur de Pays Interactif :**
-  - 🇫🇷 **France (DINUM) :** Commandes `/loi` (Légifrance), `/entreprise` (RNE), `/marche` (BOAMP), `/adresse` (BAN), `/subvention`, `/stats` (INSEE), `/agent`, `/cadastre`, `/demarche`, `/opendata`, `/albert` (IA RAG).
-  - 🇩🇪 **Deutschland (Bund) :** Commandes `/gesetz` (*Gesetze im Internet* / BMJ), `/register` (*Handelsregister*), `/bundestag`, `/govdata`.
-  - 🇳🇱 **Nederland (Overheid) :** Commandes `/wet` (*Wettenbank* / Overheid.nl), `/kvk` (*Kamer van Koophandel*), `/bag` (Adresses), `/dataoverheid`.
-  - 🇪� **España (Estado) :** Commandes `/ley` (*BOE*), `/empresa` (*Registro Mercantil*), `/licitacion` (*Contratación del Estado*), `/catastro` (*Sede del Catastro*).
-  - 🇪🇺 **European Union :** Commandes `/eurlex` (*EUR-Lex* - RGPD / Directives), `/ted` (*Tenders Electronic Daily*), `/dataeuropa`.
-- **🌐 Sélecteur de Langue :** Bascule instantanée de la locale de l'UI (`en` 🇬🇧, `fr` 🇫🇷, `de` 🇩🇪, `nl` 🇳🇱, `es` 🇪🇸).
-- **🌙 Thème Sombre / Clair :** Bouton de bascule en haut à droite respectant les contrastes WCAG AA.
-- **🔄 Permutation des Formats :** Basculez à chaud chaque bloc entre les formats **Callout**, **Card (Carte)** et **Link (Lien Inline)**.
+### ✨ Demonstrator Features:
+- **🌍 Interactive Country Selector:**
+  - 🇫🇷 **France (DINUM):** Commands `/loi` (Légifrance), `/entreprise` (RNE), `/marche` (BOAMP), `/adresse` (BAN), `/subvention`, `/stats` (INSEE), `/agent`, `/cadastre`, `/demarche`, `/opendata`, `/albert` (AI RAG).
+  - 🇩🇪 **Deutschland (Bund):** Commands `/gesetz` (*Gesetze im Internet* / BMJ), `/register` (*Handelsregister*), `/bundestag`, `/govdata`.
+  - 🇳🇱 **Nederland (Overheid):** Commands `/wet` (*Wettenbank* / Overheid.nl), `/kvk` (*Kamer van Koophandel*), `/bag` (Addresses), `/dataoverheid`.
+  - 🇪🇸 **España (Estado):** Commands `/ley` (*BOE*), `/empresa` (*Registro Mercantil*), `/licitacion` (*Contratación del Estado*), `/catastro` (*Sede del Catastro*).
+  - 🇪🇺 **European Union:** Commands `/eurlex` (*EUR-Lex* - GDPR / Directives), `/ted` (*Tenders Electronic Daily*), `/dataeuropa`.
+- **🌐 Language Selector:** Instant UI locale switching (`en` 🇬🇧, `fr` 🇫🇷, `de` 🇩🇪, `nl` 🇳🇱, `es` 🇪🇸).
+- **🌙 Dark / Light Theme:** Toggle button in top right preserving WCAG AA contrast ratios.
+- **🔄 Format Switching:** Hot-switch any block between **Callout**, **Card**, and **Link (Inline Badge)** formats.
 
-
-### 🏗️ Compiler pour la Production :
+### 🏗️ Build for Production:
 
 ```bash
 npm run demo:build
-# Ou : make demo-build
+# Or: make demo-build
 ```
 
 ---
 
-## 🎨 4. Lancer et Visualiser les Storybooks
+## 🎨 4. Running and Viewing Storybooks
 
-### 🎨 4.1. Storybook Local des Composants BlockNote (`packages/blocknote-sources/`)
+### 🎨 4.1. Local BlockNote Component Storybook (`packages/blocknote-sources/`)
 
-Le package `@suitenumerique/blocknote-sources` inclut une suite de Stories isolées pour tester chaque format et état du composant :
-- `SourceCalloutFormat.stories.tsx` (Rendu Callout Marianne avec bordure `#000091`)
-- `SourceCardFormat.stories.tsx` (Rendu Carte 3 colonnes avec métadonnées)
-- `SourceLinkFormat.stories.tsx` (Rendu Lien Inline compact)
-- `SourceSearchPopover.stories.tsx` (Palette de recherche contextuelle WAI-ARIA `cmdk`)
+The `@suitenumerique/blocknote-sources` package includes isolated Storybook stories to test every format and state:
+- `SourceCalloutFormat.stories.tsx` (Marianne Callout rendering with `#000091` border)
+- `SourceCardFormat.stories.tsx` (3-column metadata card rendering)
+- `SourceLinkFormat.stories.tsx` (Compact inline link badge rendering)
+- `SourceSearchPopover.stories.tsx` (WAI-ARIA `cmdk` contextual search palette)
 
-#### Démarrage du Storybook Local :
+#### Launching Local Storybook:
 
 ```bash
 # Via npm
 npm run storybook
 
-# Ou via Make
+# Or via Make
 make storybook
 ```
 
-👉 Ouvrez [`http://localhost:6006`](http://localhost:6006) dans votre navigateur.
+👉 Open [`http://localhost:6006`](http://localhost:6006) in your browser.
 
-### 🌐 4.2. Storybooks Officiels en Ligne de La Suite :
-- 📖 **Storybook Cunningham Design System :** [suitenumerique.github.io/cunningham](https://suitenumerique.github.io/cunningham/storybook/)
-- 📖 **Storybook UI Kit La Suite (`@gouvfr-lasuite`) :** [suitenumerique.github.io/ui-kit](https://suitenumerique.github.io/ui-kit/)
-- 📖 **Storybook React-DSFR Officiel :** [components.react-dsfr.fr](https://components.react-dsfr.fr/)
+### 🌐 4.2. Official Online La Suite Storybooks:
+- 📖 **Cunningham Design System Storybook:** [suitenumerique.github.io/cunningham](https://suitenumerique.github.io/cunningham/storybook/)
+- 📖 **La Suite UI Kit Storybook (`@gouvfr-lasuite`):** [suitenumerique.github.io/ui-kit](https://suitenumerique.github.io/ui-kit/)
+- 📖 **Official React-DSFR Storybook:** [components.react-dsfr.fr](https://components.react-dsfr.fr/)
 
 ---
 
-## 📦 5. Lancer, Développer et Tester les Packages (`packages/`)
+## 📦 5. Developing and Testing Packages (`packages/`)
 
-Le dossier `packages/` héberge les 3 bibliothèques open source découplées :
+The `packages/` directory hosts 3 decoupled open source libraries:
 
 ### 🛠️ 5.1. Package `@suitenumerique/slash-sources-sdk` (TypeScript SDK)
 
-SDK ultra-léger (< 5 kB) sans dépendance pour déclarer des connecteurs distants immuables.
+Zero-dependency, lightweight (< 5 kB) SDK for declaring immutable remote connectors.
 
 ```bash
-# Lancer les tests unitaires Vitest
+# Run Vitest unit tests
 npm --prefix packages/slash-sources-sdk test
 
-# Compiler en ESM + DTS
+# Compile to ESM + DTS
 npm --prefix packages/slash-sources-sdk run build
 ```
 
-### 🧩 5.2. Package `@suitenumerique/blocknote-sources` (Extension BlockNote)
+### 🧩 5.2. Package `@suitenumerique/blocknote-sources` (BlockNote Extension)
 
-Composant React pour BlockNote avec WAI-ARIA, i18n et exports PDF/DOCX/ODT.
+React component for BlockNote with WAI-ARIA, i18n, and PDF/DOCX/ODT exporters.
 
 ```bash
-# Lancer les tests unitaires et RGAA Vitest (12/12)
+# Run Vitest unit and RGAA tests (12/12)
 npm --prefix packages/blocknote-sources test
 
-# Compiler les bundles CJS + ESM + DTS avec tsup
+# Compile CJS + ESM + DTS bundles with tsup
 npm --prefix packages/blocknote-sources run build
 
-# Lancer Storybook
+# Run Storybook
 npm --prefix packages/blocknote-sources run storybook
 ```
 
-### 🐍 5.3. Package `django-lasuite-sources` (Backend Django)
+### 🐍 5.3. Package `django-lasuite-sources` (Django Backend)
 
-Package Python / Django REST Framework encapsulant les 12 connecteurs certifiés de l'État, le cache Redis déterministe SHA-256 (24h) et le filtrage anti-SSRF.
+Python / Django REST Framework package encapsulating the 12 sovereign certified connectors, deterministic SHA-256 Redis caching (24h), and anti-SSRF defense.
 
 ```bash
-# 1. Se positionner dans le dossier du package
+# 1. Navigate to package directory
 cd packages/django-lasuite-sources
 
-# 2. Exécuter la suite complète de 22 tests pytest (anti-SSRF, circuit breaker, registry, DRF)
+# 2. Run full test suite of 22 pytest tests (anti-SSRF, circuit breaker, registry, DRF)
 PYTHONPATH=. .venv/bin/pytest
 
-# 3. Lancer la mini-application Django autonome de démonstration (Port 8000)
+# 3. Launch standalone Django demo server (Port 8000)
 cd demo
 PYTHONPATH=.. ../.venv/bin/python manage.py runserver 8000
 ```
 
-👉 Tester un connecteur via curl :
+👉 Test a connector with curl:
 ```bash
-curl "http://localhost:8000/sources/suggest/?type=law&q=commande"
+curl "http://localhost:8000/sources/suggest/?type=law&q=procurement"
 ```
 
 ---
 
-## 📚 6. Lancer le Portail Documentaire Zudoku (`documentation/`)
+## 📚 6. Running Zudoku Documentation Portal (`documentation/`)
 
-Le portail documentaire Zudoku (Vite SSR + React 19) expose les **152 fichiers documentaires** et les **270 routes** pré-rendues.
+The Zudoku documentation portal (Vite SSR + React 19) serves the documentation files and pre-rendered routes.
 
-### 🚀 Démarrage en Mode Développement :
+### 🚀 Development Mode:
 
 ```bash
 # Via npm
 npm run docs:dev
 
-# Ou via Make
+# Or via Make
 make docs-dev
 ```
 
-👉 Ouvrez [`http://localhost:3000`](http://localhost:3000) dans votre navigateur.
+👉 Open [`http://localhost:3000`](http://localhost:3000) in your browser.
 
-### 🏗️ Build SSR & Génération Statique :
+### 🏗️ SSR Build & Static Generation:
 
 ```bash
-# Génération de l'arbre de navigation
+# Generate navigation tree
 npm run docs:nav
 
-# Compilation statique SSR (270 routes pré-rendues)
+# Compile SSR static bundle (270 pre-rendered routes)
 npm run docs:build
 
-# Prévisualisation du build de production
+# Preview production build
 npm run docs:preview
 ```
 
 ---
 
-## 🐙 7. Gérer les Clones Applicatifs de La Suite (`LaSuite/`)
+## 🐙 7. Managing La Suite Application Clones (`LaSuite/`)
 
-Le Makefile permet de cloner et d'orchestrer localement les applications de La Suite Numérique dans le dossier `LaSuite/` (isolé de la racine) :
+The Makefile allows cloning and orchestrating La Suite Numérique applications in the `LaSuite/` directory:
 
 ```bash
-# Cloner l'ensemble des dépôts configurés (docs, projects, meet, transfers, people, accounts)
+# Clone all configured repositories (docs, projects, meet, transfers, people, accounts)
 make clone
 
-# Cloner uniquement des dépôts spécifiques
+# Clone specific targeted repositories
 REPOS="docs projects" make clone
 
-# Préparer les fichiers .env locaux
+# Prepare local .env files
 make env
 
-# Préparer les conteneurs et les bases de données locales
+# Bootstrap local containers and databases
 make bootstrap
 
-# Démarrer la stack de développement Docker
+# Start development Docker stack
 make dev
 
-# Arrêter les conteneurs
+# Stop containers
 make stop
 ```
 
 ---
 
-## 🛡️ 8. Qualité, Sécurité & Traçabilité
+## 🛡️ 8. Quality, Security & Traceability
 
-- **Accessibilité Universelle :** 100% conforme **RGAA v4.1 (Niveau AA)** et navigation clavier intégrale.
-- **Pureté UI :** Zéro Tailwind CSS, zéro composant visuel `@mantine/core` dans les bibliothèques, tokens Cunningham officiels et composants DSFR.
-- **Typage Strict :** Zéro `any`, `strict: true` sur l'ensemble du monorepo TypeScript.
-- **Sécurité Défensive :** Filtrage anti-SSRF sur toutes les requêtes distantes et circuit breaker 3.5s.
-- **Fichiers de Pilotage :**
-  - [`RECAP.md`](RECAP.md) : Historique chronologique des itérations et tableau de bord 100% validé.
-  - [`ISSUES.md`](ISSUES.md) : Registre officiel des contrôles de sécurité et de santé (0 bloqueur critique).
-  - [`AUDIT_COMPLET.md`](AUDIT_COMPLET.md) : Audit technique complet et analyse critique d'ingénierie.
-  - [`ARCHITECTURE.md`](ARCHITECTURE.md) : Cartographie des 4 piliers du monorepo.
-
+- **Universal Accessibility:** 100% compliant with **RGAA v4.1 (Level AA) / WCAG 2.1 AA** with full keyboard navigation.
+- **UI Purity:** Zero Tailwind CSS, zero `@mantine/core` visual components in libraries, official Cunningham tokens, and DSFR components.
+- **Strict Typing:** Zero `any`, `strict: true` across the entire TypeScript monorepo.
+- **Defensive Security:** Anti-SSRF filtering on all remote requests with 3.5s circuit breaker.
+- **Key Architecture & Guidance Files:**
+  - [`ARCHITECTURE.md`](ARCHITECTURE.md): Structural mapping of the 4 monorepo pillars.
+  - [`AGENTS.md`](AGENTS.md): AI agent operating manual and skills routing table.
+  - [`PR/`](PR/): Pull Request dossiers, RFC specifications, and arbitrage guides.

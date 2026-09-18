@@ -1,12 +1,14 @@
+# Makefile for django-lasuite-sources
+
 .PHONY: help install test build clean lint
 
 help:
-	@echo "Commandes disponibles pour django-lasuite-sources :"
-	@echo "  make install - Installe les dépendances de développement"
-	@echo "  make test    - Lance la suite de tests pytest"
-	@echo "  make lint    - Vérifie le formatage et le typage"
-	@echo "  make build   - Génère le package wheel et sdist"
-	@echo "  make clean   - Nettoie les artefacts de build"
+	@echo "Available commands for django-lasuite-sources:"
+	@echo "  make install - Install development dependencies"
+	@echo "  make test    - Run pytest test suite"
+	@echo "  make lint    - Check formatting and typing"
+	@echo "  make build   - Generate wheel and sdist packages"
+	@echo "  make clean   - Clean build artifacts"
 
 install:
 	pip install -e ".[test,celery]"

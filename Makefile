@@ -3,8 +3,8 @@ SHELL := /usr/bin/env bash
 ROOT_DIR := $(CURDIR)
 SRC_DIR ?= $(ROOT_DIR)/LaSuite
 
-# Liste par defaut volontairement modifiable.
-# Exemple:
+# Default repository list (customizable)
+# Example:
 #   REPOS="docs projects" make clone
 REPOS ?= docs projects meet transfers people accounts
 
@@ -21,50 +21,68 @@ export accounts_URL ?= https://github.com/suitenumerique/accounts.git
 
 .PHONY: help
 help:
-	@printf "DINUM / La Suite dev setup (Monorepo 4 Piliers)\n\n"
-	@printf "Commandes Documentation & Demo:\n"
-	@printf "  make docs-dev           Lance le portail documentaire Zudoku (http://localhost:3000)\n"
-	@printf "  make docs-build         Compile la documentation Zudoku (SSR 270 routes)\n"
-	@printf "  make demo-dev           Lance le demonstrateur web standalone (http://localhost:5173)\n"
-	@printf "  make demo-build         Compile le demonstrateur web standalone\n"
-	@printf "  make storybook          Lance le Storybook des composants BlockNote (http://localhost:6006)\n"
-	@printf "  make packages-build     Compile les packages TypeScript (@suitenumerique/*)\n"
-	@printf "  make packages-test      Execute les 15 tests unitaires et RGAA\n\n"
-	@printf "Commandes Clones LaSuite:\n"
-	@printf "  make install            Installe les dependances systeme (Docker plugins, etc.)\n"
-	@printf "  make clone              Clone les depots dans ./LaSuite\n"
-	@printf "  make pull               Met a jour les depots deja clones dans ./LaSuite\n"
-	@printf "  make env                Prepare les fichiers .env locaux connus\n"
-	@printf "  make bootstrap          Prepare les projets supportes\n"
-	@printf "  make dev                Lance les projets supportes en mode dev\n"
-	@printf "  make stop               Stoppe les stacks Docker connues\n"
-	@printf "  make status             Affiche les containers Docker actifs\n"
-	@printf "  make logs-docs          Suit les logs Docs\n"
-	@printf "  make logs-projects      Suit les logs Projects\n"
-	@printf "\nExemples:\n"
-	@printf "  REPOS=\"docs projects\" make clone\n"
-	@printf "  SRC_DIR=/opt/lasuite/LaSuite make dev\n"
+	@printf "DINUM / La Suite dev setup (4-Pillar Monorepo)
+
+"
+	@printf "Documentation & Demo Commands:
+"
+	@printf "  make docs-dev           Launch Zudoku documentation portal (http://localhost:3000)
+"
+	@printf "  make docs-build         Build Zudoku documentation (SSR 270 routes)
+"
+	@printf "  make demo-dev           Launch standalone web demo (http://localhost:5173)
+"
+	@printf "  make demo-build         Build standalone web demo
+"
+	@printf "  make storybook          Launch BlockNote components Storybook (http://localhost:6006)
+"
+	@printf "  make packages-build     Build TypeScript packages (@suitenumerique/*)
+"
+	@printf "  make packages-test      Run 15 unit and RGAA accessibility tests
+
+"
+	@printf "LaSuite Clones Commands:
+"
+	@printf "  make install            Install system dependencies (Docker plugins, etc.)
+"
+	@printf "  make clone              Clone repositories into ./LaSuite
+"
+	@printf "  make pull               Update already cloned repositories in ./LaSuite
+"
+	@printf "  make env                Prepare local .env files
+"
+	@printf "  make bootstrap          Bootstrap supported projects
+"
+	@printf "  make dev                Launch supported projects in dev mode
+"
+	@printf "  make stop               Stop known Docker stacks
+"
+	@printf "  make status             Display active Docker containers
+"
+	@printf "  make logs-docs          Tail Docs logs
+"
+	@printf "  make logs-projects      Tail Projects logs
+"
+	@printf "
+Examples:
+"
+	@printf "  REPOS="docs projects" make clone
+"
+	@printf "  SRC_DIR=/opt/lasuite/LaSuite make dev
+"
 
 .PHONY: check-tools
 check-tools:
-	@command -v git >/dev/null || (echo "Erreur: git n'est pas installe" >&2; exit 1)
-	@command -v make >/dev/null || (echo "Erreur: make n'est pas installe" >&2; exit 1)
-	@command -v docker >/dev/null || (echo "Erreur: docker n'est pas installe" >&2; exit 1)
-	@[ -n "$(DOCKER_COMPOSE)" ] || (echo "Erreur: docker compose / docker-compose n'est pas installe" >&2; exit 1)
+	@command -v git >/dev/null || (echo "Error: git is not installed" >&2; exit 1)
+	@command -v make >/dev/null || (echo "Error: make is not installed" >&2; exit 1)
+	@command -v docker >/dev/null || (echo "Error: docker is not installed" >&2; exit 1)
+	@[ -n "$(DOCKER_COMPOSE)" ] || (echo "Error: docker compose / docker-compose is not installed" >&2; exit 1)
 
 .PHONY: prepare-docker
 prepare-docker:
 	@docker network create lasuite-network >/dev/null 2>&1 || true
-	@if ! docker image inspect minio/minio:latest >/dev/null 2>&1; then \
-		echo "Preparation de l'image MinIO (quay.io)..."; \
-		docker pull quay.io/minio/minio:latest >/dev/null 2>&1 && \
-		docker tag quay.io/minio/minio:latest minio/minio:latest; \
-	fi
-	@if ! docker image inspect minio/mc:latest >/dev/null 2>&1; then \
-		echo "Preparation de l'image MinIO Client (quay.io)..."; \
-		docker pull quay.io/minio/mc:latest >/dev/null 2>&1 && \
-		docker tag quay.io/minio/mc:latest minio/mc:latest; \
-	fi
+	@if ! docker image inspect minio/minio:latest >/dev/null 2>&1; then 		echo "Preparing MinIO image (quay.io)..."; 		docker pull quay.io/minio/minio:latest >/dev/null 2>&1 && 		docker tag quay.io/minio/minio:latest minio/minio:latest; 	fi
+	@if ! docker image inspect minio/mc:latest >/dev/null 2>&1; then 		echo "Preparing MinIO Client image (quay.io)..."; 		docker pull quay.io/minio/mc:latest >/dev/null 2>&1 && 		docker tag quay.io/minio/mc:latest minio/mc:latest; 	fi
 
 .PHONY: install
 install:
@@ -73,152 +91,84 @@ install:
 .PHONY: clone
 clone: check-tools
 	@mkdir -p "$(SRC_DIR)"
-	@for repo in $(REPOS); do \
-		url_var="$${repo}_URL"; \
-		url="$${!url_var}"; \
-		if [ -z "$$url" ]; then \
-			echo "URL inconnue pour $$repo, ignore."; \
-			continue; \
-		fi; \
-		if [ -d "$(SRC_DIR)/$$repo/.git" ]; then \
-			echo "$$repo deja clone."; \
-		else \
-			echo "Clone $$repo..."; \
-			git clone "$$url" "$(SRC_DIR)/$$repo"; \
-		fi; \
-	done
+	@for repo in $(REPOS); do 		url_var="$${repo}_URL"; 		url="$${!url_var}"; 		if [ -z "$$url" ]; then 			echo "Unknown URL for $$repo, skipping."; 			continue; 		fi; 		if [ -d "$(SRC_DIR)/$$repo/.git" ]; then 			echo "$$repo already cloned."; 		else 			echo "Cloning $$repo..."; 			git clone "$$url" "$(SRC_DIR)/$$repo"; 		fi; 	done
 
 .PHONY: pull
 pull:
-	@for repo in $(REPOS); do \
-		if [ -d "$(SRC_DIR)/$$repo/.git" ]; then \
-			echo "Mise a jour $$repo..."; \
-			git -C "$(SRC_DIR)/$$repo" pull --ff-only; \
-		fi; \
-	done
+	@for repo in $(REPOS); do 		if [ -d "$(SRC_DIR)/$$repo/.git" ]; then 			echo "Updating $$repo..."; 			git -C "$(SRC_DIR)/$$repo" pull --ff-only; 		fi; 	done
 
 .PHONY: env
 env: env-docs env-projects env-meet env-transfers env-people env-accounts
 
 .PHONY: env-docs
 env-docs:
-	@if [ -d "$(SRC_DIR)/docs" ]; then \
-		echo "Preparation env Docs..."; \
-		mkdir -p "$(SRC_DIR)/docs/env.d/development"; \
-		touch "$(SRC_DIR)/docs/env.d/development/crowdin.local" \
-			"$(SRC_DIR)/docs/env.d/development/common.local" \
-			"$(SRC_DIR)/docs/env.d/development/postgresql.local" \
-			"$(SRC_DIR)/docs/env.d/development/kc_auth.local" \
-			"$(SRC_DIR)/docs/env.d/development/kc_postgresql.local"; \
-	fi
+	@if [ -d "$(SRC_DIR)/docs" ]; then 		echo "Preparing Docs env..."; 		mkdir -p "$(SRC_DIR)/docs/env.d/development"; 		touch "$(SRC_DIR)/docs/env.d/development/crowdin.local" 			"$(SRC_DIR)/docs/env.d/development/common.local" 			"$(SRC_DIR)/docs/env.d/development/postgresql.local" 			"$(SRC_DIR)/docs/env.d/development/kc_auth.local" 			"$(SRC_DIR)/docs/env.d/development/kc_postgresql.local"; 	fi
 
 .PHONY: env-projects
 env-projects:
-	@if [ -d "$(SRC_DIR)/projects" ]; then \
-		echo "Preparation env Projects..."; \
-		if [ -f "$(SRC_DIR)/projects/server/.env.sample" ] && [ ! -f "$(SRC_DIR)/projects/server/.env" ]; then \
-			cp "$(SRC_DIR)/projects/server/.env.sample" "$(SRC_DIR)/projects/server/.env"; \
-		fi; \
-		if ! grep -q "auth.local" /etc/hosts; then \
-			echo "Action manuelle recommandee pour Projects:"; \
-			echo "  ajouter '127.0.0.1 auth.local' dans /etc/hosts"; \
-		fi; \
-	fi
+	@if [ -d "$(SRC_DIR)/projects" ]; then 		echo "Preparing Projects env..."; 		if [ -f "$(SRC_DIR)/projects/server/.env.sample" ] && [ ! -f "$(SRC_DIR)/projects/server/.env" ]; then 			cp "$(SRC_DIR)/projects/server/.env.sample" "$(SRC_DIR)/projects/server/.env"; 		fi; 		if ! grep -q "auth.local" /etc/hosts; then 			echo "Recommended manual action for Projects:"; 			echo "  add '127.0.0.1 auth.local' to /etc/hosts"; 		fi; 	fi
 
 .PHONY: env-meet
 env-meet:
-	@if [ -d "$(SRC_DIR)/meet" ]; then \
-		echo "Meet clone present. Voir docs/meet.md pour la configuration."; \
-	fi
+	@if [ -d "$(SRC_DIR)/meet" ]; then 		echo "Meet clone present. See docs/meet.md for configuration."; 	fi
 
 .PHONY: env-transfers
 env-transfers:
-	@if [ -d "$(SRC_DIR)/transfers" ]; then \
-		echo "Transfers clone present. Voir docs/transfers.md avant cablage."; \
-	fi
+	@if [ -d "$(SRC_DIR)/transfers" ]; then 		echo "Transfers clone present. See docs/transfers.md before connecting."; 	fi
 
 .PHONY: env-people
 env-people:
-	@if [ -d "$(SRC_DIR)/people" ]; then \
-		echo "People clone present. Voir docs/people.md avant cablage."; \
-	fi
+	@if [ -d "$(SRC_DIR)/people" ]; then 		echo "People clone present. See docs/people.md before connecting."; 	fi
 
 .PHONY: env-accounts
 env-accounts:
-	@if [ -d "$(SRC_DIR)/accounts" ]; then \
-		echo "Accounts clone present. Voir docs/accounts.md avant cablage."; \
-	fi
+	@if [ -d "$(SRC_DIR)/accounts" ]; then 		echo "Accounts clone present. See docs/accounts.md before connecting."; 	fi
 
 .PHONY: bootstrap
 bootstrap: clone env prepare-docker bootstrap-docs bootstrap-projects
 
 .PHONY: bootstrap-docs
 bootstrap-docs:
-	@if [ -d "$(SRC_DIR)/docs" ]; then \
-		echo "Bootstrap Docs..."; \
-		$(MAKE) -C "$(SRC_DIR)/docs" bootstrap FLUSH_ARGS='--no-input'; \
-	fi
+	@if [ -d "$(SRC_DIR)/docs" ]; then 		echo "Bootstrapping Docs..."; 		$(MAKE) -C "$(SRC_DIR)/docs" bootstrap FLUSH_ARGS='--no-input'; 	fi
 
 .PHONY: bootstrap-projects
 bootstrap-projects:
-	@if [ -d "$(SRC_DIR)/projects" ]; then \
-		echo "Projects se prepare au premier docker compose dev."; \
-	fi
+	@if [ -d "$(SRC_DIR)/projects" ]; then 		echo "Projects bootstraps on first docker compose dev."; 	fi
 
 .PHONY: dev
 dev: clone env prepare-docker dev-docs dev-projects dev-meet dev-transfers dev-people dev-accounts
 
 .PHONY: dev-docs
 dev-docs:
-	@if [ -d "$(SRC_DIR)/docs" ]; then \
-		echo "Lancement Docs..."; \
-		$(MAKE) -C "$(SRC_DIR)/docs" run; \
-	fi
+	@if [ -d "$(SRC_DIR)/docs" ]; then 		echo "Launching Docs..."; 		$(MAKE) -C "$(SRC_DIR)/docs" run; 	fi
 
 .PHONY: dev-projects
 dev-projects:
-	@if [ -d "$(SRC_DIR)/projects" ]; then \
-		echo "Lancement Projects..."; \
-		cd "$(SRC_DIR)/projects" && $(DOCKER_COMPOSE) -f docker-compose-dev.yml up -d; \
-	fi
+	@if [ -d "$(SRC_DIR)/projects" ]; then 		echo "Launching Projects..."; 		cd "$(SRC_DIR)/projects" && $(DOCKER_COMPOSE) -f docker-compose-dev.yml up -d; 	fi
 
 .PHONY: dev-meet
 dev-meet:
-	@if [ -d "$(SRC_DIR)/meet" ]; then \
-		echo "Meet n'est pas lance automatiquement: LiveKit/OIDC/domaines doivent etre choisis avant."; \
-	fi
+	@if [ -d "$(SRC_DIR)/meet" ]; then 		echo "Meet is not started automatically: LiveKit/OIDC/domains must be configured first."; 	fi
 
 .PHONY: dev-transfers
 dev-transfers:
-	@if [ -d "$(SRC_DIR)/transfers" ]; then \
-		echo "Transfers n'est pas lance automatiquement: verifier le README upstream avant cablage."; \
-	fi
+	@if [ -d "$(SRC_DIR)/transfers" ]; then 		echo "Transfers is not started automatically: verify upstream README before connecting."; 	fi
 
 .PHONY: dev-people
 dev-people:
-	@if [ -d "$(SRC_DIR)/people" ]; then \
-		echo "People n'est pas lance automatiquement: verifier le README upstream avant cablage."; \
-	fi
+	@if [ -d "$(SRC_DIR)/people" ]; then 		echo "People is not started automatically: verify upstream README before connecting."; 	fi
 
 .PHONY: dev-accounts
 dev-accounts:
-	@if [ -d "$(SRC_DIR)/accounts" ]; then \
-		echo "Accounts n'est pas lance automatiquement: verifier le README upstream avant cablage."; \
-	fi
+	@if [ -d "$(SRC_DIR)/accounts" ]; then 		echo "Accounts is not started automatically: verify upstream README before connecting."; 	fi
 
 .PHONY: stop
 stop:
-	@for repo in docs projects meet transfers people accounts; do \
-		if [ -d "$(SRC_DIR)/$$repo" ]; then \
-			echo "Stop $$repo..."; \
-			(cd "$(SRC_DIR)/$$repo" && $(DOCKER_COMPOSE) down 2>/dev/null || true); \
-			(cd "$(SRC_DIR)/$$repo" && $(DOCKER_COMPOSE) -f docker-compose-dev.yml down 2>/dev/null || true); \
-		fi; \
-	done
+	@for repo in docs projects meet transfers people accounts; do 		if [ -d "$(SRC_DIR)/$$repo" ]; then 			echo "Stopping $$repo..."; 			(cd "$(SRC_DIR)/$$repo" && $(DOCKER_COMPOSE) down 2>/dev/null || true); 			(cd "$(SRC_DIR)/$$repo" && $(DOCKER_COMPOSE) -f docker-compose-dev.yml down 2>/dev/null || true); 		fi; 	done
 
 .PHONY: status
 status:
-	@docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+	@docker ps --format "table {{.Names}}	{{.Status}}	{{.Ports}}"
 
 .PHONY: logs-docs
 logs-docs:
@@ -263,5 +213,3 @@ packages-build:
 .PHONY: packages-test
 packages-test:
 	npm run packages:test
-
-

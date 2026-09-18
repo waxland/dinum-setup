@@ -1,7 +1,7 @@
 {
   "name": "@suitenumerique/blocknote-sources",
   "version": "1.0.0",
-  "description": "Extension BlockNote.js officielle pour connecter La Suite Docs aux sources souveraines de données publiques (Légifrance, BAN, BOAMP, Aides-Territoires, INSEE, Albert RAG, etc.) avec rendu 100% Cunningham et DSFR.",
+  "description": "Official BlockNote.js extension connecting La Suite Docs to sovereign public data sources with 100% Cunningham and DSFR rendering.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

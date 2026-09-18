@@ -32,12 +32,12 @@ def test_registry_handles_provider_timeout_gracefully():
     failing_provider = MockFailingProvider()
     registry.register(failing_provider)
 
-    # Search doit retourner une liste vide sans propager d'exception non gérée
+    # Search must return an empty list without propagating unhandled exceptions
     results = registry.search_with_cache(source_type="custom", query="test timeout", limit=5)
     assert isinstance(results, list)
     assert len(results) == 0
 
-    # Suggest doit également retourner une liste vide sans crash
+    # Suggest must also return an empty list without crashing
     suggestions = registry.suggest_with_cache(source_type="custom", query="test timeout", limit=3)
     assert isinstance(suggestions, list)
     assert len(suggestions) == 0

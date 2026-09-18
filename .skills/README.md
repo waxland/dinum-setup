@@ -1,40 +1,36 @@
----
-title: Vue d'ensemble des Skills / Skills Overview
-sidebar_label: Vue d'ensemble
-description: Catalogue des compétences opérationnelles, bonnes pratiques et procédures spécialisées pour assister les développeurs et les agents IA sur dinum-setup (FR & EN).
----
+# 🤖 AI Agent Skills Catalog (`.skills/en/README.md`)
 
-Ce dossier regroupe les procédures opérationnelles, référentiels et règles d'ingénierie permettant aux développeurs et aux agents d'assistance IA d'intervenir efficacement sur l'écosystème **`dinum-setup`**.
+This directory contains operational procedures, engineering standards, and reference guidelines enabling developers and AI agents to work effectively across the **`dinum-setup`** ecosystem and La Suite Numérique applications.
 
-> 🇬🇧 **English documentation available:** All skills are also available in English in [`.skills/en/`](./en/README.md).
+Each skill document is **100% self-contained** and structured into 5 sections:
 
-Chaque fiche de skill est **100% autonome** et structurée en 5 parties :
-
-1. **Quand l'utiliser / When to use :** Déclencheurs précis et frontières avec les autres compétences.
-2. **Informations à lire / Context & Inputs :** Fichiers et contextes requis avant d'agir.
-3. **Procédure / Step-by-Step Procedure :** Étapes pas à pas garantissant les bonnes pratiques.
-4. **Livrable & Vérification / Deliverables & Verification :** Format du résultat et critères d'acceptation.
-5. **Sources :** Références officielles et documentation technique.
+1. **When to use:** Exact triggers and boundaries with other skills.
+2. **Context & Inputs:** Required files and context to read before acting.
+3. **Step-by-step Procedure:** Actionable workflow ensuring best practices.
+4. **Deliverables & Verification:** Output format and acceptance criteria.
+5. **Sources & References:** Official documentation and technical specs.
 
 ---
 
-## 📋 Catalogue des Compétences Disponibles (P0)
+## 📋 Available Skills Catalog (P0)
 
-| Skill | Rôle & Déclencheur | Fiche FR | English Version | Exemple d'appel / Example prompt |
-|---|---|---|---|---|
-| **`code-standards`** | Appliquer les règles strictes d'ingénierie (Zéro any, Zéro cast, Zéro Tailwind, Zéro Mantine dans l'UI). | [`code-standards.md`](./code-standards.md) | [`en/code-standards.md`](./en/code-standards.md) | _"Applique le skill Code Standards et nettoie les types de ce composant."_ |
-| **`dsfr`** | Créer, styliser ou corriger des composants UI avec le Système de Design de l'État (DSFR & React-DSFR). | [`dsfr.md`](./dsfr.md) | [`en/dsfr.md`](./en/dsfr.md) | _"Applique le skill DSFR et crée un composant de confirmation avec une modale."_ |
-| **`rgaa-review`** | Auditer et garantir l'accessibilité numérique selon les 13 thématiques du RGAA v4.1 (AA). | [`rgaa-review.md`](./rgaa-review.md) | [`en/rgaa-review.md`](./en/rgaa-review.md) | _"Applique le skill RGAA et vérifie l'accessibilité clavier de ce formulaire."_ |
-| **`lasuite-dev`** | Cloner, préparer les `.env`, gérer les bases PostgreSQL et démarrer les conteneurs locaux. | [`lasuite-dev.md`](./lasuite-dev.md) | [`en/lasuite-dev.md`](./en/lasuite-dev.md) | _"Applique le skill La Suite Dev et aide-moi à lancer Docs et Projects en local."_ |
-| **`docs-mdx`** | Rédiger des fiches documentaires MDX, injecter des composants React et régénérer la navigation. | [`docs-mdx.md`](./docs-mdx.md) | [`en/docs-mdx.md`](./en/docs-mdx.md) | _"Applique le skill Docs MDX et ajoute une nouvelle page dans 03-projets."_ |
-| **`code-review`** | Auditer un diff Git ou une PR sur 3 axes : régressions, conformité au besoin et sécurité des secrets. | [`code-review.md`](./code-review.md) | [`en/code-review.md`](./en/code-review.md) | _"Applique le skill Code Review et fais la revue de mes modifications en cours."_ |
-| **`architecture-review`** | Analyser le couplage, la cohérence des responsabilités et les flux distribués (OIDC, CRDT, S3). | [`architecture-review.md`](./architecture-review.md) | [`en/architecture-review.md`](./en/architecture-review.md) | _"Applique le skill Architecture Review et évalue l'architecture de partage de fichiers."_ |
-| **`design-change`** | Concevoir une nouvelle fonctionnalité ou connecteur, comparer des options et formaliser un ADR. | [`design-change.md`](./design-change.md) | [`en/design-change.md`](./en/design-change.md) | _"Applique le skill Design Change et conçois l'ajout de la commande /law dans BlockNote."_ |
+| Skill | Role & Trigger | Skill File | Prompt Example |
+|---|---|---|---|
+| **`code-standards`** | Enforce strict engineering standards (Zero `any`, zero abusive `as` casts, zero Tailwind CSS, zero Mantine in UI). | [`.skills/en/code-standards.md`](code-standards.md) | _"Apply code-standards skill and clean up types on this component."_ |
+| **`dsfr`** | Build, style, or fix UI components using the French State Design System (DSFR & React-DSFR). | [`.skills/en/dsfr.md`](dsfr.md) | _"Apply dsfr skill and create a confirmation modal component."_ |
+| **`rgaa-review`** | Audit and guarantee digital accessibility across the 13 RGAA v4.1 (WCAG 2.1 AA) topics. | [`.skills/en/rgaa-review.md`](rgaa-review.md) | _"Apply rgaa-review skill and check keyboard accessibility of this form."_ |
+| **`lasuite-dev`** | Clone repos, configure `.env`, manage PostgreSQL databases, and start local containers. | [`.skills/en/lasuite-dev.md`](lasuite-dev.md) | _"Apply lasuite-dev skill and help me run Docs and Projects locally."_ |
+| **`docs-mdx`** | Author MDX documentation, inject React components, and regenerate Zudoku navigation. | [`.skills/en/docs-mdx.md`](docs-mdx.md) | _"Apply docs-mdx skill and add a new documentation page in 03-projects."_ |
+| **`code-review`** | Audit a Git diff or PR across 3 axes: regressions, requirement compliance, and secrets safety. | [`.skills/en/code-review.md`](code-review.md) | _"Apply code-review skill and review my current unstaged changes."_ |
+| **`architecture-review`** | Analyze system coupling, responsibility boundaries, and distributed flows (OIDC, CRDT, S3). | [`.skills/en/architecture-review.md`](architecture-review.md) | _"Apply architecture-review skill and evaluate the file-sharing architecture."_ |
+| **`design-change`** | Design a new feature or connector, compare options, and formalize an ADR. | [`.skills/en/design-change.md`](design-change.md) | _"Apply design-change skill and design the /law slash command in BlockNote."_ |
 
 ---
 
-## 🚀 Comment Invoquer un Skill dans votre Prompt / How to Invoke a Skill
+## 🚀 How to Invoke a Skill in Your Prompt
 
-- **Français :** `Lis la fiche .skills/fr/<nom>.md et applique cette procédure à <ma tâche>.`
-- **English:** `Read .skills/en/<name>.md and apply this procedure to <my task>.`
+To instruct an agent to follow a specific procedure:
 
+```text
+Read .skills/en/<skill-name>.md and apply this procedure to <my task>.
+```

@@ -1,9 +1,9 @@
 openapi: 3.0.3
 info:
-  title: API Sources Souveraines La Suite (django-lasuite-sources)
+  title: La Suite Sovereign Sources API (django-lasuite-sources)
   description: >-
-    Spécification OpenAPI officielle des endpoints REST de recherche, autocomplétion
-    et détails pour les 12 connecteurs de données souveraines de l'État français.
+    Official OpenAPI 3.0 specification for search, autocomplete, and detail REST endpoints
+    covering sovereign data connectors.
   version: 1.0.0
   contact:
     name: Direction Interministérielle du Numérique (DINUM)
@@ -11,15 +11,15 @@ info:
 
 servers:
   - url: /api/v1.0/sources
-    description: Serveur API local / production
+    description: Local / Production API server
 
 paths:
   /search/:
     get:
-      summary: Recherche textuelle paginée dans les sources souveraines
+      summary: Paginated full-text search across sovereign sources
       description: >-
-        Effectue une recherche textuelle avec mise en cache Redis 24h (hachage SHA-256)
-        sur le connecteur spécifié (law, address, company, parliament, albert, etc.).
+        Performs full-text search with 24h deterministic Redis caching (SHA-256 key hashing)
+        on the specified connector (law, address, company, parliament, albert, etc.).
       parameters:
         - name: type
           in: query
@@ -41,13 +41,13 @@ paths:
               - opendata
               - custom
             default: law
-          description: Identifiant du type de connecteur souverain
+          description: Sovereign connector type identifier
         - name: q
           in: query
           required: false
           schema:
             type: string
-          description: Termes de recherche ou mots-clés
+          description: Search keywords or query string
         - name: limit
           in: query
           required: false
@@ -55,10 +55,10 @@ paths:
             type: integer
             default: 10
             maximum: 50
-          description: Nombre maximal de résultats à retourner
+          description: Maximum number of results to return
       responses:
         '200':
-          description: Résultats de recherche trouvés
+          description: Matching search results found
           content:
             application/json:
               schema:
@@ -69,7 +69,7 @@ paths:
                     example: law
                   query:
                     type: string
-                    example: commande publique
+                    example: public procurement
                   count:
                     type: integer
                     example: 1
@@ -78,14 +78,14 @@ paths:
                     items:
                       $ref: '#/components/schemas/SourceSearchResult'
         '401':
-          description: Non authentifié (session utilisateur ou jeton JWT requis)
+          description: Unauthorized (user session or JWT token required)
 
   /suggest/:
     get:
-      summary: Autocomplétion temps réel rapide (< 100ms)
+      summary: Fast real-time autocomplete (< 100ms)
       description: >-
-        Fournit une liste de suggestions instantanées au fil de la frappe
-        pour alimenter la palette de recherche Popover de l'éditeur BlockNote.
+        Provides instant as-you-type suggestions to populate the
+        BlockNote editor floating Popover search palette.
       parameters:
         - name: type
           in: query
@@ -93,13 +93,13 @@ paths:
           schema:
             type: string
             default: law
-          description: Type de source souveraine
+          description: Sovereign source connector type
         - name: q
           in: query
           required: false
           schema:
             type: string
-          description: Préfixe ou chaîne partielle saisie
+          description: Partial input query prefix
         - name: limit
           in: query
           required: false
@@ -107,10 +107,10 @@ paths:
             type: integer
             default: 5
             maximum: 20
-          description: Nombre de suggestions
+          description: Maximum suggestions count
       responses:
         '200':
-          description: Suggestions d'autocomplétion
+          description: Autocomplete suggestions list
           content:
             application/json:
               schema:
@@ -129,32 +129,32 @@ paths:
 
   /{source_type}/{source_id}/:
     get:
-      summary: Fiche détaillée certifiée d'une entité souveraine
+      summary: Certified detail entity record
       description: >-
-        Récupère l'intégralité des métadonnées, du texte légal et des liens officiels
-        d'une entité identifiée par son ID unique.
+        Retrieves complete metadata, official excerpt, and verified links
+        for an entity identified by its unique ID.
       parameters:
         - name: source_type
           in: path
           required: true
           schema:
             type: string
-          description: Type de source (ex: law, company, address)
+          description: Source connector type (e.g., law, company, address)
         - name: source_id
           in: path
           required: true
           schema:
             type: string
-          description: Identifiant unique de l'entité (ex: LEGIARTI000038814944)
+          description: Unique entity identifier (e.g., LEGIARTI000038814944)
       responses:
         '200':
-          description: Fiche détaillée de l'entité
+          description: Detailed entity record
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/SourceSearchResult'
         '404':
-          description: Entité ou connecteur introuvable
+          description: Entity or connector not found
 
 components:
   schemas:
@@ -183,14 +183,14 @@ components:
           example: https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000038814944
         badgeText:
           type: string
-          example: En vigueur
+          example: In effect
         badgeVariant:
           type: string
           enum: [success, warning, info, neutral, error]
           example: success
         excerpt:
           type: string
-          example: Les acheteurs et les autorités concédantes choisissent librement le mode de passation...
+          example: Buyers and contracting authorities freely choose the procurement procedure...
         metadata:
           type: object
           additionalProperties: true
@@ -206,13 +206,13 @@ components:
           example: LEGIARTI000038814944
         title:
           type: string
-          example: Article L. 111-1
+          example: Code de la commande publique - Art. L. 111-1
         subtitle:
           type: string
-          example: Code de la commande publique
+          example: Légifrance • DILA
         badgeText:
           type: string
-          example: En vigueur
+          example: Law
         badgeVariant:
           type: string
           example: success

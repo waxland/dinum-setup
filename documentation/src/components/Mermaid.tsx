@@ -156,13 +156,13 @@ export const Mermaid: React.FC<MermaidProps> = ({
         <div className="px-4 py-2.5 border-b border-gray-200 dark:border-gray-800 bg-gray-50/80 dark:bg-gray-850 flex items-center justify-between gap-3">
           <div className="font-bold text-xs sm:text-sm text-gray-800 dark:text-gray-200 flex items-center gap-2 truncate">
             <span>📊</span>
-            <span>{title || "Schéma d'Architecture"}</span>
+            <span>{title || "Architecture Diagram"}</span>
           </div>
           {svg && (
             <button
               type="button"
               onClick={handleOpenFullscreen}
-              title="Agrandir en plein écran (Échap pour quitter)"
+              title="Expand to fullscreen (Esc to exit)"
               className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-750 hover:text-[#000091] dark:hover:text-[#8585f6] transition-colors shadow-2xs cursor-pointer"
             >
               <svg
@@ -182,7 +182,7 @@ export const Mermaid: React.FC<MermaidProps> = ({
                 <line x1="21" y1="3" x2="14" y2="10" />
                 <line x1="3" y1="21" x2="10" y2="14" />
               </svg>
-              <span>Plein écran</span>
+              <span>Fullscreen</span>
             </button>
           )}
         </div>
@@ -194,18 +194,18 @@ export const Mermaid: React.FC<MermaidProps> = ({
         >
           {error ? (
             <div className="text-red-600 text-sm font-medium">
-              ⚠️ Impossible d'afficher le schéma : {error}
+              ⚠️ Failed to render diagram: {error}
             </div>
           ) : svg ? (
             <div
               className="w-full flex justify-center [&>svg]:max-w-full [&>svg]:h-auto cursor-zoom-in"
               onClick={handleOpenFullscreen}
-              title="Cliquer pour agrandir en plein écran"
+              title="Click to expand fullscreen"
               dangerouslySetInnerHTML={{ __html: svg }}
             />
           ) : (
             <div className="text-gray-400 text-sm italic">
-              Chargement du schéma...
+              Loading diagram...
             </div>
           )}
         </div>
@@ -232,7 +232,7 @@ export const Mermaid: React.FC<MermaidProps> = ({
                 <span className="text-xl">📊</span>
                 <div>
                   <h3 className="text-base font-bold text-gray-900 dark:text-gray-100">
-                    {title || "Schéma d'Architecture"}
+                    {title || "Architecture Diagram"}
                   </h3>
                   {caption && (
                     <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -248,7 +248,7 @@ export const Mermaid: React.FC<MermaidProps> = ({
                   <button
                     type="button"
                     onClick={handleZoomOut}
-                    title="Zoom arrière (-)"
+                    title="Zoom out (-)"
                     className="p-1.5 rounded-md hover:bg-white dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors cursor-pointer"
                   >
                     <svg
@@ -268,7 +268,7 @@ export const Mermaid: React.FC<MermaidProps> = ({
                   <button
                     type="button"
                     onClick={handleZoomReset}
-                    title="Réinitialiser le zoom"
+                    title="Reset zoom"
                     className="px-2 py-1 text-xs font-mono font-medium text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-700 rounded transition-colors cursor-pointer"
                   >
                     {Math.round(zoom * 100)}%
@@ -276,7 +276,7 @@ export const Mermaid: React.FC<MermaidProps> = ({
                   <button
                     type="button"
                     onClick={handleZoomIn}
-                    title="Zoom avant (+)"
+                    title="Zoom in (+)"
                     className="p-1.5 rounded-md hover:bg-white dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors cursor-pointer"
                   >
                     <svg
@@ -299,12 +299,12 @@ export const Mermaid: React.FC<MermaidProps> = ({
                 <button
                   type="button"
                   onClick={handleCloseFullscreen}
-                  title="Fermer le mode plein écran (Échap)"
+                  title="Close fullscreen (Esc)"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 transition-colors cursor-pointer"
                 >
-                  <span>Fermer</span>
+                  <span>Close</span>
                   <kbd className="px-1.5 py-0.5 text-[10px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded">
-                    Échap
+                    Esc
                   </kbd>
                 </button>
               </div>

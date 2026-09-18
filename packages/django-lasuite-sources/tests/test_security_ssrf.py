@@ -4,12 +4,12 @@ import ipaddress
 import pytest
 from urllib.parse import urlparse
 
-# Plages IP privées et réservées strictement interdites d'accès externe
+# Private and reserved IP ranges strictly forbidden from external requests
 FORBIDDEN_IP_NETWORKS = [
-    ipaddress.ip_network("127.0.0.0/8"),      # Loopback local
-    ipaddress.ip_network("10.0.0.0/8"),       # Réseau privé classe A
-    ipaddress.ip_network("172.16.0.0/12"),    # Réseau privé classe B
-    ipaddress.ip_network("192.168.0.0/16"),   # Réseau privé classe C
+    ipaddress.ip_network("127.0.0.0/8"),      # Local loopback
+    ipaddress.ip_network("10.0.0.0/8"),       # Class A private network
+    ipaddress.ip_network("172.16.0.0/12"),    # Class B private network
+    ipaddress.ip_network("192.168.0.0/16"),   # Class C private network
     ipaddress.ip_network("169.254.0.0/16"),   # Link-Local & AWS/GCP Metadata
     ipaddress.ip_network("0.0.0.0/8"),        # Broadcast / unspecified
     ipaddress.ip_network("::1/128"),          # IPv6 loopback
@@ -26,18 +26,18 @@ def is_safe_external_url(url: str) -> bool:
     if not hostname:
         return False
 
-    # 1. Vérification des hostnames locaux réservés
+    # 1. Check reserved local hostnames
     if hostname.lower() in ("localhost", "internal", "local", "metadata.google.internal"):
         return False
 
-    # 2. Vérification des adresses IP directes
+    # 2. Check direct IP addresses
     try:
         ip = ipaddress.ip_address(hostname)
         for forbidden in FORBIDDEN_IP_NETWORKS:
             if ip in forbidden:
                 return False
     except ValueError:
-        # C'est un nom de domaine valide, pas une IP brute
+        # Valid domain name, not a raw IP
         pass
 
     return True

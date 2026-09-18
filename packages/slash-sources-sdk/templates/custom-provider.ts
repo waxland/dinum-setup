@@ -1,6 +1,6 @@
 /**
- * Template de référence pour créer un connecteur d'API souveraine ministérielle
- * en moins de 15 minutes avec @suitenumerique/slash-sources-sdk.
+ * Reference template for building a sovereign/public API connector
+ * in under 15 minutes with @suitenumerique/slash-sources-sdk.
  */
 
 import {
@@ -12,88 +12,83 @@ import {
 export interface MyMinistryApiItem {
   id: string;
   code_reference: string;
-  libelle: string;
-  description_complete?: string;
-  url_demarche?: string;
-  statut: 'ACTIF' | 'ARCHIVE' | 'EN_COURS';
-  date_publication?: string;
+  label: string;
+  full_description?: string;
+  procedure_url?: string;
+  status: 'ACTIVE' | 'ARCHIVED' | 'PENDING';
+  published_at?: string;
 }
 
 /**
- * Connecteur souverain pour l'API ministérielle.
- * Utiliser defineSourceProvider() garantit le typage strict et l'immuabilité (Object.freeze).
+ * Sovereign connector for ministry / public agency API.
+ * defineSourceProvider() ensures strict typing and immutability (Object.freeze).
  */
 export const myMinistryProvider = defineSourceProvider({
-  name: "Mon Ministère / Référentiel Métier",
-  slashCommand: "/mon-api",
+  name: "Ministry Public Records API",
+  slashCommand: "/my-api",
   entityType: "custom",
-  description: "Recherche et insertion certifiée des fiches et démarches ministérielles",
-  aliases: ["ministere", "demarche-gouv", "referentiel"],
+  description: "Search and insert certified public records and official administrative procedures",
+  aliases: ["records", "agency", "registry"],
 
   /**
-   * 1. Autocomplétion rapide pendant la frappe (< 100ms)
+   * 1. Fast as-you-type autocomplete (< 100ms)
    */
   suggest: async (query: string, limit: number = 5): Promise<SourceSuggestResult[]> => {
     if (!query || query.trim().length < 2) {
       return [];
     }
 
-    // Exemple d'appel API ministérielle REST / JSON
-    // const response = await fetch(`https://api.mon-ministere.gouv.fr/v1/suggest?q=${encodeURIComponent(query)}&limit=${limit}`);
+    // Example REST/JSON API call
+    // const response = await fetch(`https://api.example.gov/v1/suggest?q=${encodeURIComponent(query)}&limit=${limit}`);
     // const data: MyMinistryApiItem[] = await response.json();
 
     return [
       {
-        sourceId: `MIN-2026-001`,
-        title: `Fiche Métier : ${query.trim()}`,
-        subtitle: `Référentiel officiel du Ministère`,
-        badgeText: `Vérifié`,
+        sourceId: `REC-2026-001`,
+        title: `Public Record: ${query.trim()}`,
+        subtitle: `Official Agency Registry`,
+        badgeText: `Verified`,
         badgeVariant: `success`,
       },
     ];
   },
 
   /**
-   * 2. Recherche textuelle structurée (validation par Entrée)
+   * 2. Structured text search (on Enter / Search submission)
    */
   search: async (query: string, limit: number = 10): Promise<SourceEntityProps[]> => {
     return [
       {
-        sourceId: `MIN-2026-001`,
+        sourceId: `REC-2026-001`,
         entityType: `custom`,
-        title: `Procédure d'Habilitation Ministérielle - ${query}`,
-        subtitle: `Direction des Systèmes d'Information`,
-        url: `https://demarches.mon-ministere.gouv.fr/procedures/001`,
-        badgeText: `En vigueur`,
+        title: `Official Administrative Procedure - ${query}`,
+        subtitle: `Information Systems Directorate`,
+        url: `https://procedures.example.gov/001`,
+        badgeText: `In effect`,
         badgeVariant: `success`,
-        excerpt: `Procédure réglementaire régissant les accès aux réseaux ministériels sécurisés pour l'année 2026.`,
+        excerpt: `Regulatory procedure governing secure network access authorization for year 2026.`,
         metadata: {
-          reference: `CIRCULAIRE-2026-042`,
-          ministere: `Ministère de l'Intérieur / DINUM`,
-          date_effet: `2026-01-01`,
+          reference: `CIRCULAR-2026-042`,
+          agency: `Ministry / Public Digital Authority`,
+          effective_date: `2026-01-01`,
         },
       },
     ];
   },
 
   /**
-   * 3. Récupération des détails certifiés par ID
+   * 3. Fetch certified detail by ID
    */
   getDetail: async (sourceId: string): Promise<SourceEntityProps | null> => {
-    if (!sourceId) return null;
     return {
       sourceId,
       entityType: `custom`,
-      title: `Dossier Ministériel Référence ${sourceId}`,
-      subtitle: `Fiche certifiée par l'autorité de tutelle`,
-      url: `https://demarches.mon-ministere.gouv.fr/details/${sourceId}`,
-      badgeText: `Certifié`,
+      title: `Certified Record ${sourceId}`,
+      subtitle: `Official Authority Registry`,
+      url: `https://procedures.example.gov/${encodeURIComponent(sourceId)}`,
+      badgeText: `Official`,
       badgeVariant: `success`,
-      excerpt: `Contenu complet de la fiche ministérielle avec références juridiques.`,
-      metadata: {
-        source_id: sourceId,
-        date_verification: `2026-09-17`,
-      },
+      excerpt: `Detailed record specification and legal grounds.`,
     };
   },
 });

@@ -1,24 +1,24 @@
 # 📦 `@suitenumerique/blocknote-sources`
 
-> Extension BlockNote CustomBlock officielle pour connecter **La Suite Docs** aux **Sources Souveraines de Données Publiques de l'État** avec rendu 100% Cunningham et DSFR.
+> Official BlockNote CustomBlock extension connecting **La Suite Docs** to **Sovereign Public Data Sources** with 100% Cunningham and DSFR rendering.
 
 ---
 
-## ⚡ Installation & Démarrage Rapide
+## ⚡ Installation & Quickstart
 
 ```bash
 pnpm add @suitenumerique/blocknote-sources
-# ou
+# or
 yarn add @suitenumerique/blocknote-sources
-# ou
+# or
 npm install @suitenumerique/blocknote-sources
 ```
 
 ---
 
-## 🚀 Intégration dans l'Éditeur BlockNote
+## 🚀 Integration in BlockNote Editor
 
-### 1. Enregistrement dans le Schéma BlockNote
+### 1. Register in BlockNote Schema
 
 ```tsx
 import { BlockNoteSchema, defaultBlockSpecs } from '@blocknote/core';
@@ -32,18 +32,18 @@ export const customSchema = BlockNoteSchema.create({
 });
 ```
 
-### 2. Ajout au Menu Suggestion Slash (`/`)
+### 2. Add to Slash Suggestion Menu (`/`)
 
 ```tsx
 import { getSourceReactSlashMenuItems } from '@suitenumerique/blocknote-sources';
 
 const slashMenuItems = [
   ...defaultMenu,
-  ...getSourceReactSlashMenuItems(editor, t, 'Sources Souveraines'),
+  ...getSourceReactSlashMenuItems(editor, t, 'Sovereign Sources'),
 ];
 ```
 
-### 3. Enregistrement des Exportateurs (PDF / Word DOCX / LibreOffice ODT)
+### 3. Register Exporters (PDF / Word DOCX / LibreOffice ODT)
 
 ```tsx
 import {
@@ -64,17 +64,17 @@ odtSchemaMappings.blockMapping.sourceBlock = blockMappingSourceBlockODT;
 
 ---
 
-## 🎨 3 Formats de Rendu Interchangeables (Cunningham / DSFR)
+## 🎨 3 Interchangeable Display Formats (Cunningham / DSFR)
 
-1. **📢 Format Encadré (Callout) :** Bordure gauche Marianne (`var(--c--globals--colors--brand-primary)`), extrait textuel in extenso, badge de statut et lien vers la source officielle.
-2. **🗂️ Format Carte (Card) :** Carte 3 colonnes de métadonnées avec icône thématique et résumé.
-3. **🔗 Format Lien (Link) :** Pastille inline compacte cliquable avec infobulle interactive au survol.
+1. **📢 Callout Format:** Left accent border (`var(--c--globals--colors--brand-primary)`), full text excerpt, status badge, and official source link.
+2. **🗂️ Card Format:** 3-column metadata card with thematic icon and summary.
+3. **🔗 Link Format:** Compact inline clickable badge with interactive hover tooltip.
 
 ---
 
-## 🛡️ Respect des Normes de Code (Skill `code-standards`)
+## 🛡️ Code Standards Compliance
 
-- **Zéro `any` & Zéro cast :** Typage TypeScript strict à 100%.
-- **Zéro Tailwind CSS :** Primitives Cunningham et DSFR Marianne exclusives.
-- **Zéro `@mantine/core` dans l'UI :** Palette popover autonome accessible.
-- **Accessibilité RGAA v4.1 (AA) :** Navigabilité 100% au clavier (`↑`, `↓`, `Entrée`, `Échap`).
+- **Zero `any` & Zero Cast:** Strict TypeScript typing across all components.
+- **Zero Tailwind CSS:** Exclusive Cunningham and DSFR Marianne primitives.
+- **Zero `@mantine/core` in UI:** Accessible standalone popover search palette.
+- **RGAA v4.1 (AA) Accessibility:** 100% keyboard navigability (`↑`, `↓`, `Enter`, `Escape`).

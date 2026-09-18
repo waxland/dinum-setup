@@ -1,55 +1,55 @@
 ---
-title: "PR 1 : Support des Serveurs Distants & VMs (suitenumerique/docs)"
-sidebar_label: "PR 1 : Serveurs Distants & VMs"
-description: Dossier officiel de Pull Request pour suitenumerique/docs permettant le déploiement transparent sur serveurs distants, VPS et VMs (Hairpin NAT & API_ORIGIN).
+title: "PR 1: Remote Servers & Cloud VMs Support (suitenumerique/docs)"
+sidebar_label: "PR 1: Remote Servers & VMs"
+description: Official Pull Request dossier for suitenumerique/docs enabling seamless deployment on remote servers, VPS, and cloud VMs (Hairpin NAT & dynamic API_ORIGIN).
 ---
 
 import { Mermaid } from "../../../src/components/Mermaid";
 
-Ce document fournit le **dossier complet et argumenté de Pull Request** à destination des mainteneurs de **La Suite Numérique (DINUM)** pour le dépôt officiel [`suitenumerique/docs`](https://github.com/suitenumerique/docs).
+This document provides the **complete and reasoned Pull Request dossier** for maintainers of **La Suite Numérique (DINUM)** on the official [`suitenumerique/docs`](https://github.com/suitenumerique/docs) repository.
 
 ---
 
-## 📌 Synthèse de la Contribution
+## 📌 Contribution Summary
 
-| Paramètre | Spécification |
+| Parameter | Specification |
 | :--- | :--- |
-| **Dépôt Cible** | [`suitenumerique/docs`](https://github.com/suitenumerique/docs) |
-| **Titre Suggéré** | `feat(dev): make development URLs configurable for remote servers and cloud VMs` |
-| **Impact Rétrocompatible** | **100% Rétrocompatible** — Les valeurs par défaut restent `localhost` pour les postes locaux. |
-| **Bénéfice Principal** | Déploiement et tests sur machine distante (VM SecNumCloud, Codespaces, VPS) sans modifier une seule ligne de code source. |
+| **Target Repository** | [`suitenumerique/docs`](https://github.com/suitenumerique/docs) |
+| **Suggested Title** | `feat(dev): make development URLs configurable for remote servers and cloud VMs` |
+| **Backward Compatibility** | **100% Backward Compatible** — Default values remain `localhost` for local workstations. |
+| **Primary Benefit** | Deploy and test on remote servers (SecNumCloud VM, Codespaces, VPS) without editing any source code lines. |
 
 ---
 
-## 🎯 1. Contexte & Problématique Rencontrée
+## 🎯 1. Context & Identified Problem
 
-Sur une machine distante (VM hébergée dans un cloud souverain ou VPS de développement), plusieurs origines réseau étaient historiquement codées en dur sur `localhost` :
-1. **Redirection Keycloak OIDC :** `KC_HOSTNAME=http://localhost:8083` forçait une redirection du navigateur vers le poste client au lieu de la VM.
-2. **Hairpin NAT Timeout :** Les appels machine-à-machine (Django validant le jeton Keycloak) échouaient si Django tentait d'appeler l'IP publique de son propre hôte.
-3. **Serveur de Collaboration Temps Réel :** Le client Next.js tentait de contacter `ws://localhost:4444` au lieu de l'IP du serveur distant.
+On remote machines (cloud VMs or development VPS), several network origins were historically hardcoded to `localhost`:
+1. **Keycloak OIDC Redirection:** `KC_HOSTNAME=http://localhost:8083` forced browser redirection to the local client instead of the remote VM.
+2. **Hairpin NAT Timeout:** Machine-to-machine calls (Django verifying Keycloak token) failed when Django attempted to reach its host's public IP.
+3. **Real-time Collaboration Server:** Next.js client attempted to connect to `ws://localhost:4444` instead of the remote server IP.
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Dev as 💻 Navigateur Développeur
-    participant VM as 🖥️ Serveur Distant (IP: 207.x.x.x)
+    actor Dev as 💻 Developer Browser
+    participant VM as 🖥️ Remote Server (IP: 207.x.x.x)
     participant KC as 🔑 Keycloak (Docker)
-    participant Django as 🐍 Backend Django (Docker)
-    participant Yjs as ⚡ Collab Yjs (Docker)
+    participant Django as 🐍 Django Backend (Docker)
+    participant Yjs as ⚡ Yjs Collab (Docker)
 
-    Dev->>VM: Accède à http://207.x.x.x:3000
-    VM-->>Dev: Charge le frontend Next.js (avec API_ORIGIN dynamique)
-    Dev->>KC: Redirection Login OIDC (http://207.x.x.x:8083)
-    KC-->>Dev: Authentification réussie (Cookie valide)
-    Django->>KC: Échange du jeton via réseau Docker interne (http://nginx:8083)
-    Note over Django,KC: ✅ Pas de Hairpin NAT : flux interne direct
-    Dev->>Yjs: Connexion WebSocket (ws://207.x.x.x:4444/collaboration/ws/)
-    Note over Dev,Yjs: ✅ Connexion établie, édition collaborative opérationnelle
+    Dev->>VM: Access http://207.x.x.x:3000
+    VM-->>Dev: Loads Next.js frontend (with dynamic API_ORIGIN)
+    Dev->>KC: OIDC Login Redirection (http://207.x.x.x:8083)
+    KC-->>Dev: Successful authentication (Valid cookie)
+    Django->>KC: Token verification via internal Docker network (http://nginx:8083)
+    Note over Django,KC: ✅ No Hairpin NAT: direct internal container flow
+    Dev->>Yjs: WebSocket connection (ws://207.x.x.x:4444/collaboration/ws/)
+    Note over Dev,Yjs: ✅ Connection established, real-time collaboration operational
 ```
 
 ---
 
-## 📝 2. Diff Git Exhaustif de la PR 1
+## 📝 2. Exhaustive Git Diff for PR 1
 
 ### 🐳 2.1. Docker Compose (`compose.yml` & `compose-e2e.yml`)
 
@@ -80,7 +80,7 @@ sequenceDiagram
 
 ---
 
-### ⚛️ 2.2. Configuration Next.js (`src/frontend/apps/impress/next.config.js`)
+### ⚛️ 2.2. Next.js Configuration (`src/frontend/apps/impress/next.config.js`)
 
 ```diff
 --- a/src/frontend/apps/impress/next.config.js
@@ -97,17 +97,17 @@ sequenceDiagram
 
 ---
 
-## 🧪 3. Procédure de Test & Validation
+## 🧪 3. Verification & Testing Procedure
 
 ```bash
-# 1. Définir l'IP publique de votre serveur distant
+# 1. Set public IP of your remote server
 export HOST_IP="207.175.155.66"
 export API_ORIGIN="http://${HOST_IP}:8071"
 export ALLOWED_DEV_ORIGIN="${HOST_IP}"
 
-# 2. Lancer les conteneurs
+# 2. Start containers
 make dev
 
-# 3. Ouvrir dans votre navigateur
-# http://207.175.155.66:3000 -> Login OIDC et WebSocket 100% opérationnels
+# 3. Open in browser
+# http://207.175.155.66:3000 -> OIDC login and WebSocket 100% operational
 ```

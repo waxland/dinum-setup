@@ -1,54 +1,54 @@
 ---
-title: Guide d'Exécution & Commandes GitHub CLI des Pull Requests
-sidebar_label: 05. Commandes GitHub CLI
-description: Commandes pas-à-pas prêtes à exécuter pour soumettre les Pull Requests PR-01, PR-02 et PR-03 via GitHub CLI.
+title: "GitHub CLI Execution Guide & Pull Request Commands"
+sidebar_label: "05. GitHub CLI Commands"
+description: Step-by-step ready-to-run commands to submit Pull Requests PR-01, PR-02, and PR-03 using GitHub CLI.
 ---
 
 import { Mermaid } from "../../../src/components/Mermaid";
 
-Ce guide récapitule l'ensemble des commandes **GitHub CLI (`gh`)** pour soumettre les Pull Requests officielles vers les dépôts amont `suitenumerique/docs` et `TypeCellOS/BlockNote`.
+This guide summarizes all **GitHub CLI (`gh`)** commands to submit official Pull Requests to upstream repositories `suitenumerique/docs` and `TypeCellOS/BlockNote`.
 
 ```mermaid
 flowchart LR
-    subgraph PR1["PR 1 : Serveurs Distants & VMs"]
+    subgraph PR1["PR 1: Remote Servers & VMs"]
         Branch1["feature/remote-server-support"] --> Cmd1["gh pr create --repo suitenumerique/docs"]
     end
 
-    subgraph PR2["PR 2 : Packages Souverains Opt-in"]
+    subgraph PR2["PR 2: Sovereign Packages Opt-in"]
         Branch2["feature/sovereign-sources-packages"] --> Cmd2["gh pr create --repo suitenumerique/docs"]
     end
 
-    subgraph PR3["PR 3 : Extension Amont BlockNote"]
-        RFC["Discussion / Issue RFC"] --> Cmd3["gh issue create --repo TypeCellOS/BlockNote"]
+    subgraph PR3["PR 3: Upstream BlockNote Extension"]
+        RFC["RFC Issue / Discussion"] --> Cmd3["gh issue create --repo TypeCellOS/BlockNote"]
     end
 ```
 
 ---
 
-## 🚀 1. Soumission de la PR 1 : `suitenumerique/docs` (Support VM & Hairpin NAT)
+## 🚀 1. Submitting PR 1: `suitenumerique/docs` (VM Support & Hairpin NAT)
 
-### Objectif
-Permettre le déploiement transparent de **La Suite Docs** sur serveurs distants, VPS et VMs sans blocage OIDC.
+### Objective
+Enable seamless deployment of **La Suite Docs** on remote servers, VPS, and cloud VMs without OIDC redirection issues.
 
-### Commandes Git & GitHub CLI
+### Git & GitHub CLI Commands
 
 ```bash
-# 1. Se positionner dans le clone local de Docs
+# 1. Navigate to local Docs clone
 cd LaSuite/docs
 
-# 2. Créer la branche dédiée
+# 2. Create dedicated feature branch
 git checkout -b feature/remote-server-support
 
-# 3. Ajouter les fichiers modifiés
+# 3. Stage modified files
 git add compose.yml compose-e2e.yml src/frontend/apps/impress/.env.development src/frontend/apps/impress/next.config.js
 
-# 4. Créer le commit conventionnel
+# 4. Create conventional commit
 git commit -m "feat(dev): make development URLs configurable for remote servers and VMs"
 
-# 5. Pousser la branche
+# 5. Push branch
 git push origin feature/remote-server-support
 
-# 6. Créer la Pull Request officielle
+# 6. Create official Pull Request
 gh pr create \
   --repo suitenumerique/docs \
   --title "feat(dev): make development URLs configurable for remote servers and VMs" \
@@ -59,21 +59,21 @@ gh pr create \
 
 ---
 
-## 🚀 2. Soumission de la PR 2 : `suitenumerique/docs` (Intégration Packages Souverains)
+## 🚀 2. Submitting PR 2: `suitenumerique/docs` (Sovereign Packages Integration)
 
-### Objectif
-Intégrer les 12 sources souveraines sous forme de packages autonomes avec activation progressive (diff < 10 lignes).
+### Objective
+Integrate the 12 sovereign sources as autonomous packages with staged rollout (< 10 lines diff).
 
-### Commandes Git & GitHub CLI
+### Git & GitHub CLI Commands
 
 ```bash
-# 1. Se positionner dans le clone local de Docs
+# 1. Navigate to local Docs clone
 cd LaSuite/docs
 
-# 2. Créer la branche dédiée
+# 2. Create dedicated feature branch
 git checkout -b feature/sovereign-sources-packages
 
-# 3. Ajouter les fichiers modifiés (< 10 lignes)
+# 3. Stage modified files (< 10 lines)
 git add src/backend/pyproject.toml \
         src/backend/impress/settings.py \
         src/backend/impress/urls.py \
@@ -81,13 +81,13 @@ git add src/backend/pyproject.toml \
         src/frontend/apps/impress/src/features/docs/doc-editor/components/BlockNoteEditor.tsx \
         src/frontend/apps/impress/src/features/docs/doc-editor/components/BlockNoteSuggestionMenu.tsx
 
-# 4. Créer le commit conventionnel
+# 4. Create conventional commit
 git commit -m "feat(sources): integrate modular French sovereign sources with progressive activation (Opt-in Plug & Play)"
 
-# 5. Pousser la branche
+# 5. Push branch
 git push origin feature/sovereign-sources-packages
 
-# 6. Créer la Pull Request officielle
+# 6. Create official Pull Request
 gh pr create \
   --repo suitenumerique/docs \
   --title "feat(sources): integrate modular French sovereign sources with progressive activation (Opt-in Plug & Play)" \
@@ -98,15 +98,15 @@ gh pr create \
 
 ---
 
-## 🌐 3. Soumission de la RFC 3 : `TypeCellOS/BlockNote` (Extension Amont)
+## 🌐 3. Submitting RFC 3: `TypeCellOS/BlockNote` (Upstream Extension)
 
-### Objectif
-Proposer la standardisation des blocs connectés à des APIs distantes multi-formats (`@blocknote/xl-external-sources`).
+### Objective
+Propose standardizing remote connected data blocks with multi-format rendering (`@blocknote/xl-external-sources`).
 
-### Commandes GitHub CLI
+### GitHub CLI Commands
 
 ```bash
-# Dépôt de la RFC sur les discussions / issues TypeCellOS/BlockNote
+# Submit RFC to TypeCellOS/BlockNote discussions / issues
 gh issue create \
   --repo TypeCellOS/BlockNote \
   --title "RFC: Standardized External Data Sources & Multi-Format Connected Blocks (@blocknote/xl-external-sources)" \
