@@ -28,6 +28,8 @@ LaSuite/drive/
 documentation/dist/
 demo/dist/
 packages/*/dist/
+packages/*/*.tgz
+*.tgz
 packages/*/node_modules/
 packages/*/.turbo/
 packages/*/.venv/

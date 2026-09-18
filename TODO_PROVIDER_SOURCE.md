@@ -1,7 +1,7 @@
 # 🌐 Roadmap & Matrice d'Audit Technique des Providers d'APIs (`TODO_PROVIDER_SOURCE.md`)
 
 > **Projet :** Slasher — Connecteurs Souverains & Données Publiques Connectées  
-> **Objectif :** Recenser, benchmarker et qualifier techniquement l'ensemble des APIs publiques et souveraines (France, Union Européenne, Allemagne, Pays-Bas, Espagne, International) pour les intégrer sous forme de connecteurs normalisés dans `@suitenumerique/slash-sources-sdk`, `@suitenumerique/blocknote-sources` et `django-lasuite-sources`.
+> **Objectif :** Recenser, benchmarker par recherche web approfondie et qualifier techniquement l'ensemble des APIs publiques et souveraines (France, Union Européenne, Allemagne, Pays-Bas, Espagne, International) pour les intégrer sous forme de connecteurs normalisés dans `@suitenumerique/slash-sources-sdk`, `@suitenumerique/blocknote-sources` et `django-lasuite-sources`.
 
 ---
 
@@ -14,7 +14,7 @@ Chaque API candidate doit obligatoirement satisfaire aux **6 invariants d'archit
 3. **📦 Schéma DTO Universel Normalisé :** Normalisation stricte vers l'interface TypeScript `SourceEntityProps` :
    - `sourceId` (Identifiant officiel immuable)
    - `title` / `subtitle` (Titrage clair)
-   - `status` / `statusColor` (`green`, `blue`, `orange`, `red`, `gray`)
+   - `status` / `statusColor` (`green`, `blue`, `orange`, `red`, `gray`, `purple`)
    - `meta1`, `meta2`, `meta3` (Grille de 3 métadonnées pour la Carte)
    - `excerpt` (Extrait textuel pour le format Callout)
    - `url` (Lien officiel vérifié)
@@ -42,279 +42,161 @@ Chaque API candidate doit obligatoirement satisfaire aux **6 invariants d'archit
 - [x] **data.gouv.fr (Etalab / DINUM) :** Jeux de données ouverts (`/opendata`).
 - [x] **Albert IA Souveraine (DINUM) :** Synthèse RAG administrative (`/albert`).
 
-#### Nouvelles APIs Françaises à Qualifier (Checklist d'Investigation) :
-- [ ] **Jurisprudence Française (DILA / Judilibre / Cour de Cassation) :**
-  - *Commande visée :* `/jurisprudence`
-  - *Données :* Arrêts de la Cour de cassation, Conseil d'État, Cours d'appel (JuriCA, JuriData).
-  - *API candidate :* API PISTE *Judilibre* / Cour de Cassation API REST.
-- [ ] **Journal Officiel Lois et Décrets (JORF) :**
-  - *Commande visée :* `/jorf`
-  - *Données :* Textes publiés au JO du jour, décrets de nomination, arrêtés ministériels.
-  - *API candidate :* API PISTE Légifrance *JORFTEXT*.
-- [ ] **FINESS (Fichier National des Établissements Sanitaires et Sociaux) :**
-  - *Commande visée :* `/sante` ou `/hopital`
-  - *Données :* Hôpitaux, cliniques, EHPAD, pharmacies, capacités d'accueil et statuts juridiques.
-  - *API candidate :* API data.gouv.fr / Ministère de la Santé (DREES).
-- [ ] **UAI / Annuaire de l'Éducation Nationale :**
-  - *Commande visée :* `/ecole` ou `/formation`
-  - *Données :* Écoles, collèges, lycées, universités, code UAI, effectifs et coordonnées.
-  - *API candidate :* API Open Data de l'Éducation Nationale (data.education.gouv.fr).
-- [ ] **DVF (Demandes de Valeurs Foncières) :**
-  - *Commande visée :* `/dvf` ou `/immobilier`
-  - *Données :* Prix des transactions immobilières officielles des 5 dernières années par parcelle.
-  - *API candidate :* API DVF Etalab / Cerema.
-- [ ] **Répertoire National des Élus (RNE / Ministère de l'Intérieur) :**
-  - *Commande visée :* `/elu` ou `/maire`
-  - *Données :* Maires, conseillers municipaux, départementaux, régionaux, députés et sénateurs.
-  - *API candidate :* data.gouv.fr RNE API.
-- [ ] **Base Transparence Santé (Ministère de la Santé) :**
-  - *Commande visée :* `/transparence-sante`
-  - *Données :* Déclarations d'intérêts et avantages accordés par les industriels de santé.
+#### Nouvelles APIs Françaises à Qualifier :
+- [ ] **Jurisprudence Française (Judilibre / Cour de Cassation) :** `/jurisprudence`
+- [ ] **Journal Officiel Lois et Décrets (JORF) :** `/jorf`
+- [ ] **FINESS (Établissements Sanitaires et Sociaux - Santé) :** `/sante`
+- [ ] **UAI / Éducation Nationale (Écoles, Universités) :** `/ecole`
+- [ ] **DVF (Demandes de Valeurs Foncières - Immobilier) :** `/dvf`
+- [ ] **Répertoire National des Élus (RNE Intérieur) :** `/elu`
 
 ---
 
 ### 🇪🇺 2.2. Union Européenne (Institutions Européennes)
-
-- [ ] **EUR-Lex / Cellar REST & SPARQL API (Office des Publications de l'UE) :**
-  - *Commande visée :* `/eurlex`
-  - *Données :* Traités, règlements européens (RGPD, AI Act, NIS 2), directives, décisions CJUE.
-  - *Point technique :* Requêtes SPARQL sur le triplestore Cellar ou endpoint REST Publications Office.
-- [ ] **TED (Tenders Electronic Daily - Marchés Publics Européens) :**
-  - *Commande visée :* `/ted`
-  - *Données :* Avis de marchés publics européens au format standard eForms.
-  - *API candidate :* TED Developer Portal REST API (Open Data API).
-- [ ] **Eurostat SDMX API :**
-  - *Commande visée :* `/eurostat`
-  - *Données :* Statistiques harmonisées de l'UE (PIB, inflation, emploi, transition écologique).
-  - *Format :* API REST SDMX 2.1 / JSON-stat.
-- [ ] **data.europa.eu (Portail Officiel des Données Ouvertes Européennes) :**
-  - *Commande visée :* `/dataeuropa`
-  - *Données :* Catalogue unifié de plus de 1,5 million de jeux de données des 27 pays membres.
-  - *API candidate :* API DCAT-AP SPARQL & CKAN.
-- [ ] **CORDIS (Projets de Recherche & Innovation Horizon Europe) :**
-  - *Commande visée :* `/cordis`
-  - *Données :* Projets de recherche financés par l'UE, subventions, partenaires et livrables.
-- [ ] **ECLI (European Case Law Identifier) Search :**
-  - *Commande visée :* `/ecli`
-  - *Données :* Décisions de justice harmonisées des cours nationales et européennes (CJUE, CEDH).
+- [ ] **EUR-Lex / Cellar REST & SPARQL :** `/eurlex` (Traités, Règlements RGPD/AI Act, Directives)
+- [ ] **TED (Tenders Electronic Daily) :** `/ted` (Marchés publics européens eForms)
+- [ ] **Eurostat SDMX API :** `/eurostat` (Statistiques harmonisées UE)
+- [ ] **data.europa.eu API :** `/dataeuropa` (Portail unifié des données européennes)
+- [ ] **CORDIS :** `/cordis` (Projets de recherche Horizon Europe)
+- [ ] **ECLI Search :** `/ecli` (Jurisprudence européenne CJUE/CEDH)
 
 ---
 
 ### 🇩🇪 2.3. Allemagne (Bundesrepublik Deutschland)
-
-- [ ] **Gesetze im Internet / BMJ (Bundesministerium der Justiz) :**
-  - *Commande visée :* `/gesetz`
-  - *Données :* Codes fédéraux allemands (BGB, StGB, HGB, DSGVO) via Juris / Open Jur.
-- [ ] **Gemeinsames Registerportal der Länder (Handelsregister) :**
-  - *Commande visée :* `/register`
-  - *Données :* Extraits Kbis allemands (Handelsregister A/B, Genossenschaftsregister).
-  - *API candidate :* OffeneRegister.de / Handelsregister REST API.
-- [ ] **DIP (Dokumentations- und Informationssystem für Parlamentsmaterialien) :**
-  - *Commande visée :* `/bundestag`
-  - *Données :* Activité parlementaire du Bundestag et du Bundesrat (projets de loi, questions écrites).
-  - *API candidate :* API REST officielle `dip.bundestag.de/api/v1`.
-- [ ] **GovData.de / OpenCoDE :**
-  - *Commande visée :* `/govdata` ou `/opencode`
-  - *Données :* Données ouvertes de l'administration fédérale et dépôts open source souverains.
-- [ ] **Destatis Genesis REST API (Statistisches Bundesamt) :**
-  - *Commande visée :* `/destatis`
-  - *Données :* Indicateurs statistiques fédéraux officiels allemands.
-- [ ] **Bund.de Vergabe (Öffentliche Beschaffung) :**
-  - *Commande visée :* `/vergabe`
-  - *Données :* Avis de marchés publics fédéraux allemands (e-Vergabe).
+- [ ] **Gesetze im Internet / BMJ (Juris) :** `/gesetz` (Législation fédérale BGB, StGB, HGB)
+- [ ] **Gemeinsames Registerportal (Handelsregister) :** `/register` (Registre du commerce)
+- [ ] **DIP Bundestag API :** `/bundestag` (Parlement fédéral allemand)
+- [ ] **GovData.de / OpenCoDE :** `/govdata` (Portail open data et code souverain)
+- [ ] **Destatis Genesis REST API :** `/destatis` (Office fédéral de la statistique)
+- [ ] **Bund.de e-Vergabe :** `/vergabe` (Marchés publics fédéraux)
 
 ---
 
 ### 🇳🇱 2.4. Pays-Bas (Koninkrijk der Nederlanden)
-
-- [ ] **KOOP Wettenbank (Wetten.overheid.nl) :**
-  - *Commande visée :* `/wet`
-  - *Données :* Législation nationale néerlandaise consolidée (BWB).
-  - *API candidate :* KOOP Open Data API (Overheid.nl).
-- [ ] **KVK (Kamer van Koophandel Handelsregister) :**
-  - *Commande visée :* `/kvk`
-  - *Données :* Registre officiel des entreprises et fondations néerlandaises.
-  - *API candidate :* KVK API v2 / OpenKVK.
-- [ ] **Kadaster BAG (Basisregistratie Adressen en Gebouwen) :**
-  - *Commande visée :* `/bag`
-  - *Données :* Registre national unifié des adresses et bâtiments.
-  - *API candidate :* Kadaster BAG API v2 (Geonovum / PDOK).
-- [ ] **Data.overheid.nl :**
-  - *Commande visée :* `/dataoverheid`
-  - *Données :* Portail open data national des Pays-Bas (CKAN REST API).
-- [ ] **TenderNed (Aanbestedingen Overheid) :**
-  - *Commande visée :* `/tenderned`
-  - *Données :* Avis de marchés publics néerlandais.
-- [ ] **CBS StatLine (Centraal Bureau voor de Statistiek) :**
-  - *Commande visée :* `/cbs`
-  - *Données :* Statistiques officielles démographiques et économiques.
+- [ ] **KOOP Wettenbank (Overheid.nl) :** `/wet` (Législation nationale BWB)
+- [ ] **KVK Handelsregister :** `/kvk` (Registre du commerce des Pays-Bas)
+- [ ] **Kadaster BAG :** `/bag` (Registre national adresses et bâtiments)
+- [ ] **Data.overheid.nl :** `/dataoverheid` (Open Data national)
+- [ ] **TenderNed :** `/tenderned` (Marchés publics néerlandais)
+- [ ] **CBS StatLine :** `/cbs` (Bureau central de la statistique)
 
 ---
 
 ### 🇪🇸 2.5. Espagne (Reino de España)
-
-- [ ] **BOE (Boletín Oficial del Estado) :**
-  - *Commande visée :* `/ley` ou `/boe`
-  - *Données :* Législation nationale espagnole consolidée (Leyes Orgánicas, Reales Decretos).
-  - *API candidate :* API REST/XML BOE Open Data.
-- [ ] **Registro Mercantil de España :**
-  - *Commande visée :* `/empresa` ou `/mercantil`
-  - *Données :* Registre du commerce espagnol (CIF, administrateurs, statuts).
-- [ ] **Plataforma de Contratación del Sector Público (PLACSP / CODICE) :**
-  - *Commande visée :* `/licitacion`
-  - *Données :* Marchés publics de l'État et des communautés autonomes.
-  - *Format :* Atom Syndication / Schema CODICE XML.
-- [ ] **Sede Electrónica del Catastro (Ministerio de Hacienda) :**
-  - *Commande visée :* `/catastro`
-  - *Données :* Référence cadastrale, surface, valeur et cartographie des biens.
-  - *API candidate :* OVC Web Services Catastro (SOAP/REST).
-- [ ] **Datos.gob.es :**
-  - *Commande visée :* `/datosgob`
-  - *Données :* Catalogue national de données ouvertes d'Espagne (API SPARQL / CKAN).
-- [ ] **INEbase (Instituto Nacional de Estadística) :**
-  - *Commande visée :* `/ine`
-  - *Données :* Indicateurs démographiques et municipaux espagnols.
+- [ ] **BOE (Boletín Oficial del Estado) :** `/ley` (Législation nationale consolidée)
+- [ ] **Registro Mercantil de España :** `/empresa` (Registre du commerce)
+- [ ] **PLACSP (Plataforma de Contratación del Estado) :** `/licitacion` (Marchés publics)
+- [ ] **Sede Electrónica del Catastro :** `/catastro` (Registre cadastral)
+- [ ] **Datos.gob.es :** `/datosgob` (Open Data national)
+- [ ] **INEbase :** `/ine` (Institut national de statistique)
 
 ---
 
-### 🌍 2.6. Organisations Internationales & Intergouvernementales
+## 🤖 3. Master Prompt de Recherche Web Approfondie pour Agent Spécialisé
 
-- [ ] **Banque Mondiale (World Bank Open Data API) :**
-  - *Commande visée :* `/worldbank`
-  - *Données :* Indicateurs économiques mondiaux, Objectifs de Développement Durable (ODD).
-  - *API candidate :* `api.worldbank.org/v2/`.
-- [ ] **OCDE (OECD Data Explorer SDMX API) :**
-  - *Commande visée :* `/oecd`
-  - *Données :* Études économiques, fiscalité, éducation (PISA).
-- [ ] **OMS (WHO Global Health Observatory OData API) :**
-  - *Commande visée :* `/who` ou `/sante-monde`
-  - *Données :* Statistiques mondiales de santé publique et épidémiologie.
-- [ ] **OMPI / WIPO (Patentscope & Madrid Monitor) :**
-  - *Commande visée :* `/brevet` ou `/wipo`
-  - *Données :* Registres mondiaux de brevets d'invention et marques internationales.
-
----
-
-## 📊 3. Matrice de Qualification Technique par API
-
-Remplir pour chaque API ciblée la grille d'évaluation suivante avant développement :
-
-```markdown
-### 🏷️ Fiche d'Évaluation Technique : [Nom du Service / API]
-
-| Critère d'Audit | Constat Technique | Statut (OK / Risque / Bloquant) |
-| :--- | :--- | :---: |
-| **1. URL Documentation** | `https://...` | - |
-| **2. Mode d'Authentification** | `Open Data sans clé` / `API Key` / `OAuth2 Client Credentials` | - |
-| **3. Quotas & Rate Limits** | `X req/sec` ou `Y req/jour` | - |
-| **4. Latence Moyenne** | Mesurée via curl : `~XX ms` | - |
-| **5. Support Autocomplétion** | Endpoint de recherche prefix/suggest disponible ? | - |
-| **6. Stabilité du Format DTO** | JSON / XML / GeoJSON (Champs `id`, `title`, `meta`, `url`) | - |
-| **7. Allowlist Réseau Backend** | Noms de domaine stricts à ajouter dans `is_safe_external_url` | - |
-| **8. Fiabilité du Mock Local** | Dataset de test réaliste et représentatif préparé ? | - |
-```
-
----
-
-## 🤖 4. Prompt Spécialisé pour Agent de Veille Technique Externe
-
-Copiez-collez l'un des deux prompts ci-dessous dans votre outil de recherche IA préféré (Claude 3.7 Research, Perplexity Pro, OpenAI Deep Research, Gemini Pro Search) pour auditer une API en quelques secondes :
-
-### 🇫🇷 Version Française du Prompt de Recherche
+Copiez-collez l'intégralité du prompt ci-dessous dans votre outil d'agent de recherche web (Claude 3.7 Research, OpenAI Deep Research, Perplexity Pro, Gemini Pro Search). Il contient la spécification complète de Slasher et **l'ensemble des 12 exemples français de référence** pour guider la découverte internationale.
 
 ```text
-Tu es un architecte d'intégration d'APIs et ingénieur backend senior spécialisé dans les données souveraines, l'open data gouvernemental et la sécurité des protocoles (anti-SSRF, OAuth2, REST, SPARQL).
+================================================================================
+PROMPT DE RECHERCHE WEB APPROFONDIE & AUDIT D'APIS SOUVERAINES INTERNATIONALES
+================================================================================
 
-Je développe "Slasher", un écosystème open source pour l'éditeur BlockNote (La Suite Numérique / DINUM) permettant d'insérer des cartes de données distantes vérifiées via des commandes slash (ex: /loi, /entreprise, /marche, /stats).
+Tu es un architecte d'intégration d'APIs et un ingénieur système senior spécialisé dans les données souveraines, l'open data public et la sécurité logicielle (anti-SSRF, OAuth2, REST, SPARQL, JSON:API).
 
-Effectue une veille technique et un audit d'architecture approfondi sur l'API suivante :
-👉 API CIBLE : [INSERER LE NOM DE L'API OU DU REGISTRE, EX: API Judilibre DILA, API Bundestag DIP, API KOOP Wettenbank, API BOE Espagne, etc.]
-👉 PAYS / ORGANISATION : [France, Allemagne, Pays-Bas, Espagne, UE, International]
+CONTEXTE DU PROJET :
+Je développe "Slasher", un standard open source universel pour l'éditeur de texte riche BlockNote (développé pour La Suite Numérique de l'État français / DINUM et les communs numériques européens). Slasher permet aux utilisateurs d'insérer des données distantes connectées en direct via des commandes slash (/loi, /entreprise, /marche, /stats, etc.), affichables en 3 formats permutables (Callout Marianne, Carte 3 colonnes, Badge Lien compact).
 
-Livrables attendus sous forme de rapport Markdown structuré :
+MISSION :
+Tu dois effectuer une RECHERCHE WEB RÉELLE ET APPROFONDIE sur Internet pour auditer, benchmarker et cartographier les APIs officielles équivalentes dans le pays ou l'organisation cible suivante :
 
-1. 🔍 VUE D'ENSEMBLE & USAGE MÉTIER :
-   - Mission de l'API et cas d'usage typique pour un rédacteur dans un document collaboratif.
-   - Entités manipulées (ex: article de loi, entreprise, avis de marché, amendement, subvention).
+👉 PAYS / ORGANISATION CIBLE : [INSERER LE PAYS/ZONE : ex: Allemagne (Bund), Pays-Bas (Overheid), Espagne (Estado), Union Européenne, Royaume-Uni (GOV.UK), USA (Data.gov), ou International]
+👉 DOMAINE MÉTIER VISÉ : [INSERER LE DOMAINE : ex: Législation & Droit, Registre des Entreprises, Base d'Adresses, Marchés Publics, Statistiques Officielles, Parlement & Démocratie, Cadastre & Foncier, Subventions & Aides Publiques, Open Data, IA Publique Souveraine, ou "TOUS LES DOMAINES"]
 
-2. 📡 SPÉCIFICATIONS TECHNIQUES & ENDPOINTS REST :
-   - URL officielle de la documentation et du swagger/OpenAPI si disponible.
-   - Endpoint d'autocomplétion / recherche rapide (avec pagination et filtres).
-   - Endpoint de détail complet par identifiant unique.
-   - Exemple concret de requête curl et extrait de réponse JSON brute.
+--------------------------------------------------------------------------------
+RÉFÉRENTIEL TECHNIQUE : LES 12 EXEMPLES FRANÇAIS DE RÉFÉRENCE (GOLDEN BENCHMARK)
+--------------------------------------------------------------------------------
+Voici la structure DTO TypeScript exacte ('SourceEntityProps') et les 12 connecteurs français déjà implémentés qui te servent de modèle de comparaison :
 
-3. 🔐 AUTHENTIFICATION, QUOTAS & SÉCURITÉ :
-   - Protocole d'accès : Accès libre sans clé, clé d'API statique, ou OAuth2 Client Credentials (avec détails d'obtention de compte).
-   - Rate limiting & quotas (requêtes par seconde, par heure, par IP).
-   - Règles de sécurité défensive (domaines stricts pour l'allowlist anti-SSRF).
+```typescript
+export interface SourceEntityProps {
+  sourceId: string;       // Identifiant officiel unique (ex: LEGIARTI000037812976, SIREN 130025265)
+  entityType: string;     // Type: 'law' | 'company' | 'parliament' | 'address' | 'procurement' | 'grant' | 'insee' | 'agent' | 'cadastre' | 'demarche' | 'opendata' | 'custom'
+  displayMode: 'callout' | 'card' | 'link';
+  title: string;          // Titre principal affiché
+  subtitle?: string;      // Sous-titre ou autorité émettrice
+  status?: string;        // Statut textuel (ex: 'En vigueur', 'Actif', 'Candidatures ouvertes')
+  statusColor?: 'green' | 'blue' | 'orange' | 'red' | 'gray' | 'purple';
+  meta1?: string;         // Attribut clé 1 pour la carte (ex: 'SIREN : 130 025 265')
+  meta2?: string;         // Attribut clé 2 pour la carte (ex: 'NAF : 84.11Z')
+  meta3?: string;         // Attribut clé 3 pour la carte (ex: 'Effectif : 250+ agents')
+  excerpt?: string;       // Extrait in extenso pour le format Callout
+  summary?: string;       // Résumé synthétique
+  url?: string;           // Lien hypertexte officiel vers la plateforme publique
+  verifiedAt?: string;    // Date de vérification / synchronisation
+}
+```
 
-4. 🧩 NORMALISATION VERS LE SCHÉMA DTO SLASHER :
-   - Mappage précis des champs JSON distants vers notre interface TypeScript `SourceEntityProps` :
-     * `sourceId` (string unique)
-     * `title` (titre institutionnel)
-     * `subtitle` (organisme ou contexte)
-     * `status` & `statusColor` (statut officiel en vigueur/fermé)
-     * `meta1`, `meta2`, `meta3` (les 3 attributs clés de la carte)
-     * `excerpt` (extrait textuel mis en avant)
-     * `url` (lien officiel pérenne)
+Voici les 12 implémentations concrètes en France (à reproduire pour le pays cible) :
+1. ⚖️ Loi (/loi) : Légifrance (API PISTE) -> ID: LEGIARTI000037812976, Title: "Article L. 111-1 du Code de la commande publique", Status: "En vigueur" (green), Meta: [ID, Ref Ordonnance, Date effet], Excerpt: Définition du marché public.
+2. 🏢 Entreprise (/entreprise) : Annuaire Entreprises / RNE (INSEE) -> ID: 13002526500013, Title: "Direction Interministérielle du Numérique", Status: "Actif" (green), Meta: [SIREN, Code NAF, Effectif].
+3. 🏛️ Parlement (/assemblee) : Assemblée Nationale -> ID: AN-17-PJL-542-AMD-42, Title: "Amendement n° 42 au Projet de Loi Souveraineté", Status: "Adopté" (green), Meta: [Rapporteur, Séance, Scrutin public].
+4. 📍 Adresse (/adresse) : Base Adresse Nationale (BAN IGN) -> ID: ADR-75107-0020, Title: "20 avenue de Ségur, 75007 Paris", Status: "BAN Certifiée" (green), Meta: [Code INSEE, Coordonnées GPS, Score 0.98].
+5. 🛍️ Marchés (/marche) : BOAMP (DILA) -> ID: BOAMP-26-042819, Title: "Fourniture hébergement SecNumCloud", Status: "Offres ouvertes" (blue), Meta: [AAPC n°, Type procédure, Date clôture].
+6. 💶 Subvention (/subvention) : Aides-Territoires / Fonds Vert (ANCT) -> ID: AIDE-ANCT-FV-2026, Title: "Fonds Vert — Rénovation énergétique", Status: "Ouvert" (green), Meta: [Financeur, Taux max 80%, Date limite].
+7. 📊 Stats (/stats) : INSEE Données Locales -> ID: INSEE-COM-75056, Title: "Chiffres clés Ville de Paris", Status: "Certifié INSEE" (blue), Meta: [Population, Densité, Nombre emplois].
+8. 👤 Annuaire (/agent) : Service-Public DILA -> ID: AGENT-DINUM, Title: "Direction Interministérielle du Numérique", Status: "Certifié" (blue), Meta: [Courriel officiel, Téléphone, Adresse physique].
+9. 🗺️ Cadastre (/cadastre) : DGFiP / IGN -> ID: CAD-75107-AK-0042, Title: "Parcelle Section AK n° 0042 (Paris 7e)", Status: "Certifié DGFiP" (green), Meta: [Contenance m², Feuille cadastrale, Date MAJ].
+10. 📝 Démarches (/demarche) : Démarches-Simplifiées.fr -> ID: DS-PROC-84290, Title: "Demande d'habilitation La Suite", Status: "Actif" (green), Meta: [N° procédure, Délai 48h, Cible public].
+11. 🌐 Open Data (/opendata) : data.gouv.fr -> ID: DATAGOUV-DS-6429, Title: "Base Sirene des entreprises", Status: "Licence Ouverte" (blue), Meta: [Formats CSV/Parquet, Fréquence, Nb téléchargements].
+12. 🧠 IA Souveraine (/albert) : Albert RAG DINUM -> ID: ALBERT-RAG-FP-001, Title: "Préavis de démission agent contractuel", Status: "Albert RAG" (purple), Meta: [Source statutaire, Modèle IA, Score confiance 96%].
 
-5. 🧪 JEU DE DONNÉES DE MOCK (TEST OFFLINE) :
-   - Un objet JavaScript / Python représentatif et certifié contenant 2 exemples réels complets pour le mode déconnecté.
+--------------------------------------------------------------------------------
+STRUCTURE DU RAPPORT D'INVESTIGATION ATTENDU (À PRODUIRE POUR CHAQUE API)
+--------------------------------------------------------------------------------
+
+Pour chaque API découverte sur le web, fournis une fiche structurée et rigoureuse :
+
+1. 🔍 FICHE D'IDENTITÉ & PORTAIL DÉVELOPPEUR :
+   - Nom officiel de l'API / Registre public.
+   - Ministère ou agence publique responsable.
+   - URL officielle de la documentation développeur, Swagger / OpenAPI UI ou portail de données.
+   - Commande slash recommandée (ex: /gesetz, /wet, /register, /boe, /ted).
+
+2. 📡 ENDPOINTS REST / SPARQL CONCRETS :
+   - Endpoint de recherche rapide / autocomplétion (pour le composant Popover pendant la saisie).
+   - Endpoint de fiche détaillée par identifiant unique (pour le rendu du bloc).
+   - Exemple concret de commande 'curl' exécutable.
+   - Extrait représentatif de la réponse JSON/XML brute renvoyée par l'API.
+
+3. 🔐 AUTHENTIFICATION & SÉCURITÉ DÉFENSIVE :
+   - Mode d'accès : Accès libre sans clé (Open Data), clé d'API statique (avec lien d'inscription), ou OAuth2 Client Credentials.
+   - Quotas & Rate Limiting (nb requêtes/sec, restrictions IP).
+   - Domaine(s) exact(s) à autoriser dans l'allowlist anti-SSRF de Django (ex: api.bund.de, api.overheid.nl, datos.gob.es).
+
+4. 🧩 NORMALISATION VERS LE SCHÉMA TYPESCRIPT SLASHER :
+   - Mappage exact des champs bruts de l'API vers l'interface 'SourceEntityProps' :
+     * sourceId <- [Champ brut]
+     * title <- [Champ brut]
+     * subtitle <- [Champ brut]
+     * status & statusColor <- [Règle de mapping]
+     * meta1 <- [Libellé + Champ brut]
+     * meta2 <- [Libellé + Champ brut]
+     * meta3 <- [Libellé + Champ brut]
+     * excerpt <- [Texte légal / citation / description]
+     * summary <- [Synthèse]
+     * url <- [URL permanente vers le document / fiche]
+
+5. 🧪 JEU DE DONNÉES DE TEST CERTIFIÉ (MOCK OFFLINE) :
+   - Objet TypeScript complet contenant au moins 2 cas réels avec de vraies données publiques du pays pour alimenter nos tests unitaires sans réseau.
 
 6. ⚖️ SYNTHÈSE & RISQUES :
-   - Disponibilité du service, pérennité légale, latence observée et recommandations d'intégration.
+   - Disponibilité du service, stabilité de l'API, latence constatée et recommandations d'intégration.
+================================================================================
 ```
 
 ---
 
-### 🇬🇧 English Version of the Research Prompt
-
-```text
-You are a senior API integration architect and backend security engineer specialized in sovereign public sector data, open government registries, and resilient distributed systems (anti-SSRF, OAuth2, REST, SPARQL).
-
-I am building "Slasher", an open-source standard for the BlockNote rich-text editor (French State / DINUM & European digital commons) that connects collaborative documents to live verified public databases via slash commands (e.g. /law, /company, /procurement, /stats).
-
-Conduct a deep technical benchmark and architecture audit for the following API:
-👉 TARGET API: [INSERT API OR REGISTRY NAME, E.G., EUR-Lex SPARQL Cellar, German Bundestag DIP, Dutch KVK Trade Register, Spanish PLACSP, etc.]
-👉 COUNTRY / ENTITY: [France, Germany, Netherlands, Spain, European Union, International]
-
-Please provide a comprehensive Markdown report structured as follows:
-
-1. 🔍 OVERVIEW & DOMAIN USE CASES:
-   - Purpose of the registry and high-value insertion use cases for document authors.
-   - Core entities handled (e.g., statutory law, corporate profile, public tender, territorial grant).
-
-2. 📡 TECHNICAL SPECS & REST ENDPOINTS:
-   - Official documentation and OpenAPI/Swagger portal URLs.
-   - Search & Autocomplete endpoint (query parameters, search syntax, pagination).
-   - Full Entity Detail endpoint by unique ID.
-   - Concrete curl request and raw JSON response payload sample.
-
-3. 🔐 AUTHENTICATION, RATE LIMITS & SECURITY:
-   - Authentication method: Open Access, API Key, or OAuth2 Client Credentials (and registration procedure).
-   - Rate limiting rules (requests per second / quota per day).
-   - Defensive security constraints (exact domain allowlist for anti-SSRF filtering).
-
-4. 🧩 DTO NORMALIZATION TO SLASHER CONTRACT:
-   - Exact mapping from raw API fields to the Slasher `SourceEntityProps` TypeScript interface:
-     * `sourceId` (unique immutable identifier)
-     * `title` (official title)
-     * `subtitle` (issuing agency or legal context)
-     * `status` & `statusColor` (e.g. in effect, certified, archived)
-     * `meta1`, `meta2`, `meta3` (3 key metadata fields for card display)
-     * `excerpt` (highlighted excerpt for callout display)
-     * `url` (permanent public URL)
-
-5. 🧪 BATTLE-TESTED OFFLINE MOCK DATASET:
-   - Complete TypeScript/Python mock dataset containing 2 realistic certified examples for offline development and CI test suites.
-
-6. ⚖️ SYNTHESIS & RISK ANALYSIS:
-   - Service SLA, legal sustainability, observed latency, and architecture recommendation.
-```
-
----
-
-## 🎯 5. Ordre de Priorité d'Implémentation Recommandé
+## 🎯 4. Ordre de Priorité d'Implémentation Recommandé
 
 ```mermaid
 flowchart TD
