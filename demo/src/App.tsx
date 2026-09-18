@@ -405,118 +405,253 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="demo-container">
-      {/* Header */}
-      <header className="demo-header">
-        <div className="demo-title-group">
-          <h1>
-            <span>{activePreset.flag}</span>
-            <span>Slasher — Connected Data Blocks</span>
-          </h1>
-          <p>
-            {activePreset.description}
-          </p>
-        </div>
-
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-          {/* Country Selector */}
-          <div style={{ display: "flex", gap: "4px", background: "rgba(0,0,0,0.05)", padding: "4px", borderRadius: "8px" }}>
-            {(Object.keys(COUNTRY_PRESETS) as SupportedCountry[]).map((c) => (
-              <button
-                key={c}
-                type="button"
-                onClick={() => handleCountryChange(c)}
-                className="demo-btn"
-                style={{
-                  fontWeight: currentCountry === c ? "bold" : "normal",
-                  background: currentCountry === c ? "#2563eb" : "transparent",
-                  color: currentCountry === c ? "#ffffff" : "inherit",
-                  padding: "4px 8px",
-                  fontSize: "0.85rem",
+    <div className="lasuite-app">
+      {/* Header Officiel — République Française / La Suite Numérique */}
+      <header className="lasuite-header" role="banner">
+        <div className="lasuite-header-container">
+          <div className="lasuite-brand-group">
+            {/* Bloc Marque État Français (Marianne) */}
+            <div className="lasuite-marianne-badge">
+              <img
+                src="/gouv.svg"
+                alt="Gouvernement de la République Française"
+                className="lasuite-marianne-logo"
+                onError={(e) => {
+                  // Fallback si SVG manquant
+                  (e.currentTarget as HTMLElement).style.display = "none";
                 }}
-              >
-                {COUNTRY_PRESETS[c].flag} {COUNTRY_PRESETS[c].name}
-              </button>
-            ))}
+              />
+              <div>
+                <div className="lasuite-marianne-text">
+                  République<br />Française
+                </div>
+                <div className="lasuite-marianne-subtext">
+                  Liberté • Égalité • Fraternité
+                </div>
+              </div>
+            </div>
+
+            {/* Logo & Titre Produit La Suite Docs */}
+            <div className="lasuite-title-wrap">
+              <img
+                src={isDark ? "/lasuite-dark.svg" : "/lasuite.svg"}
+                alt="La Suite Numérique"
+                className="lasuite-product-logo"
+                onError={(e) => {
+                  (e.currentTarget as HTMLElement).style.display = "none";
+                }}
+              />
+              <h1 className="lasuite-product-title">
+                Docs
+                <span className="lasuite-product-badge">
+                  {activePreset.flag} {activePreset.name}
+                </span>
+              </h1>
+            </div>
           </div>
 
-          {/* Language Selector */}
-          <select
-            value={currentLocale}
-            onChange={(e) => setCurrentLocale(e.target.value as SupportedLocale)}
-            className="demo-btn"
-            style={{ padding: "6px 10px", fontSize: "0.85rem", cursor: "pointer" }}
-          >
-            <option value="en">🇬🇧 English</option>
-            <option value="fr">🇫🇷 Français</option>
-            <option value="de">🇩🇪 Deutsch</option>
-            <option value="nl">🇳🇱 Nederlands</option>
-            <option value="es">🇪🇸 Español</option>
-          </select>
+          {/* Contrôles d'en-tête (Presets pays, Langue, Thème, Reset) */}
+          <div className="lasuite-header-actions">
+            {/* Sélecteur de Preset Pays (Segmented Control DSFR) */}
+            <div
+              className="lasuite-country-segmented"
+              role="tablist"
+              aria-label="Sélectionner un jeu de données souverain"
+            >
+              {(Object.keys(COUNTRY_PRESETS) as SupportedCountry[]).map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  role="tab"
+                  aria-selected={currentCountry === c}
+                  onClick={() => handleCountryChange(c)}
+                  className={`lasuite-country-tab ${currentCountry === c ? "active" : ""}`}
+                  title={COUNTRY_PRESETS[c].description}
+                >
+                  <span>{COUNTRY_PRESETS[c].flag}</span>
+                  <span>{COUNTRY_PRESETS[c].name}</span>
+                </button>
+              ))}
+            </div>
 
+            {/* Sélecteur de Langue (Group de boutons DSFR) */}
+            <div
+              className="lasuite-locale-group"
+              role="group"
+              aria-label="Choisir la langue de l'interface"
+            >
+              {(["fr", "en", "de", "nl", "es"] as SupportedLocale[]).map((loc) => (
+                <button
+                  key={loc}
+                  type="button"
+                  onClick={() => setCurrentLocale(loc)}
+                  className={`lasuite-locale-btn ${currentLocale === loc ? "active" : ""}`}
+                >
+                  {loc.toUpperCase()}
+                </button>
+              ))}
+            </div>
 
-          <button
-            type="button"
-            onClick={() => setIsDark(!isDark)}
-            className="demo-btn"
-            title="Toggle theme"
-          >
-            {isDark ? "☀️ Light" : "🌙 Dark"}
-          </button>
-          <button
-            type="button"
-            onClick={handleReset}
-            className="demo-btn"
-            style={{ color: "#e1000f", borderColor: "#fca5a5" }}
-            title="Reset editor"
-          >
-            🗑️ {i18n.actions.remove}
-          </button>
+            {/* Toggle Mode Sombre */}
+            <button
+              type="button"
+              onClick={() => setIsDark(!isDark)}
+              className="lasuite-btn"
+              title={isDark ? "Activer le mode clair" : "Activer le mode sombre"}
+              aria-label={isDark ? "Mode clair" : "Mode sombre"}
+            >
+              {isDark ? "☀️" : "🌙"}
+            </button>
+
+            {/* Lien Portail de Documentation */}
+            <a
+              href="https://dinum-docs-waxlands-projects.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="lasuite-btn lasuite-btn-primary"
+              title="Consulter la documentation officielle Zudoku"
+            >
+              📖 Docs
+            </a>
+
+            {/* Bouton Réinitialiser l'Éditeur */}
+            <button
+              type="button"
+              onClick={handleReset}
+              className="lasuite-btn lasuite-btn-danger"
+              title="Vider le document"
+            >
+              🗑️ {i18n.actions.remove}
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* Toolbar with country-specific fast buttons */}
-      <div className="demo-toolbar">
-        <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#64748b", marginBottom: "8px" }}>
-          {activePreset.flag} {activePreset.name} Connectors:
-        </div>
-        <div className="demo-btn-group">
-          {activePreset.buttons.map((btn) => (
-            <button
-              key={btn.type + btn.label}
-              type="button"
-              onClick={() => handleInsert(btn.type)}
-              className="demo-btn"
-              title={btn.desc}
-            >
-              <span>{btn.icon}</span>
-              <span>{btn.label}</span>
-            </button>
-          ))}
-        </div>
-      </div>
+      {/* Espace de travail Document ("La Suite Docs" Canvas) */}
+      <div className="demo-workspace">
+        {/* Fil d'Ariane & Badges de Certification */}
+        <div className="lasuite-context-bar">
+          <nav className="lasuite-breadcrumb" aria-label="Fil d'Ariane">
+            <a href="#accueil">La Suite</a>
+            <span className="lasuite-breadcrumb-separator">/</span>
+            <a href="#docs">Docs</a>
+            <span className="lasuite-breadcrumb-separator">/</span>
+            <span className="lasuite-breadcrumb-current">
+              Démonstrateur Connecteurs Souverains
+            </span>
+          </nav>
 
-      {/* Editor Card */}
-      <main className="demo-editor-card">
-        <BlockNoteView
-          editor={editor}
-          theme={isDark ? "dark" : "light"}
-          slashMenu={false}
-        >
-          <SuggestionMenuController
-            triggerCharacter={"/"}
-            getItems={async (query) =>
-              customSlashMenuItems.filter(
-                (item) =>
-                  item.title.toLowerCase().includes(query.toLowerCase()) ||
-                  item.aliases?.some((a) =>
-                    a.toLowerCase().includes(query.toLowerCase())
-                  )
-              )
-            }
-          />
-        </BlockNoteView>
-      </main>
+          <div className="lasuite-meta-badges">
+            <span className="lasuite-chip lasuite-chip-success">
+              🔒 Conforme RGAA v4.1 AA
+            </span>
+            <span className="lasuite-chip">
+              🛡️ Anti-SSRF & Cache Déterministe
+            </span>
+            <span className="lasuite-chip">
+              ⚡ BlockNote.js Extension
+            </span>
+          </div>
+        </div>
+
+        {/* Barre d'outils / Accès Rapide aux Commandes Slash */}
+        <section className="lasuite-toolbar" aria-label="Connecteurs rapides">
+          <div className="lasuite-toolbar-header">
+            <span className="lasuite-toolbar-title">
+              <span>{activePreset.flag}</span>
+              <span>Connecteurs Disponibles ({activePreset.name})</span>
+            </span>
+            <span className="lasuite-toolbar-hint">
+              💡 Tapez <code>/</code> dans l'éditeur ou cliquez sur un connecteur ci-dessous :
+            </span>
+          </div>
+          <div className="lasuite-connector-pills">
+            {activePreset.buttons.map((btn) => (
+              <button
+                key={btn.type + btn.label}
+                type="button"
+                onClick={() => handleInsert(btn.type)}
+                className="demo-btn"
+                title={btn.desc}
+              >
+                <span>{btn.icon}</span>
+                <span>{btn.label}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        {/* Feuille de Document Officielle (La Suite Docs Sheet) */}
+        <main className="demo-editor-card" role="main">
+          {/* En-tête de Document */}
+          <div className="docs-sheet-header">
+            <input
+              type="text"
+              defaultValue="Document de Référence — Sources Souveraines & Données Publiques"
+              className="docs-sheet-title-input"
+              aria-label="Titre du document"
+              placeholder="Sans titre"
+            />
+            <div className="docs-sheet-meta">
+              <span>👤 Auteur : Équipe La Suite Numérique (DINUM)</span>
+              <span>•</span>
+              <span>🕒 Synchronisation : Temps réel Yjs / REST</span>
+              <span>•</span>
+              <span>📋 Format : 100% Cunningham DSFR</span>
+            </div>
+          </div>
+
+          {/* Éditeur BlockNote */}
+          <BlockNoteView
+            editor={editor}
+            theme={isDark ? "dark" : "light"}
+            slashMenu={false}
+          >
+            <SuggestionMenuController
+              triggerCharacter={"/"}
+              getItems={async (query) =>
+                customSlashMenuItems.filter(
+                  (item) =>
+                    item.title.toLowerCase().includes(query.toLowerCase()) ||
+                    item.aliases?.some((a) =>
+                      a.toLowerCase().includes(query.toLowerCase())
+                    )
+                )
+              }
+            />
+          </BlockNoteView>
+        </main>
+
+        {/* Pied de Page Institutionnel */}
+        <footer className="lasuite-footer">
+          <div>
+            <strong>La Suite Numérique</strong> — Direction Interministérielle du Numérique (DINUM) • Licence MIT
+          </div>
+          <div className="lasuite-footer-links">
+            <a
+              href="https://github.com/waxland/dinum-setup"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub Monorepo
+            </a>
+            <a
+              href="https://dinum-docs-waxlands-projects.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Portail Documentaire
+            </a>
+            <a
+              href="https://dinum-storybook-waxlands-projects.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Storybook
+            </a>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 };
