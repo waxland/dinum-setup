@@ -10,7 +10,7 @@ REPOS ?= docs projects meet transfers people accounts
 
 DOCKER_COMPOSE ?= $(shell if docker compose version >/dev/null 2>&1; then echo "docker compose"; elif command -v docker-compose >/dev/null 2>&1; then echo "docker-compose"; fi)
 
-export docs_URL ?= https://github.com/suitenumerique/docs.git
+export docs_URL ?= git@github.com:waxland/docs.git
 export projects_URL ?= https://github.com/suitenumerique/projects.git
 export meet_URL ?= https://github.com/suitenumerique/meet.git
 export transfers_URL ?= https://github.com/suitenumerique/transfers.git

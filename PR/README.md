@@ -70,11 +70,11 @@ flowchart TD
 
 ## 📊 3. Summary Table of Contributions
 
-| PR ID | Target Repo | Title & Scope | Modified Lines | Key Benefit |
+| PR ID | Target Repo | Title & Scope | Status | Key Benefit |
 | :--- | :--- | :--- | :---: | :--- |
-| **PR-01** | [`suitenumerique/docs`](https://github.com/suitenumerique/docs) | Remote server & VM support (`API_ORIGIN`) | `~15` lines | Instant deployment on VM/Cloud without OIDC blocking |
-| **PR-02** | [`suitenumerique/docs`](https://github.com/suitenumerique/docs) | Sovereign packages & progressive activation | `< 10` lines | Zero in-tree pollution, granular command opt-in |
-| **PR-03** | [`TypeCellOS/BlockNote`](https://github.com/TypeCellOS/BlockNote) | External Data Blocks RFC & Multi-Format extension | External package | Open source standardization, path to official ecosystem |
+| **PR-01** | [`suitenumerique/docs`](https://github.com/suitenumerique/docs) | Remote server & VM support (`API_ORIGIN`) | 🟢 [PR #2703](https://github.com/suitenumerique/docs/pull/2703) | Instant deployment on VM/Cloud without OIDC blocking |
+| **PR-02** | [`suitenumerique/docs`](https://github.com/suitenumerique/docs) | Sovereign packages & progressive activation | 🟡 Ready to submit | Zero in-tree pollution, granular command opt-in |
+| **PR-03** | [`TypeCellOS/BlockNote`](https://github.com/TypeCellOS/BlockNote) | External Data Blocks RFC & Multi-Format extension | 🟡 Ready to submit | Open source standardization, path to official ecosystem |
 | **REF-04**| *Internal Arbitrage* | Decision Guide & Arbitrage Matrix | Reference | Comparative analysis: In-Tree Monolith vs Decoupled Packages |
 
 ---
@@ -82,7 +82,7 @@ flowchart TD
 ## 🚀 4. Detailed PR Dossiers
 
 Access the complete ready-to-submit dossiers for opening Pull Requests:
-- 🔗 [PR 1 Dossier: Remote Servers & Cloud VMs Support (suitenumerique/docs)](/09-PR/01-docs-serveur-config)
+- 🔗 [PR 1 Dossier: Remote Servers & Cloud VMs Support (suitenumerique/docs — PR #2703)](https://github.com/suitenumerique/docs/pull/2703) • [Local Spec](/09-PR/01-docs-serveur-config)
 - 🔗 [PR 2 Dossier: Sovereign Packages Integration & Progressive Rollout (suitenumerique/docs)](/09-PR/02-docs-packages-souverains)
 - 🔗 [PR 3 Dossier: BlockNote RFC & Community Extension (TypeCellOS/BlockNote)](/09-PR/03-blocknote-external-sources)
 - 🔗 [Strategic Arbitrage Guide & Decision Matrix](/09-PR/04-guide-d-arbitrage-et-migration)

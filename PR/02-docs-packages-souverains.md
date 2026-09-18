@@ -15,10 +15,49 @@ This document provides the **complete, reasoned Pull Request dossier** to submit
 | Metric | Description |
 | :--- | :--- |
 | **Target Repository** | [`suitenumerique/docs`](https://github.com/suitenumerique/docs) |
-| **Suggested Title** | `feat(sources): integrate modular French sovereign sources with progressive activation (Opt-in Plug & Play)` |
+| **Suggested Commit & Title** | `✨(sources) integrate modular sovereign sources with staged rollout` |
 | **Footprint on Docs** | **Fewer than 10 lines of code across 3 files** (0 new in-tree domain files). |
-| **Package Governance** | Published under `@suitenumerique/blocknote-sources` and `django-lasuite-sources` (with option for private registry distribution if needed). |
+| **Package Governance** | Published under `@suitenumerique/blocknote-sources` and `django-lasuite-sources`. |
 | **Progressive Rollout** | **Staged activation:** Enable only priority commands initially (e.g., `/loi` and `/entreprise`), then expand progressively. |
+
+---
+
+## 📝 Ready-to-Submit GitHub PR Description (Official Template)
+
+```markdown
+## Purpose
+
+Integrate sovereign public data connectors into La Suite Docs as decoupled, lightweight packages with zero core domain pollution and staged rollout capability.
+
+## Proposal
+
+* [x] Add `django-lasuite-sources` dependency and register `lasuite_sources` in Django `INSTALLED_APPS` and URLs.
+* [x] Add `@suitenumerique/blocknote-sources` to frontend BlockNote schema and slash suggestion menu.
+* [x] Enable staged rollout of connectors per public service domain (/loi, /entreprise, /marche, etc.).
+
+## External contributions
+
+### General requirements
+
+* [x] I have read and followed the contributing guidelines
+* [x] I have read and agreed to the Code of Conduct
+* [x] I have added corresponding tests for new features or bug fixes (if applicable)
+* [x] Before submitting a PR for a new feature I made sure to contact the product manager
+
+### CI requirements
+
+* [x] I made sure that all existing tests are passing
+* [x] I have signed off my commits with `git commit --signoff` (DCO compliance)
+* [x] I have signed my commits with my SSH or GPG key (`git commit -S`)
+* [x] My commit messages follow the required format: `<gitmoji>(type) title description`
+* [x] I have added a changelog entry under `## [Unreleased]` section (if noticeable change)
+
+### AI requirements
+
+* [x] I used AI assistance to produce part or all of this contribution
+* [x] I have read, reviewed, understood and can explain the code I am submitting
+* [x] I can jump in a call or a chat to explain my work to a maintainer
+```
 
 ---
 
