@@ -6,12 +6,19 @@ test.describe('Automated Accessibility Audit (WCAG 2.1 Level AA & RGAA v4.1)', (
   }) => {
     await page.goto('/');
 
-    // 1. Ouvrir l'éditeur et déclencher le popover
+    // 1. Ouvrir l'éditeur et déclencher le popover de recherche
     const editor = page.locator('.ProseMirror, .bn-editor').first();
     await editor.click();
-    await page.keyboard.type('/loi');
 
-    const searchInput = page.getByRole('combobox');
+    const lawBtn = page.getByRole('button', { name: /loi/i }).first();
+    if (await lawBtn.isVisible()) {
+      await lawBtn.click();
+    } else {
+      await page.keyboard.type('/loi');
+      await page.keyboard.press('Enter');
+    }
+
+    const searchInput = page.getByRole('combobox', { name: 'Rechercher une source souveraine' });
     await expect(searchInput).toBeVisible();
 
     // 2. Vérifier les critères d'accessibilité du popover de recherche
