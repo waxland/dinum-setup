@@ -1,0 +1,109 @@
+---
+title: Architecture Standardisée & Inspiration /link-doc
+sidebar_label: Architecture Standardisée
+description: Conception du cycle de vie unifié des commandes slash de données externes, inspiré de l'architecture native de /link-doc (Interlinking).
+---
+
+
+Dans **La Suite Docs**, la commande `/link-doc` (`Interlinking`) représente le modèle architectural le plus mature pour l'insertion de références dynamiques au clavier. Le **Socle Technique Unifié** des commandes slash reprend et généralise ce modèle à l'ensemble des sources de données de l'État.
+
+---
+
+## 💡 Le Modèle `/link-doc` (`Interlinking`)
+
+L'implémentation de `/link-doc` dans `LaSuite/docs/src/frontend/apps/impress/.../Interlinking` s'appuie sur un composant **`createReactInlineContentSpec`** à 3 états de rendu conditionnels :
+
+<Mermaid chart={`flowchart LR
+    Start["Saisie Clavier : /link-doc ou @"] --> StateSearch["1. État Recherche (SearchPage)<br/>Popover CMDK & autocomplétion rapide"]
+    StateSearch -->|Sélection de la note cible| StateLinked["2. État Sélectionné (LinkSelected)<br/>Badge persistant synchronisé en temps réel"]
+    StateSearch -->|Annulation / Touche Échap| StateDisabled["3. État Désactivé<br/>Suppression propre du nœud dans l'éditeur"]
+`} />
+
+### Les Forces de ce Pattern
+1. **Zéro rupture de contexte :** Le champ de recherche apparaît directement là où se trouve le curseur de l'utilisateur (inline), sans ouvrir de modale pleine page intrusive.
+2. **Navigation 100% au clavier :** Flèches haut/bas pour naviguer dans les résultats, `Entrée` pour valider, `Échap` pour annuler.
+3. **Synchronisation dynamique :** Si le titre du document lié change, tous les coauteurs voient le libellé se mettre à jour instantanément sans recharger la page.
+
+---
+
+## 🌐 Généralisation : Le Cycle de Vie des Commandes Slash
+
+Le **Socle Technique Unifié** applique ce même cycle de vie à toutes les commandes de recherche externes (`/loi`, `/pappers`, `/assemblee`, `/adresse`, etc.) :
+
+<Mermaid chart={`sequenceDiagram
+    autonumber
+    actor Dev as 🧑‍💼 Agent Public
+    participant Editor as BlockNote (ProseMirror)
+    participant Search as SourceSearchPopover (QuickSearch / CMDK)
+    participant Backend as Django Proxy (/api/v1/sources)
+    participant Block as SourceBlockSpec (DSFR)
+    participant Yjs as Arbre CRDT Yjs (Y.Doc)
+
+    Dev->>Editor: Tape "/loi" ou "/pappers" + Entrée
+    Editor->>Search: Insère le bloc en état "Recherche" (Focus automatique)
+    Dev->>Search: Tape "article L111-1" ou "DINUM"
+    Search->>Backend: Requête autocomplétion asynchrone (Debounce 200ms)
+    Backend-->>Search: Retourne les 5 meilleurs résultats structurés
+    Dev->>Search: Sélectionne le résultat avec [Entrée]
+    Search->>Block: Bascule le bloc en état "Sélectionné"
+    Block->>Yjs: Sérialise les données universelles (title, badge, mode, url)
+    Yjs-->>Editor: Rendu instantané dans l'un des 3 modes (Callout, Carte, Lien)
+`} />
+
+---
+
+## 📦 Schéma de Données Universel (`SourceEntityProps`)
+
+Toutes les entités provenant d'APIs externes sont normalisées selon une interface TypeScript unique sérialisée dans l'arbre **CRDT Yjs** :
+
+```typescript
+export type SourceEntityType = 
+  | "law"          // Légifrance (Lois, Codes, Décrets)
+  | "company"      // Pappers / API Entreprise (SIREN, Dirigeants, Bilans)
+  | "parliament"   // Assemblée nationale / claire.vite (Amendements, Députés)
+  | "address"      // Base Adresse Nationale (Adresses certifiées, Coordonnées)
+  | "procurement"  // BOAMP / Marchés publics
+  | "custom";      // APIs tierces sur-mesure
+
+export interface SourceEntityProps {
+  // Identifiants & Fournisseur
+  sourceType: SourceEntityType;
+  sourceId: string;              // ex: "LEGIARTI000038814944" ou "849201928"
+  provider: string;              // ex: "piste", "pappers", "claire.vite"
+
+  // Titre & Sous-titre
+  title: string;                 // ex: "Article L. 111-1" ou "DINUM PARTNERS SAS"
+  subtitle?: string;             // ex: "Code de la commande publique" ou "62.02A - Conseil"
+
+  // Statut & Badges DSFR
+  status: string;                // ex: "VIGUEUR", "IN BONIS", "ADOPTÉ"
+  statusBadgeColor?: "info" | "success" | "warning" | "error";
+
+  // Contenu textuel / Extrait officiel
+  contentHtml?: string;          // Texte légal intégral ou dispositif de l'amendement
+  summary?: string;              // Résumé ou exposé sommaire
+
+  // Métadonnées clés (Grille 3 colonnes du Mode Carte)
+  metaField1Label?: string;      // ex: "SIREN", "NOR", "Groupe"
+  metaField1Value?: string;      // ex: "849 201 928", "PRMX1928374A", "EPR"
+  metaField2Label?: string;      // ex: "Dirigeant", "Date d'effet", "Auteur"
+  metaField2Value?: string;      // ex: "Jean Dupont", "01/04/2019", "Mme Dupont"
+  metaField3Label?: string;      // ex: "Activité", "Jurisprudence", "Sort"
+  metaField3Value?: string;      // ex: "Programmation", "Conseil d'État", "Adopté"
+
+  // Format d'affichage choisi par l'utilisateur
+  displayMode: "callout" | "card" | "link";
+
+  // Lien officiel de référence
+  url: string;                   // ex: "https://www.legifrance.gouv.fr/..."
+  lastSyncAt?: string;           // Timestamp ISO du dernier rafraîchissement
+}
+```
+
+---
+
+## 🎯 Bénéfices pour l'Écosystème La Suite
+
+- **Uniformité graphique totale :** Aucun composant tiers disparate n'est ajouté ; chaque bloc adopte exactement les mêmes tokens Marianne et les mêmes contrastes DSFR.
+- **Maintenance simplifiée :** Une amélioration d'accessibilité (contraste, focus trap, ARIA) apportée au composant `SourceBlock` profite instantanément à **toutes** les commandes slash.
+- **Rétrocompatibilité garantie :** Les documents créés restent consultables même en mode hors-ligne ou sur des instances sans accès aux API sources.

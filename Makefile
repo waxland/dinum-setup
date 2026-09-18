@@ -182,6 +182,22 @@ docs-build: generate-docs-nav
 docs-preview:
 	@npm run docs:preview
 
+.PHONY: docs-fr-dev
+docs-fr-dev: generate-docs-nav
+	@npm run docs:fr:dev
+
+.PHONY: docs-fr-build
+docs-fr-build: generate-docs-nav
+	@npm run docs:fr:build
+
+.PHONY: docs-en-dev
+docs-en-dev: generate-docs-nav
+	@npm run docs:en:dev
+
+.PHONY: docs-en-build
+docs-en-build: generate-docs-nav
+	@npm run docs:en:build
+
 .PHONY: demo-dev
 demo-dev:
 	@npm run demo:dev
@@ -211,7 +227,7 @@ packages-test:
 	@echo "🧪 Execution des tests unitaires TypeScript (Vitest)..."
 	@npm run packages:test
 	@echo "\n🧪 Execution des tests unitaires Django Backend (Pytest)..."
-	@cd packages/django-lasuite-sources && PYTHONPATH=. pytest
+	@cd packages/django-lasuite-sources && if [ -f .venv/bin/pytest ]; then PYTHONPATH=. .venv/bin/pytest; else PYTHONPATH=. pytest; fi
 
 .PHONY: packages-build
 packages-build:

@@ -1,0 +1,84 @@
+---
+title: Commande Slash /entreprise — Fiches Entreprises & Registre Légal
+sidebar_label: Vue d'Ensemble
+description: "Hub de la commande /entreprise (alias /pappers, /siren) : consultation de fiches d'entreprises, dirigeants, bilans et benchmark Pappers vs API Entreprise."
+---
+
+
+La commande **`/entreprise`** (alias **`/pappers`**, **`/siren`**, **`/siret`**, **`/societe`**, **`/kbis`**) permet aux acheteurs publics, juristes marchés, instructeurs de subventions et agents territoriaux de rechercher et d'insérer des fiches d'entreprises certifiées directement dans **La Suite Docs**.
+
+Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le cadrage métier de l'achat et de l'instruction, la veille sur les APIs entreprises et le raccordement au socle commun.
+
+---
+
+## 🎯 Organisation du Dossier `/entreprise`
+
+<FeatureGrid cols={3}>
+  <FeatureCard
+    icon="🏢"
+    title="Pôle Métier & Cas d'Usage"
+    description="Immatriculation légale (SIREN, SIRET, NAF, RNE/INPI), vérification des signataires et marchés publics."
+    href="/08-slash/03-entreprise/01-metier-entreprise/01-fondations-et-cadre"
+    badge="Métier"
+  />
+  <FeatureCard
+    icon="📡"
+    title="Pôle API & Veille Technique"
+    description="Benchmark comparatif Pappers vs API Entreprise (DINUM) vs RNE (INPI), mode Mock et contrats de données."
+    href="/08-slash/03-entreprise/02-api-entreprise/01-benchmark-des-apis"
+    badge="API"
+  />
+  <FeatureCard
+    icon="💻"
+    title="Pôle Implémentation Socle"
+    description="CompanySourceProvider Django, cache Redis 24h, alertes procédures collectives et rendu DSFR."
+    href="/08-slash/03-entreprise/03-implementation-entreprise/01-provider-django"
+    badge="Code & Socle"
+  />
+</FeatureGrid>
+
+---
+
+## 🏗️ Architecture Globale de la Commande `/entreprise`
+
+<Mermaid chart={`flowchart TD
+    subgraph Client["Poste Client (Acheteur / Instructeur)"]
+        Slash["Saisie /entreprise ou /siren au clavier"] --> SearchPopover["Popover Inline de Recherche (QuickSearch DSFR)"]
+        SearchPopover --> BlockSpec["Composant Universel SourceBlockSpec (React 19)"]
+        BlockSpec --> YDoc["Arbre CRDT Yjs (Y.Doc)"]
+    end
+
+    subgraph Backend["Infrastructure La Suite Docs"]
+        DjangoProxy["API Django 5 (/api/v1/sources/search?type=company)"]
+        RedisCache[("Cache Redis 7 (TTL 24h)")]
+        ProviderRegistry["Provider Registry (CompanySourceProvider)"]
+        YjsServer["Serveur WebSockets Hocuspocus"]
+    end
+
+    subgraph Sources["Écosystème Entreprises Souverain"]
+        Pappers["API Pappers Entreprises (api.pappers.fr)"]
+        ApiEntreprise["API Entreprise DINUM (api.gouv.fr)"]
+        RNE["Registre National des Entreprises (INPI / RNE)"]
+    end
+
+    SearchPopover -->|"1. Recherche par SIREN ou Dénomination"| DjangoProxy
+    DjangoProxy -->|2. Lecture Cache Redis| RedisCache
+    RedisCache -.->|Miss| DjangoProxy
+    DjangoProxy --> ProviderRegistry
+    ProviderRegistry -->|"3. Requête API sécurisée"| Pappers
+    ProviderRegistry -.->|"Option Souveraine Régalienne"| ApiEntreprise
+    Pappers <--> RNE
+    Pappers -.->|4. Données structurées certifiées| DjangoProxy
+    DjangoProxy -.->|5. DTO normalisé SourceSearchResult| SearchPopover
+    SearchPopover -->|"6. Insertion du bloc"| YDoc
+    YDoc <==>|7. Synchronisation Temps Réel| YjsServer
+`} />
+
+---
+
+## 🧩 Formats d'Affichage Disponibles
+
+Conformément au **[Socle Technique Unifié](/08-slash/00-socle-technique)** :
+- 📢 **Format Callout** : Fiche complète avec synthèse légale, extrait Kbis et alerte de solvabilité.
+- 🗂️ **Format Carte** : Encart avec grille à 3 colonnes : SIREN • Activité NAF • Dirigeant légal.
+- 🔗 **Format Lien** : Mention inline `🏢 DINUM PARTNERS SAS (SIREN : 849 201 928)`.

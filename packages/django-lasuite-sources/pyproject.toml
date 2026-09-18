@@ -43,6 +43,12 @@ dependencies = [
     "requests>=2.31.0",
 ]
 
+[project.urls]
+Homepage = "https://github.com/waxland/dinum-setup/tree/main/packages/django-lasuite-sources"
+Documentation = "https://github.com/waxland/dinum-setup"
+Repository = "https://github.com/waxland/dinum-setup.git"
+Issues = "https://github.com/waxland/dinum-setup/issues"
+
 [project.optional-dependencies]
 celery = [
     "celery>=5.3.0",

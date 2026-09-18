@@ -1,0 +1,40 @@
+---
+title: "Slasher Provider SDK"
+sidebar_label: "SDK Overview"
+description: Zero-dependency, ultra-lightweight (< 5 kB) TypeScript SDK to declare and validate custom external data providers.
+---
+
+
+# 🛠️ Slasher Provider SDK (`@slasher/sdk`)
+
+The SDK provides immutable schema validation and TypeScript DTOs for declaring custom slash command data providers.
+
+---
+
+## ⚡ Quick Example: Defining a Custom Provider
+
+```typescript
+import { defineSourceProvider } from "@slasher/sdk";
+
+export const githubIssuesSlasher = defineSourceProvider({
+  name: "GitHub Issues",
+  slashCommand: "issue",
+  slashAliases: ["gh", "bug"],
+  icon: "🐙",
+  description: "Insert verified GitHub issues directly into documents",
+  suggest: async (query) => {
+    const res = await fetch(`https://api.github.com/search/issues?q=${encodeURIComponent(query)}`);
+    const data = await res.json();
+    return data.items.map((item: any) => ({
+      id: String(item.id),
+      title: `#${item.number} ${item.title}`,
+      subtitle: item.user.login,
+      type: "custom",
+    }));
+  },
+  search: async (query) => {
+    // Return full ExternalSourceEntity array
+    return [];
+  },
+});
+```

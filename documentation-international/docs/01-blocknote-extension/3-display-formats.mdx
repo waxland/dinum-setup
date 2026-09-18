@@ -1,0 +1,29 @@
+---
+title: "3 Switchable Display Formats"
+sidebar_label: "3 Display Formats"
+description: Specifications and rendering logic for Callout quotes, 3-column metadata Cards, and Inline Mention badges.
+---
+
+
+
+# 🧩 3 Switchable Display Formats
+
+Every Slasher block can be dynamically switched in place between **3 distinct visual formats** to fit any editorial context:
+
+```mermaid
+flowchart LR
+    Block["SlasherBlock"] --> Callout["📢 Callout (Full Quote + Colored Border)"]
+    Block --> Card["🗂️ Card (3-Column Structured Grid)"]
+    Block --> Link["🔗 Inline Mention (Compact Pill Badge)"]
+```
+
+---
+
+## 1. 📢 Callout Format (`displayMode: 'callout'`)
+Ideal for legal citations, official regulations, or public notices where the full excerpt must be prominent. Features a colored institutional border (e.g., `#000091` for Marianne, `#AA151B` for Spain).
+
+## 2. 🗂️ Card Format (`displayMode: 'card'`)
+Ideal for companies, procurement notices, and cadastral parcels where structured key-value metadata fields are highlighted in a clean 3-column layout.
+
+## 3. 🔗 Inline Mention Format (`displayMode: 'link'`)
+Ideal for dense paragraphs where an unobtrusive, verifiable badge is embedded directly in the text flow.

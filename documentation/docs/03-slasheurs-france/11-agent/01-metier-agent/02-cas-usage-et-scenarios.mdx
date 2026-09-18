@@ -1,0 +1,42 @@
+---
+title: "Scénarios Métier & Cas d'Usage de la Commande /agent"
+sidebar_label: "02. Cas d'Usage & Scénarios"
+description: Parcours d'agents publics rédigeant des courriers, notes interministérielles et avis d'orientation usagers.
+---
+
+
+---
+
+## 🎯 1. Parcours Types
+
+### 📬 Scénario A : Rédaction d'un Courrier Administratif
+- **Contexte :** Un agent de préfecture rédige une notification d'orientation à destination d'un usager.
+- **Action :** Saisie de `/agent CPAM Rennes` ou `/service-public Tribunal Administratif Nantes`.
+- **Résultat :** Insertion immédiate de l'encadré de contact officiel avec adresse postale exacte, numéro de téléphone et horaires d'ouverture.
+
+### 🏛️ Scénario B : Note Interministérielle
+- **Contexte :** Un chef de projet interministériel référence le service responsable de la conformité RGPD.
+- **Action :** Saisie de `/ministere DINUM pôle sécurité`.
+- **Résultat :** Insertion d'une pastille lien institutionnelle pointant vers le service officiel.
+
+---
+
+## 🔄 2. Diagramme Séquentiel
+
+<Mermaid chart={`sequenceDiagram
+    actor Agent as 👤 Rédacteur
+    participant Editor as 📝 Éditeur Docs
+    participant Popover as 🔍 Popover /agent
+    participant Django as 🐍 django-lasuite-sources
+    participant DILA as 📡 API Annuaire DILA
+
+    Agent->>Editor: Saisie "/agent Préfecture Ille-et-Vilaine"
+    Editor->>Popover: Déclenchement recherche
+    Popover->>Django: GET /api/v1.0/sources/search/?type=agent&q=...
+    Django->>DILA: Recherche textuelle REST
+    DILA-->>Django: Fiche organisme certifiée
+    Django-->>Popover: DTO SourceSearchResult normalisé
+    Popover-->>Agent: Suggestion avec catégorie et adresse
+    Agent->>Popover: Sélection et insertion
+    Popover->>Editor: Rendu SourceBlock (Card ou Callout)
+`} />

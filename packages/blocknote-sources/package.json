@@ -22,7 +22,15 @@
   ],
   "author": "waxland",
   "license": "MIT",
-  "repository": "https://github.com/suitenumerique/docs",
+  "homepage": "https://github.com/waxland/dinum-setup/tree/main/packages/blocknote-sources",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/waxland/dinum-setup.git",
+    "directory": "packages/blocknote-sources"
+  },
+  "bugs": {
+    "url": "https://github.com/waxland/dinum-setup/issues"
+  },
   "scripts": {
     "build": "tsup",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",

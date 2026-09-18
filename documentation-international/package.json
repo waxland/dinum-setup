@@ -1,0 +1,42 @@
+{
+  "name": "@dinum/documentation-international",
+  "version": "1.0.0",
+  "description": "International documentation portal and universal specification for Slasher BlockNote connected data standard",
+  "private": true,
+  "type": "module",
+  "author": "waxland",
+  "license": "MIT",
+  "homepage": "https://github.com/waxland/dinum-setup/tree/main/documentation-international",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/waxland/dinum-setup.git",
+    "directory": "documentation-international"
+  },
+  "scripts": {
+    "docs:nav": "node scripts/generate-docs-navigation.mjs",
+    "dev": "node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku dev --host 0.0.0.0 --port 3001",
+    "build": "node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku build && npx pagefind --site dist --output-path dist/pagefind",
+    "preview": "ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku preview --host 0.0.0.0 --port 3001",
+    "search": "npx pagefind --site dist --output-path dist/pagefind",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@blocknote/core": "^0.54.2",
+    "@blocknote/mantine": "^0.54.2",
+    "@blocknote/react": "^0.54.2",
+    "@codegouvfr/react-dsfr": "^1.35.0",
+    "@suitenumerique/blocknote-sources": "*",
+    "@suitenumerique/slash-sources-sdk": "*",
+    "@types/node": "^22.20.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "mermaid": "^11.17.2",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "zudoku": "^0.86.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  }
+}

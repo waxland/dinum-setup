@@ -1,0 +1,40 @@
+---
+title: "Spécifications Techniques de l'API BOAMP"
+sidebar_label: "02. Spécifications Techniques"
+description: Schémas JSON, endpoints REST OpenAPI et modèles de données de l'API BOAMP DILA.
+---
+
+
+---
+
+## 📡 1. Endpoints de Recherche BOAMP
+
+### `GET /api/v1/boamp/avis/search`
+
+#### Paramètres de Requête :
+- `q` : Chaîne de recherche (mots-clés, numéro AAPC).
+- `famille` : `FPA` (Formulaire Standard), `MAPA` (Procédure Adaptée).
+- `limit` : Nombre de résultats (défaut : 10).
+
+#### Exemple de Réponse JSON :
+```json
+{
+  "total": 1,
+  "results": [
+    {
+      "id": "26-104892",
+      "famille": "FPA",
+      "nature": "SERVICES",
+      "acheteur": {
+        "nom": "Direction Interministérielle du Numérique (DINUM)",
+        "siret": "13002526500013",
+        "ville": "Paris"
+      },
+      "objet": "Prestations d'expertise et d'ingénierie logicielle pour La Suite Numérique",
+      "date_publication": "2026-09-10",
+      "date_limite_reponse": "2026-10-15T12:00:00Z",
+      "url_dce": "https://www.marches-publics.gouv.fr/?page=entreprise.EntrepriseAdvancedSearch&AllCons&refConsultation=104892"
+    }
+  ]
+}
+```

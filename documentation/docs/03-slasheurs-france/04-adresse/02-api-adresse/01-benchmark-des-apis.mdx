@@ -1,0 +1,48 @@
+---
+title: Benchmark des APIs Géographiques — BAN vs Addok Local vs IGN vs OSM
+sidebar_label: Benchmark des APIs
+description: "Comparatif technique entre l'API Adresse publique d'Etalab, l'instance Addok auto-hébergée, la Géoplateforme IGN et OpenStreetMap."
+---
+
+
+Pour intégrer le géocodage et la recherche d'adresses postales dans La Suite Docs, plusieurs options techniques souveraines et ouvertes sont disponibles.
+
+---
+
+## 📊 Matrice Comparative des Solutions de Géocodage
+
+| Critère | 1. API Adresse BAN (`api-adresse.data.gouv.fr`) | 2. Moteur Addok Local (`etalab/addok`) | 3. Géoplateforme IGN | 4. OpenStreetMap / Nominatim |
+| :--- | :--- | :--- | :--- | :--- |
+| **Périmètre** | 50+ millions d'adresses certifiées France | Base BAN départementale ou nationale | Données géodésiques, cadastre, altimétrie | Cartographie mondiale collaborative |
+| **Certification Légale** | **Officielle de l'État (Loi 3DS)** | **Officielle de l'État (Loi 3DS)** | Officielle de l'IGN | Communautaire libre |
+| **Temps de Réponse** | ~30 à 60 ms | **~5 à 15 ms (Local)** | ~80 à 150 ms | ~200 à 500 ms |
+| **Mode Hors-Ligne** | Non (Nécessite Internet) | **100% Hors-Ligne / Intranet** | Non | Possible mais lourd |
+| **Clé d'API** | **Aucune clé requise** | Aucune clé requise | Clé Géoplateforme IGN | Soumis à politique d'usage |
+| **Format Données** | GeoJSON RFC 7946 | GeoJSON RFC 7946 | GeoJSON / WFS / OGC | JSON / XML |
+
+---
+
+## 🏗️ Architecture & Stratégie Multi-Environnements
+
+<Mermaid chart={`flowchart TD
+    subgraph DocsBack["Backend Docs (AddressSourceProvider)"]
+        CheckConfig{"Configuration BAN_API_BASE_URL"}
+    end
+
+    subgraph Solutions["Moteurs de Géocodage"]
+        PublicBAN["1. API Adresse Nationale (api-adresse.data.gouv.fr)<br/>Par défaut en Dev et Production standard"]
+        LocalAddok["2. Container Docker Addok Local (etalab/addok)<br/>Pour les réseaux ministériels isolés et zones blanches"]
+        IGNPlatform["3. Géoplateforme IGN (Enrichissement Cadastre)"]
+    end
+
+    CheckConfig -->|Par défaut| PublicBAN
+    CheckConfig -->|BAN_LOCAL_ENABLED=true| LocalAddok
+    PublicBAN -.-> IGNPlatform
+`} />
+
+---
+
+## 🎯 Recommandation pour La Suite Docs
+
+1. **Usage Standard :** Utilisation de l'API publique ouverte `https://api-adresse.data.gouv.fr/search` (0 configuration requise, activé d'office).
+2. **Usage Haute Sécurité / Intranet :** Possibilité d'activer l'image Docker `etalab/addok` dans `compose.yml` pour un géocodage instantané en réseau fermé sans sortie Internet.

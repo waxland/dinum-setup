@@ -1,8 +1,17 @@
 {
   "name": "@dinum/demo-sources",
   "version": "1.0.0",
+  "description": "Interactive web demo playground for BlockNote and sovereign connected sources (DINUM / La Suite)",
   "private": true,
   "type": "module",
+  "author": "waxland",
+  "license": "MIT",
+  "homepage": "https://github.com/waxland/dinum-setup/tree/main/demo",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/waxland/dinum-setup.git",
+    "directory": "demo"
+  },
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5173",
     "build": "tsc && vite build",

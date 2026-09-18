@@ -35,16 +35,16 @@ import "./zudoku.theme.css";
 
 const config: ZudokuConfig = {
   metadata: {
-    title: "%s | Slasher — Universal BlockNote Standard & Sovereign Connectors",
+    title: "%s | La Suite Numérique — Onboarding & Socle Souverain DINUM",
     description:
-      "Documentation portal, technical guides, tutorials, and specifications for Slasher and La Suite sovereign connected sources.",
+      "Portail de documentation d'ingénierie, onboarding Hackathon 42, architecture La Suite et spécifications des connecteurs souverains français.",
     favicon: "/favicon.ico",
   },
   site: {
-    title: "Slasher — La Suite dev setup",
+    title: "La Suite Numérique — Hackathon & Socle Souverain",
     banner: {
       message:
-        "📖 Slasher: Universal BlockNote Standard & Sovereign Data Connectors (DINUM)",
+        "📖 La Suite Numérique : Portail d'Onboarding & Socle des Sources Souveraines (DINUM)",
       color: "info",
       dismissible: true,
     },
@@ -53,58 +53,19 @@ const config: ZudokuConfig = {
         light: "/lasuite.svg",
         dark: "/lasuite-dark.svg",
       },
-      alt: "Slasher — La Suite Numérique",
+      alt: "La Suite Numérique — DINUM",
       width: 145,
-      href: "/fr",
+      href: "/",
     },
     showPoweredBy: false,
   },
   header: {
     navigation: [
       {
-        label: "🇫🇷 Français",
-        to: "/fr",
-        icon: "flag",
-      },
-      {
-        label: "🇬🇧 English",
-        to: "/en",
-        icon: "globe",
-      },
-      {
-        label: "⚡ Slasheurs France",
-        to: "/fr/03-slasheurs-france",
-        icon: "zap",
-      },
-      {
-        label: "🏛️ La Suite",
-        to: "/fr/02-la-suite",
-        icon: "boxes",
-      },
-      {
-        label: "🎨 Figma Docs",
-        to: "https://www.figma.com/design/qdCWR4tTUr7vQSecEjCyqO/Docs?node-id=9722-19469&p=f&t=r1O6Np4JgTbRWrCR-0",
-        target: "_blank",
-        icon: "file-text",
-      },
-      {
-        label: "🎨 Figma UI Kit",
-        to: "https://www.figma.com/community/file/1562860630562131728/lasuite-ui-kit",
-        target: "_blank",
-        icon: "layout",
-      },
-
-      {
         label: "GitHub dinum-setup",
         to: "https://github.com/waxland/dinum-setup",
         target: "_blank",
         icon: "folder-git-2",
-      },
-      {
-        label: "GitHub La Suite",
-        to: "https://github.com/suitenumerique",
-        target: "_blank",
-        icon: "git-fork",
       },
     ],
   },

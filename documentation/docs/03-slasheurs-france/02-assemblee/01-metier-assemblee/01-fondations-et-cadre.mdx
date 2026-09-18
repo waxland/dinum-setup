@@ -1,0 +1,58 @@
+---
+title: Fonctionnement du Travail Parlementaire & Navette Législative
+sidebar_label: Navette & Procédure
+description: "Cycle de vie d'un projet de loi (dépôt, commission, séance, CMP), typologie des amendements et organisation des groupes politiques."
+---
+
+
+L'adoption d'un texte de loi en France suit une procédure parlementaire codifiée par la Constitution de 1958 et les règlements de l'Assemblée nationale et du Sénat.
+
+---
+
+## 🏛️ Le Cycle de la Navette Parlementaire
+
+<Mermaid chart={`flowchart LR
+    Depot["1. Dépôt (Projet ou Proposition)"] --> Comm["2. Examen en Commission"]
+    Comm --> Seance["3. Débat & Vote en Séance Publique"]
+    Seance --> Navette["4. Transmission à l'autre Chambre (Navette)"]
+    Navette --> CMP["5. Commission Mixte Paritaire (CMP)"]
+    CMP --> Promulgation["6. Promulgation & Parution au JORF"]
+`} />
+
+### Projet de Loi (PJL) vs Proposition de Loi (PPL)
+- **Projet de Loi (PJL) :** Émane du Gouvernement (Premier ministre). Il est obligatoirement soumis pour avis au **Conseil d'État**, adopté en **Conseil des ministres**, puis déposé sur le bureau de l'une des deux assemblées.
+- **Proposition de Loi (PPL) :** Émane d'un ou plusieurs parlementaires (députés ou sénateurs).
+
+---
+
+## 🛡️ Les Filtres de Recevabilité Constitutionnelle
+
+Tous les amendements déposés ne sont pas soumis au débat dans l'hémicycle. Ils sont filtrés en amont selon des règles constitutionnelles strictes :
+
+1. **L'Article 40 de la Constitution (Irrecevabilité Financière) :**
+   Les amendements formulés par les parlementaires ne sont pas recevables si leur adoption a pour conséquence soit une **diminution des ressources publiques**, soit la **création ou l'aggravation d'une charge publique** (contrôlé par le Président de la Commission des Finances).
+2. **L'Article 45 de la Constitution (Cavaliers Législatifs) :**
+   Tout amendement doit présenter un **lien direct ou indirect avec le texte en discussion** dès la première lecture. À défaut, il est déclaré irrecevable comme « cavalier législatif ».
+
+---
+
+## 📜 Typologie & Sort des Amendements
+
+Un amendement est une modification proposée au texte en discussion (suppression, substitution ou ajout d'un article).
+
+### Les différents sorts d'un amendement :
+- **`Adopté`** : Voté à la majorité des suffrages exprimés dans l'hémicycle ; intégré au texte.
+- **`Rejeté`** : Repoussé lors du vote.
+- **`Retiré`** : Retiré par son auteur avant le vote (souvent après engagement ou explication du ministre).
+- **`Tombé`** : Devenu sans objet suite à l'adoption d'un amendement antérieur incompatible (ex: suppression de l'article).
+- **`Non soutenu`** : L'auteur n'était pas présent en séance pour le défendre.
+
+---
+
+## 👥 Avis du Gouvernement & Rôle du Cabinet
+
+Sur chaque amendement déposé, le ministre en charge du texte doit exprimer la position officielle du Gouvernement :
+- **`Favorable`** : Le Gouvernement soutient l'amendement.
+- **`Défavorable`** : Le Gouvernement s'oppose à l'amendement (argumentation technique ou budgétaire).
+- **`Sagesse`** : Le Gouvernement s'en remet à l'appréciation souveraine de l'Assemblée.
+- **`Demande de retrait`** : Invitation à retravailler la proposition d'ici la lecture au Sénat.

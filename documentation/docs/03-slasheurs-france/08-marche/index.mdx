@@ -1,0 +1,54 @@
+---
+title: Commande Slash /marche — Marchés Publics & BOAMP
+sidebar_label: 08. Marchés Publics (/marche)
+description: "Hub complet de la commande /marche : avis d'appels publics à la concurrence (BOAMP), critères de sélection, montants estimés et intégration dans l'éditeur."
+---
+
+
+La commande **`/marche`** (alias **`/boamp`**, **`/achat`**, **`/dce`**, **`/dae`**) permet aux acheteurs publics, juristes de la commande publique et directeurs de projets d'accéder aux **Avis d'Appels Publics à la Concurrence (AAPC)** certifiés par le **BOAMP (DILA)** et de les insérer dans leurs rapports de présentation, DCE et notes de cadrage.
+
+---
+
+## 🎯 Problématique Métier & Cas d'Usage
+
+Lors de la préparation d'un achat public ou de la rédaction d'un rapport de choix des offres, les acheteurs doivent obligatoirement citer :
+- Le **numéro d'avis officiel (AAPC)** publié au BOAMP ou au JOUE.
+- La **procédure de passation** (MAPA, Appel d'offres ouvert/restreint, Dialogue compétitif).
+- La **date limite de remise des plis** et le code CPV principal.
+- La pondération des **critères d'attribution** (Prix, Valeur technique, Critères RSE / Environnementaux).
+
+---
+
+## 🏗️ Architecture du Connecteur `/marche`
+
+<Mermaid chart={`flowchart TD
+    subgraph Client["Poste Rédacteur (Navigateur)"]
+        Slash["Saisie /marche + mots-clés"] --> Popover["SourceSearchPopover (cmdk)"]
+        Popover --> Block["SourceBlock (Format Carte / Callout)"]
+    end
+
+    subgraph Backend["Backend Django 5"]
+        Proxy["/api/v1.0/sources/search/?type=procurement"]
+        Cache[("Redis Cache TTL 24h")]
+        Registry["SourceProviderRegistry (ProcurementSourceProvider)"]
+    end
+
+    subgraph Source["DILA / BOAMP"]
+        BOAMPAPI["API BOAMP (data.gouv.fr / DILA)"]
+    end
+
+    Slash --> Popover
+    Popover --> Proxy --> Cache
+    Cache -.->|Miss| Registry
+    Registry --> BOAMPAPI
+    BOAMPAPI -.-> Registry
+    Registry --> Block
+`} />
+
+---
+
+## 🧩 Formats de Rendu (Design System Cunningham)
+
+1. **🗂️ Format Carte (Card) :** Affiche le pouvoir adjudicateur, la procédure, le code AAPC, l'échéance et le résumé.
+2. **📢 Format Encadré (Callout) :** Présente l'extrait de l'objet du marché avec bordure bleue Marianne (`#000091`) et lien vers le profil d'acheteur.
+3. **🔗 Format Lien (Link) :** Pastille inline cliquable dans la phrase `🛍️ Marché n° 26-042819 (Cloud Souverain)`.

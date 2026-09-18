@@ -1,0 +1,145 @@
+---
+title: Commandes Slash (/)
+sidebar_label: Vue d'Ensemble
+description: Vue d'ensemble, architecture d'extension et catalogue des commandes slash souveraines pour l'éditeur collaboratif La Suite Docs.
+---
+
+
+Les **commandes Slash (`/`)** constituent le mécanisme central d'interaction, de productivité et d'extension dans l'éditeur collaboratif **La Suite Docs**. En saisissant un simple caractère `/` au début d'une ligne ou au fil de la frappe, l'agent public accède instantanément à une palette d'outils souverains, de données certifiées de l'État et de composants structurés.
+
+---
+
+## 🎯 Pourquoi des Commandes Slash dans La Suite ?
+
+Dans les traitements de texte traditionnels, l'insertion de contenus juridiques, administratifs ou de données d'entreprises impose de quitter son document, d'ouvrir de multiples onglets et de procéder à des copier-coller manuels générateurs d'erreurs et vite obsolètes.
+
+L'écosystème de commandes slash de **La Suite Docs** vise à :
+
+1. **Accélérer la rédaction administrative :** Insérer des textes de lois certifiés, des fiches entreprises ou des salons de visio sans quitter le clavier.
+2. **Connecter les sources de données souveraines :** Dialoguer directement avec les API officielles de l'État (**Légifrance / DILA**, **PISTE**, **Pappers / API Entreprise**, **Assemblée Nationale / claire.vite**).
+3. **Garantir l'accessibilité et la conformité :** Chaque bloc généré respecte nativement le **Design System de l'État (DSFR)** et les critères **RGAA v4.1 (Niveau AA)**.
+4. **Maintenir la collaboration synchrone :** Tous les blocs personnalisés s'appuient sur l'arbre **CRDT Yjs**, assurant une réplication instantanée et sans conflit entre coauteurs.
+
+---
+
+## 🏗️ Architecture Globale des Commandes Slash
+
+<Mermaid chart={`flowchart TD
+    User["🧑‍💼 Agent Public (Clavier : /)"] --> Menu["Menu Contextuel BlockNote (TipTap / ProseMirror)"]
+    Menu --> Choice{"Sélection de la commande"}
+    
+    Choice -->|/loi| ModalLoi["Modal de Recherche Légifrance / DILA (PISTE)"]
+    Choice -->|/pappers| ModalPappers["Modal Entreprises & SIREN (API Pappers)"]
+    Choice -->|/assemblee| ModalAN["Modal Travail Parlementaire (claire.vite)"]
+    Choice -->|/meet| ApiMeet["Création Salon Visioconférence La Suite Meet"]
+    Choice -->|/decision| BlockDecision["Bloc Arbitrage & Décompte de Vote"]
+
+    ModalLoi --> CRDT["Arbre CRDT Yjs (Y.Doc / Custom Blocks)"]
+    ModalPappers --> CRDT
+    ModalAN --> CRDT
+    ApiMeet --> CRDT
+    BlockDecision --> CRDT
+
+    CRDT --> WS["Serveur WebSockets Hocuspocus / Yjs"]
+    WS --> Peers["Tous les agents connectés au document"]
+`} />
+
+---
+
+## 📚 Catalogue des Commandes & Socle Technique
+
+<FeatureGrid cols={3}>
+  <FeatureCard
+    icon="🧩"
+    title="Socle Technique Unifié"
+    description="Architecture standardisée, composant CustomBlock unique aux 3 modes DSFR (Callout, Carte, Lien) et proxy Django."
+    href="/08-slash/00-socle-technique"
+    badge="Architecture & Core"
+  />
+  <FeatureCard
+    icon="⚖️"
+    title="Commande /loi"
+    description="Recherche, consultation et insertion d'articles de codes, lois, décrets et jurisprudence Légifrance certifiés."
+    href="/08-slash/01-loi"
+    badge="Focus Juridique"
+  />
+  <FeatureCard
+    icon="🏛️"
+    title="Commande /assemblee"
+    description="Suivi des projets de loi, amendements en direct, fiches députés et votes de l'Assemblée (claire.vite)."
+    href="/08-slash/02-assemblee"
+    badge="Nouveau • Parlement"
+  />
+  <FeatureCard
+    icon="🏢"
+    title="Commande /entreprise"
+    description="Fiches d'entreprises certifiées, SIREN/SIRET, dirigeants légaux, bilans financiers (Pappers / API Entreprise)."
+    href="/08-slash/03-entreprise"
+    badge="Nouveau • Marchés"
+  />
+  <FeatureCard
+    icon="📍"
+    title="Commande /adresse"
+    description="Recherche et insertion d'adresses postales certifiées par la Base Adresse Nationale (BAN / IGN)."
+    href="/08-slash/04-adresse"
+    badge="Nouveau • BAN"
+  />
+  <FeatureCard
+    icon="🧠"
+    title="Commande /albert"
+    description="Recherche sémantique en langage naturel et RAG factuel sourcé sur les corpus de l'État (DINUM / Etalab)."
+    href="/08-slash/05-albert"
+    badge="IA Souveraine"
+  />
+  <FeatureCard
+    icon="�️"
+    title="Commande /marche"
+    description="Avis d'appels publics à la concurrence (AAPC) certifiés par le BOAMP et critères d'attribution."
+    href="/08-slash/08-marche"
+    badge="Marchés & Achat"
+  />
+  <FeatureCard
+    icon="💶"
+    title="Commande /subvention"
+    description="Dispositifs d'aides financières et subventions aux collectivités (Fonds Vert, DETR, DSIL, ANCT)."
+    href="/08-slash/09-subvention"
+    badge="Finances & ANCT"
+  />
+  <FeatureCard
+    icon="📊"
+    title="Commande /stats"
+    description="Indicateurs territoriaux et chiffres clés démographiques officiels certifiés par l'INSEE."
+    href="/08-slash/10-stats"
+    badge="Données INSEE"
+  />
+  <FeatureCard
+    icon="�📦"
+    title="SDK Développeur"
+    description="Package officiel @suitenumerique/slash-sources-sdk pour connecter de nouvelles sources ministérielles en < 15 min."
+    href="/08-slash/06-sdk-developpeur"
+    badge="Écosystème & SDK"
+  />
+  <FeatureCard
+    icon="📹"
+    title="Commande /meet"
+    description="Génération instantanée d'un lien de salon sécurisé La Suite Meet directement dans le document."
+    href="/03-projets/02-communication-et-echange/meet"
+    badge="Communication"
+  />
+</FeatureGrid>
+
+---
+
+## 💡 Explorer les Idées & Commandes Futures
+
+Pour découvrir les 10 pistes de commandes slash prospectives (marchés publics `/marche`, subventions `/subvention`, annuaire `/agent`, cadastre `/cadastre`, statistiques locales `/insee`, etc.) :
+
+👉 **[Consulter le document d'exploration des propositions (`proposition.md`)](/08-slash/05-proposition)**
+
+---
+
+## 🗺️ Roadmap & Tableau Kanban Interactif
+
+Pour suivre l'état d'avancement des commandes, les priorités d'implémentation et les jalons de livraison :
+
+👉 **[Accéder à la Roadmap et au Tableau Kanban des Commandes](/08-slash/07-roadmap)**

@@ -1,0 +1,95 @@
+---
+title: Portail La Suite dev setup (42 x DINUM)
+sidebar_label: Accueil
+description: Portail de documentation d'ingénierie, onboarding et boîte à outils pour La Suite Numérique et le Socle des Sources Souveraines (/slash).
+---
+
+
+
+
+
+
+Bienvenue sur le portail d'ingénierie et d'orchestration locale de **La Suite numérique** de l'État français (DINUM) !
+
+Ce dépôt a été initié dans le cadre de la collaboration **42 x DINUM** à l'occasion du hackathon organisé à **Forty 2 (Île d'Oléron)** du 14 au 18 septembre 2026. Il centralise l'architecture, les packages souverains, l'onboarding accéléré et la spécification des **Commandes Slash (`/slash`)**.
+
+<DocHeaderSummary
+  readingTime="8 min"
+  level="Débutant"
+  roles={["Frontend", "Backend", "DevOps", "Produit / Métier"]}
+  prerequisites={["Git", "Docker", "Node.js 22+", "Python 3.12+"]}
+  status="DPGA Certified"
+  statusColor="success"
+  takeaway="Portail unique d'ingénierie regroupant le socle souverain Slasher, les packages distribuables et l'onboarding complet pour La Suite numérique."
+/>
+
+<OnboardingTracks />
+
+🔗 **Ressources Rapides :** [Challenge 42 x DINUM](/01-onboarding/00-contexte/challenge-42) • [📅 Planning & Agenda](/01-onboarding/00-contexte/planning) • [Portail La Suite](https://lasuite.numerique.gouv.fr/) • [GitHub suitenumerique](https://github.com/suitenumerique) • [DINUM](https://www.numerique.gouv.fr/) • [42](https://42.fr/)
+
+---
+
+## 🎨 Références Officielles du Design System & Maquettes Figma
+
+Pour assurer une cohérence visuelle parfaite entre les applications de La Suite et respecter la charte graphique de l'État :
+
+<FeatureGrid cols={3}>
+  <FeatureCard
+    icon="📄"
+    title="Figma La Suite Docs"
+    badge="Maquette Officielle"
+    description="Maquettes Figma de référence de l'éditeur collaboratif Docs (Impress), vues de documents et CustomBlocks."
+    href="https://www.figma.com/design/qdCWR4tTUr7vQSecEjCyqO/Docs?node-id=9722-19469&p=f&t=r1O6Np4JgTbRWrCR-0"
+  />
+  <FeatureCard
+    icon="🎨"
+    title="Figma La Suite UI Kit"
+    badge="Cunningham Tokens"
+    description="Bibliothèque de composants UI Kit La Suite basée sur Cunningham et le Design System officiel."
+    href="https://www.figma.com/community/file/1562860630562131728/lasuite-ui-kit"
+  />
+  <FeatureCard
+    icon="📖"
+    title="Storybook Cunningham"
+    badge="Composants Live"
+    description="Documentation interactive et bac à sable des composants UI (@openfun/cunningham-tokens)."
+    href="https://suitenumerique.github.io/cunningham/storybook/"
+  />
+</FeatureGrid>
+
+---
+
+## ⚡ Le Projet Phare : Le Socle des Commandes Souveraines (`/slash`)
+
+Le projet **`/slash`** dote l'éditeur **La Suite Docs** d'un accès direct aux **12 grandes bases de données souveraines de l'État français** au fil de la frappe.
+
+<Mermaid chart={`flowchart TD
+    subgraph Client["📝 Éditeur Collaboratif (Navigateur)"]
+        Saisie["Saisie au clavier : /loi, /marche, /entreprise..."] --> Popover["Palette de Recherche Popover (Cunningham + cmdk)"]
+        Popover --> Block["CustomBlock Universel (3 Formats DSFR : Callout, Carte, Lien)"]
+    end
+
+    subgraph Packages["📦 Packages Autonomes Découplés (DINUM)"]
+        Pkg_Py["🐍 django-lasuite-sources (PyPI)"]
+        Pkg_JS["📦 @suitenumerique/blocknote-sources (npm)"]
+        Pkg_SDK["🛠️ @suitenumerique/slash-sources-sdk (npm)"]
+    end
+
+    subgraph APIs["🏛️ Sources Officielles de l'État"]
+        PISTE["Légifrance / PISTE (DILA)"]
+        BOAMP["Marchés Publics BOAMP (DAE)"]
+        BAN["Base Adresse Nationale (IGN)"]
+        INSEE["INSEE Stats & RNE"]
+        Albert["Albert IA Souveraine (Etalab)"]
+    end
+
+    Client --> Pkg_JS
+    Pkg_JS --> Pkg_Py
+    Pkg_Py --> APIs
+`} />
+
+---
+
+## 🎮 Bac à Sable Interactif en Direct
+
+<BlockNoteSlashPlayground />

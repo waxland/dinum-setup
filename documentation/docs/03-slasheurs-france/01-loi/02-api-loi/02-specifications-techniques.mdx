@@ -1,0 +1,92 @@
+---
+title: Spécifications Techniques — Endpoints PISTE & Contrats de Données
+sidebar_label: Spécifications & OAuth2
+description: "Protocole OAuth2 Client Credentials PISTE, endpoints /suggest et /search, mapping des fonds (LODA, CODE, JORF) et payloads JSON."
+---
+
+
+L'API Légifrance officielle est hébergée sur la plateforme interministérielle **PISTE** (_Plateforme d'Intermédiation des Services pour la Transformation de l'État_) opérée par la DILA.
+
+---
+
+## 🔐 Flux OAuth2 Client Credentials (RFC 6749)
+
+<Mermaid chart={`sequenceDiagram
+    autonumber
+    participant Django as Backend Docs (LawSourceProvider)
+    participant Redis as Cache Redis 7
+    participant PISTE as Serveur OAuth2 PISTE
+    participant API as API Légifrance Engine
+
+    Django->>Redis: 1. Vérifie le token (clé piste:jwt)
+    alt Token en cache
+        Redis-->>Django: Retourne le Bearer token
+    else Token absent ou expiré
+        Django->>PISTE: 2. POST /api/oauth/token (grant_type=client_credentials)
+        PISTE-->>Django: 3. JSON { access_token, expires_in: 3600 }
+        Django->>Redis: 4. Stocke le token avec TTL = 3500s
+    end
+
+    Django->>API: 5. POST /suggest ou /search
+    API-->>Django: 6. Résultats JSON certifiés
+`} />
+
+---
+
+## 📡 Endpoints & Requêtes Types
+
+### Endpoint `/suggest` (Autocomplétion pendant la saisie)
+
+```http
+POST https://api.piste.gouv.fr/dila/legifrance/lf-engine-app/suggest
+Authorization: Bearer <ACCESS_TOKEN>
+Content-Type: application/json
+
+{
+  "searchText": "pouvoir du prefet",
+  "supplies": ["ALL_SUGGEST"]
+}
+```
+
+### Endpoint `/search` (Recherche Structurée & Filtres)
+
+```http
+POST https://api.piste.gouv.fr/dila/legifrance/lf-engine-app/search
+Authorization: Bearer <ACCESS_TOKEN>
+Content-Type: application/json
+
+{
+  "fond": "LODA_DATE",
+  "recherche": {
+    "champs": [
+      {
+        "typeChamp": "ALL",
+        "criteres": [
+          {
+            "typeRecherche": "TOUS_LES_MOTS_DANS_UN_CHAMP",
+            "valeur": "commande publique",
+            "operateur": "ET"
+          }
+        ],
+        "operateur": "ET"
+      }
+    ],
+    "pageNumber": 1,
+    "pageSize": 5,
+    "sort": "PERTINENCE"
+  }
+}
+```
+
+---
+
+## 🗺️ Mapping des Fonds Documentaires
+
+| Filtre UI | `supplies` (`/suggest`) | `fond` (`/search`) | Description |
+| :--- | :--- | :--- | :--- |
+| **Tous** | `ALL_SUGGEST` | `ALL` | Ensemble des collections juridiques |
+| **Codes** | `CODE_LIST` | `CODE_DATE` | Codes juridiques en vigueur à date |
+| **Lois & Décrets** | `LODA_LIST` | `LODA_DATE` | Textes législatifs et réglementaires |
+| **Journal Officiel** | `JORF_SUGGEST` | `JORF` | Publications au Journal Officiel |
+| **Conseil d'État** | `CETAT` | `CETAT` | Jurisprudence administrative |
+| **Cassation** | `JURI` | `JURI` | Jurisprudence judiciaire |

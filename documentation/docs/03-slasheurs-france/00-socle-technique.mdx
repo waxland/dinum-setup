@@ -1,0 +1,161 @@
+---
+title: Socle Technique Unifié des Commandes Slash
+sidebar_label: Socle Technique
+description: Architecture standardisée, composant BlockNote universel à 3 modes d'affichage (Callout, Carte, Lien) et proxy Django générique pour toutes les commandes slash.
+---
+
+
+
+Pour garantir l'évolutivité, la cohérence graphique et la simplicité de maintenance de **La Suite Docs**, l'ensemble des commandes slash connectées à des sources de données externes (**`/loi`**, **`/entreprise`**, **`/assemblee`**, **`/adresse`**, etc.) reposent sur un **Socle Technique Unifié**.
+
+Inspiré de l'architecture native de **`/link-doc` (`Interlinking`)**, ce socle abstrait la complexité technique et permet de brancher n'importe quelle nouvelle API en quelques minutes avec un rendu 100% conforme au **Design System de l'État (DSFR)** et aux normes d'accessibilité **RGAA v4.1**.
+
+<DocHeaderSummary
+  readingTime="6 min"
+  level="Intermédiaire"
+  roles={["Frontend React", "Backend Django", "Architecte"]}
+  prerequisites={["BlockNote.js", "Django REST Framework", "Yjs CRDT"]}
+  status="Standard Unifié"
+  statusColor="success"
+  takeaway="Un seul composant CustomBlock pour 10+ sources souveraines, 3 formats permutables (Callout, Carte, Lien) et un registry Django dynamique."
+/>
+
+---
+
+## 🎯 Les 3 Principes Directeurs du Socle Unifié
+
+1. **Composant CustomBlock Unique (`SourceBlockSpec` / `SourceInlineSpec`) :**  
+   Une structure de données universelle dans l'arbre **CRDT Yjs** capable de représenter n'importe quelle entité (loi, entreprise, amendement, adresse, marché public).
+2. **Exactement 3 Formats d'Affichage Standards :**  
+   Chaque source peut être affichée selon 3 formats interchangeables au choix de l'utilisateur :
+   - 📢 **Format Callout (Encadré DSFR)** : Mise en valeur officielle avec citation, texte intégral et statut.
+   - 🗂️ **Format Carte (Card DSFR)** : Encart de synthèse avec grille de métadonnées clés (3 colonnes).
+   - 🔗 **Format Lien / Inline (Badge & Popover)** : Pastille compacte au fil du texte avec popover de prévisualisation au survol/clic (comme `/link-doc`).
+3. **Moteur Backend Unifié (Provider Registry & Cache Redis) :**  
+   Un proxy Django générique qui délègue à des *Providers* spécialisés avec mise en cache unifiée, gestion des quotas et activation conditionnelle par Feature Flagging.
+
+---
+
+## 🏗️ Architecture Globale du Socle Unifié
+
+<Mermaid chart={`flowchart TD
+    subgraph UI["1. Moteur d'Édition BlockNote (React 19 / Next.js)"]
+        SlashInput["Saisie Clavier (/loi, /entreprise, /assemblee...)"]
+        SearchPalette["SearchPage Inline (Inspiré de /link-doc & cmdk)"]
+        UnifiedBlock["Composant Unique : SourceBlockSpec"]
+        
+        SlashInput --> SearchPalette
+        SearchPalette -->|Sélection de l'entité| UnifiedBlock
+    end
+
+    subgraph Modes["2. Les 3 Formats d'Affichage DSFR"]
+        CalloutMode["Mode Callout (Encadré officiel & texte complet)"]
+        CardMode["Mode Carte (Synthèse multi-critères & statut)"]
+        LinkMode["Mode Lien (Badge inline + Popover au survol)"]
+
+        UnifiedBlock --> CalloutMode
+        UnifiedBlock --> CardMode
+        UnifiedBlock --> LinkMode
+    end
+
+    subgraph Back["3. Socle Backend Django 5 Unifié"]
+        UnifiedEndpoint["GET /api/v1/sources/search?type=...&q=..."]
+        Registry["Provider Registry (Légifrance, Pappers, claire.vite)"]
+        RedisCache[("Cache Redis Partagé (TTL 24h)")]
+        
+        SearchPalette -->|Recherche asynchrone| UnifiedEndpoint
+        UnifiedEndpoint --> RedisCache
+        RedisCache -.->|Miss| Registry
+    end
+
+    subgraph External["4. Écosystème des APIs Souveraines"]
+        PisteAPI["Légifrance / PISTE"]
+        PappersAPI["Pappers / API Entreprise"]
+        ClaireAPI["Assemblée / claire.vite"]
+        BANAPI["Base Adresse Nationale"]
+        
+        Registry --> PisteAPI
+        Registry --> PappersAPI
+        Registry --> ClaireAPI
+        Registry --> BANAPI
+    end
+`} />
+
+---
+
+## 📚 Modules du Socle Technique
+
+<FeatureGrid cols={2}>
+  <FeatureCard
+    icon="🧩"
+    title="Architecture & Inspiration /link-doc"
+    description="Cycle de vie du composant (état recherche -> état sélectionné), synchronisation CRDT Yjs et focus trap."
+    href="/08-slash/01-architecture-standardisee"
+    badge="Conception"
+  />
+  <FeatureCard
+    icon="🎨"
+    title="CustomBlock Unique & 3 Modes DSFR"
+    description="Code TypeScript du composant BlockNote universel, modes Callout, Carte et Lien avec prévisualisation."
+    href="/08-slash/02-composant-customblock-unique"
+    badge="Frontend React"
+  />
+  <FeatureCard
+    icon="🐍"
+    title="Proxy Django & Provider Registry"
+    description="Architecture backend unifiée, interface BaseSourceProvider, cache Redis 24h et rate limiting."
+    href="/08-slash/03-proxy-backend-et-cache"
+    badge="Backend Django"
+  />
+  <FeatureCard
+    icon="⚡"
+    title="Tutoriel : Ajouter une API en 10 min"
+    description="Guide pas-à-pas pour brancher une nouvelle source externe sans toucher au cœur de l'éditeur."
+    href="/08-slash/04-tutoriel-ajouter-une-api"
+    badge="Guide Dev"
+  />
+  <FeatureCard
+    icon="📦"
+    title="Package Frontend : @suitenumerique/blocknote-sources"
+    description="Extension BlockNote.js autonome prête à l'emploi (npm), 100% Cunningham et DSFR, zéro any, zéro Tailwind."
+    href="/08-slash/06-sdk-developpeur"
+    badge="npm package"
+  />
+  <FeatureCard
+    icon="🐍"
+    title="Package Backend : django-lasuite-sources"
+    description="Application Django autonome (PyPI) fournissant le registre des 12 connecteurs et le cache Redis 24h."
+    href="/08-slash/03-proxy-backend-et-cache"
+    badge="PyPI package"
+  />
+</FeatureGrid>
+
+---
+
+## 📦 Les Packages Autonomes « Plug & Play » (Dossier `packages/`)
+
+Pour garantir une intégration **en 1 clic** sans polluer le cœur générique de `suitenumerique/docs`, le socle souverain est packagé de manière autonome :
+
+### 1. Package Python (`django-lasuite-sources`)
+```bash
+uv add django-lasuite-sources
+# ou
+pip install django-lasuite-sources
+```
+- **Configuration `settings.py` :** Ajouter `"lasuite_sources"` dans `INSTALLED_APPS`.
+- **Routage `urls.py` :** `path("api/v1.0/", include("lasuite_sources.urls"))`.
+
+### 2. Package Frontend (`@suitenumerique/blocknote-sources`)
+```bash
+pnpm add @suitenumerique/blocknote-sources
+```
+- **Schéma BlockNote :** `sourceBlock: SourceBlock()` importé depuis `@suitenumerique/blocknote-sources`.
+- **Menu Slash :** `getSourceReactSlashMenuItems(editor, t, 'Sources Souveraines')`.
+
+---
+
+## 🚀 Démonstrateur Interactif BlockNote.js en Direct
+
+Testez ci-dessous l'éditeur BlockNote.js connecté aux 4 commandes souveraines (`/loi`, `/entreprise`, `/assemblee`, `/adresse`) avec les 3 formats d'affichage interchangeables :
+
+<BlockNoteSlashPlayground />

@@ -1,0 +1,54 @@
+---
+title: Commande Slash /stats — Données Territoriales INSEE
+sidebar_label: 10. Stats & Territoires (/stats)
+description: "Hub complet de la commande /stats : chiffres clés démographiques, économiques et sociaux certifiés par l'INSEE pour chaque commune de France."
+---
+
+
+La commande **`/stats`** (alias **`/insee`**, **`/population`**, **`/territoire`**, **`/demographie`**) permet aux rédacteurs publics, chargés d'études et directeurs généraux des services d'insérer les indicateurs officiels certifiés par l'**INSEE** pour n'importe quelle commune ou territoire français.
+
+---
+
+## 🎯 Problématique Métier
+
+La rédaction des diagnostics territoriaux, des schémas directeurs (PLUi, PCAET) et des notes de cadrage pour les élus exige des chiffres de cadrage fiables :
+- **Population municipale officielle** et évolution démographique.
+- **Densité de population** et superficie communale.
+- **Taux d'activité** des 15-64 ans et nombre total d'emplois locaux.
+- **Revenu médian disponible** par unité de consommation.
+
+---
+
+## 🏗️ Architecture du Connecteur `/stats`
+
+<Mermaid chart={`flowchart TD
+    subgraph Client["Navigateur Rédacteur"]
+        Slash["Saisie /stats + commune ou code INSEE"] --> Popover["SourceSearchPopover (cmdk)"]
+        Popover --> Block["SourceBlock (Format Carte)"]
+    end
+
+    subgraph Backend["Backend Django 5"]
+        Proxy["/api/v1.0/sources/search/?type=insee"]
+        Cache[("Redis Cache TTL 24h")]
+        Registry["SourceProviderRegistry (InseeSourceProvider)"]
+    end
+
+    subgraph Source["INSEE Open Data"]
+        InseeAPI["API Données Locales INSEE (api.insee.fr)"]
+    end
+
+    Slash --> Popover
+    Popover --> Proxy --> Cache
+    Cache -.->|Miss| Registry
+    Registry --> InseeAPI
+    InseeAPI -.-> Registry
+    Registry --> Block
+`} />
+
+---
+
+## 🧩 Formats de Rendu (Design System Cunningham)
+
+- **🗂️ Carte 3 Colonnes :** Population Municipale • Densité (hab./km²) • Emplois Totaux.
+- **📢 Encadré :** Fiche de cadrage territorial avec source certifiée INSEE RP 2024.
+- **🔗 Pastille :** Lien direct vers la fiche communale officielle sur insee.fr.

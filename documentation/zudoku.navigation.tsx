@@ -2,852 +2,738 @@ import type { ZudokuConfig } from "zudoku";
 
 export const docsNavigation: ZudokuConfig["navigation"] = [
   {
+    "type": "doc",
+    "file": "index.mdx",
+    "path": "/",
+    "label": "Accueil",
+    "icon": "home"
+  },
+  {
     "type": "category",
-    "label": "🇬🇧 English (Universal Standard)",
-    "icon": "globe",
+    "label": "Onboarding & Démarrage",
+    "icon": "compass",
     "collapsed": false,
     "items": [
       {
         "type": "doc",
-        "file": "en/index.mdx",
-        "path": "/en",
-        "label": "Overview"
+        "file": "01-onboarding/index.mdx",
+        "path": "/01-onboarding"
       },
       {
         "type": "category",
-        "label": "Overview",
+        "label": "Contexte & Hackathon 42",
         "icon": "folder",
         "collapsed": false,
         "items": [
-          {
-            "type": "doc",
-            "file": "en/00-overview/index.mdx",
-            "path": "/en/00-overview"
-          },
-          "/en/00-overview/architecture-3-tier",
-          "/en/00-overview/engineering-standards",
-          "/en/00-overview/international-vision"
+          "/01-onboarding/00-contexte/challenge-42",
+          "/01-onboarding/00-contexte/planning"
         ]
       },
       {
         "type": "category",
-        "label": "BlockNote Extension",
-        "icon": "monitor",
+        "label": "Demarrage",
+        "icon": "rocket",
         "collapsed": false,
         "items": [
+          "/01-onboarding/01-demarrage/environnement-machine-hote",
+          "/01-onboarding/01-demarrage/git-ssh",
+          "/01-onboarding/01-demarrage/urls-et-identifiants",
+          "/01-onboarding/01-demarrage/vscode",
           {
-            "type": "doc",
-            "file": "en/01-blocknote-extension/index.mdx",
-            "path": "/en/01-blocknote-extension"
-          },
-          "/en/01-blocknote-extension/3-display-formats",
-          "/en/01-blocknote-extension/document-exports",
-          "/en/01-blocknote-extension/floating-search-popover",
-          "/en/01-blocknote-extension/styling-and-themes"
+            "type": "category",
+            "label": "Configuration Serveur",
+            "icon": "server",
+            "collapsed": false,
+            "items": [
+              "/01-onboarding/01-demarrage/configuration-serveur/01-guide-configuration-serveur",
+              "/01-onboarding/01-demarrage/configuration-serveur/02-pr-support-serveurs-distants"
+            ]
+          }
         ]
       },
       {
         "type": "category",
-        "label": "Provider SDK",
-        "icon": "code",
+        "label": "Workflow Et Contribution",
+        "icon": "git-pull-request",
         "collapsed": false,
         "items": [
+          "/01-onboarding/02-workflow-et-contribution/bonnes-pratiques-dinum",
+          "/01-onboarding/02-workflow-et-contribution/guide-du-premier-commit",
+          "/01-onboarding/02-workflow-et-contribution/qualite-et-architecture-la-suite",
+          "/01-onboarding/02-workflow-et-contribution/securite-du-poste-developpeur",
+          "/01-onboarding/02-workflow-et-contribution/tests-et-qualite",
+          "/01-onboarding/02-workflow-et-contribution/workflow",
           {
-            "type": "doc",
-            "file": "en/02-provider-sdk/index.mdx",
-            "path": "/en/02-provider-sdk"
-          },
-          "/en/02-provider-sdk/build-provider-in-15-min",
-          "/en/02-provider-sdk/define-source-provider",
-          "/en/02-provider-sdk/typescript-contracts"
+            "type": "category",
+            "label": "Adr",
+            "icon": "folder",
+            "collapsed": false,
+            "items": [
+              {
+                "type": "doc",
+                "file": "01-onboarding/02-workflow-et-contribution/adr/index.mdx",
+                "path": "/01-onboarding/02-workflow-et-contribution/adr"
+              },
+              "/01-onboarding/02-workflow-et-contribution/adr/0001-architecture-monorepo-4-piliers",
+              "/01-onboarding/02-workflow-et-contribution/adr/0002-rendu-tri-format-dsfr-cunningham",
+              "/01-onboarding/02-workflow-et-contribution/adr/0003-proxy-django-anti-ssrf-circuit-breaker",
+              "/01-onboarding/02-workflow-et-contribution/adr/0004-dual-trigger-slash-et-mention"
+            ]
+          }
         ]
       },
       {
         "type": "category",
-        "label": "Backend Proxy",
-        "icon": "server",
+        "label": "Support",
+        "icon": "life-buoy",
         "collapsed": false,
         "items": [
-          {
-            "type": "doc",
-            "file": "en/03-backend-proxy/index.mdx",
-            "path": "/en/03-backend-proxy"
-          },
-          "/en/03-backend-proxy/defensive-security-ssrf",
-          "/en/03-backend-proxy/deterministic-cache",
-          "/en/03-backend-proxy/quota-and-rate-limiting"
+          "/01-onboarding/03-support/glossaire",
+          "/01-onboarding/03-support/troubleshooting"
         ]
       },
       {
         "type": "category",
-        "label": "Presets",
+        "label": "Ressources",
         "icon": "folder",
         "collapsed": false,
         "items": [
-          {
-            "type": "doc",
-            "file": "en/04-presets/index.mdx",
-            "path": "/en/04-presets"
-          },
-          "/en/04-presets/canada",
-          "/en/04-presets/european-union",
-          "/en/04-presets/germany-bund",
-          "/en/04-presets/international",
-          "/en/04-presets/netherlands-gov",
-          "/en/04-presets/spain-boe"
-        ]
-      },
-      {
-        "type": "category",
-        "label": "Rfc Upstream",
-        "icon": "folder",
-        "collapsed": false,
-        "items": [
-          {
-            "type": "doc",
-            "file": "en/05-rfc-upstream/index.mdx",
-            "path": "/en/05-rfc-upstream"
-          },
-          "/en/05-rfc-upstream/blocknote-rfc-specification"
+          "/01-onboarding/04-ressources/communaute",
+          "/01-onboarding/04-ressources/roadmap",
+          "/01-onboarding/04-ressources/templates-et-outils"
         ]
       }
     ]
   },
   {
     "type": "category",
-    "label": "🇫🇷 Français (Socle DINUM)",
-    "icon": "flag",
+    "label": "La Suite Numérique",
+    "icon": "palette",
     "collapsed": false,
     "items": [
       {
+        "type": "doc",
+        "file": "02-la-suite/index.mdx",
+        "path": "/02-la-suite"
+      },
+      {
         "type": "category",
-        "label": "Onboarding & Démarrage",
+        "label": "Applications & Projets",
         "icon": "folder",
         "collapsed": false,
         "items": [
           {
             "type": "doc",
-            "file": "fr/01-onboarding/index.mdx",
-            "path": "/fr",
-            "label": "Accueil"
+            "file": "02-la-suite/01-applications/index.mdx",
+            "path": "/02-la-suite/01-applications"
           },
           {
             "type": "category",
-            "label": "Contexte & Hackathon 42",
-            "icon": "folder",
+            "label": "Documents Et Contenus",
+            "icon": "file-text",
             "collapsed": false,
             "items": [
-              "/fr/01-onboarding/00-contexte/challenge-42",
-              "/fr/01-onboarding/00-contexte/planning"
+              "/02-la-suite/01-applications/01-documents-et-contenus/docs",
+              "/02-la-suite/01-applications/01-documents-et-contenus/fichiers-drive",
+              "/02-la-suite/01-applications/01-documents-et-contenus/grist"
             ]
           },
           {
             "type": "category",
-            "label": "Demarrage",
-            "icon": "rocket",
+            "label": "Communication Et Echange",
+            "icon": "message-square",
             "collapsed": false,
             "items": [
-              "/fr/01-onboarding/01-demarrage/environnement-machine-hote",
-              "/fr/01-onboarding/01-demarrage/git-ssh",
-              "/fr/01-onboarding/01-demarrage/urls-et-identifiants",
-              "/fr/01-onboarding/01-demarrage/vscode",
-              {
-                "type": "category",
-                "label": "Configuration Serveur",
-                "icon": "server",
-                "collapsed": false,
-                "items": [
-                  "/fr/01-onboarding/01-demarrage/configuration-serveur/01-guide-configuration-serveur",
-                  "/fr/01-onboarding/01-demarrage/configuration-serveur/02-pr-support-serveurs-distants"
-                ]
-              }
+              "/02-la-suite/01-applications/02-communication-et-echange/meet",
+              "/02-la-suite/01-applications/02-communication-et-echange/tchap",
+              "/02-la-suite/01-applications/02-communication-et-echange/transfers"
             ]
           },
           {
             "type": "category",
-            "label": "Workflow Et Contribution",
-            "icon": "git-pull-request",
+            "label": "Gestion Et Utilisateurs",
+            "icon": "users",
             "collapsed": false,
             "items": [
-              "/fr/01-onboarding/02-workflow-et-contribution/bonnes-pratiques-dinum",
-              "/fr/01-onboarding/02-workflow-et-contribution/guide-du-premier-commit",
-              "/fr/01-onboarding/02-workflow-et-contribution/qualite-et-architecture-la-suite",
-              "/fr/01-onboarding/02-workflow-et-contribution/securite-du-poste-developpeur",
-              "/fr/01-onboarding/02-workflow-et-contribution/tests-et-qualite",
-              "/fr/01-onboarding/02-workflow-et-contribution/workflow",
-              {
-                "type": "category",
-                "label": "Adr",
-                "icon": "folder",
-                "collapsed": false,
-                "items": [
-                  {
-                    "type": "doc",
-                    "file": "fr/01-onboarding/02-workflow-et-contribution/adr/index.mdx",
-                    "path": "/fr/01-onboarding/02-workflow-et-contribution/adr"
-                  },
-                  "/fr/01-onboarding/02-workflow-et-contribution/adr/0001-architecture-monorepo-4-piliers",
-                  "/fr/01-onboarding/02-workflow-et-contribution/adr/0002-rendu-tri-format-dsfr-cunningham",
-                  "/fr/01-onboarding/02-workflow-et-contribution/adr/0003-proxy-django-anti-ssrf-circuit-breaker",
-                  "/fr/01-onboarding/02-workflow-et-contribution/adr/0004-dual-trigger-slash-et-mention"
-                ]
-              }
-            ]
-          },
-          {
-            "type": "category",
-            "label": "Support",
-            "icon": "life-buoy",
-            "collapsed": false,
-            "items": [
-              "/fr/01-onboarding/03-support/glossaire",
-              "/fr/01-onboarding/03-support/troubleshooting"
-            ]
-          },
-          {
-            "type": "category",
-            "label": "Ressources",
-            "icon": "folder",
-            "collapsed": false,
-            "items": [
-              "/fr/01-onboarding/04-ressources/communaute",
-              "/fr/01-onboarding/04-ressources/roadmap",
-              "/fr/01-onboarding/04-ressources/templates-et-outils"
+              "/02-la-suite/01-applications/03-gestion-et-utilisateurs/accounts",
+              "/02-la-suite/01-applications/03-gestion-et-utilisateurs/people",
+              "/02-la-suite/01-applications/03-gestion-et-utilisateurs/projects"
             ]
           }
         ]
       },
       {
         "type": "category",
-        "label": "La Suite Numérique",
+        "label": "Architecture & Données",
         "icon": "folder",
         "collapsed": false,
         "items": [
           {
             "type": "doc",
-            "file": "fr/02-la-suite/index.mdx",
-            "path": "/fr/02-la-suite"
+            "file": "02-la-suite/02-architecture/index.mdx",
+            "path": "/02-la-suite/02-architecture"
           },
           {
             "type": "category",
-            "label": "Applications & Projets",
-            "icon": "folder",
+            "label": "Securite Et Identite",
+            "icon": "shield-check",
             "collapsed": false,
             "items": [
-              {
-                "type": "doc",
-                "file": "fr/02-la-suite/01-applications/index.mdx",
-                "path": "/fr/02-la-suite/01-applications"
-              },
-              {
-                "type": "category",
-                "label": "Documents Et Contenus",
-                "icon": "file-text",
-                "collapsed": false,
-                "items": [
-                  "/fr/02-la-suite/01-applications/01-documents-et-contenus/docs",
-                  "/fr/02-la-suite/01-applications/01-documents-et-contenus/fichiers-drive",
-                  "/fr/02-la-suite/01-applications/01-documents-et-contenus/grist"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Communication Et Echange",
-                "icon": "message-square",
-                "collapsed": false,
-                "items": [
-                  "/fr/02-la-suite/01-applications/02-communication-et-echange/meet",
-                  "/fr/02-la-suite/01-applications/02-communication-et-echange/tchap",
-                  "/fr/02-la-suite/01-applications/02-communication-et-echange/transfers"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Gestion Et Utilisateurs",
-                "icon": "users",
-                "collapsed": false,
-                "items": [
-                  "/fr/02-la-suite/01-applications/03-gestion-et-utilisateurs/accounts",
-                  "/fr/02-la-suite/01-applications/03-gestion-et-utilisateurs/people",
-                  "/fr/02-la-suite/01-applications/03-gestion-et-utilisateurs/projects"
-                ]
-              }
+              "/02-la-suite/02-architecture/01-securite-et-identite/auth",
+              "/02-la-suite/02-architecture/01-securite-et-identite/federation-identite-proconnect",
+              "/02-la-suite/02-architecture/01-securite-et-identite/secrets-sops"
             ]
           },
           {
             "type": "category",
-            "label": "Architecture & Données",
-            "icon": "folder",
+            "label": "Donnees Et Temps Reel",
+            "icon": "database",
             "collapsed": false,
             "items": [
-              {
-                "type": "doc",
-                "file": "fr/02-la-suite/02-architecture/index.mdx",
-                "path": "/fr/02-la-suite/02-architecture"
-              },
-              {
-                "type": "category",
-                "label": "Securite Et Identite",
-                "icon": "shield-check",
-                "collapsed": false,
-                "items": [
-                  "/fr/02-la-suite/02-architecture/01-securite-et-identite/auth",
-                  "/fr/02-la-suite/02-architecture/01-securite-et-identite/federation-identite-proconnect",
-                  "/fr/02-la-suite/02-architecture/01-securite-et-identite/secrets-sops"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Donnees Et Temps Reel",
-                "icon": "database",
-                "collapsed": false,
-                "items": [
-                  "/fr/02-la-suite/02-architecture/02-donnees-et-temps-reel/flux-stockage-s3",
-                  "/fr/02-la-suite/02-architecture/02-donnees-et-temps-reel/sauvegardes-et-restauration",
-                  "/fr/02-la-suite/02-architecture/02-donnees-et-temps-reel/temps-reel-et-crdt"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Devops Et Deploiement",
-                "icon": "cloud",
-                "collapsed": false,
-                "items": [
-                  "/fr/02-la-suite/02-architecture/03-devops-et-deploiement/cicd-github-actions",
-                  "/fr/02-la-suite/02-architecture/03-devops-et-deploiement/deploiement-production",
-                  "/fr/02-la-suite/02-architecture/03-devops-et-deploiement/env",
-                  "/fr/02-la-suite/02-architecture/03-devops-et-deploiement/hot-reload"
-                ]
-              }
+              "/02-la-suite/02-architecture/02-donnees-et-temps-reel/flux-stockage-s3",
+              "/02-la-suite/02-architecture/02-donnees-et-temps-reel/sauvegardes-et-restauration",
+              "/02-la-suite/02-architecture/02-donnees-et-temps-reel/temps-reel-et-crdt"
             ]
           },
           {
             "type": "category",
-            "label": "Design System & DSFR",
-            "icon": "folder",
+            "label": "Devops Et Deploiement",
+            "icon": "cloud",
             "collapsed": false,
             "items": [
-              {
-                "type": "doc",
-                "file": "fr/02-la-suite/03-design-system/index.mdx",
-                "path": "/fr/02-la-suite/03-design-system"
-              },
-              {
-                "type": "category",
-                "label": "Fondations",
-                "icon": "sliders",
-                "collapsed": false,
-                "items": [
-                  "/fr/02-la-suite/03-design-system/01-fondations/accessibilite-rgaa",
-                  "/fr/02-la-suite/03-design-system/01-fondations/couleurs-et-themes",
-                  "/fr/02-la-suite/03-design-system/01-fondations/figma",
-                  "/fr/02-la-suite/03-design-system/01-fondations/icones",
-                  "/fr/02-la-suite/03-design-system/01-fondations/installation",
-                  "/fr/02-la-suite/03-design-system/01-fondations/typographie"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Composants",
-                "icon": "box",
-                "collapsed": false,
-                "items": [
-                  "/fr/02-la-suite/03-design-system/02-composants/alertes-et-callouts",
-                  "/fr/02-la-suite/03-design-system/02-composants/badges-et-statuts",
-                  "/fr/02-la-suite/03-design-system/02-composants/boutons",
-                  "/fr/02-la-suite/03-design-system/02-composants/cartes-et-conteneurs",
-                  "/fr/02-la-suite/03-design-system/02-composants/formulaires",
-                  "/fr/02-la-suite/03-design-system/02-composants/modales-et-dialogues",
-                  "/fr/02-la-suite/03-design-system/02-composants/notices-et-bandeaux",
-                  "/fr/02-la-suite/03-design-system/02-composants/pagination-et-stepper",
-                  "/fr/02-la-suite/03-design-system/02-composants/tableaux"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Layout Et Structure",
-                "icon": "layout-grid",
-                "collapsed": false,
-                "items": [
-                  "/fr/02-la-suite/03-design-system/03-layout-et-structure/navigation-et-layout"
-                ]
-              }
-            ]
-          },
-          {
-            "type": "category",
-            "label": "Ressources",
-            "icon": "folder",
-            "collapsed": false,
-            "items": [
-              "/fr/02-la-suite/04-ressources/communaute",
-              "/fr/02-la-suite/04-ressources/roadmap",
-              "/fr/02-la-suite/04-ressources/templates-et-outils"
+              "/02-la-suite/02-architecture/03-devops-et-deploiement/cicd-github-actions",
+              "/02-la-suite/02-architecture/03-devops-et-deploiement/deploiement-production",
+              "/02-la-suite/02-architecture/03-devops-et-deploiement/env",
+              "/02-la-suite/02-architecture/03-devops-et-deploiement/hot-reload"
             ]
           }
         ]
       },
       {
         "type": "category",
-        "label": "Slasheurs France (DINUM)",
+        "label": "Design System & DSFR",
         "icon": "folder",
         "collapsed": false,
         "items": [
           {
             "type": "doc",
-            "file": "fr/03-slasheurs-france/index.mdx",
-            "path": "/fr/03-slasheurs-france"
+            "file": "02-la-suite/03-design-system/index.mdx",
+            "path": "/02-la-suite/03-design-system"
           },
-          "/fr/03-slasheurs-france/00-socle-technique",
-          "/fr/03-slasheurs-france/01-architecture-standardisee",
-          "/fr/03-slasheurs-france/02-composant-customblock-unique",
-          "/fr/03-slasheurs-france/03-proxy-backend-et-cache",
-          "/fr/03-slasheurs-france/04-tutoriel-ajouter-une-api",
-          "/fr/03-slasheurs-france/05-proposition",
-          "/fr/03-slasheurs-france/07-roadmap",
-          "/fr/03-slasheurs-france/13-reutilisation-transverse",
-          "/fr/03-slasheurs-france/14-retour-d-experience",
           {
             "type": "category",
-            "label": "Projet de Loi (/loi)",
-            "icon": "scale",
+            "label": "Fondations",
+            "icon": "sliders",
             "collapsed": false,
             "items": [
-              {
-                "type": "doc",
-                "file": "fr/03-slasheurs-france/01-loi/index.mdx",
-                "path": "/fr/03-slasheurs-france/01-loi"
-              },
-              {
-                "type": "category",
-                "label": "Pôle Métier & Usages",
-                "icon": "briefcase",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/01-loi/01-metier-loi/01-fondations-et-cadre",
-                  "/fr/03-slasheurs-france/01-loi/01-metier-loi/02-cas-usage-et-scenarios"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Pôle API & Veille",
-                "icon": "code",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/01-loi/02-api-loi/01-benchmark-des-apis",
-                  "/fr/03-slasheurs-france/01-loi/02-api-loi/02-specifications-techniques"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Pôle Implémentation",
-                "icon": "terminal",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/01-loi/03-implementation-loi/01-provider-django",
-                  "/fr/03-slasheurs-france/01-loi/03-implementation-loi/02-rendu-et-settings"
-                ]
-              }
+              "/02-la-suite/03-design-system/01-fondations/accessibilite-rgaa",
+              "/02-la-suite/03-design-system/01-fondations/couleurs-et-themes",
+              "/02-la-suite/03-design-system/01-fondations/figma",
+              "/02-la-suite/03-design-system/01-fondations/icones",
+              "/02-la-suite/03-design-system/01-fondations/installation",
+              "/02-la-suite/03-design-system/01-fondations/typographie"
             ]
           },
           {
             "type": "category",
-            "label": "Assemblée Nationale (/assemblee)",
-            "icon": "landmark",
+            "label": "Composants",
+            "icon": "box",
             "collapsed": false,
             "items": [
-              {
-                "type": "doc",
-                "file": "fr/03-slasheurs-france/02-assemblee/index.mdx",
-                "path": "/fr/03-slasheurs-france/02-assemblee"
-              },
-              {
-                "type": "category",
-                "label": "Pôle Métier & Usages",
-                "icon": "briefcase",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/02-assemblee/01-metier-assemblee/01-fondations-et-cadre",
-                  "/fr/03-slasheurs-france/02-assemblee/01-metier-assemblee/02-cas-usage-et-scenarios"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Pôle API & Veille",
-                "icon": "code",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/02-assemblee/02-api-assemblee/01-benchmark-des-apis",
-                  "/fr/03-slasheurs-france/02-assemblee/02-api-assemblee/02-specifications-techniques"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Pôle Implémentation",
-                "icon": "terminal",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/02-assemblee/03-implementation-assemblee/01-provider-django",
-                  "/fr/03-slasheurs-france/02-assemblee/03-implementation-assemblee/02-rendu-et-settings"
-                ]
-              }
+              "/02-la-suite/03-design-system/02-composants/alertes-et-callouts",
+              "/02-la-suite/03-design-system/02-composants/badges-et-statuts",
+              "/02-la-suite/03-design-system/02-composants/boutons",
+              "/02-la-suite/03-design-system/02-composants/cartes-et-conteneurs",
+              "/02-la-suite/03-design-system/02-composants/formulaires",
+              "/02-la-suite/03-design-system/02-composants/modales-et-dialogues",
+              "/02-la-suite/03-design-system/02-composants/notices-et-bandeaux",
+              "/02-la-suite/03-design-system/02-composants/pagination-et-stepper",
+              "/02-la-suite/03-design-system/02-composants/tableaux"
             ]
           },
           {
             "type": "category",
-            "label": "Entreprises (/entreprise)",
-            "icon": "building-2",
+            "label": "Layout Et Structure",
+            "icon": "layout-grid",
             "collapsed": false,
             "items": [
-              {
-                "type": "doc",
-                "file": "fr/03-slasheurs-france/03-entreprise/index.mdx",
-                "path": "/fr/03-slasheurs-france/03-entreprise"
-              },
-              {
-                "type": "category",
-                "label": "Pôle Métier & Usages",
-                "icon": "briefcase",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/03-entreprise/01-metier-entreprise/01-fondations-et-cadre",
-                  "/fr/03-slasheurs-france/03-entreprise/01-metier-entreprise/02-cas-usage-et-scenarios"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Pôle API & Veille",
-                "icon": "code",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/03-entreprise/02-api-entreprise/01-benchmark-des-apis",
-                  "/fr/03-slasheurs-france/03-entreprise/02-api-entreprise/02-specifications-techniques"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Pôle Implémentation",
-                "icon": "terminal",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/03-entreprise/03-implementation-entreprise/01-provider-django",
-                  "/fr/03-slasheurs-france/03-entreprise/03-implementation-entreprise/02-rendu-et-settings"
-                ]
-              }
+              "/02-la-suite/03-design-system/03-layout-et-structure/navigation-et-layout"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Ressources",
+        "icon": "folder",
+        "collapsed": false,
+        "items": [
+          "/02-la-suite/04-ressources/communaute",
+          "/02-la-suite/04-ressources/roadmap",
+          "/02-la-suite/04-ressources/templates-et-outils"
+        ]
+      }
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Slasheurs France (DINUM)",
+    "icon": "terminal",
+    "collapsed": false,
+    "items": [
+      {
+        "type": "doc",
+        "file": "03-slasheurs-france/index.mdx",
+        "path": "/03-slasheurs-france"
+      },
+      "/03-slasheurs-france/00-socle-technique",
+      "/03-slasheurs-france/01-architecture-standardisee",
+      "/03-slasheurs-france/02-composant-customblock-unique",
+      "/03-slasheurs-france/03-proxy-backend-et-cache",
+      "/03-slasheurs-france/04-tutoriel-ajouter-une-api",
+      "/03-slasheurs-france/05-proposition",
+      "/03-slasheurs-france/07-roadmap",
+      "/03-slasheurs-france/13-reutilisation-transverse",
+      "/03-slasheurs-france/14-retour-d-experience",
+      {
+        "type": "category",
+        "label": "Projet de Loi (/loi)",
+        "icon": "scale",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "03-slasheurs-france/01-loi/index.mdx",
+            "path": "/03-slasheurs-france/01-loi"
+          },
+          {
+            "type": "category",
+            "label": "Pôle Métier & Usages",
+            "icon": "briefcase",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/01-loi/01-metier-loi/01-fondations-et-cadre",
+              "/03-slasheurs-france/01-loi/01-metier-loi/02-cas-usage-et-scenarios"
             ]
           },
           {
             "type": "category",
-            "label": "Base Adresse Nationale (/adresse)",
-            "icon": "map-pin",
-            "collapsed": false,
-            "items": [
-              {
-                "type": "doc",
-                "file": "fr/03-slasheurs-france/04-adresse/index.mdx",
-                "path": "/fr/03-slasheurs-france/04-adresse"
-              },
-              {
-                "type": "category",
-                "label": "Pôle Métier & Usages",
-                "icon": "briefcase",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/04-adresse/01-metier-adresse/01-fondations-et-cadre",
-                  "/fr/03-slasheurs-france/04-adresse/01-metier-adresse/02-cas-usage-et-scenarios"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Pôle API & Veille",
-                "icon": "code",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/04-adresse/02-api-adresse/01-benchmark-des-apis",
-                  "/fr/03-slasheurs-france/04-adresse/02-api-adresse/02-specifications-techniques"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Pôle Implémentation",
-                "icon": "terminal",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/04-adresse/03-implementation-adresse/01-provider-django",
-                  "/fr/03-slasheurs-france/04-adresse/03-implementation-adresse/02-rendu-et-settings"
-                ]
-              }
-            ]
-          },
-          {
-            "type": "category",
-            "label": "Albert",
-            "icon": "folder",
-            "collapsed": false,
-            "items": [
-              {
-                "type": "doc",
-                "file": "fr/03-slasheurs-france/05-albert/index.mdx",
-                "path": "/fr/03-slasheurs-france/05-albert"
-              },
-              {
-                "type": "category",
-                "label": "Pôle Métier & Usages",
-                "icon": "briefcase",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/05-albert/01-metier-albert/01-fondations-et-cadre",
-                  "/fr/03-slasheurs-france/05-albert/01-metier-albert/02-cas-usage-et-scenarios"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Pôle API & Veille",
-                "icon": "code",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/05-albert/02-api-albert/01-benchmark-des-apis",
-                  "/fr/03-slasheurs-france/05-albert/02-api-albert/02-specifications-techniques"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Pôle Implémentation",
-                "icon": "terminal",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/05-albert/03-implementation-albert/01-provider-django",
-                  "/fr/03-slasheurs-france/05-albert/03-implementation-albert/02-rendu-et-settings"
-                ]
-              }
-            ]
-          },
-          {
-            "type": "category",
-            "label": "SDK Developpeur",
+            "label": "Pôle API & Veille",
             "icon": "code",
             "collapsed": false,
             "items": [
-              {
-                "type": "doc",
-                "file": "fr/03-slasheurs-france/06-sdk-developpeur/index.mdx",
-                "path": "/fr/03-slasheurs-france/06-sdk-developpeur"
-              }
+              "/03-slasheurs-france/01-loi/02-api-loi/01-benchmark-des-apis",
+              "/03-slasheurs-france/01-loi/02-api-loi/02-specifications-techniques"
             ]
           },
           {
             "type": "category",
-            "label": "Marchés Publics (/marche)",
-            "icon": "folder",
+            "label": "Pôle Implémentation",
+            "icon": "terminal",
             "collapsed": false,
             "items": [
-              {
-                "type": "doc",
-                "file": "fr/03-slasheurs-france/08-marche/index.mdx",
-                "path": "/fr/03-slasheurs-france/08-marche"
-              },
-              {
-                "type": "category",
-                "label": "Pôle Métier & Usages",
-                "icon": "briefcase",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/08-marche/01-metier-marche/01-fondations-et-cadre",
-                  "/fr/03-slasheurs-france/08-marche/01-metier-marche/02-cas-usage-et-scenarios"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Pôle API & Veille",
-                "icon": "code",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/08-marche/02-api-marche/01-benchmark-des-apis",
-                  "/fr/03-slasheurs-france/08-marche/02-api-marche/02-specifications-techniques"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Pôle Implémentation",
-                "icon": "terminal",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/08-marche/03-implementation-marche/01-provider-django",
-                  "/fr/03-slasheurs-france/08-marche/03-implementation-marche/02-rendu-et-settings"
-                ]
-              }
+              "/03-slasheurs-france/01-loi/03-implementation-loi/01-provider-django",
+              "/03-slasheurs-france/01-loi/03-implementation-loi/02-rendu-et-settings"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Assemblée Nationale (/assemblee)",
+        "icon": "landmark",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "03-slasheurs-france/02-assemblee/index.mdx",
+            "path": "/03-slasheurs-france/02-assemblee"
+          },
+          {
+            "type": "category",
+            "label": "Pôle Métier & Usages",
+            "icon": "briefcase",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/02-assemblee/01-metier-assemblee/01-fondations-et-cadre",
+              "/03-slasheurs-france/02-assemblee/01-metier-assemblee/02-cas-usage-et-scenarios"
             ]
           },
           {
             "type": "category",
-            "label": "Subventions (/subvention)",
-            "icon": "folder",
+            "label": "Pôle API & Veille",
+            "icon": "code",
             "collapsed": false,
             "items": [
-              {
-                "type": "doc",
-                "file": "fr/03-slasheurs-france/09-subvention/index.mdx",
-                "path": "/fr/03-slasheurs-france/09-subvention"
-              },
-              {
-                "type": "category",
-                "label": "Pôle Métier & Usages",
-                "icon": "briefcase",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/09-subvention/01-metier-subvention/01-fondations-et-cadre",
-                  "/fr/03-slasheurs-france/09-subvention/01-metier-subvention/02-cas-usage-et-scenarios"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Pôle API & Veille",
-                "icon": "code",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/09-subvention/02-api-subvention/01-benchmark-des-apis",
-                  "/fr/03-slasheurs-france/09-subvention/02-api-subvention/02-specifications-techniques"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Pôle Implémentation",
-                "icon": "terminal",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/09-subvention/03-implementation-subvention/01-provider-django",
-                  "/fr/03-slasheurs-france/09-subvention/03-implementation-subvention/02-rendu-et-settings"
-                ]
-              }
+              "/03-slasheurs-france/02-assemblee/02-api-assemblee/01-benchmark-des-apis",
+              "/03-slasheurs-france/02-assemblee/02-api-assemblee/02-specifications-techniques"
             ]
           },
           {
             "type": "category",
-            "label": "Stats",
-            "icon": "folder",
+            "label": "Pôle Implémentation",
+            "icon": "terminal",
             "collapsed": false,
             "items": [
-              {
-                "type": "doc",
-                "file": "fr/03-slasheurs-france/10-stats/index.mdx",
-                "path": "/fr/03-slasheurs-france/10-stats"
-              },
-              {
-                "type": "category",
-                "label": "Pôle Métier & Usages",
-                "icon": "briefcase",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/10-stats/01-metier-stats/01-fondations-et-cadre",
-                  "/fr/03-slasheurs-france/10-stats/01-metier-stats/02-cas-usage-et-scenarios"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Pôle API & Veille",
-                "icon": "code",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/10-stats/02-api-stats/01-benchmark-des-apis",
-                  "/fr/03-slasheurs-france/10-stats/02-api-stats/02-specifications-techniques"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Pôle Implémentation",
-                "icon": "terminal",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/10-stats/03-implementation-stats/01-provider-django",
-                  "/fr/03-slasheurs-france/10-stats/03-implementation-stats/02-rendu-et-settings"
-                ]
-              }
+              "/03-slasheurs-france/02-assemblee/03-implementation-assemblee/01-provider-django",
+              "/03-slasheurs-france/02-assemblee/03-implementation-assemblee/02-rendu-et-settings"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Entreprises (/entreprise)",
+        "icon": "building-2",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "03-slasheurs-france/03-entreprise/index.mdx",
+            "path": "/03-slasheurs-france/03-entreprise"
+          },
+          {
+            "type": "category",
+            "label": "Pôle Métier & Usages",
+            "icon": "briefcase",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/03-entreprise/01-metier-entreprise/01-fondations-et-cadre",
+              "/03-slasheurs-france/03-entreprise/01-metier-entreprise/02-cas-usage-et-scenarios"
             ]
           },
           {
             "type": "category",
-            "label": "Agent",
-            "icon": "folder",
+            "label": "Pôle API & Veille",
+            "icon": "code",
             "collapsed": false,
             "items": [
-              {
-                "type": "doc",
-                "file": "fr/03-slasheurs-france/11-agent/index.mdx",
-                "path": "/fr/03-slasheurs-france/11-agent"
-              },
-              {
-                "type": "category",
-                "label": "Pôle Métier & Usages",
-                "icon": "briefcase",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/11-agent/01-metier-agent/01-fondations-et-cadre",
-                  "/fr/03-slasheurs-france/11-agent/01-metier-agent/02-cas-usage-et-scenarios"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Pôle API & Veille",
-                "icon": "code",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/11-agent/02-api-agent/01-benchmark-des-apis",
-                  "/fr/03-slasheurs-france/11-agent/02-api-agent/02-specifications-techniques"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Pôle Implémentation",
-                "icon": "terminal",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/11-agent/03-implementation-agent/01-provider-django",
-                  "/fr/03-slasheurs-france/11-agent/03-implementation-agent/02-rendu-et-settings"
-                ]
-              }
+              "/03-slasheurs-france/03-entreprise/02-api-entreprise/01-benchmark-des-apis",
+              "/03-slasheurs-france/03-entreprise/02-api-entreprise/02-specifications-techniques"
             ]
           },
           {
             "type": "category",
-            "label": "Cadastre (/cadastre)",
-            "icon": "folder",
+            "label": "Pôle Implémentation",
+            "icon": "terminal",
             "collapsed": false,
             "items": [
-              {
-                "type": "doc",
-                "file": "fr/03-slasheurs-france/12-cadastre/index.mdx",
-                "path": "/fr/03-slasheurs-france/12-cadastre"
-              },
-              {
-                "type": "category",
-                "label": "Pôle Métier & Usages",
-                "icon": "briefcase",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/12-cadastre/01-metier-cadastre/01-fondations-et-cadre",
-                  "/fr/03-slasheurs-france/12-cadastre/01-metier-cadastre/02-cas-usage-et-scenarios"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Pôle API & Veille",
-                "icon": "code",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/12-cadastre/02-api-cadastre/01-benchmark-des-apis",
-                  "/fr/03-slasheurs-france/12-cadastre/02-api-cadastre/02-specifications-techniques"
-                ]
-              },
-              {
-                "type": "category",
-                "label": "Pôle Implémentation",
-                "icon": "terminal",
-                "collapsed": false,
-                "items": [
-                  "/fr/03-slasheurs-france/12-cadastre/03-implementation-cadastre/01-provider-django",
-                  "/fr/03-slasheurs-france/12-cadastre/03-implementation-cadastre/02-rendu-et-settings"
-                ]
-              }
+              "/03-slasheurs-france/03-entreprise/03-implementation-entreprise/01-provider-django",
+              "/03-slasheurs-france/03-entreprise/03-implementation-entreprise/02-rendu-et-settings"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Base Adresse Nationale (/adresse)",
+        "icon": "map-pin",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "03-slasheurs-france/04-adresse/index.mdx",
+            "path": "/03-slasheurs-france/04-adresse"
+          },
+          {
+            "type": "category",
+            "label": "Pôle Métier & Usages",
+            "icon": "briefcase",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/04-adresse/01-metier-adresse/01-fondations-et-cadre",
+              "/03-slasheurs-france/04-adresse/01-metier-adresse/02-cas-usage-et-scenarios"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle API & Veille",
+            "icon": "code",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/04-adresse/02-api-adresse/01-benchmark-des-apis",
+              "/03-slasheurs-france/04-adresse/02-api-adresse/02-specifications-techniques"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle Implémentation",
+            "icon": "terminal",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/04-adresse/03-implementation-adresse/01-provider-django",
+              "/03-slasheurs-france/04-adresse/03-implementation-adresse/02-rendu-et-settings"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Albert",
+        "icon": "folder",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "03-slasheurs-france/05-albert/index.mdx",
+            "path": "/03-slasheurs-france/05-albert"
+          },
+          {
+            "type": "category",
+            "label": "Pôle Métier & Usages",
+            "icon": "briefcase",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/05-albert/01-metier-albert/01-fondations-et-cadre",
+              "/03-slasheurs-france/05-albert/01-metier-albert/02-cas-usage-et-scenarios"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle API & Veille",
+            "icon": "code",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/05-albert/02-api-albert/01-benchmark-des-apis",
+              "/03-slasheurs-france/05-albert/02-api-albert/02-specifications-techniques"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle Implémentation",
+            "icon": "terminal",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/05-albert/03-implementation-albert/01-provider-django",
+              "/03-slasheurs-france/05-albert/03-implementation-albert/02-rendu-et-settings"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "category",
+        "label": "SDK Developpeur",
+        "icon": "code",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "03-slasheurs-france/06-sdk-developpeur/index.mdx",
+            "path": "/03-slasheurs-france/06-sdk-developpeur"
+          }
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Marchés Publics (/marche)",
+        "icon": "folder",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "03-slasheurs-france/08-marche/index.mdx",
+            "path": "/03-slasheurs-france/08-marche"
+          },
+          {
+            "type": "category",
+            "label": "Pôle Métier & Usages",
+            "icon": "briefcase",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/08-marche/01-metier-marche/01-fondations-et-cadre",
+              "/03-slasheurs-france/08-marche/01-metier-marche/02-cas-usage-et-scenarios"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle API & Veille",
+            "icon": "code",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/08-marche/02-api-marche/01-benchmark-des-apis",
+              "/03-slasheurs-france/08-marche/02-api-marche/02-specifications-techniques"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle Implémentation",
+            "icon": "terminal",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/08-marche/03-implementation-marche/01-provider-django",
+              "/03-slasheurs-france/08-marche/03-implementation-marche/02-rendu-et-settings"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Subventions (/subvention)",
+        "icon": "folder",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "03-slasheurs-france/09-subvention/index.mdx",
+            "path": "/03-slasheurs-france/09-subvention"
+          },
+          {
+            "type": "category",
+            "label": "Pôle Métier & Usages",
+            "icon": "briefcase",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/09-subvention/01-metier-subvention/01-fondations-et-cadre",
+              "/03-slasheurs-france/09-subvention/01-metier-subvention/02-cas-usage-et-scenarios"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle API & Veille",
+            "icon": "code",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/09-subvention/02-api-subvention/01-benchmark-des-apis",
+              "/03-slasheurs-france/09-subvention/02-api-subvention/02-specifications-techniques"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle Implémentation",
+            "icon": "terminal",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/09-subvention/03-implementation-subvention/01-provider-django",
+              "/03-slasheurs-france/09-subvention/03-implementation-subvention/02-rendu-et-settings"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Stats",
+        "icon": "folder",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "03-slasheurs-france/10-stats/index.mdx",
+            "path": "/03-slasheurs-france/10-stats"
+          },
+          {
+            "type": "category",
+            "label": "Pôle Métier & Usages",
+            "icon": "briefcase",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/10-stats/01-metier-stats/01-fondations-et-cadre",
+              "/03-slasheurs-france/10-stats/01-metier-stats/02-cas-usage-et-scenarios"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle API & Veille",
+            "icon": "code",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/10-stats/02-api-stats/01-benchmark-des-apis",
+              "/03-slasheurs-france/10-stats/02-api-stats/02-specifications-techniques"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle Implémentation",
+            "icon": "terminal",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/10-stats/03-implementation-stats/01-provider-django",
+              "/03-slasheurs-france/10-stats/03-implementation-stats/02-rendu-et-settings"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Agent",
+        "icon": "folder",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "03-slasheurs-france/11-agent/index.mdx",
+            "path": "/03-slasheurs-france/11-agent"
+          },
+          {
+            "type": "category",
+            "label": "Pôle Métier & Usages",
+            "icon": "briefcase",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/11-agent/01-metier-agent/01-fondations-et-cadre",
+              "/03-slasheurs-france/11-agent/01-metier-agent/02-cas-usage-et-scenarios"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle API & Veille",
+            "icon": "code",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/11-agent/02-api-agent/01-benchmark-des-apis",
+              "/03-slasheurs-france/11-agent/02-api-agent/02-specifications-techniques"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle Implémentation",
+            "icon": "terminal",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/11-agent/03-implementation-agent/01-provider-django",
+              "/03-slasheurs-france/11-agent/03-implementation-agent/02-rendu-et-settings"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Cadastre (/cadastre)",
+        "icon": "folder",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "03-slasheurs-france/12-cadastre/index.mdx",
+            "path": "/03-slasheurs-france/12-cadastre"
+          },
+          {
+            "type": "category",
+            "label": "Pôle Métier & Usages",
+            "icon": "briefcase",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/12-cadastre/01-metier-cadastre/01-fondations-et-cadre",
+              "/03-slasheurs-france/12-cadastre/01-metier-cadastre/02-cas-usage-et-scenarios"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle API & Veille",
+            "icon": "code",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/12-cadastre/02-api-cadastre/01-benchmark-des-apis",
+              "/03-slasheurs-france/12-cadastre/02-api-cadastre/02-specifications-techniques"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Pôle Implémentation",
+            "icon": "terminal",
+            "collapsed": false,
+            "items": [
+              "/03-slasheurs-france/12-cadastre/03-implementation-cadastre/01-provider-django",
+              "/03-slasheurs-france/12-cadastre/03-implementation-cadastre/02-rendu-et-settings"
             ]
           }
         ]

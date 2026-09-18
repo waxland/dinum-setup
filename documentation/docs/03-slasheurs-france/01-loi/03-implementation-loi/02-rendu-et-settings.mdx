@@ -1,0 +1,58 @@
+---
+title: Rendu DSFR & Activation Conditionnelle (/loi)
+sidebar_label: Rendu & Settings
+description: "Déclinaison des 3 modes d'affichage DSFR, Feature Flagging piloté par l'environnement et rétrocompatibilité CRDT."
+---
+
+
+
+La commande `/loi` s'appuie sur le composant BlockNote universel **`SourceBlockSpec`** et le mécanisme de Feature Flagging dynamique du socle commun.
+
+---
+
+## 🎨 Rendu Visuel des 3 Formats DSFR
+
+L'agent public peut basculer à tout moment entre les 3 formats :
+
+1. 📢 **Format Callout (Encadré DSFR)** : Idéal pour les visas des arrêtés ou les citations in extenso.
+2. 🗂️ **Format Carte (Card DSFR)** : Synthèse avec grille Code / Date d'effet / Identifiant.
+3. 🔗 **Format Lien (Inline Badge)** : Mention compacte cliquable dans la phrase avec popover au survol.
+
+<LawSlashPreview />
+
+---
+
+## ⚙️ Feature Flagging & Activation Conditionnelle
+
+<Mermaid chart={`flowchart TD
+    subgraph Env["1. Variables d'Environnement"]
+        CheckKeys{"PISTE_CLIENT_ID & SECRET présents ?"}
+    end
+
+    subgraph Backend["2. Django Backend"]
+        Provider["LawSourceProvider.is_enabled()"]
+        ConfigView["GET /api/v1/config/features/"]
+    end
+
+    subgraph Front["3. Frontend BlockNote"]
+        SlashMenu["Menu Slash (/)"]
+        ShowCmd["/loi est visible ⚖️"]
+        HideCmd["/loi est masquée"]
+    end
+
+    CheckKeys -->|Oui ou Mock=true| Provider
+    Provider --> ConfigView
+    ConfigView --> SlashMenu
+    SlashMenu -->|laws.enabled === true| ShowCmd
+    SlashMenu -->|laws.enabled === false| HideCmd
+`} />
+
+### Variables à Configurer
+
+```dotenv
+# .env.local ou common.local
+PISTE_CLIENT_ID=votre_client_id_piste
+PISTE_CLIENT_SECRET=votre_client_secret_piste
+PISTE_API_BASE_URL=https://api.piste.gouv.fr/dila/legifrance/lf-engine-app
+PISTE_MOCK_ENABLED=false
+```
