@@ -76,10 +76,12 @@ make demo-dev
   - 🇫🇷 **France (DINUM) :** Commandes `/loi` (Légifrance), `/entreprise` (RNE), `/marche` (BOAMP), `/adresse` (BAN), `/subvention`, `/stats` (INSEE), `/agent`, `/cadastre`, `/demarche`, `/opendata`, `/albert` (IA RAG).
   - 🇩🇪 **Deutschland (Bund) :** Commandes `/gesetz` (*Gesetze im Internet* / BMJ), `/register` (*Handelsregister*), `/bundestag`, `/govdata`.
   - 🇳🇱 **Nederland (Overheid) :** Commandes `/wet` (*Wettenbank* / Overheid.nl), `/kvk` (*Kamer van Koophandel*), `/bag` (Adresses), `/dataoverheid`.
+  - 🇪� **España (Estado) :** Commandes `/ley` (*BOE*), `/empresa` (*Registro Mercantil*), `/licitacion` (*Contratación del Estado*), `/catastro` (*Sede del Catastro*).
   - 🇪🇺 **European Union :** Commandes `/eurlex` (*EUR-Lex* - RGPD / Directives), `/ted` (*Tenders Electronic Daily*), `/dataeuropa`.
-- **🌐 Sélecteur de Langue :** Bascule instantanée de la locale de l'UI (`en` 🇬🇧, `fr` 🇫🇷, `de` 🇩🇪, `nl` 🇳🇱).
+- **🌐 Sélecteur de Langue :** Bascule instantanée de la locale de l'UI (`en` 🇬🇧, `fr` 🇫🇷, `de` 🇩🇪, `nl` 🇳🇱, `es` 🇪🇸).
 - **🌙 Thème Sombre / Clair :** Bouton de bascule en haut à droite respectant les contrastes WCAG AA.
 - **🔄 Permutation des Formats :** Basculez à chaud chaque bloc entre les formats **Callout**, **Card (Carte)** et **Link (Lien Inline)**.
+
 
 ### 🏗️ Compiler pour la Production :
 

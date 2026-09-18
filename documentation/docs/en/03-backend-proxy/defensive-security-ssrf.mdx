@@ -1,0 +1,21 @@
+---
+title: "Defensive Anti-SSRF Security & Circuit Breaker"
+sidebar_label: "Anti-SSRF Security"
+description: Strict private network IP blocking, scheme enforcement, and 3.5s timeout circuit breaker architecture.
+---
+
+import { Mermaid } from "../../../../src/components/Mermaid";
+
+# 🔒 Defensive Anti-SSRF Security & Circuit Breaker
+
+The backend proxy enforces zero-trust URL validation to shield internal infrastructure from Server-Side Request Forgery (SSRF) vulnerabilities:
+
+```mermaid
+flowchart TD
+    Inbound["Inbound Request URL"] --> Scheme{"Scheme == https:// ?"}
+    Scheme -- No --> Reject["❌ 400 Bad Request (Blocked Scheme)"]
+    Scheme -- Yes --> DNS["DNS Resolution to IP"]
+    DNS --> CheckIP{"Is IP in Private/Loopback Ranges?\n(127.0.0.0/8, 10.0.0.0/8, 172.16.0.0/12,\n192.168.0.0/16, 169.254.0.0/16, [::1])"}
+    CheckIP -- Yes --> RejectIP["❌ 403 Forbidden (Blocked Private IP)"]
+    CheckIP -- No --> Outbound["✅ Safe Outbound Request (3.5s Timeout)"]
+```

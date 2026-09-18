@@ -1,0 +1,45 @@
+---
+title: "TypeScript Contracts & DTO Reference"
+sidebar_label: "DTO Contracts"
+description: Complete TypeScript reference for ExternalSourceEntity, ExternalSourceSuggestResult, and DisplayMode types.
+---
+
+# 📜 TypeScript Contracts & DTO Reference
+
+The `@slasher/sdk` package exports strict, zero-dependency TypeScript interfaces with zero use of `any`:
+
+---
+
+## 🧩 `ExternalSourceEntity`
+
+```typescript
+export type ExternalSourceDisplayMode = 'callout' | 'card' | 'link';
+
+export type ExternalSourceStatus =
+  | 'valid'       // In force / En vigueur / In Kraft / Geldend / En vigor
+  | 'repealed'    // Repealed / Abrogé / Außer Kraft / Vervallen / Derogado
+  | 'pending'     // Pending / En cours / In Beratung / En trámite
+  | 'archived'    // Archived / Archivé / Archiviert / Archivado
+  | 'custom';
+
+export interface ExternalSourceEntity {
+  id?: string;
+  provider?: string;
+  title: string;
+  subtitle?: string;
+  contentHtml?: string;
+  snippet?: string;
+  excerpt?: string;
+  summary?: string;
+  url?: string;
+  status?: ExternalSourceStatus | string;
+  statusLabel?: string;
+  statusColor?: 'blue' | 'green' | 'yellow' | 'red' | 'purple' | 'gray';
+  statusBadgeColor?: 'success' | 'warning' | 'error' | 'info' | 'neutral';
+  borderColor?: string;
+  displayMode: ExternalSourceDisplayMode;
+  metadata?: Record<string, string | number | boolean>;
+  updatedAt?: string;
+  verifiedAt?: string;
+}
+```

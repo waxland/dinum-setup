@@ -1,0 +1,29 @@
+---
+title: "🇳🇱 Netherlands Sovereign Slasher Preset"
+sidebar_label: "🇳🇱 Netherlands"
+description: Official Dutch connectors for Wettenbank (KOOP / Overheid.nl), KVK Handelsregister, and BAG.
+---
+
+import { FeatureCard, FeatureGrid } from "../../../../src/components/Cards";
+
+# 🇳🇱 Netherlands Sovereign Slasher Preset
+
+Connect your BlockNote documents directly to official Dutch public administration registers:
+
+<FeatureGrid cols={3}>
+  <FeatureCard
+    title="/wet (Wettenbank)"
+    description="Query Wetten.overheid.nl (KOOP) for certified articles (e.g. Art. 6:162 Burgerlijk Wetboek)."
+    icon="scale"
+  />
+  <FeatureCard
+    title="/kvk (Handelsregister)"
+    description="Official chamber of commerce registration from Kamer van Koophandel."
+    icon="building-2"
+  />
+  <FeatureCard
+    title="/bag (Adres & Gebouwen)"
+    description="Verified postal addresses from Basisregistratie Adressen en Gebouwen."
+    icon="map-pin"
+  />
+</FeatureGrid>

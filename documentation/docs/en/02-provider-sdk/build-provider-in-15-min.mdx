@@ -1,0 +1,40 @@
+---
+title: "Build a Custom Slasher in 15 Minutes"
+sidebar_label: "15-Min Tutorial"
+description: Step-by-step tutorial to create a live GitHub repository or public API slasher connector.
+---
+
+import { FeatureCard, FeatureGrid } from "../../../../src/components/Cards";
+
+# ⚡ Build a Custom Slasher in 15 Minutes
+
+Follow this quick guide to build, test, and register a custom Slasher provider connecting to a remote public API.
+
+---
+
+## 🛠️ Step 1: Declare the Provider
+
+```typescript
+import { defineSourceProvider } from "@slasher/sdk";
+
+export const npmPackageSlasher = defineSourceProvider({
+  name: "npm Packages",
+  slashCommand: "npm",
+  icon: "📦",
+  description: "Insert live npm package metadata into documents",
+  suggest: async (query) => {
+    const res = await fetch(`https://api.npms.io/v2/search/suggestions?q=${encodeURIComponent(query)}`);
+    const results = await res.json();
+    return results.map((pkg: any) => ({
+      id: pkg.package.name,
+      title: pkg.package.name,
+      subtitle: pkg.package.description,
+      type: "custom",
+    }));
+  },
+  search: async (query) => {
+    // Return formatted ExternalSourceEntity array
+    return [];
+  },
+});
+```

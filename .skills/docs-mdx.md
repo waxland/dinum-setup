@@ -10,7 +10,7 @@ Ce skill fournit les règles pour rédiger et publier des pages documentaires cl
 
 ## 1. Quand l'utiliser
 
-- Création ou mise à jour de fiches documentaires dans `docs/`.
+- Création ou mise à jour de fiches documentaires dans `documentations/`.
 - Ajout de nouveaux composants visuels React (`src/components/`) injectés dans le MDX.
 - Régénération de l'arborescence et des redirections via `scripts/generate-docs-navigation.mjs`.
 - Résolution d'erreurs de compilation Zudoku ou d'hydratation React.

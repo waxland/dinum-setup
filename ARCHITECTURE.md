@@ -1,23 +1,25 @@
 # 🏗️ Architecture Globale du Dépôt (`ARCHITECTURE.md`)
 
-> **Projet :** `dinum-setup` — Orchestration, Portail Documentaire & Packages Souverains La Suite Numérique  
+> **Projet Officiel :** **Slasher** — Orchestration, Standard Universel BlockNote & Slasheurs Souverains Multi-Pays  
 > **Auteur :** GitHub Copilot (Gemini 3.7 Flash) — Direction Interministérielle du Numérique (DINUM)  
-> **Date de Référence :** 17 Septembre 2026  
-> **Statut :** Spécification d'Architecture Monorepo & Découplage Modulaire
+> **Date de Référence :** 18 Septembre 2026  
+> **Statut :** Spécification d'Architecture Monorepo en 4 Piliers & Découplage Modulaire
 
 ---
 
 ## 🏛️ 1. Vue d'Ensemble & Les 4 Piliers Racine
 
-Le dépôt `dinum-setup` est architecturé en **4 piliers autonomes et étanches**, garantissant une séparation stricte des responsabilités entre l'outillage de développement, les packages distribuables, le démonstrateur autonome et les clones applicatifs :
+Le dépôt `dinum-setup` est architecturé en **4 piliers autonomes et étanches**, complétés par les dossiers d'orchestration racine (`PR/` et `.skills/`) :
 
 ```mermaid
 flowchart TD
-    subgraph Root["🏛️ dinum-setup (Racine du Monorepo)"]
-        Documentation["📚 documentation/<br/>• Portail Zudoku v0.86.0 (Vite SSR + React 19)<br/>• 152 fichiers MDX / 270 routes pré-rendues<br/>• Composants DSFR, Cunningham & Mermaid"]
-        Packages["📦 packages/<br/>• django-lasuite-sources (PyPI - 12 connecteurs)<br/>• @suitenumerique/blocknote-sources (npm - CustomBlock UI)<br/>• @suitenumerique/slash-sources-sdk (npm - SDK Universel)"]
-        Demo["🎮 demo/<br/>• Démonstrateur Web Standalone (Vite + React 19)<br/>• Éditeur BlockNote.js branché sur les packages<br/>• Testable sans lancer l'infrastructure Docker"]
-        LaSuite["🐙 LaSuite/ (remplace ./src)<br/>• Clones Git des dépôts upstream de La Suite<br/>• docs, projects, meet, transfers, people, accounts<br/>• Piloté par le Makefile & Docker Compose"]
+    subgraph Root["🏛️ Slasher Monorepo (dinum-setup/)"]
+        PR_Dir["🐙 PR/ : Dossiers des Pull Requests amont (Docs & BlockNote)"]
+        Skills_Dir["🤖 .skills/ : Directives d'agents & AGENTS.md"]
+        Documentation["📚 documentation/<br/>• Portail Zudoku v0.86.0 (Vite SSR + React 19)<br/>• /fr : Socle DINUM (01-onboarding, 02-la-suite, 03-slasheurs-france)<br/>• /en : Universal Slasher Standard (Overview, SDK, Formats, RFC)"]
+        Packages["📦 packages/<br/>• django-lasuite-sources (PyPI / Hubs multi-pays)<br/>• @suitenumerique/blocknote-sources (@slasher/blocknote)<br/>• @suitenumerique/slash-sources-sdk (@slasher/sdk)"]
+        Demo["🎮 demo/<br/>• Démonstrateur Web Standalone (Vite 6 + React 19)<br/>• Sélecteur de pays (🇫🇷 🇩🇪 🇳🇱 🇪🇸 🇪🇺) & langue (en/fr/de/nl/es)"]
+        LaSuite["📂 LaSuite/ (remplace ./src)<br/>• Clones Git des dépôts upstream de La Suite<br/>• docs, projects, meet, transfers, people, accounts"]
     end
 
     subgraph Integration["🔗 Flux de Dépendances & Consommation"]
@@ -27,10 +29,10 @@ flowchart TD
     end
 
     subgraph Upstream["🌐 Distribution Publique & Amont"]
-        Packages -->|Publish PyPI| PyPI["🐍 PyPI (django-lasuite-sources)"]
-        Packages -->|Publish npm| NPM["📦 npm (@suitenumerique/*)"]
+        Packages -->|Publish PyPI| PyPI["🐍 PyPI (django-slasher-core & official-*-api-slashers)"]
+        Packages -->|Publish npm| NPM["📦 npm (@slasher/*)"]
         Demo -->|Build autonome| StandaloneSite["🌐 Déploiement Démo Web Live"]
-        LaSuite -->|Pull Requests| UpstreamRepos["🐙 suitenumerique/docs & TypeCellOS/BlockNote"]
+        PR_Dir -->|Pull Requests| UpstreamRepos["🐙 suitenumerique/docs & TypeCellOS/BlockNote"]
     end
 ```
 
@@ -41,17 +43,40 @@ flowchart TD
 ```
 dinum-setup/
 │
+├── 🐙 PR/                             # Dossier Officiel des Pull Requests (Racine)
+│   ├── README.md                      # Tableau de bord des 3 PRs
+│   ├── 01-docs-serveur-config.md      # PR 1 : Serveurs Distants & VMs (suitenumerique/docs)
+│   ├── 02-docs-packages-souverains.md # PR 2 : Packages Souverains Opt-in (suitenumerique/docs)
+│   ├── 03-blocknote-slasher-rfc.md    # PR 3 : RFC Amont Slasher (TypeCellOS/BlockNote)
+│   ├── 04-guide-d-arbitrage.md        # Guide décisionnel In-Tree vs Packages
+│   └── 05-commandes-gh-cli.md         # Scripts d'exécution gh pr create
+│
+├── 🤖 .skills/                        # Directives d'Agents IA (Racine)
+│   ├── README.md                      # Hub d'orientation des skills
+│   ├── code-standards.md              # Normes TypeScript strict & Cunningham
+│   ├── dsfr.md                        # DSFR officiel & tokens
+│   ├── rgaa-review.md                 # Accessibilité RGAA v4.1 AA
+│   ├── lasuite-dev.md                 # Dev local & orchestration
+│   ├── docs-mdx.md                    # Rédaction MDX & Zudoku
+│   ├── code-review.md                 # Checklist revue de code
+│   ├── architecture-review.md         # Audit d'architecture logicielle
+│   └── design-change.md               # Évolution & format ADR
+│
 ├── 📚 documentation/                   # 1. Portail Documentaire Zudoku (Autonome)
-│   ├── docs/                          # Les 152 guides et spécifications techniques MDX
-│   │   ├── 00-accueil/                # Vision hackathon 42 Oléron, Figma & Planning
-│   │   ├── 01-onboarding/             # Prise en main poste hôte, VS Code, SSH, serveurs distants
-│   │   ├── 02-architecture/           # OIDC ProConnect, SOPS, CRDT/Yjs, S3, PRA, K8s
-│   │   ├── 03-projets/                # Fiches des 8 applications de La Suite numérique
-│   │   ├── 04-design-system/          # Fondations DSFR, Marianne, Cunningham Tokens, Accessibilité
-│   │   ├── 05-ressources/             # Salons Matrix/Tchap, templates de code, roadmaps
-│   │   ├── 07-skills/                 # Directives d'ingénierie, Zero-any, Code Review, ADRs
-│   │   ├── 08-slash/                  # Socle souverain, 12 connecteurs en 3 pôles (70 fichiers), RXP
-│   │   └── 09-PR/                     # Hub des dossiers de PRs officielles (Docs & BlockNote)
+│   ├── docs/                          # Guides et spécifications techniques MDX
+│   │   ├── en/                        # 🇬🇧 Standard Universel Slasher
+│   │   │   ├── index.mdx              # Overview & Live Playground
+│   │   │   ├── 00-overview/           # Standard & 3-Tier Architecture
+│   │   │   ├── 01-blocknote-extension/# CustomBlock, 3 Formats, WAI-ARIA, Exports
+│   │   │   ├── 02-provider-sdk/       # defineSourceProvider, DTOs, Tutorial 15 min
+│   │   │   ├── 03-backend-proxy/      # Proxy DRF, Cache SHA-256, Anti-SSRF
+│   │   │   ├── 04-presets/            # Presets DE, NL, ES, EU
+│   │   │   └── 05-rfc-upstream/       # Spécification formelle de la RFC
+│   │   │
+│   │   └── fr/                        # 🇫🇷 Socle Souverain DINUM
+│   │       ├── 01-onboarding/         # 🚀 1. Onboarding, Contexte 42, Planning & Support
+│   │       ├── 02-la-suite/           # 🏛️ 2. Hub La Suite (01-apps, 02-archi, 03-dsfr, 04-ressources)
+│   │       └── 03-slasheurs-france/   # ⚡ 3. Slasheurs France (10 connecteurs certifiés)
 │   ├── public/                        # Actifs statiques (logos lasuite.svg, gouv.svg, favicons)
 │   ├── scripts/
 │   │   └── generate-docs-navigation.mjs # Générateur dynamique de zudoku.navigation.tsx
@@ -69,14 +94,14 @@ dinum-setup/
 │   ├── tsconfig.json                  # Typage TypeScript strict et alias vers packages/
 │   ├── vite.config.ts                 # Configuration du bundler Vite SSR
 │   ├── zudoku.config.tsx              # Configuration de marque et métadonnées Zudoku
-│   ├── zudoku.navigation.tsx          # Table de navigation et 45 redirections de routes
+│   ├── zudoku.navigation.tsx          # Table de navigation bilingue et redirections
 │   └── zudoku.theme.css               # Feuilles de style et tokens Marianne / DSFR
 │
 ├── 📦 packages/                        # 2. Packages Souverains Découplés (Distribuables)
 │   │
 │   ├── django-lasuite-sources/        # Package Python Django (Distribution PyPI)
-│   │   ├── lasuite_sources/           # 21 modules Python (Architecture Provider)
-│   │   │   ├── __init__.py            # Point d'entrée et singleton registry
+│   │   ├── lasuite_sources/           # Cœur proxy & hubs de connecteurs par pays
+│   │   │   ├── __init__.py            # Point d'entrée et registry
 │   │   │   ├── apps.py                # AppConfig Django avec autodiscovery
 │   │   │   ├── base.py                # Classe abstraite BaseSourceProvider
 │   │   │   ├── registry.py            # Registre thread-safe des connecteurs
@@ -84,19 +109,12 @@ dinum-setup/
 │   │   │   ├── types.py               # Dataclasses & TypedDicts DTO
 │   │   │   ├── urls.py                # Routage DRF (/search/, /suggest/, /detail/)
 │   │   │   ├── views.py               # Vues REST Django REST Framework
-│   │   │   └── providers/             # Les 12 connecteurs souverains isolés
-│   │   │       ├── law.py             # /loi (Légifrance / PISTE)
-│   │   │       ├── parliament.py      # /assemblee (Assemblée Nationale / Tricoteuse)
-│   │   │       ├── company.py         # /entreprise (Annuaire Entreprises / RNE)
-│   │   │       ├── address.py         # /adresse (BAN IGN / Addok)
-│   │   │       ├── albert.py          # /albert (Albert IA Souveraine RAG)
-│   │   │       ├── procurement.py     # /marche (BOAMP / DAE)
-│   │   │       ├── grant.py           # /subvention (Aides-Territoires / Fonds Vert)
-│   │   │       ├── insee.py           # /stats (INSEE Données Locales)
-│   │   │       ├── agent.py           # /agent (Annuaire du Service Public)
-│   │   │       ├── cadastre.py        # /cadastre (Géoplateforme Cadastre DGFiP)
-│   │   │       ├── demarche.py        # /demarche (Démarches-Simplifiées.fr)
-│   │   │       └── opendata.py        # /opendata (data.gouv.fr)
+│   │   │   └── providers/             # Hubs nationaux symétriques
+│   │   │       ├── france/            # 12 connecteurs souverains français (Loi, RNE, BAN...)
+│   │   │       ├── germany/           # Connecteurs allemands (Gesetze, Handelsregister)
+│   │   │       ├── netherlands/       # Connecteurs néerlandais (Wettenbank, KVK, BAG)
+│   │   │       ├── spain/             # Connecteurs espagnols (BOE, Registro Mercantil)
+│   │   │       └── europe/            # Connecteurs européens (EUR-Lex, TED)
 │   │   ├── demo/                      # Mini-application Django de test autonome (runserver 8000)
 │   │   ├── docs/                      # Spécification OpenAPI 3.0 (openapi.yaml)
 │   │   ├── tests/                     # Tests Pytest (SSRF, Circuit Breaker, DRF)
@@ -108,8 +126,10 @@ dinum-setup/
 │   │   │   ├── SourceBlock.tsx        # Factory createReactBlockSpec() BlockNote 0.54+
 │   │   │   ├── components/            # Palette flottante Popover (cmdk + ARIA)
 │   │   │   ├── exporters/             # Mappeurs vectoriels (PDF, DOCX, ODT)
-│   │   │   ├── formats/               # Les 3 modes DSFR (Callout Marianne, Carte, Lien)
+│   │   │   ├── formats/               # Les 3 modes DSFR (Callout, Carte, Lien)
 │   │   │   ├── hooks/                 # Hook useSourceSearch avec debounce & abort
+│   │   │   ├── i18n/                  # Dictionnaires multi-locales (en, fr, de, nl, es)
+│   │   │   ├── mockData/              # Datasets vérifiés (France, Allemagne, Pays-Bas, Espagne, EU)
 │   │   │   └── index.ts               # Point d'entrée principal de la librairie
 │   │   ├── .storybook/                # Configuration Storybook autonome (Port 6006)
 │   │   ├── docs/                      # Documentation technique des formats (formats.md)
@@ -118,6 +138,35 @@ dinum-setup/
 │   │   ├── tsconfig.json              # Typage strict (Zéro any, Zéro cast)
 │   │   └── tsup.config.ts             # Bundler TypeScript multi-formats
 │   │
+│   └── slash-sources-sdk/             # SDK TypeScript Universel Léger (< 5 kB)
+│       ├── src/
+│       │   ├── defineSourceProvider.ts# Helper déclaratif immuable
+│       │   ├── types.ts               # DTOs stricts en anglais (ExternalSourceEntity)
+│       │   └── index.ts               # Baril d'exportation des types
+│       ├── tests/                     # Tests unitaires Vitest de validation de schéma
+│       ├── package.json               # Configuration du package npm
+│       └── tsconfig.json              # Typage strict
+│
+├── 🎮 demo/                            # 3. Démonstrateur Web Standalone (Vite 6 + React 19)
+│   ├── src/
+│   │   ├── App.tsx                    # Interface avec sélecteur de pays (🇫🇷 🇩🇪 🇳🇱 🇪🇸 🇪🇺) et langue
+│   │   ├── main.tsx                   # Point de montage React 19
+│   │   └── demo.css                   # Styles personnalisés
+│   ├── index.html                     # Point d'entrée HTML5
+│   ├── package.json                   # Dépendances Vite et workspaces locaux
+│   ├── tsconfig.json                  # Typage TypeScript strict
+│   ├── vercel.json                    # Configuration de déploiement SPA Vercel
+│   └── vite.config.ts                 # Configuration Vite (Port 5173)
+│
+└── 🐙 LaSuite/                         # 4. Espace Clones Git (Applications de La Suite)
+    ├── .gitkeep                       # Préserve le dossier dans Git
+    ├── docs/                          # Clone de suitenumerique/docs (Impress Next.js & Django)
+    ├── projects/                      # Clone de suitenumerique/projects
+    ├── meet/                          # Clone de suitenumerique/meet
+    ├── transfers/                     # Clone de suitenumerique/transfers
+    ├── people/                        # Clone de suitenumerique/people
+    └── accounts/                      # Clone de suitenumerique/accounts
+
 │   └── slash-sources-sdk/             # SDK TypeScript Universel < 5 kB (Distribution npm)
 │       ├── src/                       # Cœur du SDK Zero-Dependency
 │       │   ├── defineSourceProvider.ts# Helper déclaratif immuable Object.freeze()

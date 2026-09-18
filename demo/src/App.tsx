@@ -13,6 +13,7 @@ import {
     MOCK_FRANCE_SOURCES,
     MOCK_GERMANY_SOURCES,
     MOCK_NETHERLANDS_SOURCES,
+    MOCK_SPAIN_SOURCES,
     SourceBlock,
     getLocaleDictionary,
     type ExternalSourceDisplayMode,
@@ -21,6 +22,7 @@ import {
     type SupportedCountry,
     type SupportedLocale,
 } from "@suitenumerique/blocknote-sources";
+
 
 
 interface CountryPresetConfig {
@@ -80,6 +82,19 @@ const COUNTRY_PRESETS: Record<SupportedCountry, CountryPresetConfig> = {
       { type: "opendata", label: "/dataoverheid", icon: "🌐", desc: "Data.overheid.nl" },
     ],
   },
+  es: {
+    country: "es",
+    name: "España",
+    flag: "🇪🇸",
+    defaultLocale: "es",
+    description: "Conectores Soberanos Reino de España (BOE, Registro Mercantil, Plataforma de Contratación, Catastro...)",
+    buttons: [
+      { type: "law", label: "/ley", icon: "⚖️", desc: "Boletín Oficial del Estado (BOE)" },
+      { type: "company", label: "/empresa", icon: "🏢", desc: "Registro Mercantil de España" },
+      { type: "procurement", label: "/licitacion", icon: "🛍️", desc: "Plataforma de Contratación del Estado" },
+      { type: "cadastre", label: "/catastro", icon: "🗺️", desc: "Sede Electrónica del Catastro" },
+    ],
+  },
   eu: {
     country: "eu",
     name: "European Union",
@@ -93,6 +108,7 @@ const COUNTRY_PRESETS: Record<SupportedCountry, CountryPresetConfig> = {
     ],
   },
 };
+
 
 const createEmptySourceBlock = (entityType: SourceEntityType) => ({
   type: "sourceBlock" as const,
@@ -397,7 +413,7 @@ export const App: React.FC = () => {
         <div className="demo-title-group">
           <h1>
             <span>{activePreset.flag}</span>
-            <span>BlockNote XL External Sources</span>
+            <span>Slasher — Connected Data Blocks</span>
           </h1>
           <p>
             {activePreset.description}
@@ -437,7 +453,9 @@ export const App: React.FC = () => {
             <option value="fr">🇫🇷 Français</option>
             <option value="de">🇩🇪 Deutsch</option>
             <option value="nl">🇳🇱 Nederlands</option>
+            <option value="es">🇪🇸 Español</option>
           </select>
+
 
           <button
             type="button"

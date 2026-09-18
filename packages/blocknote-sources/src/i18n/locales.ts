@@ -1,4 +1,4 @@
-export type SupportedLocale = 'en' | 'fr' | 'de' | 'nl';
+export type SupportedLocale = 'en' | 'fr' | 'de' | 'nl' | 'es';
 
 export interface ExternalSourceI18nStrings {
   searchPlaceholder: string;
@@ -132,7 +132,34 @@ export const LOCALES: Record<SupportedLocale, ExternalSourceI18nStrings> = {
       archived: 'Gearchiveerd',
     },
   },
+  es: {
+    searchPlaceholder: 'Buscar tema, artículo o nombre de ley...',
+    searchTitle: 'Buscar referencia externa',
+    backButton: 'Volver',
+    allFilter: 'Todo',
+    codesFilter: 'Códigos',
+    lawsFilter: 'Leyes',
+    keyboardTip: '↑ ↓ Navegar · ↵ Insertar · Esc Cerrar',
+    openSource: 'Abrir fuente oficial',
+    copyLink: 'Copiar enlace',
+    removeReference: 'Eliminar referencia',
+    modes: {
+      callout: 'Destacado',
+      calloutDesc: 'Texto oficial y fuente',
+      card: 'Tarjeta',
+      cardDesc: 'Cuadrícula de metadatos',
+      link: 'Enlace en línea',
+      linkDesc: 'Incrustado en el párrafo',
+    },
+    status: {
+      valid: 'En vigor',
+      repealed: 'Derogado',
+      pending: 'En trámite',
+      archived: 'Archivado',
+    },
+  },
 };
+
 
 export function getI18nStrings(locale: SupportedLocale = 'en'): ExternalSourceI18nStrings {
   return LOCALES[locale] || LOCALES.en;

@@ -1,0 +1,18 @@
+---
+title: "Deterministic Redis Caching Strategy"
+sidebar_label: "Deterministic Cache"
+description: SHA-256 query normalization and high-efficiency 24-hour Redis caching for sovereign APIs.
+---
+
+import { Mermaid } from "../../../../src/components/Mermaid";
+
+# ⚡ Deterministic Redis Caching Strategy
+
+To minimize outbound network roundtrips and avoid rate-limiting on governmental gateways, Slasher employs deterministic key normalization:
+
+```mermaid
+flowchart LR
+    Req["Query: type=law & q=RGPD & limit=10"] --> Norm["Canonical Normalization (Lowercase, Sorted Params)"]
+    Norm --> Hash["SHA-256 Digest: e3b0c44298fc1c149..."]
+    Hash --> Redis["Redis Key: slasher:cache:law:e3b0c442... (24h TTL)"]
+```

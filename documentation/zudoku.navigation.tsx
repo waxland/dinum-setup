@@ -12,6 +12,100 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
         "file": "en/index.mdx",
         "path": "/en",
         "label": "Overview"
+      },
+      {
+        "type": "category",
+        "label": "Overview",
+        "icon": "folder",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "en/00-overview/index.mdx",
+            "path": "/en/00-overview"
+          },
+          "/en/00-overview/architecture-3-tier",
+          "/en/00-overview/international-vision"
+        ]
+      },
+      {
+        "type": "category",
+        "label": "BlockNote Extension",
+        "icon": "monitor",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "en/01-blocknote-extension/index.mdx",
+            "path": "/en/01-blocknote-extension"
+          },
+          "/en/01-blocknote-extension/3-display-formats",
+          "/en/01-blocknote-extension/document-exports",
+          "/en/01-blocknote-extension/floating-search-popover",
+          "/en/01-blocknote-extension/styling-and-themes"
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Provider SDK",
+        "icon": "code",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "en/02-provider-sdk/index.mdx",
+            "path": "/en/02-provider-sdk"
+          },
+          "/en/02-provider-sdk/build-provider-in-15-min",
+          "/en/02-provider-sdk/define-source-provider",
+          "/en/02-provider-sdk/typescript-contracts"
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Backend Proxy",
+        "icon": "server",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "en/03-backend-proxy/index.mdx",
+            "path": "/en/03-backend-proxy"
+          },
+          "/en/03-backend-proxy/defensive-security-ssrf",
+          "/en/03-backend-proxy/deterministic-cache"
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Presets",
+        "icon": "folder",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "en/04-presets/index.mdx",
+            "path": "/en/04-presets"
+          },
+          "/en/04-presets/european-union",
+          "/en/04-presets/germany-bund",
+          "/en/04-presets/netherlands-gov",
+          "/en/04-presets/spain-boe"
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Rfc Upstream",
+        "icon": "folder",
+        "collapsed": false,
+        "items": [
+          {
+            "type": "doc",
+            "file": "en/05-rfc-upstream/index.mdx",
+            "path": "/en/05-rfc-upstream"
+          },
+          "/en/05-rfc-upstream/blocknote-rfc-specification"
+        ]
       }
     ]
   },
@@ -23,30 +117,25 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
     "items": [
       {
         "type": "category",
-        "label": "Accueil",
-        "icon": "folder",
-        "collapsed": false,
-        "items": [
-          {
-            "type": "doc",
-            "file": "fr/00-accueil/index.mdx",
-            "path": "/fr",
-            "label": "Accueil"
-          },
-          "/fr/00-accueil/challenge-42",
-          "/fr/00-accueil/planning"
-        ]
-      },
-      {
-        "type": "category",
-        "label": "Onboarding",
+        "label": "Onboarding & Démarrage",
         "icon": "folder",
         "collapsed": false,
         "items": [
           {
             "type": "doc",
             "file": "fr/01-onboarding/index.mdx",
-            "path": "/fr/01-onboarding"
+            "path": "/fr",
+            "label": "Accueil"
+          },
+          {
+            "type": "category",
+            "label": "Contexte & Hackathon 42",
+            "icon": "folder",
+            "collapsed": false,
+            "items": [
+              "/fr/01-onboarding/00-contexte/challenge-42",
+              "/fr/01-onboarding/00-contexte/planning"
+            ]
           },
           {
             "type": "category",
@@ -107,202 +196,194 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         "type": "category",
-        "label": "Architecture",
+        "label": "La Suite Numérique",
         "icon": "folder",
         "collapsed": false,
         "items": [
           {
             "type": "doc",
-            "file": "fr/02-architecture/index.mdx",
-            "path": "/fr/02-architecture"
+            "file": "fr/02-la-suite/index.mdx",
+            "path": "/fr/02-la-suite"
           },
           {
             "type": "category",
-            "label": "Securite Et Identite",
-            "icon": "shield-check",
+            "label": "Applications & Projets",
+            "icon": "folder",
             "collapsed": false,
             "items": [
-              "/fr/02-architecture/01-securite-et-identite/auth",
-              "/fr/02-architecture/01-securite-et-identite/federation-identite-proconnect",
-              "/fr/02-architecture/01-securite-et-identite/secrets-sops"
+              {
+                "type": "doc",
+                "file": "fr/02-la-suite/01-applications/index.mdx",
+                "path": "/fr/02-la-suite/01-applications"
+              },
+              {
+                "type": "category",
+                "label": "Documents Et Contenus",
+                "icon": "file-text",
+                "collapsed": false,
+                "items": [
+                  "/fr/02-la-suite/01-applications/01-documents-et-contenus/docs",
+                  "/fr/02-la-suite/01-applications/01-documents-et-contenus/fichiers-drive",
+                  "/fr/02-la-suite/01-applications/01-documents-et-contenus/grist"
+                ]
+              },
+              {
+                "type": "category",
+                "label": "Communication Et Echange",
+                "icon": "message-square",
+                "collapsed": false,
+                "items": [
+                  "/fr/02-la-suite/01-applications/02-communication-et-echange/meet",
+                  "/fr/02-la-suite/01-applications/02-communication-et-echange/tchap",
+                  "/fr/02-la-suite/01-applications/02-communication-et-echange/transfers"
+                ]
+              },
+              {
+                "type": "category",
+                "label": "Gestion Et Utilisateurs",
+                "icon": "users",
+                "collapsed": false,
+                "items": [
+                  "/fr/02-la-suite/01-applications/03-gestion-et-utilisateurs/accounts",
+                  "/fr/02-la-suite/01-applications/03-gestion-et-utilisateurs/people",
+                  "/fr/02-la-suite/01-applications/03-gestion-et-utilisateurs/projects"
+                ]
+              }
             ]
           },
           {
             "type": "category",
-            "label": "Donnees Et Temps Reel",
-            "icon": "database",
+            "label": "Architecture & Données",
+            "icon": "folder",
             "collapsed": false,
             "items": [
-              "/fr/02-architecture/02-donnees-et-temps-reel/flux-stockage-s3",
-              "/fr/02-architecture/02-donnees-et-temps-reel/sauvegardes-et-restauration",
-              "/fr/02-architecture/02-donnees-et-temps-reel/temps-reel-et-crdt"
+              {
+                "type": "doc",
+                "file": "fr/02-la-suite/02-architecture/index.mdx",
+                "path": "/fr/02-la-suite/02-architecture"
+              },
+              {
+                "type": "category",
+                "label": "Securite Et Identite",
+                "icon": "shield-check",
+                "collapsed": false,
+                "items": [
+                  "/fr/02-la-suite/02-architecture/01-securite-et-identite/auth",
+                  "/fr/02-la-suite/02-architecture/01-securite-et-identite/federation-identite-proconnect",
+                  "/fr/02-la-suite/02-architecture/01-securite-et-identite/secrets-sops"
+                ]
+              },
+              {
+                "type": "category",
+                "label": "Donnees Et Temps Reel",
+                "icon": "database",
+                "collapsed": false,
+                "items": [
+                  "/fr/02-la-suite/02-architecture/02-donnees-et-temps-reel/flux-stockage-s3",
+                  "/fr/02-la-suite/02-architecture/02-donnees-et-temps-reel/sauvegardes-et-restauration",
+                  "/fr/02-la-suite/02-architecture/02-donnees-et-temps-reel/temps-reel-et-crdt"
+                ]
+              },
+              {
+                "type": "category",
+                "label": "Devops Et Deploiement",
+                "icon": "cloud",
+                "collapsed": false,
+                "items": [
+                  "/fr/02-la-suite/02-architecture/03-devops-et-deploiement/cicd-github-actions",
+                  "/fr/02-la-suite/02-architecture/03-devops-et-deploiement/deploiement-production",
+                  "/fr/02-la-suite/02-architecture/03-devops-et-deploiement/env",
+                  "/fr/02-la-suite/02-architecture/03-devops-et-deploiement/hot-reload"
+                ]
+              }
             ]
           },
           {
             "type": "category",
-            "label": "Devops Et Deploiement",
-            "icon": "cloud",
+            "label": "Design System & DSFR",
+            "icon": "folder",
             "collapsed": false,
             "items": [
-              "/fr/02-architecture/03-devops-et-deploiement/cicd-github-actions",
-              "/fr/02-architecture/03-devops-et-deploiement/deploiement-production",
-              "/fr/02-architecture/03-devops-et-deploiement/env",
-              "/fr/02-architecture/03-devops-et-deploiement/hot-reload"
+              {
+                "type": "doc",
+                "file": "fr/02-la-suite/03-design-system/index.mdx",
+                "path": "/fr/02-la-suite/03-design-system"
+              },
+              {
+                "type": "category",
+                "label": "Fondations",
+                "icon": "sliders",
+                "collapsed": false,
+                "items": [
+                  "/fr/02-la-suite/03-design-system/01-fondations/accessibilite-rgaa",
+                  "/fr/02-la-suite/03-design-system/01-fondations/couleurs-et-themes",
+                  "/fr/02-la-suite/03-design-system/01-fondations/figma",
+                  "/fr/02-la-suite/03-design-system/01-fondations/icones",
+                  "/fr/02-la-suite/03-design-system/01-fondations/installation",
+                  "/fr/02-la-suite/03-design-system/01-fondations/typographie"
+                ]
+              },
+              {
+                "type": "category",
+                "label": "Composants",
+                "icon": "box",
+                "collapsed": false,
+                "items": [
+                  "/fr/02-la-suite/03-design-system/02-composants/alertes-et-callouts",
+                  "/fr/02-la-suite/03-design-system/02-composants/badges-et-statuts",
+                  "/fr/02-la-suite/03-design-system/02-composants/boutons",
+                  "/fr/02-la-suite/03-design-system/02-composants/cartes-et-conteneurs",
+                  "/fr/02-la-suite/03-design-system/02-composants/formulaires",
+                  "/fr/02-la-suite/03-design-system/02-composants/modales-et-dialogues",
+                  "/fr/02-la-suite/03-design-system/02-composants/notices-et-bandeaux",
+                  "/fr/02-la-suite/03-design-system/02-composants/pagination-et-stepper",
+                  "/fr/02-la-suite/03-design-system/02-composants/tableaux"
+                ]
+              },
+              {
+                "type": "category",
+                "label": "Layout Et Structure",
+                "icon": "layout-grid",
+                "collapsed": false,
+                "items": [
+                  "/fr/02-la-suite/03-design-system/03-layout-et-structure/navigation-et-layout"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Ressources",
+            "icon": "folder",
+            "collapsed": false,
+            "items": [
+              "/fr/02-la-suite/04-ressources/communaute",
+              "/fr/02-la-suite/04-ressources/roadmap",
+              "/fr/02-la-suite/04-ressources/templates-et-outils"
             ]
           }
         ]
       },
       {
         "type": "category",
-        "label": "Projets",
+        "label": "Slasheurs France (DINUM)",
         "icon": "folder",
         "collapsed": false,
         "items": [
           {
             "type": "doc",
-            "file": "fr/03-projets/index.mdx",
-            "path": "/fr/03-projets"
+            "file": "fr/03-slasheurs-france/index.mdx",
+            "path": "/fr/03-slasheurs-france"
           },
-          {
-            "type": "category",
-            "label": "Documents Et Contenus",
-            "icon": "file-text",
-            "collapsed": false,
-            "items": [
-              "/fr/03-projets/01-documents-et-contenus/docs",
-              "/fr/03-projets/01-documents-et-contenus/fichiers-drive",
-              "/fr/03-projets/01-documents-et-contenus/grist"
-            ]
-          },
-          {
-            "type": "category",
-            "label": "Communication Et Echange",
-            "icon": "message-square",
-            "collapsed": false,
-            "items": [
-              "/fr/03-projets/02-communication-et-echange/meet",
-              "/fr/03-projets/02-communication-et-echange/tchap",
-              "/fr/03-projets/02-communication-et-echange/transfers"
-            ]
-          },
-          {
-            "type": "category",
-            "label": "Gestion Et Utilisateurs",
-            "icon": "users",
-            "collapsed": false,
-            "items": [
-              "/fr/03-projets/03-gestion-et-utilisateurs/accounts",
-              "/fr/03-projets/03-gestion-et-utilisateurs/people",
-              "/fr/03-projets/03-gestion-et-utilisateurs/projects"
-            ]
-          }
-        ]
-      },
-      {
-        "type": "category",
-        "label": "Design System",
-        "icon": "folder",
-        "collapsed": false,
-        "items": [
-          {
-            "type": "doc",
-            "file": "fr/04-design-system/index.mdx",
-            "path": "/fr/04-design-system"
-          },
-          {
-            "type": "category",
-            "label": "Fondations",
-            "icon": "sliders",
-            "collapsed": false,
-            "items": [
-              "/fr/04-design-system/01-fondations/accessibilite-rgaa",
-              "/fr/04-design-system/01-fondations/couleurs-et-themes",
-              "/fr/04-design-system/01-fondations/figma",
-              "/fr/04-design-system/01-fondations/icones",
-              "/fr/04-design-system/01-fondations/installation",
-              "/fr/04-design-system/01-fondations/typographie"
-            ]
-          },
-          {
-            "type": "category",
-            "label": "Composants",
-            "icon": "box",
-            "collapsed": false,
-            "items": [
-              "/fr/04-design-system/02-composants/alertes-et-callouts",
-              "/fr/04-design-system/02-composants/badges-et-statuts",
-              "/fr/04-design-system/02-composants/boutons",
-              "/fr/04-design-system/02-composants/cartes-et-conteneurs",
-              "/fr/04-design-system/02-composants/formulaires",
-              "/fr/04-design-system/02-composants/modales-et-dialogues",
-              "/fr/04-design-system/02-composants/notices-et-bandeaux",
-              "/fr/04-design-system/02-composants/pagination-et-stepper",
-              "/fr/04-design-system/02-composants/tableaux"
-            ]
-          },
-          {
-            "type": "category",
-            "label": "Layout Et Structure",
-            "icon": "layout-grid",
-            "collapsed": false,
-            "items": [
-              "/fr/04-design-system/03-layout-et-structure/navigation-et-layout"
-            ]
-          }
-        ]
-      },
-      {
-        "type": "category",
-        "label": "Ressources",
-        "icon": "folder",
-        "collapsed": false,
-        "items": [
-          "/fr/05-ressources/communaute",
-          "/fr/05-ressources/roadmap",
-          "/fr/05-ressources/templates-et-outils"
-        ]
-      },
-      {
-        "type": "category",
-        "label": "Skills",
-        "icon": "folder",
-        "collapsed": false,
-        "items": [
-          {
-            "type": "doc",
-            "file": "fr/07-skills/index.mdx",
-            "path": "/fr/07-skills"
-          },
-          "/fr/07-skills/architecture-review",
-          "/fr/07-skills/code-review",
-          "/fr/07-skills/code-standards",
-          "/fr/07-skills/design-change",
-          "/fr/07-skills/docs-mdx",
-          "/fr/07-skills/dsfr",
-          "/fr/07-skills/lasuite-dev",
-          "/fr/07-skills/rgaa-review"
-        ]
-      },
-      {
-        "type": "category",
-        "label": "Commandes Slash",
-        "icon": "folder",
-        "collapsed": false,
-        "items": [
-          {
-            "type": "doc",
-            "file": "fr/08-slash/index.mdx",
-            "path": "/fr/08-slash"
-          },
-          "/fr/08-slash/00-socle-technique",
-          "/fr/08-slash/01-architecture-standardisee",
-          "/fr/08-slash/02-composant-customblock-unique",
-          "/fr/08-slash/03-proxy-backend-et-cache",
-          "/fr/08-slash/04-tutoriel-ajouter-une-api",
-          "/fr/08-slash/05-proposition",
-          "/fr/08-slash/07-roadmap",
-          "/fr/08-slash/13-reutilisation-transverse",
-          "/fr/08-slash/14-retour-d-experience",
+          "/fr/03-slasheurs-france/00-socle-technique",
+          "/fr/03-slasheurs-france/01-architecture-standardisee",
+          "/fr/03-slasheurs-france/02-composant-customblock-unique",
+          "/fr/03-slasheurs-france/03-proxy-backend-et-cache",
+          "/fr/03-slasheurs-france/04-tutoriel-ajouter-une-api",
+          "/fr/03-slasheurs-france/05-proposition",
+          "/fr/03-slasheurs-france/07-roadmap",
+          "/fr/03-slasheurs-france/13-reutilisation-transverse",
+          "/fr/03-slasheurs-france/14-retour-d-experience",
           {
             "type": "category",
             "label": "Projet de Loi (/loi)",
@@ -311,8 +392,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "items": [
               {
                 "type": "doc",
-                "file": "fr/08-slash/01-loi/index.mdx",
-                "path": "/fr/08-slash/01-loi"
+                "file": "fr/03-slasheurs-france/01-loi/index.mdx",
+                "path": "/fr/03-slasheurs-france/01-loi"
               },
               {
                 "type": "category",
@@ -320,8 +401,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "briefcase",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/01-loi/01-metier-loi/01-fondations-et-cadre",
-                  "/fr/08-slash/01-loi/01-metier-loi/02-cas-usage-et-scenarios"
+                  "/fr/03-slasheurs-france/01-loi/01-metier-loi/01-fondations-et-cadre",
+                  "/fr/03-slasheurs-france/01-loi/01-metier-loi/02-cas-usage-et-scenarios"
                 ]
               },
               {
@@ -330,8 +411,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "code",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/01-loi/02-api-loi/01-benchmark-des-apis",
-                  "/fr/08-slash/01-loi/02-api-loi/02-specifications-techniques"
+                  "/fr/03-slasheurs-france/01-loi/02-api-loi/01-benchmark-des-apis",
+                  "/fr/03-slasheurs-france/01-loi/02-api-loi/02-specifications-techniques"
                 ]
               },
               {
@@ -340,8 +421,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "terminal",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/01-loi/03-implementation-loi/01-provider-django",
-                  "/fr/08-slash/01-loi/03-implementation-loi/02-rendu-et-settings"
+                  "/fr/03-slasheurs-france/01-loi/03-implementation-loi/01-provider-django",
+                  "/fr/03-slasheurs-france/01-loi/03-implementation-loi/02-rendu-et-settings"
                 ]
               }
             ]
@@ -354,8 +435,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "items": [
               {
                 "type": "doc",
-                "file": "fr/08-slash/02-assemblee/index.mdx",
-                "path": "/fr/08-slash/02-assemblee"
+                "file": "fr/03-slasheurs-france/02-assemblee/index.mdx",
+                "path": "/fr/03-slasheurs-france/02-assemblee"
               },
               {
                 "type": "category",
@@ -363,8 +444,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "briefcase",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/02-assemblee/01-metier-assemblee/01-fondations-et-cadre",
-                  "/fr/08-slash/02-assemblee/01-metier-assemblee/02-cas-usage-et-scenarios"
+                  "/fr/03-slasheurs-france/02-assemblee/01-metier-assemblee/01-fondations-et-cadre",
+                  "/fr/03-slasheurs-france/02-assemblee/01-metier-assemblee/02-cas-usage-et-scenarios"
                 ]
               },
               {
@@ -373,8 +454,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "code",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/02-assemblee/02-api-assemblee/01-benchmark-des-apis",
-                  "/fr/08-slash/02-assemblee/02-api-assemblee/02-specifications-techniques"
+                  "/fr/03-slasheurs-france/02-assemblee/02-api-assemblee/01-benchmark-des-apis",
+                  "/fr/03-slasheurs-france/02-assemblee/02-api-assemblee/02-specifications-techniques"
                 ]
               },
               {
@@ -383,8 +464,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "terminal",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/02-assemblee/03-implementation-assemblee/01-provider-django",
-                  "/fr/08-slash/02-assemblee/03-implementation-assemblee/02-rendu-et-settings"
+                  "/fr/03-slasheurs-france/02-assemblee/03-implementation-assemblee/01-provider-django",
+                  "/fr/03-slasheurs-france/02-assemblee/03-implementation-assemblee/02-rendu-et-settings"
                 ]
               }
             ]
@@ -397,8 +478,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "items": [
               {
                 "type": "doc",
-                "file": "fr/08-slash/03-entreprise/index.mdx",
-                "path": "/fr/08-slash/03-entreprise"
+                "file": "fr/03-slasheurs-france/03-entreprise/index.mdx",
+                "path": "/fr/03-slasheurs-france/03-entreprise"
               },
               {
                 "type": "category",
@@ -406,8 +487,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "briefcase",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/03-entreprise/01-metier-entreprise/01-fondations-et-cadre",
-                  "/fr/08-slash/03-entreprise/01-metier-entreprise/02-cas-usage-et-scenarios"
+                  "/fr/03-slasheurs-france/03-entreprise/01-metier-entreprise/01-fondations-et-cadre",
+                  "/fr/03-slasheurs-france/03-entreprise/01-metier-entreprise/02-cas-usage-et-scenarios"
                 ]
               },
               {
@@ -416,8 +497,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "code",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/03-entreprise/02-api-entreprise/01-benchmark-des-apis",
-                  "/fr/08-slash/03-entreprise/02-api-entreprise/02-specifications-techniques"
+                  "/fr/03-slasheurs-france/03-entreprise/02-api-entreprise/01-benchmark-des-apis",
+                  "/fr/03-slasheurs-france/03-entreprise/02-api-entreprise/02-specifications-techniques"
                 ]
               },
               {
@@ -426,8 +507,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "terminal",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/03-entreprise/03-implementation-entreprise/01-provider-django",
-                  "/fr/08-slash/03-entreprise/03-implementation-entreprise/02-rendu-et-settings"
+                  "/fr/03-slasheurs-france/03-entreprise/03-implementation-entreprise/01-provider-django",
+                  "/fr/03-slasheurs-france/03-entreprise/03-implementation-entreprise/02-rendu-et-settings"
                 ]
               }
             ]
@@ -440,8 +521,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "items": [
               {
                 "type": "doc",
-                "file": "fr/08-slash/04-adresse/index.mdx",
-                "path": "/fr/08-slash/04-adresse"
+                "file": "fr/03-slasheurs-france/04-adresse/index.mdx",
+                "path": "/fr/03-slasheurs-france/04-adresse"
               },
               {
                 "type": "category",
@@ -449,8 +530,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "briefcase",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/04-adresse/01-metier-adresse/01-fondations-et-cadre",
-                  "/fr/08-slash/04-adresse/01-metier-adresse/02-cas-usage-et-scenarios"
+                  "/fr/03-slasheurs-france/04-adresse/01-metier-adresse/01-fondations-et-cadre",
+                  "/fr/03-slasheurs-france/04-adresse/01-metier-adresse/02-cas-usage-et-scenarios"
                 ]
               },
               {
@@ -459,8 +540,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "code",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/04-adresse/02-api-adresse/01-benchmark-des-apis",
-                  "/fr/08-slash/04-adresse/02-api-adresse/02-specifications-techniques"
+                  "/fr/03-slasheurs-france/04-adresse/02-api-adresse/01-benchmark-des-apis",
+                  "/fr/03-slasheurs-france/04-adresse/02-api-adresse/02-specifications-techniques"
                 ]
               },
               {
@@ -469,8 +550,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "terminal",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/04-adresse/03-implementation-adresse/01-provider-django",
-                  "/fr/08-slash/04-adresse/03-implementation-adresse/02-rendu-et-settings"
+                  "/fr/03-slasheurs-france/04-adresse/03-implementation-adresse/01-provider-django",
+                  "/fr/03-slasheurs-france/04-adresse/03-implementation-adresse/02-rendu-et-settings"
                 ]
               }
             ]
@@ -483,8 +564,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "items": [
               {
                 "type": "doc",
-                "file": "fr/08-slash/05-albert/index.mdx",
-                "path": "/fr/08-slash/05-albert"
+                "file": "fr/03-slasheurs-france/05-albert/index.mdx",
+                "path": "/fr/03-slasheurs-france/05-albert"
               },
               {
                 "type": "category",
@@ -492,8 +573,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "briefcase",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/05-albert/01-metier-albert/01-fondations-et-cadre",
-                  "/fr/08-slash/05-albert/01-metier-albert/02-cas-usage-et-scenarios"
+                  "/fr/03-slasheurs-france/05-albert/01-metier-albert/01-fondations-et-cadre",
+                  "/fr/03-slasheurs-france/05-albert/01-metier-albert/02-cas-usage-et-scenarios"
                 ]
               },
               {
@@ -502,8 +583,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "code",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/05-albert/02-api-albert/01-benchmark-des-apis",
-                  "/fr/08-slash/05-albert/02-api-albert/02-specifications-techniques"
+                  "/fr/03-slasheurs-france/05-albert/02-api-albert/01-benchmark-des-apis",
+                  "/fr/03-slasheurs-france/05-albert/02-api-albert/02-specifications-techniques"
                 ]
               },
               {
@@ -512,8 +593,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "terminal",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/05-albert/03-implementation-albert/01-provider-django",
-                  "/fr/08-slash/05-albert/03-implementation-albert/02-rendu-et-settings"
+                  "/fr/03-slasheurs-france/05-albert/03-implementation-albert/01-provider-django",
+                  "/fr/03-slasheurs-france/05-albert/03-implementation-albert/02-rendu-et-settings"
                 ]
               }
             ]
@@ -526,8 +607,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "items": [
               {
                 "type": "doc",
-                "file": "fr/08-slash/06-sdk-developpeur/index.mdx",
-                "path": "/fr/08-slash/06-sdk-developpeur"
+                "file": "fr/03-slasheurs-france/06-sdk-developpeur/index.mdx",
+                "path": "/fr/03-slasheurs-france/06-sdk-developpeur"
               }
             ]
           },
@@ -539,8 +620,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "items": [
               {
                 "type": "doc",
-                "file": "fr/08-slash/08-marche/index.mdx",
-                "path": "/fr/08-slash/08-marche"
+                "file": "fr/03-slasheurs-france/08-marche/index.mdx",
+                "path": "/fr/03-slasheurs-france/08-marche"
               },
               {
                 "type": "category",
@@ -548,8 +629,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "briefcase",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/08-marche/01-metier-marche/01-fondations-et-cadre",
-                  "/fr/08-slash/08-marche/01-metier-marche/02-cas-usage-et-scenarios"
+                  "/fr/03-slasheurs-france/08-marche/01-metier-marche/01-fondations-et-cadre",
+                  "/fr/03-slasheurs-france/08-marche/01-metier-marche/02-cas-usage-et-scenarios"
                 ]
               },
               {
@@ -558,8 +639,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "code",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/08-marche/02-api-marche/01-benchmark-des-apis",
-                  "/fr/08-slash/08-marche/02-api-marche/02-specifications-techniques"
+                  "/fr/03-slasheurs-france/08-marche/02-api-marche/01-benchmark-des-apis",
+                  "/fr/03-slasheurs-france/08-marche/02-api-marche/02-specifications-techniques"
                 ]
               },
               {
@@ -568,8 +649,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "terminal",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/08-marche/03-implementation-marche/01-provider-django",
-                  "/fr/08-slash/08-marche/03-implementation-marche/02-rendu-et-settings"
+                  "/fr/03-slasheurs-france/08-marche/03-implementation-marche/01-provider-django",
+                  "/fr/03-slasheurs-france/08-marche/03-implementation-marche/02-rendu-et-settings"
                 ]
               }
             ]
@@ -582,8 +663,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "items": [
               {
                 "type": "doc",
-                "file": "fr/08-slash/09-subvention/index.mdx",
-                "path": "/fr/08-slash/09-subvention"
+                "file": "fr/03-slasheurs-france/09-subvention/index.mdx",
+                "path": "/fr/03-slasheurs-france/09-subvention"
               },
               {
                 "type": "category",
@@ -591,8 +672,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "briefcase",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/09-subvention/01-metier-subvention/01-fondations-et-cadre",
-                  "/fr/08-slash/09-subvention/01-metier-subvention/02-cas-usage-et-scenarios"
+                  "/fr/03-slasheurs-france/09-subvention/01-metier-subvention/01-fondations-et-cadre",
+                  "/fr/03-slasheurs-france/09-subvention/01-metier-subvention/02-cas-usage-et-scenarios"
                 ]
               },
               {
@@ -601,8 +682,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "code",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/09-subvention/02-api-subvention/01-benchmark-des-apis",
-                  "/fr/08-slash/09-subvention/02-api-subvention/02-specifications-techniques"
+                  "/fr/03-slasheurs-france/09-subvention/02-api-subvention/01-benchmark-des-apis",
+                  "/fr/03-slasheurs-france/09-subvention/02-api-subvention/02-specifications-techniques"
                 ]
               },
               {
@@ -611,8 +692,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "terminal",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/09-subvention/03-implementation-subvention/01-provider-django",
-                  "/fr/08-slash/09-subvention/03-implementation-subvention/02-rendu-et-settings"
+                  "/fr/03-slasheurs-france/09-subvention/03-implementation-subvention/01-provider-django",
+                  "/fr/03-slasheurs-france/09-subvention/03-implementation-subvention/02-rendu-et-settings"
                 ]
               }
             ]
@@ -625,8 +706,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "items": [
               {
                 "type": "doc",
-                "file": "fr/08-slash/10-stats/index.mdx",
-                "path": "/fr/08-slash/10-stats"
+                "file": "fr/03-slasheurs-france/10-stats/index.mdx",
+                "path": "/fr/03-slasheurs-france/10-stats"
               },
               {
                 "type": "category",
@@ -634,8 +715,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "briefcase",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/10-stats/01-metier-stats/01-fondations-et-cadre",
-                  "/fr/08-slash/10-stats/01-metier-stats/02-cas-usage-et-scenarios"
+                  "/fr/03-slasheurs-france/10-stats/01-metier-stats/01-fondations-et-cadre",
+                  "/fr/03-slasheurs-france/10-stats/01-metier-stats/02-cas-usage-et-scenarios"
                 ]
               },
               {
@@ -644,8 +725,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "code",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/10-stats/02-api-stats/01-benchmark-des-apis",
-                  "/fr/08-slash/10-stats/02-api-stats/02-specifications-techniques"
+                  "/fr/03-slasheurs-france/10-stats/02-api-stats/01-benchmark-des-apis",
+                  "/fr/03-slasheurs-france/10-stats/02-api-stats/02-specifications-techniques"
                 ]
               },
               {
@@ -654,8 +735,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "terminal",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/10-stats/03-implementation-stats/01-provider-django",
-                  "/fr/08-slash/10-stats/03-implementation-stats/02-rendu-et-settings"
+                  "/fr/03-slasheurs-france/10-stats/03-implementation-stats/01-provider-django",
+                  "/fr/03-slasheurs-france/10-stats/03-implementation-stats/02-rendu-et-settings"
                 ]
               }
             ]
@@ -668,8 +749,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "items": [
               {
                 "type": "doc",
-                "file": "fr/08-slash/11-agent/index.mdx",
-                "path": "/fr/08-slash/11-agent"
+                "file": "fr/03-slasheurs-france/11-agent/index.mdx",
+                "path": "/fr/03-slasheurs-france/11-agent"
               },
               {
                 "type": "category",
@@ -677,8 +758,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "briefcase",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/11-agent/01-metier-agent/01-fondations-et-cadre",
-                  "/fr/08-slash/11-agent/01-metier-agent/02-cas-usage-et-scenarios"
+                  "/fr/03-slasheurs-france/11-agent/01-metier-agent/01-fondations-et-cadre",
+                  "/fr/03-slasheurs-france/11-agent/01-metier-agent/02-cas-usage-et-scenarios"
                 ]
               },
               {
@@ -687,8 +768,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "code",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/11-agent/02-api-agent/01-benchmark-des-apis",
-                  "/fr/08-slash/11-agent/02-api-agent/02-specifications-techniques"
+                  "/fr/03-slasheurs-france/11-agent/02-api-agent/01-benchmark-des-apis",
+                  "/fr/03-slasheurs-france/11-agent/02-api-agent/02-specifications-techniques"
                 ]
               },
               {
@@ -697,8 +778,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "terminal",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/11-agent/03-implementation-agent/01-provider-django",
-                  "/fr/08-slash/11-agent/03-implementation-agent/02-rendu-et-settings"
+                  "/fr/03-slasheurs-france/11-agent/03-implementation-agent/01-provider-django",
+                  "/fr/03-slasheurs-france/11-agent/03-implementation-agent/02-rendu-et-settings"
                 ]
               }
             ]
@@ -711,8 +792,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "items": [
               {
                 "type": "doc",
-                "file": "fr/08-slash/12-cadastre/index.mdx",
-                "path": "/fr/08-slash/12-cadastre"
+                "file": "fr/03-slasheurs-france/12-cadastre/index.mdx",
+                "path": "/fr/03-slasheurs-france/12-cadastre"
               },
               {
                 "type": "category",
@@ -720,8 +801,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "briefcase",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/12-cadastre/01-metier-cadastre/01-fondations-et-cadre",
-                  "/fr/08-slash/12-cadastre/01-metier-cadastre/02-cas-usage-et-scenarios"
+                  "/fr/03-slasheurs-france/12-cadastre/01-metier-cadastre/01-fondations-et-cadre",
+                  "/fr/03-slasheurs-france/12-cadastre/01-metier-cadastre/02-cas-usage-et-scenarios"
                 ]
               },
               {
@@ -730,8 +811,8 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "code",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/12-cadastre/02-api-cadastre/01-benchmark-des-apis",
-                  "/fr/08-slash/12-cadastre/02-api-cadastre/02-specifications-techniques"
+                  "/fr/03-slasheurs-france/12-cadastre/02-api-cadastre/01-benchmark-des-apis",
+                  "/fr/03-slasheurs-france/12-cadastre/02-api-cadastre/02-specifications-techniques"
                 ]
               },
               {
@@ -740,30 +821,12 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
                 "icon": "terminal",
                 "collapsed": false,
                 "items": [
-                  "/fr/08-slash/12-cadastre/03-implementation-cadastre/01-provider-django",
-                  "/fr/08-slash/12-cadastre/03-implementation-cadastre/02-rendu-et-settings"
+                  "/fr/03-slasheurs-france/12-cadastre/03-implementation-cadastre/01-provider-django",
+                  "/fr/03-slasheurs-france/12-cadastre/03-implementation-cadastre/02-rendu-et-settings"
                 ]
               }
             ]
           }
-        ]
-      },
-      {
-        "type": "category",
-        "label": "Pull Requests & Contributions",
-        "icon": "folder",
-        "collapsed": false,
-        "items": [
-          {
-            "type": "doc",
-            "file": "fr/09-PR/index.mdx",
-            "path": "/fr/09-PR"
-          },
-          "/fr/09-PR/01-docs-serveur-config",
-          "/fr/09-PR/02-docs-packages-souverains",
-          "/fr/09-PR/03-blocknote-external-sources",
-          "/fr/09-PR/04-guide-d-arbitrage-et-migration",
-          "/fr/09-PR/05-commande-PR"
         ]
       }
     ]
@@ -800,12 +863,92 @@ export const docsRedirects: ZudokuConfig["redirects"] = [
     "to": "/fr"
   },
   {
+    "from": "/fr/00-accueil/challenge-42",
+    "to": "/fr/01-onboarding/00-contexte/challenge-42"
+  },
+  {
+    "from": "/fr/00-accueil/planning",
+    "to": "/fr/01-onboarding/00-contexte/planning"
+  },
+  {
+    "from": "/challenge-42",
+    "to": "/fr/01-onboarding/00-contexte/challenge-42"
+  },
+  {
+    "from": "/planning",
+    "to": "/fr/01-onboarding/00-contexte/planning"
+  },
+  {
     "from": "/en/index",
     "to": "/en"
   },
   {
+    "from": "/02-architecture",
+    "to": "/fr/02-la-suite/02-architecture"
+  },
+  {
+    "from": "/fr/02-architecture",
+    "to": "/fr/02-la-suite/02-architecture"
+  },
+  {
+    "from": "/03-projets",
+    "to": "/fr/02-la-suite/01-applications"
+  },
+  {
+    "from": "/fr/03-projets",
+    "to": "/fr/02-la-suite/01-applications"
+  },
+  {
+    "from": "/projets",
+    "to": "/fr/02-la-suite/01-applications"
+  },
+  {
+    "from": "/04-design-system",
+    "to": "/fr/02-la-suite/03-design-system"
+  },
+  {
+    "from": "/fr/04-design-system",
+    "to": "/fr/02-la-suite/03-design-system"
+  },
+  {
+    "from": "/design-system",
+    "to": "/fr/02-la-suite/03-design-system"
+  },
+  {
+    "from": "/dsfr",
+    "to": "/fr/02-la-suite/03-design-system"
+  },
+  {
     "from": "/05-ressources",
-    "to": "/fr/05-ressources/communaute"
+    "to": "/fr/02-la-suite/04-ressources/communaute"
+  },
+  {
+    "from": "/fr/05-ressources",
+    "to": "/fr/02-la-suite/04-ressources/communaute"
+  },
+  {
+    "from": "/ressources",
+    "to": "/fr/02-la-suite/04-ressources/communaute"
+  },
+  {
+    "from": "/slash",
+    "to": "/fr/03-slasheurs-france"
+  },
+  {
+    "from": "/08-slash",
+    "to": "/fr/03-slasheurs-france"
+  },
+  {
+    "from": "/fr/08-slash",
+    "to": "/fr/03-slasheurs-france"
+  },
+  {
+    "from": "/loi",
+    "to": "/fr/03-slasheurs-france/01-loi"
+  },
+  {
+    "from": "/law",
+    "to": "/fr/03-slasheurs-france/01-loi"
   },
   {
     "from": "/onboarding",
@@ -814,118 +957,6 @@ export const docsRedirects: ZudokuConfig["redirects"] = [
   {
     "from": "/01-onboarding",
     "to": "/fr/01-onboarding"
-  },
-  {
-    "from": "/architecture",
-    "to": "/fr/02-architecture"
-  },
-  {
-    "from": "/02-architecture",
-    "to": "/fr/02-architecture"
-  },
-  {
-    "from": "/projets",
-    "to": "/fr/03-projets"
-  },
-  {
-    "from": "/03-projets",
-    "to": "/fr/03-projets"
-  },
-  {
-    "from": "/design-system",
-    "to": "/fr/04-design-system"
-  },
-  {
-    "from": "/04-design-system",
-    "to": "/fr/04-design-system"
-  },
-  {
-    "from": "/dsfr",
-    "to": "/fr/04-design-system"
-  },
-  {
-    "from": "/ressources",
-    "to": "/fr/05-ressources/communaute"
-  },
-  {
-    "from": "/skills",
-    "to": "/fr/07-skills"
-  },
-  {
-    "from": "/07-skills",
-    "to": "/fr/07-skills"
-  },
-  {
-    "from": "/slash",
-    "to": "/fr/08-slash"
-  },
-  {
-    "from": "/08-slash",
-    "to": "/fr/08-slash"
-  },
-  {
-    "from": "/08-slash/index",
-    "to": "/fr/08-slash"
-  },
-  {
-    "from": "/pr",
-    "to": "/fr/09-PR"
-  },
-  {
-    "from": "/prs",
-    "to": "/fr/09-PR"
-  },
-  {
-    "from": "/09-PR",
-    "to": "/fr/09-PR"
-  },
-  {
-    "from": "/08-slash/00-PR",
-    "to": "/fr/09-PR"
-  },
-  {
-    "from": "/08-slash/00-PR/index",
-    "to": "/fr/09-PR"
-  },
-  {
-    "from": "/08-slash/00-PR/00-dossier-pull-request-officielle",
-    "to": "/fr/09-PR/02-docs-packages-souverains"
-  },
-  {
-    "from": "/08-slash/00-PR/01-pr-interne-monolithique",
-    "to": "/fr/09-PR/04-guide-d-arbitrage-et-migration"
-  },
-  {
-    "from": "/08-slash/00-PR/02-pr-externe-packagee",
-    "to": "/fr/09-PR/02-docs-packages-souverains"
-  },
-  {
-    "from": "/08-slash/00-PR/03-guide-d-arbitrage-et-migration",
-    "to": "/fr/09-PR/04-guide-d-arbitrage-et-migration"
-  },
-  {
-    "from": "/08-slash/00-PR/04-proposition-amont-blocknote",
-    "to": "/fr/09-PR/03-blocknote-external-sources"
-  },
-  {
-    "from": "/08-slash/loi",
-    "to": "/fr/08-slash/loi"
-  },
-  {
-    "from": "/loi",
-    "to": "/fr/08-slash/loi"
-  },
-  {
-    "from": "/law",
-    "to": "/fr/08-slash/loi"
-  },
-  {
-    "from": "/comprendre-les-lois",
-    "to": "/fr/08-slash/loi"
-  },
-  {
-    "from": "/ressources-juridiques",
-    "to": "/fr/08-slash/loi"
   },
   {
     "from": "/guide",

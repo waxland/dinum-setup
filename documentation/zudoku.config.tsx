@@ -66,14 +66,14 @@ const config: ZudokuConfig = {
         icon: "globe",
       },
       {
-        label: "⚡ Slasheurs",
-        to: "/fr/08-slash",
+        label: "⚡ Slasheurs France",
+        to: "/fr/03-slasheurs-france",
         icon: "zap",
       },
       {
-        label: "🚀 PRs Officielles",
-        to: "/fr/09-PR",
-        icon: "git-pull-request",
+        label: "🏛️ La Suite",
+        to: "/fr/02-la-suite",
+        icon: "boxes",
       },
       {
         label: "🎨 Figma Docs",

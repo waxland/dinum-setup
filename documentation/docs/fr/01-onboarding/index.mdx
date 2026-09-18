@@ -1,142 +1,176 @@
 ---
-title: Guide de Démarrage Rapide & Onboarding
-sidebar_label: Démarrage Rapide
-description: Guide d'accueil, prise en main pas à pas dès le premier jour, checklist et bonnes pratiques pour contribuer à l'écosystème La Suite numérique.
+title: Portail La Suite dev setup (42 x DINUM)
+sidebar_label: Accueil
+description: Portail de documentation d'ingénierie, onboarding et boîte à outils pour La Suite Numérique et le Socle des Sources Souveraines (/slash).
 ---
 
-Bienvenue dans l'espace d'onboarding et de démarrage rapide de **La Suite numérique** !
+import { Mermaid } from "../../../src/components/Mermaid";
+import { FeatureCard, FeatureGrid } from "../../../src/components/Cards";
+import { BlockNoteSlashPlayground } from "../../../src/components/slash-preview/BlockNoteSlashPlayground";
 
-Ce guide a pour objectif de vous accompagner pas à pas dès votre premier jour : comprendre la vision globale, configurer votre poste de travail, lancer votre premier projet et rejoindre les espaces de discussion de l'équipe.
+Bienvenue sur le portail d'ingénierie et d'orchestration locale de **La Suite numérique** de l'État français (DINUM) !
 
-🔗 **Ressources clés :** [Challenge 42 x DINUM](/00-accueil/challenge-42) • [📅 Planning & Agenda](/00-accueil/planning) • [Portail officiel La Suite](https://lasuite.numerique.gouv.fr/) • [GitHub suitenumerique](https://github.com/suitenumerique) • [DINUM](https://www.numerique.gouv.fr/) • [42](https://42.fr/)
+Ce dépôt a été initié dans le cadre de la collaboration **42 x DINUM** à l'occasion du hackathon organisé à **Forty 2 (Île d'Oléron)** du 14 au 18 septembre 2026. Il centralise l'architecture, les packages souverains, l'onboarding accéléré et la spécification des **Commandes Slash (`/slash`)**.
 
----
-
-## 🧭 Vision et Philosophie de La Suite
-
-**La Suite numérique** est une suite d'outils collaboratifs souverains, libres et sécurisés développée par la Direction Interministérielle du Numérique (**DINUM**) et l'Agence Nationale de la Cohésion des Territoires (**ANCT**), destinée aux agents publics de l'État, des collectivités territoriales et aux organisations publiques.
-
-### Nos principes fondamentaux :
-
-- 🔓 **100% Open Source & Souverain** : Tout le code est public, auditable et hébergeable en autonomie (licences MIT, AGPL, etc.).
-- 🌐 **Digital Public Goods (DPG)** : Conformité aux standards internationaux des biens publics numériques.
-- ⚡ **Interopérabilité & SSO** : Authentification centralisée via OpenID Connect (Keycloak, ProConnect) et communication via des API standards.
-- 🤝 **Collaboration temps réel** : Prise de notes, tableaux de bord et visio conçus pour le travail synchrone et asynchrone des équipes.
+🔗 **Ressources Rapides :** [Challenge 42 x DINUM](/00-accueil/challenge-42) • [📅 Planning & Agenda](/00-accueil/planning) • [Portail La Suite](https://lasuite.numerique.gouv.fr/) • [GitHub suitenumerique](https://github.com/suitenumerique) • [DINUM](https://www.numerique.gouv.fr/) • [42](https://42.fr/)
 
 ---
 
-## � Prérequis Matériels & Système Recommandés
+## 🎨 Références Officielles du Design System & Maquettes Figma
 
-Faire tourner l'ensemble des stacks applicatives simultanément (Docs, Projects, Keycloak, PostgreSQL multiples, MinIO, Redis, Celery) nécessite des ressources suffisantes :
+Pour assurer une cohérence visuelle parfaite entre les applications de La Suite et respecter la charte graphique de l'État :
 
-| Ressource         | Configuration Minimale                         | Configuration Recommandée | Remarques                                                                         |
-| ----------------- | ---------------------------------------------- | ------------------------- | --------------------------------------------------------------------------------- |
-| **CPU**           | 2 cœurs (x86_64 ou ARM64)                      | 4 cœurs ou plus           | Les compilations Docker Buildx et TypeScript tirent parti du multithreading.      |
-| **RAM**           | 4 Go + 4 Go de Swap                            | **8 Go à 16 Go**          | Keycloak (JVM Java) + Next.js + Django nécessitent au moins 3.5 Go de RAM active. |
-| **Espace Disque** | 20 Go libres                                   | **35 Go ou plus libres**  | Les images Docker et volumes de données occupent environ 15 à 20 Go.              |
-| **OS**            | Linux (Debian 12+, Ubuntu 22.04+), macOS, WSL2 | Linux Debian / Ubuntu     | Support natif des bind-mounts Docker et performance I/O optimale.                 |
-
-> 💡 **Conseil Espace Disque & Swap :** Si votre machine dispose de 4 Go de RAM, configurez un fichier de swap de 2 à 4 Go (`sudo swapon --show`). Pour purger l'espace Docker accumulé : `docker system prune -f`.
+<FeatureGrid cols={3}>
+  <FeatureCard
+    icon="📄"
+    title="Figma La Suite Docs"
+    badge="Maquette Officielle"
+    description="Maquettes Figma de référence de l'éditeur collaboratif Docs (Impress), vues de documents et CustomBlocks."
+    href="https://www.figma.com/design/qdCWR4tTUr7vQSecEjCyqO/Docs?node-id=9722-19469&p=f&t=r1O6Np4JgTbRWrCR-0"
+  />
+  <FeatureCard
+    icon="🎨"
+    title="Figma La Suite UI Kit"
+    badge="Cunningham Tokens"
+    description="Bibliothèque de composants UI Kit La Suite basée sur Cunningham et le Design System officiel."
+    href="https://www.figma.com/community/file/1562860630562131728/lasuite-ui-kit"
+  />
+  <FeatureCard
+    icon="📖"
+    title="Storybook Cunningham"
+    badge="Composants Live"
+    description="Documentation interactive et bac à sable des composants UI (@openfun/cunningham-tokens)."
+    href="https://suitenumerique.github.io/cunningham/storybook/"
+  />
+</FeatureGrid>
 
 ---
 
-## �📋 Checklist du 1er Jour (Day-1 Setup)
+## ⚡ Le Projet Phare : Le Socle des Commandes Souveraines (`/slash`)
 
-Suivez ces étapes pour avoir un environnement de développement opérationnel en quelques minutes :
+Le projet **`/slash`** dote l'éditeur **La Suite Docs** d'un accès direct aux **12 grandes bases de données souveraines de l'État français** au fil de la frappe.
 
-### Étape 0 : Découvrir le Challenge 42 x DINUM & le Planning
+```mermaid
+flowchart TD
+    subgraph Client["📝 Éditeur Collaboratif (Navigateur)"]
+        Saisie["Saisie au clavier : /loi, /marche, /entreprise..."] --> Popover["Palette de Recherche Popover (Cunningham + cmdk)"]
+        Popover --> Block["CustomBlock Universel (3 Formats DSFR : Callout, Carte, Lien)"]
+    end
 
-Prenez connaissance des sujets, des tracks de contribution et de l'agenda de la semaine à Forty 2 :
-👉 **[Fiche Challenge La Suite Numérique x 42](/00-accueil/challenge-42)** • **[📅 Planning & Agenda du Hackathon](/00-accueil/planning)**
+    subgraph Packages["📦 Packages Autonomes Découplés (DINUM)"]
+        Pkg_Py["🐍 django-lasuite-sources (PyPI)"]
+        Pkg_JS["📦 @suitenumerique/blocknote-sources (npm)"]
+        Pkg_SDK["🛠️ @suitenumerique/slash-sources-sdk (npm)"]
+    end
 
-### Étape 1 : Configurer Git et votre clé SSH GitHub
+    subgraph APIs["🏛️ Sources Officielles de l'État"]
+        PISTE["Légifrance / PISTE (DILA)"]
+        BOAMP["Marchés Publics BOAMP (DAE)"]
+        BAN["Base Adresse Nationale (IGN)"]
+        INSEE["INSEE Stats & RNE"]
+        Albert["Albert IA Souveraine (Etalab)"]
+    end
 
-Avant de cloner ou de pousser du code, assurez-vous que votre identité Git locale et votre clé SSH sont correctement configurées et ajoutées à votre compte GitHub :
-👉 **[Configuration Git & SSH](/01-onboarding/01-demarrage/git-ssh)** • **[Guide du Premier Commit](/01-onboarding/02-workflow-et-contribution/guide-du-premier-commit)** • **[Glossaire Technique](/01-onboarding/03-support/glossaire)**
-
-### Étape 2 : Cloner ce dépôt d'orchestration
-
-```bash
-git clone https://github.com/waxland/dinum-setup.git
-cd dinum-setup
+    Client --> Pkg_JS
+    Pkg_JS --> Pkg_Py
+    Pkg_Py --> APIs
 ```
 
-### Étape 3 : Installer les prérequis système
+### ⚖️ La Première Proposition Pionnière : `/loi` & la Vision Juridique
+La commande **/loi** (alias `/legifrance`, `/code`, `/article`) constitue la première brique emblématique de cette vision :
+- **Sécurité Juridique Absolue :** Interrogation en temps réel de l'API officielle **PISTE / DILA** pour certifier que l'article de loi ou le décret cité est **en vigueur**.
+- **Veille d'Abrogation Continue :** Tâche Celery scannant les documents pour avertir automatiquement les agents si un article cité vient d'être modifié ou abrogé au Journal Officiel.
+- **Rendu aux 3 Formats DSFR :** Permutation instantanée entre l'**Encadré officiel Marianne** (`#000091`), la **Carte 3 colonnes** de métadonnées et la **Pastille Lien inline**.
+- **Export Vectoriel Parfait :** Préservation de la bordure Marianne et des hyperliens lors de l'export vers PDF, Word (.docx) ou LibreOffice (.odt).
 
-Ce script configure automatiquement les paquets de base, les dépôts Docker officiels, ainsi que les plugins Docker Compose v2 et Buildx nécessaires :
+---
+
+## 🎮 Démonstrateur Interactif BlockNote.js en Direct
+
+Testez ci-dessous le moteur d'édition en direct avec les commandes `/loi`, `/entreprise`, `/adresse`, `/marche`, `/stats` :
+
+<BlockNoteSlashPlayground />
+
+---
+
+## 🧭 Explorer les Sections du Portail
+
+<FeatureGrid cols={3}>
+  <FeatureCard
+    icon="🚀"
+    title="01. Onboarding & Démarrage"
+    description="Checklist du 1er jour, configuration VS Code 1-clic, Git/SSH et environnement système."
+    href="/01-onboarding"
+    badge="Démarrage"
+  />
+  <FeatureCard
+    icon="🏛️"
+    title="02. Architecture Globale"
+    description="Schémas Mermaid interactifs, flux OIDC ProConnect, synchronisation Yjs CRDT et stockage S3."
+    href="/02-architecture"
+    badge="Système"
+  />
+  <FeatureCard
+    icon="📦"
+    title="03. Matrice des Projets"
+    description="Fiches détaillées des applications : Docs, Meet, Tchap, Grist, Drive, Transfers, Projects, People."
+    href="/03-projets"
+    badge="Applications"
+  />
+  <FeatureCard
+    icon="🎨"
+    title="04. Design System (DSFR & Cunningham)"
+    description="Composants officiels, typographie Marianne, tokens de couleur et conformité RGAA v4.1 AA."
+    href="/04-design-system"
+    badge="UI / UX"
+  />
+  <FeatureCard
+    icon="🧰"
+    title="05. Ressources & Outils"
+    description="Templates de PR, feuille de route pluriannuelle et canaux d'entraide communautaire."
+    href="/05-ressources/communaute"
+    badge="Ressources"
+  />
+  <FeatureCard
+    icon="🤖"
+    title="07. Skills d'Agent & Ingénierie"
+    description="Procédures, directives strictes (Zéro any, Zéro cast) et compétences spécialisées."
+    href="/07-skills"
+    badge="Méthode"
+  />
+  <FeatureCard
+    icon="⚡"
+    title="08. Socle Souverain & Packages /slash"
+    description="Dossier technique complet, 12 connecteurs, SDK développeur et architecture en 3 pôles."
+    href="/08-slash"
+    badge="Socle"
+  />
+  <FeatureCard
+    icon="🚀"
+    title="09. Pull Requests & Contributions"
+    description="Dossiers de PR officiels pour suitenumerique/docs (VMs, packages) et TypeCellOS/BlockNote (RFC)."
+    href="/09-PR"
+    badge="Upstream"
+  />
+</FeatureGrid>
+
+---
+
+## ⚡ Commandes Principales d'Orchestration
 
 ```bash
-make install
-```
-
-> 💡 _Cette commande configure également l'entrée `127.0.0.1 auth.local` dans votre fichier `/etc/hosts`._
-
-### Étape 4 : Cloner les dépôts applicatifs
-
-Pour cloner l'ensemble des dépôts dans le dossier `./src` :
-
-```bash
+# 1. Cloner tous les dépôts de La Suite dans ./src
 make clone
-```
 
-_Astuce : Pour ne cloner qu'un sous-ensemble (ex: Docs et Projects) :_
-
-```bash
-REPOS="docs projects" make clone
-```
-
-### Étape 5 : Préparer les environnements et amorcer les projets
-
-Générez les fichiers d'environnement locaux et lancez le bootstrap initial (construction des images, migrations des bases de données et fixtures de test) :
-
-```bash
+# 2. Préparer les fichiers d'environnement locaux (.env)
 make env
+
+# 3. Amorcer les conteneurs et les bases de données
 make bootstrap
-```
 
-### Étape 6 : Démarrer les services et la documentation locale
-
-```bash
-# Lancer les applications en mode dev
+# 4. Lancer les services en mode développement
 make dev
 
-# Dans un autre terminal, lancer le portail de documentation locale Zudoku
+# 5. Démarrer le portail documentaire local Zudoku
 make docs-dev
 ```
-
-Accédez ensuite à la documentation locale sur [http://localhost:3000](http://localhost:3000) et aux différents services selon les ports exposés ci-dessous.
-
----
-
-## 🗺️ Cartographie des Services et Ports Locaux
-
-👉 **[Consulter le répertoire complet des Services, URLs & Identifiants](/01-onboarding/01-demarrage/urls-et-identifiants)** pour le détail exhaustif des bases de données PostgreSQL, consoles S3, webmails et clés secrètes.
-
-| Service                  | Rôle                             | URL / Port Local                                           | Identifiants par défaut                   |
-| ------------------------ | -------------------------------- | ---------------------------------------------------------- | ----------------------------------------- |
-| **Docs** (Frontend)      | Éditeur collaboratif temps réel  | [http://localhost:3000](http://localhost:3000)             | `impress` / `impress` _(compte pré-créé)_ |
-| **Docs** (API / Admin)   | Backend Django & API             | [http://localhost:8071/admin](http://localhost:8071/admin) | `admin` / `admin`                         |
-| **Projects**             | Tableaux Kanban & Tâches         | [http://localhost:8000](http://localhost:8000)             | Connexion OIDC                            |
-| **Meet (Visio)**         | Visioconférence WebRTC (LiveKit) | [http://localhost:3001](http://localhost:3001)             | —                                         |
-| **Transfers**            | Envoi sécurisé de gros fichiers  | [http://localhost:8980](http://localhost:8980)             | `agent@collectivite.fr` / `transferts`    |
-| **Transfers** (Keycloak) | SSO d'authentification OIDC      | [http://localhost:8902](http://localhost:8902)             | `admin` / `admin`                         |
-| **Accounts**             | Gestion centrale des comptes     | [http://localhost:9900](http://localhost:9900)             | `accounts` / `accounts`                   |
-| **People**               | Annuaire et profils              | [http://localhost:8071](http://localhost:8071)             | `admin` / `admin`                         |
-
----
-
-## 🧭 Parcours Recommandé
-
-1. **[Challenge 42 x DINUM](/00-accueil/challenge-42)** : Contexte du hackathon, tracks et idées de projets.
-2. **[Planning & Agenda](/00-accueil/planning)** : Déroulé jour par jour, horaires des navettes, repas et pitchs.
-3. **[Services, URLs & Identifiants](/01-onboarding/01-demarrage/urls-et-identifiants)** : Répertoire exhaustif des URLs locales, ports et accès BDD/admin.
-4. **[Configuration Git & Clés SSH](/01-onboarding/01-demarrage/git-ssh)** : Initialiser votre profil Git et configurer vos accès SSH.
-5. **[Configuration Serveur Distant & VM](/01-onboarding/01-demarrage/configuration-serveur/01-guide-configuration-serveur)** : Configurer La Suite Docs sur une machine distante avec IP publique et consulter la **[Proposition de PR DINUM](/01-onboarding/01-demarrage/configuration-serveur/02-pr-support-serveurs-distants)**.
-6. **[Configuration VS Code & Outils](/01-onboarding/01-demarrage/vscode)** : Installer les extensions recommandées (SQLTools 1-clic, GitLens, Ruff, ESLint) et le formatage automatique.
-7. **[Workflow & Commandes Make](/01-onboarding/02-workflow-et-contribution/workflow)** : Découvrir toutes les cibles du `Makefile` et le cycle de vie de dev.
-8. **[Tests, Linters & Qualité](/01-onboarding/02-workflow-et-contribution/tests-et-qualite)** : Exécuter les suites de tests unitaires, linters et tests E2E.
-9. **[Guide de Dépannage & FAQ](/01-onboarding/03-support/troubleshooting)** : Diagnostiquer et résoudre les erreurs fréquentes (Docker, ports, BDD).
-10. **[Architecture Globale](/02-architecture/index)** : Comprendre les flux, schémas Mermaid et choix techniques de l'écosystème.
-11. **[Projets de La Suite](/03-projets/index)** : Explorer les fiches détaillées de chaque application.
-12. **[Design System & DSFR](/04-design-system/index)** : Découvrir les composants UI, la palette institutionnelle et les règles d'accessibilité.
-12. **[Skills d'Agent & Ingénierie](/07-skills/index)** : Découvrir les compétences et méthodes d'assistance pour le développement.

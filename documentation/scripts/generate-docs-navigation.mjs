@@ -36,6 +36,27 @@ function formatLabel(name) {
     return "🇪🇸 Español";
   }
 
+  if (clean === "onboarding") {
+    return "Onboarding & Démarrage";
+  }
+  if (clean === "contexte") {
+    return "Contexte & Hackathon 42";
+  }
+  if (clean === "la-suite") {
+    return "La Suite Numérique";
+  }
+  if (clean === "applications") {
+    return "Applications & Projets";
+  }
+  if (clean === "architecture") {
+    return "Architecture & Données";
+  }
+  if (clean === "design-system") {
+    return "Design System & DSFR";
+  }
+  if (clean === "slasheurs-france") {
+    return "Slasheurs France (DINUM)";
+  }
   if (clean === "socle-technique") {
     return "Socle Technique Unifié";
   }
@@ -69,6 +90,7 @@ function formatLabel(name) {
   if (clean.startsWith("implementation")) {
     return "Pôle Implémentation";
   }
+
 
 
   const acronyms = {
@@ -321,8 +343,8 @@ function scanDir(dir, baseDir, depth = 0) {
         } else if (
           relPath === "fr/index.mdx" ||
           relPath === "fr/index.md" ||
-          relPath === "fr/00-accueil/index.mdx" ||
-          relPath === "fr/00-accueil/index.md"
+          relPath === "fr/01-onboarding/index.mdx" ||
+          relPath === "fr/01-onboarding/index.md"
         ) {
           items.push({
             type: "doc",
@@ -341,7 +363,6 @@ function scanDir(dir, baseDir, depth = 0) {
         const route = "/" + relPath.replace(/\.mdx?$/, "");
         items.push(route);
       }
-
     }
   }
 
@@ -372,41 +393,38 @@ function generateNavForTarget(target) {
     { from: "/fr/index", to: "/fr" },
     { from: "/fr/00-accueil", to: "/fr" },
     { from: "/fr/00-accueil/index", to: "/fr" },
+    { from: "/fr/00-accueil/challenge-42", to: "/fr/01-onboarding/00-contexte/challenge-42" },
+    { from: "/fr/00-accueil/planning", to: "/fr/01-onboarding/00-contexte/planning" },
+    { from: "/challenge-42", to: "/fr/01-onboarding/00-contexte/challenge-42" },
+    { from: "/planning", to: "/fr/01-onboarding/00-contexte/planning" },
     { from: "/en/index", to: "/en" },
 
-    // Old non-prefixed redirects to /fr/
-    { from: "/05-ressources", to: "/fr/05-ressources/communaute" },
+    // Hub La Suite redirects
+    { from: "/02-architecture", to: "/fr/02-la-suite/02-architecture" },
+    { from: "/fr/02-architecture", to: "/fr/02-la-suite/02-architecture" },
+    { from: "/03-projets", to: "/fr/02-la-suite/01-applications" },
+    { from: "/fr/03-projets", to: "/fr/02-la-suite/01-applications" },
+    { from: "/projets", to: "/fr/02-la-suite/01-applications" },
+    { from: "/04-design-system", to: "/fr/02-la-suite/03-design-system" },
+    { from: "/fr/04-design-system", to: "/fr/02-la-suite/03-design-system" },
+    { from: "/design-system", to: "/fr/02-la-suite/03-design-system" },
+    { from: "/dsfr", to: "/fr/02-la-suite/03-design-system" },
+    { from: "/05-ressources", to: "/fr/02-la-suite/04-ressources/communaute" },
+    { from: "/fr/05-ressources", to: "/fr/02-la-suite/04-ressources/communaute" },
+    { from: "/ressources", to: "/fr/02-la-suite/04-ressources/communaute" },
+
+    // Slasheurs France redirects
+    { from: "/slash", to: "/fr/03-slasheurs-france" },
+    { from: "/08-slash", to: "/fr/03-slasheurs-france" },
+    { from: "/fr/08-slash", to: "/fr/03-slasheurs-france" },
+    { from: "/loi", to: "/fr/03-slasheurs-france/01-loi" },
+    { from: "/law", to: "/fr/03-slasheurs-france/01-loi" },
+
+    // Onboarding redirects
     { from: "/onboarding", to: "/fr/01-onboarding" },
     { from: "/01-onboarding", to: "/fr/01-onboarding" },
-    { from: "/architecture", to: "/fr/02-architecture" },
-    { from: "/02-architecture", to: "/fr/02-architecture" },
-    { from: "/projets", to: "/fr/03-projets" },
-    { from: "/03-projets", to: "/fr/03-projets" },
-    { from: "/design-system", to: "/fr/04-design-system" },
-    { from: "/04-design-system", to: "/fr/04-design-system" },
-    { from: "/dsfr", to: "/fr/04-design-system" },
-    { from: "/ressources", to: "/fr/05-ressources/communaute" },
-    { from: "/skills", to: "/fr/07-skills" },
-    { from: "/07-skills", to: "/fr/07-skills" },
-    { from: "/slash", to: "/fr/08-slash" },
-    { from: "/08-slash", to: "/fr/08-slash" },
-    { from: "/08-slash/index", to: "/fr/08-slash" },
-    { from: "/pr", to: "/fr/09-PR" },
-    { from: "/prs", to: "/fr/09-PR" },
-    { from: "/09-PR", to: "/fr/09-PR" },
-    { from: "/08-slash/00-PR", to: "/fr/09-PR" },
-    { from: "/08-slash/00-PR/index", to: "/fr/09-PR" },
-    { from: "/08-slash/00-PR/00-dossier-pull-request-officielle", to: "/fr/09-PR/02-docs-packages-souverains" },
-    { from: "/08-slash/00-PR/01-pr-interne-monolithique", to: "/fr/09-PR/04-guide-d-arbitrage-et-migration" },
-    { from: "/08-slash/00-PR/02-pr-externe-packagee", to: "/fr/09-PR/02-docs-packages-souverains" },
-    { from: "/08-slash/00-PR/03-guide-d-arbitrage-et-migration", to: "/fr/09-PR/04-guide-d-arbitrage-et-migration" },
-    { from: "/08-slash/00-PR/04-proposition-amont-blocknote", to: "/fr/09-PR/03-blocknote-external-sources" },
-    { from: "/08-slash/loi", to: "/fr/08-slash/loi" },
-    { from: "/loi", to: "/fr/08-slash/loi" },
-    { from: "/law", to: "/fr/08-slash/loi" },
-    { from: "/comprendre-les-lois", to: "/fr/08-slash/loi" },
-    { from: "/ressources-juridiques", to: "/fr/08-slash/loi" },
     { from: "/guide", to: "/fr/01-onboarding" },
+
 
 
     // Flat to subfolder backwards compatibility: Accueil / Onboarding

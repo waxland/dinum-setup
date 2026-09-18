@@ -1,24 +1,88 @@
 # 📝 Journal d'Exécution & Suivi des Itérations — Projet Slasher (`RECAP.md`)
 
-> **Projet Officiel :** **Slasher** (Standard Universel `@blocknote/xl-external-sources` & Presets Souverains DINUM)  
+> **Projet Officiel :** **Slasher** (Standard Universel `@slasher/blocknote` & Presets Souverains Multi-Pays)  
 > **Auteur :** GitHub Copilot (Gemini 3.7 Flash)  
 > **Date de Création :** 17 Septembre 2026  
 > **Règle de Fonctionnement :** Ce document est mis à jour à chaque itération ou complétion de tâche définie dans le plan.
 
+---
+
+## 📅 Journal Chronologique des Itérations
+
+### 📅 Itération n°7 — 18 Septembre 2026 : Configuration Complète des Déploiements Vercel & Workflows CI/CD
+* **Objectif Spécifique :**
+  - Mettre en place les configurations de déploiement Vercel pour le portail documentaire, la démo et Storybook.
+  - Créer `demo/vercel.json` avec règles de réécriture SPA.
+  - Créer `packages/blocknote-sources/vercel.json` avec output `storybook-static`.
+  - Créer le workflow GitHub Actions `.github/workflows/deploy-vercel.yml` pour le déploiement continu automatisé.
+  - Synchroniser les checkboxes de la Phase 6 dans `LAST_ITERATION.md`.
+* **Fichiers Créés / Modifiés :**
+  - `demo/vercel.json` : Configuration Vercel de l'application de démonstration.
+  - `packages/blocknote-sources/vercel.json` : Configuration Vercel de Storybook.
+  - `.github/workflows/deploy-vercel.yml` : Pipeline CI/CD GitHub Actions vers Vercel.
+  - `LAST_ITERATION.md` : Mise à jour du plan directeur.
+* **Statut de Livraison :** Phase 6 entièrement achevée.
 
 ---
 
-## 📊 Tableau de Bord Global d'Avancement du `PLAN.md`
+### 📅 Itération n°6 — 18 Septembre 2026 : Modularisation Django Multi-Pays & Hubs Nationaux
 
-| Phase | Intitulé de la Phase | Statut Global | Tâches Complétées |
-| :---: | :--- | :---: | :---: |
-| **Phase 1** | Refactoring Cœur TypeScript & Standardisation Anglaise | ✅ Complété | `3 / 3` |
-| **Phase 2** | Presets Internationaux & Jeux de Données Mocks (FR, DE, NL, EU) | ✅ Complété | `1 / 1` |
-| **Phase 3** | Démonstrateur Web Standalone avec Sélecteur de Pays (`demo/`) | ✅ Complété | `3 / 3` |
-| **Phase 4** | Harmonisation du Package Backend Django (`django-lasuite-sources`) | ✅ Complété | `2 / 2` |
-| **Phase 5** | Restructuration Bilingue de la Documentation (`documentation/`) | ✅ Complété | `2 / 2` |
-| **Phase 6** | Monorepo Racine & Migration `src/` $\rightarrow$ `LaSuite/` | ✅ Complété | `2 / 2` |
-| **Phase 7** | Soumissions Amont & Pull Requests Officielles | ✅ Complété | `2 / 2` |
+* **Objectif Spécifique :**
+  - Modulariser le backend Django `django-lasuite-sources` avec des hubs de connecteurs par pays :
+    - `lasuite_sources/providers/france/` : 12 slasheurs souverains DINUM (`official-french-api-slashers`).
+    - `lasuite_sources/providers/germany/` : Slasheurs allemands (`official-german-api-slashers`).
+    - `lasuite_sources/providers/netherlands/` : Slasheurs néerlandais (`official-dutch-api-slashers`).
+    - `lasuite_sources/providers/spain/` : Slasheurs espagnols (`official-spanish-api-slashers`).
+    - `lasuite_sources/providers/europe/` : Slasheurs européens (`official-eu-api-slashers`).
+  - Mettre à jour `providers/__init__.py` et valider les 22 tests unitaires pytest (anti-SSRF, cache, circuit-breaker).
+* **Fichiers Modifiés / Déplacés :**
+  - `packages/django-lasuite-sources/lasuite_sources/providers/france/*` (12 connecteurs déplacés).
+  - `packages/django-lasuite-sources/lasuite_sources/providers/germany/__init__.py`
+  - `packages/django-lasuite-sources/lasuite_sources/providers/netherlands/__init__.py`
+  - `packages/django-lasuite-sources/lasuite_sources/providers/spain/__init__.py`
+  - `packages/django-lasuite-sources/lasuite_sources/providers/europe/__init__.py`
+  - `LAST_ITERATION.md` : Checkboxes Phase 4 cochées.
+* **Statut de Livraison :** Phase 4 complétée avec succès.
+
+---
+
+### 📅 Itération n°5 — 18 Septembre 2026 : Documentation Anglophone Exhaustive (`en/`) & Structuration Bilingue Complète
+
+* **Objectif Spécifique :**
+  - Rédiger et structurer l'ensemble des 16 fichiers documentaires en anglais sous `documentation/docs/en/` couvrant les 6 sections internationales :
+    - `00-overview/` : `index.mdx`, `architecture-3-tier.mdx`, `international-vision.mdx`
+    - `01-blocknote-extension/` : `index.mdx`, `3-display-formats.mdx`, `floating-search-popover.mdx`, `document-exports.mdx`, `styling-and-themes.mdx`
+    - `02-provider-sdk/` : `index.mdx`, `define-source-provider.mdx`, `typescript-contracts.mdx`, `build-provider-in-15-min.mdx`
+    - `03-backend-proxy/` : `index.mdx`, `deterministic-cache.mdx`, `defensive-security-ssrf.mdx`
+    - `04-presets/` : `index.mdx`, `germany-bund.mdx`, `netherlands-gov.mdx`, `spain-boe.mdx`, `european-union.mdx`
+    - `05-rfc-upstream/` : `index.mdx`, `blocknote-rfc-specification.mdx`
+  - Régénérer la table de navigation `zudoku.navigation.tsx` pour l'arbre bilingue complet.
+* **Fichiers Mis à Jour :**
+  - `documentation/docs/en/**/*` : 16 fichiers MDX créés.
+  - `documentation/zudoku.navigation.tsx` : Navigation mise à jour.
+  - `LAST_ITERATION.md` : Checkboxes de la Phase 5 cochées.
+* **Statut de Livraison :** Phase 5 de `LAST_ITERATION.md` entièrement complétée.
+
+---
+
+### 📅 Itération n°4 — 18 Septembre 2026 : Restructuration de la Racine (`PR/`, `.skills/`), Réorganisation `fr/` en 3 Pôles & Ajout du Preset Espagnol 🇪🇸
+* **Objectif Spécifique :**
+  - Extraire le dossier des Pull Requests vers `PR/` à la racine (`README.md`, `01-docs-serveur-config.md`, `02-docs-packages-souverains.md`, `03-blocknote-slasher-rfc.md`, `04-guide-d-arbitrage.md`, `05-commandes-gh-cli.md`).
+  - Déplacer l'ensemble des compétences IA vers `.skills/` racine et mettre à jour [`AGENTS.md`](AGENTS.md).
+  - Fusionner `00-accueil` dans `01-onboarding/00-contexte/` et regrouper les sous-sections sous `02-la-suite/` (`01-applications`, `02-architecture`, `03-design-system`, `04-ressources`).
+  - Renommer `08-slash` en `03-slasheurs-france`.
+  - Implémenter le preset Espagnol 🇪🇸 (`packages/blocknote-sources/src/mockData/spain.ts`, dictionnaire i18n `es` dans `locales.ts` et boutons dans `demo/src/App.tsx`).
+  - Mettre à jour `generate-docs-navigation.mjs` et régénérer `zudoku.navigation.tsx` sans commande de build.
+* **Fichiers Créés / Déplacés :**
+  - `PR/*` : 6 fichiers de contribution officielle racine.
+  - `.skills/*` : 9 compétences d'agent racine.
+  - `documentation/docs/fr/01-onboarding/` : Accueil et onboarding unifiés.
+  - `documentation/docs/fr/02-la-suite/` : Grand hub La Suite (applications, architecture, DSFR, ressources).
+  - `documentation/docs/fr/03-slasheurs-france/` : Hub des slasheurs souverains.
+  - `packages/blocknote-sources/src/mockData/spain.ts` : Dataset mock Espagne (BOE, Registro Mercantil, Catastro, Contratación del Estado).
+  - `LAST_ITERATION.md` : Plan directeur unifié synchronisé.
+* **Statut de Livraison :** Phases 1, 2 et 3 de `LAST_ITERATION.md` exécutées avec succès.
+
 
 ---
 
