@@ -276,20 +276,7 @@ vercel-init: vercel-init-docs vercel-init-demo vercel-init-storybook
 
 .PHONY: vercel-status
 vercel-status:
-	@printf "\n===================================================================\n"
-	@printf "  🌐 STATUT DES 3 APPLICATIONS DINUM SUR VERCEL\n"
-	@printf "===================================================================\n\n"
-	@for proj in dinum-docs dinum-demo dinum-storybook; do \
-		printf "📦 Projet : %s\n" "$$proj"; \
-		npx vercel ls $$proj 2>/dev/null | grep -E "https://[a-zA-Z0-9.-]+\.vercel\.app" | head -n 1 | awk '{for (i=1; i<=NF; i++) if ($$i ~ /^https:\/\//) print "   Dernier deploiement : " $$i; if ($$0 ~ /Ready/) print "   Statut              : ● Ready (En ligne)"; else if ($$0 ~ /Building/) print "   Statut              : ● Building (En cours)"; else if ($$0 ~ /Queued/) print "   Statut              : ● Queued (En attente)"; else if ($$0 ~ /Error/) print "   Statut              : ● Error (Echec)"; }'; \
-		echo ""; \
-	done
-	@printf "%s\n" "-------------------------------------------------------------------"
-	@printf "🔗 URLs de Production Officielles :\n"
-	@printf "  📚 Docs       : https://dinum-docs-waxlands-projects.vercel.app\n"
-	@printf "  ⚡ Demo Web   : https://dinum-demo-waxlands-projects.vercel.app\n"
-	@printf "  🎨 Storybook  : https://dinum-storybook-waxlands-projects.vercel.app\n"
-	@printf "%s\n\n" "-------------------------------------------------------------------"
+	@node scripts/vercel-status.mjs
 
 .PHONY: deploy-demo
 deploy-demo:
