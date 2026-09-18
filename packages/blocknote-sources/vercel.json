@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npm run build && npm run build-storybook",
+  "buildCommand": "cd ../.. && npm run packages:build && npm --prefix packages/blocknote-sources run build-storybook",
   "outputDirectory": "storybook-static",
   "cleanUrls": true
 }

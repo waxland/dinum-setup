@@ -10,11 +10,5 @@
       "destination": "/fr",
       "permanent": false
     }
-  ],
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/$1"
-    }
   ]
 }
