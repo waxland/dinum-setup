@@ -29,8 +29,12 @@ help:
 	@printf "  make demo-build         Compile le demonstrateur web standalone\n"
 	@printf "  make storybook          Lance le Storybook des composants BlockNote (http://localhost:6006)\n"
 	@printf "  make packages-build     Compile les packages TypeScript (@suitenumerique/*)\n"
-	@printf "  make packages-test      Execute les 15 tests unitaires et RGAA\n"
-	@printf "  make deploy-vercel      Deploie l'ensemble (Demo, Storybook, Docs) sur Vercel\n"
+	@printf "  make packages-test      Execute les 15 tests unitaires et RGAA\n\n"
+	@printf "Commandes Deploiement Vercel:\n"
+	@printf "  make vercel-login       Authentifie le CLI sur votre compte Vercel\n"
+	@printf "  make vercel-init        Cree, configure et lie les 3 projets (Docs, Demo, Storybook) a GitHub\n"
+	@printf "  make vercel-status      Affiche l'etat et les URLs des 3 projets sur Vercel\n"
+	@printf "  make deploy-vercel      Deploie manuellement l'ensemble des 3 projets en production\n"
 	@printf "  make deploy-demo        Deploie uniquement l'application Demo sur Vercel\n"
 	@printf "  make deploy-docs        Deploie uniquement le portail Zudoku sur Vercel\n"
 	@printf "  make deploy-storybook   Deploie uniquement le Storybook sur Vercel\n\n"
@@ -191,6 +195,53 @@ packages-build:
 .PHONY: packages-test
 packages-test:
 	npm run packages:test
+
+# -----------------------------------------------------------------------------
+# Gestion Multi-Projets Vercel (CLI Express & Automatisation)
+# -----------------------------------------------------------------------------
+
+export GITHUB_REPO ?= waxland/dinum-setup
+
+.PHONY: vercel-login
+vercel-login:
+	@echo "🔑 Authentification Vercel..."
+	npx vercel login
+
+.PHONY: vercel-init-docs
+vercel-init-docs:
+	@echo "📚 Initialisation du projet dinum-docs..."
+	npx vercel project add dinum-docs || true
+	npx vercel project update dinum-docs --root-directory "./" --build-command "npm run build" --output-directory "documentation/dist" --node-version "22.x" --yes
+	npx vercel git connect https://github.com/$(GITHUB_REPO) --cwd . --yes || true
+
+.PHONY: vercel-init-demo
+vercel-init-demo:
+	@echo "⚡ Initialisation du projet dinum-demo..."
+	npx vercel project add dinum-demo || true
+	npx vercel project update dinum-demo --root-directory "demo" --build-command "cd .. && npm run packages:build && cd demo && npm run build" --output-directory "dist" --framework "vite" --node-version "22.x" --yes
+	npx vercel git connect https://github.com/$(GITHUB_REPO) --cwd demo --yes || true
+
+.PHONY: vercel-init-storybook
+vercel-init-storybook:
+	@echo "🎨 Initialisation du projet dinum-storybook..."
+	npx vercel project add dinum-storybook || true
+	npx vercel project update dinum-storybook --root-directory "packages/blocknote-sources" --build-command "cd ../.. && npm run packages:build && npm --prefix packages/blocknote-sources run build-storybook" --output-directory "storybook-static" --framework "storybook" --node-version "22.x" --yes
+	npx vercel git connect https://github.com/$(GITHUB_REPO) --cwd packages/blocknote-sources --yes || true
+
+.PHONY: vercel-init
+vercel-init: vercel-init-docs vercel-init-demo vercel-init-storybook
+	@echo "✅ Les 3 projets Vercel (Docs, Demo, Storybook) sont crees, configures et lies a GitHub !"
+
+.PHONY: vercel-status
+vercel-status:
+	@echo "📊 Statut des projets Vercel :"
+	@npx vercel project list
+	@echo "\n--- Deploiements dinum-docs ---"
+	@npx vercel ls dinum-docs || true
+	@echo "\n--- Deploiements dinum-demo ---"
+	@npx vercel ls dinum-demo || true
+	@echo "\n--- Deploiements dinum-storybook ---"
+	@npx vercel ls dinum-storybook || true
 
 .PHONY: deploy-demo
 deploy-demo:
