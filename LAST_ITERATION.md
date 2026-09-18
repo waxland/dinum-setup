@@ -1,6 +1,6 @@
 # 🚀 Plan Directeur & Feuille de Route d'Itération Globale — Projet Slasher (`LAST_ITERATION.md`)
 
-> **Projet Officiel :** **Slasher** (`@blocknote/xl-external-sources` & Presets Souverains Multi-Pays)  
+> **Projet Officiel :** **Slasher** (Standard universel `@slasher/blocknote` / `blocknote-slasher` & Presets Souverains Multi-Pays)  
 > **Destinataires :** Direction Interministérielle du Numérique (DINUM), TypeCellOS/BlockNote, Développeurs, DevOps & Rédacteurs  
 > **Auteur :** GitHub Copilot (Gemini 3.7 Flash) — Dépôt d'orchestration `dinum-setup`  
 > **Date de Référence :** 17 Septembre 2026  
@@ -8,15 +8,26 @@
 
 ---
 
-## 🧭 1. Synthèse Exécutive & Vision d'Ensemble
+## 🧭 1. Synthèse Exécutive & Clarification du Naming
 
-Le projet **Slasher** fédère 3 piliers logiciels majeurs :
+### 💡 1.1. Pourquoi supprimer le suffixe `XL` et adopter la nomenclature `Slasher` ?
+- **Problème du préfixe `XL` :** Dans l'écosystème BlockNote, `XL` n'apporte aucune sémantique claire et alourdit inutilement le nom (`@blocknote/xl-external-sources`).
+- **Nouveau Standard Retenu :**
+  - Cœur TypeScript SDK : **`@slasher/sdk`** *(ou `@blocknote/slasher-sdk`)* (< 5 kB, 0 dépendance).
+  - Cœur BlockNote React : **`@slasher/blocknote`** *(ou `blocknote-slasher`)* (3 formats, cmdk WAI-ARIA, exports vectoriels).
+  - Cœur Backend Python : **`django-slasher-core`** *(ou `slasher-core`)* (Proxy REST, cache déterministe SHA-256, anti-SSRF).
+  - Hubs d'APIs publiques nationales : **`official-<country>-api-slashers`** :
+    - 🇫🇷 `official-french-api-slashers`
+    - 🇩🇪 `official-german-api-slashers`
+    - 🇳🇱 `official-dutch-api-slashers`
+    - 🇪🇸 `official-spanish-api-slashers`
+    - 🇪🇺 `official-eu-api-slashers`
 
 ```mermaid
 flowchart TD
     subgraph Layer1["🌐 Pilier 1 : Standard Universel Slasher (TypeCellOS / BlockNote)"]
-        SDK["🛠️ @slasher/sdk / @blocknote/source-provider-sdk (&lt; 5 kB)<br/>• defineSlasher() déclaratif immuable<br/>• DTOs stricts en anglais (ExternalSourceEntity, SlasherEntity)"]
-        UI_Core["📦 @slasher/blocknote / @blocknote/xl-external-sources<br/>• Factory universelle createReactBlockSpec()<br/>• Popover WAI-ARIA cmdk (i18n en/fr/de/nl/es)<br/>• 3 Formats permutables : Callout / Card / Inline Mention<br/>• Mappeurs d'export : PDF (@react-pdf), Word (docx), ODF"]
+        SDK["🛠️ @slasher/sdk / @blocknote/slasher-sdk (&lt; 5 kB)<br/>• defineSlasher() déclaratif immuable<br/>• DTOs stricts en anglais (ExternalSourceEntity, SlasherEntity)"]
+        UI_Core["📦 @slasher/blocknote / blocknote-slasher<br/>• Factory universelle createReactBlockSpec()<br/>• Popover WAI-ARIA cmdk (i18n en/fr/de/nl/es)<br/>• 3 Formats permutables : Callout / Card / Inline Mention<br/>• Mappeurs d'export : PDF (@react-pdf), Word (docx), ODF"]
         SDK --> UI_Core
     end
 
