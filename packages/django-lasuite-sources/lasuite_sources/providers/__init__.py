@@ -21,6 +21,12 @@ from lasuite_sources.providers.europe import (
     TedSourceProvider,
     WhoiswhoSourceProvider,
 )
+from lasuite_sources.providers.federation import (
+    BrisFederatedSourceProvider,
+    InspireAddressFederatedProvider,
+    InspireCadastreFederatedProvider,
+    YourEuropeSourceProvider,
+)
 from lasuite_sources.providers.france import (
     AddressSourceProvider,
     AgentSourceProvider,
@@ -34,6 +40,34 @@ from lasuite_sources.providers.france import (
     OpenDataSourceProvider,
     ParliamentSourceProvider,
     ProcurementSourceProvider,
+)
+from lasuite_sources.providers.germany import (
+    BundestagSourceProvider,
+    DestatisSourceProvider,
+    GesetzeSourceProvider,
+    GovDataSourceProvider,
+    HandelsregisterSourceProvider,
+)
+from lasuite_sources.providers.international import (
+    HudocSourceProvider,
+    OecdSourceProvider,
+    WhoSourceProvider,
+    WorldBankSourceProvider,
+)
+from lasuite_sources.providers.netherlands import (
+    BagSourceProvider,
+    CbsSourceProvider,
+    DataOverheidSourceProvider,
+    KvkSourceProvider,
+    WettenbankSourceProvider,
+)
+from lasuite_sources.providers.spain import (
+    BoeSourceProvider,
+    CatastroSourceProvider,
+    DatosGobSourceProvider,
+    IneSourceProvider,
+    PlacspSourceProvider,
+    RegistroMercantilSourceProvider,
 )
 from lasuite_sources.registry import source_registry
 
@@ -72,6 +106,38 @@ source_registry.register(CanadaBuysSourceProvider())
 source_registry.register(CanadaGrantsSourceProvider())
 source_registry.register(GeoNamesCanadaSourceProvider())
 
+# Auto-register Germany sovereign providers
+source_registry.register(GesetzeSourceProvider())
+source_registry.register(HandelsregisterSourceProvider())
+source_registry.register(BundestagSourceProvider())
+source_registry.register(DestatisSourceProvider())
+source_registry.register(GovDataSourceProvider())
+
+# Auto-register Netherlands sovereign providers
+source_registry.register(WettenbankSourceProvider())
+source_registry.register(KvkSourceProvider())
+source_registry.register(BagSourceProvider())
+source_registry.register(CbsSourceProvider())
+source_registry.register(DataOverheidSourceProvider())
+
+# Auto-register Spain sovereign providers
+source_registry.register(BoeSourceProvider())
+source_registry.register(RegistroMercantilSourceProvider())
+source_registry.register(PlacspSourceProvider())
+source_registry.register(CatastroSourceProvider())
+source_registry.register(IneSourceProvider())
+source_registry.register(DatosGobSourceProvider())
+
+# Auto-register International & Federated providers
+source_registry.register(WorldBankSourceProvider())
+source_registry.register(OecdSourceProvider())
+source_registry.register(WhoSourceProvider())
+source_registry.register(HudocSourceProvider())
+source_registry.register(BrisFederatedSourceProvider())
+source_registry.register(InspireAddressFederatedProvider())
+source_registry.register(InspireCadastreFederatedProvider())
+source_registry.register(YourEuropeSourceProvider())
+
 
 __all__ = [
     "LawSourceProvider",
@@ -88,6 +154,46 @@ __all__ = [
     "OpenDataSourceProvider",
     "EurLexSourceProvider",
     "EuroparlSourceProvider",
+    "TedSourceProvider",
+    "EurostatSourceProvider",
+    "FundingTendersSourceProvider",
+    "DataEuropaSourceProvider",
+    "WhoiswhoSourceProvider",
+    "CordisSourceProvider",
+    "CuriaSourceProvider",
+    "JusticeLawsSourceProvider",
+    "CorporationsCanadaSourceProvider",
+    "ParliamentCanadaSourceProvider",
+    "StatCanSourceProvider",
+    "OpenCanadaSourceProvider",
+    "CanadaBuysSourceProvider",
+    "CanadaGrantsSourceProvider",
+    "GeoNamesCanadaSourceProvider",
+    "GesetzeSourceProvider",
+    "HandelsregisterSourceProvider",
+    "BundestagSourceProvider",
+    "DestatisSourceProvider",
+    "GovDataSourceProvider",
+    "WettenbankSourceProvider",
+    "KvkSourceProvider",
+    "BagSourceProvider",
+    "CbsSourceProvider",
+    "DataOverheidSourceProvider",
+    "BoeSourceProvider",
+    "RegistroMercantilSourceProvider",
+    "PlacspSourceProvider",
+    "CatastroSourceProvider",
+    "IneSourceProvider",
+    "DatosGobSourceProvider",
+    "WorldBankSourceProvider",
+    "OecdSourceProvider",
+    "WhoSourceProvider",
+    "HudocSourceProvider",
+    "BrisFederatedSourceProvider",
+    "InspireAddressFederatedProvider",
+    "InspireCadastreFederatedProvider",
+    "YourEuropeSourceProvider",
+]
     "TedSourceProvider",
     "EurostatSourceProvider",
     "FundingTendersSourceProvider",
