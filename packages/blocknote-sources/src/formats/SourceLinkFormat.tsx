@@ -37,27 +37,23 @@ export const SourceLinkFormat: React.FC<SourceLinkFormatProps> = ({ props }) => 
         style={{
           display: 'inline-flex',
           alignItems: 'center',
-          gap: '6px',
-          padding: '2px 8px',
-          borderRadius: '4px',
-          background: 'var(--blue-france-975, #f5f5fe)',
-          border: '1px solid var(--blue-france-925, #e3e3fd)',
-          color: 'var(--blue-france-sun-113, #000091)',
+          gap: '4px',
+          padding: '1px 6px',
+          background: 'var(--bg-surface, #f0f0f0)',
+          border: '1px solid var(--border-color, #e5e5e5)',
+          color: 'inherit',
           fontSize: '12px',
-          fontWeight: 600,
+          fontWeight: 500,
           textDecoration: 'none',
           cursor: 'pointer',
-          transition: 'all 0.15s ease',
         }}
       >
-        <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-          <SourceIcon type={props.entityType} size={13} color="currentColor" />
-        </span>
+        <SourceIcon type={props.entityType} size={12} color="currentColor" />
         <span style={{ maxWidth: '280px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {props.title}
         </span>
         {props.status && (
-          <span style={{ opacity: 0.85, fontSize: '11px' }}>({props.status})</span>
+          <span style={{ opacity: 0.7, fontSize: '10px', fontFamily: 'monospace' }}>({props.status})</span>
         )}
       </a>
 
@@ -70,21 +66,20 @@ export const SourceLinkFormat: React.FC<SourceLinkFormatProps> = ({ props }) => 
             top: 'calc(100% + 4px)',
             left: 0,
             zIndex: 50,
-            minWidth: '260px',
-            maxWidth: '360px',
-            padding: '8px 12px',
-            borderRadius: '4px',
-            background: 'var(--c--contextuals--background--surface--primary, #ffffff)',
-            border: '1px solid var(--c--contextuals--border--surface--primary, #e5e5e5)',
-            boxShadow: '0 4px 12px rgba(0, 0, 145, 0.12)',
+            minWidth: '240px',
+            maxWidth: '340px',
+            padding: '8px 10px',
+            background: 'var(--bg-page, #ffffff)',
+            border: '1px solid var(--border-color, #e5e5e5)',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
           }}
         >
           {props.subtitle && (
-            <div style={{ fontSize: '11px', fontWeight: 700, marginBottom: '2px' }}>
+            <div style={{ fontSize: '11px', fontWeight: 600, marginBottom: '2px' }}>
               {props.subtitle}
             </div>
           )}
-          <div style={{ fontSize: '11px', color: '#666666', lineHeight: 1.4 }}>
+          <div style={{ fontSize: '11px', color: 'var(--text-muted, #666666)', lineHeight: 1.4 }}>
             {props.summary || props.excerpt}
           </div>
         </div>

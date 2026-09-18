@@ -1,24 +1,25 @@
 import { BlockNoteSchema, defaultBlockSpecs, defaultInlineContentSpecs } from "@blocknote/core";
+import { insertOrUpdateBlockForSlashMenu } from "@blocknote/core/extensions";
 import { BlockNoteView } from "@blocknote/mantine";
 import {
-    SuggestionMenuController,
-    getDefaultReactSlashMenuItems,
-    useCreateBlockNote,
+  SuggestionMenuController,
+  getDefaultReactSlashMenuItems,
+  useCreateBlockNote,
 } from "@blocknote/react";
 import React, { useEffect, useMemo, useState } from "react";
 
 import {
-    ALL_INTERNATIONAL_MOCK_SOURCES,
-    MOCK_EUROPE_SOURCES,
-    MOCK_FRANCE_SOURCES,
-    MOCK_GERMANY_SOURCES,
-    SourceBlock,
-    SourceIcon,
-    SourceInlineContent,
-    type ExternalSourceDisplayMode,
-    type ExternalSourceEntity,
-    type SourceEntityType,
-    type SupportedCountry,
+  ALL_INTERNATIONAL_MOCK_SOURCES,
+  MOCK_EUROPE_SOURCES,
+  MOCK_FRANCE_SOURCES,
+  MOCK_GERMANY_SOURCES,
+  SourceBlock,
+  SourceIcon,
+  SourceInlineContent,
+  type ExternalSourceDisplayMode,
+  type ExternalSourceEntity,
+  type SourceEntityType,
+  type SupportedCountry,
 } from "@suitenumerique/blocknote-sources";
 
 import { Footer, Header, Hero } from "./components";
@@ -244,11 +245,10 @@ export const App: React.FC = () => {
       {
         title: "Legal Text (Légifrance / Gesetze / EUR-Lex)",
         onItemClick: () => {
-          editor.insertBlocks(
-            [createEmptySourceBlock("law")],
-            editor.getTextCursorPosition().block,
-            "after"
-          );
+          insertOrUpdateBlockForSlashMenu(editor, {
+            type: "sourceBlock",
+            props: { entityType: "law", displayMode: "callout" },
+          });
         },
         aliases: ["loi", "law", "legifrance", "code", "article", "decret", "gesetz", "wet", "eurlex"],
         group: t.editor.slashGroupTitle,
@@ -258,11 +258,10 @@ export const App: React.FC = () => {
       {
         title: "Company Record (RNE / Handelsregister / KVK)",
         onItemClick: () => {
-          editor.insertBlocks(
-            [createEmptySourceBlock("company")],
-            editor.getTextCursorPosition().block,
-            "after"
-          );
+          insertOrUpdateBlockForSlashMenu(editor, {
+            type: "sourceBlock",
+            props: { entityType: "company", displayMode: "callout" },
+          });
         },
         aliases: ["entreprise", "company", "pappers", "siren", "siret", "societe", "kbis", "register", "kvk"],
         group: t.editor.slashGroupTitle,
@@ -272,11 +271,10 @@ export const App: React.FC = () => {
       {
         title: "Parliamentary Amendment & Debate",
         onItemClick: () => {
-          editor.insertBlocks(
-            [createEmptySourceBlock("parliament")],
-            editor.getTextCursorPosition().block,
-            "after"
-          );
+          insertOrUpdateBlockForSlashMenu(editor, {
+            type: "sourceBlock",
+            props: { entityType: "parliament", displayMode: "callout" },
+          });
         },
         aliases: ["assemblee", "parliament", "assemble", "an", "amendement", "depute", "bundestag", "dip"],
         group: t.editor.slashGroupTitle,
@@ -286,11 +284,10 @@ export const App: React.FC = () => {
       {
         title: "Postal Address (BAN / BAG)",
         onItemClick: () => {
-          editor.insertBlocks(
-            [createEmptySourceBlock("address")],
-            editor.getTextCursorPosition().block,
-            "after"
-          );
+          insertOrUpdateBlockForSlashMenu(editor, {
+            type: "sourceBlock",
+            props: { entityType: "address", displayMode: "callout" },
+          });
         },
         aliases: ["adresse", "address", "ban", "geo", "rue", "bag"],
         group: t.editor.slashGroupTitle,
@@ -300,11 +297,10 @@ export const App: React.FC = () => {
       {
         title: "Public Procurement Notice (BOAMP / TED)",
         onItemClick: () => {
-          editor.insertBlocks(
-            [createEmptySourceBlock("procurement")],
-            editor.getTextCursorPosition().block,
-            "after"
-          );
+          insertOrUpdateBlockForSlashMenu(editor, {
+            type: "sourceBlock",
+            props: { entityType: "procurement", displayMode: "callout" },
+          });
         },
         aliases: ["marche", "boamp", "achat", "dce", "dae", "ted", "procurement"],
         group: t.editor.slashGroupTitle,
@@ -314,11 +310,10 @@ export const App: React.FC = () => {
       {
         title: "Public Grant & Subsidy Program",
         onItemClick: () => {
-          editor.insertBlocks(
-            [createEmptySourceBlock("grant")],
-            editor.getTextCursorPosition().block,
-            "after"
-          );
+          insertOrUpdateBlockForSlashMenu(editor, {
+            type: "sourceBlock",
+            props: { entityType: "grant", displayMode: "callout" },
+          });
         },
         aliases: ["subvention", "grant", "aides", "fonds-vert", "detr", "dsil", "anct", "subsidies"],
         group: t.editor.slashGroupTitle,
@@ -328,11 +323,10 @@ export const App: React.FC = () => {
       {
         title: "Official Statistics & Demographics",
         onItemClick: () => {
-          editor.insertBlocks(
-            [createEmptySourceBlock("insee")],
-            editor.getTextCursorPosition().block,
-            "after"
-          );
+          insertOrUpdateBlockForSlashMenu(editor, {
+            type: "sourceBlock",
+            props: { entityType: "insee", displayMode: "callout" },
+          });
         },
         aliases: ["insee", "stats", "population", "territoire", "destatis", "cbs", "eurostat"],
         group: t.editor.slashGroupTitle,
@@ -342,11 +336,10 @@ export const App: React.FC = () => {
       {
         title: "Open Data Portal (data.gouv.fr / GovData / EU Data)",
         onItemClick: () => {
-          editor.insertBlocks(
-            [createEmptySourceBlock("opendata")],
-            editor.getTextCursorPosition().block,
-            "after"
-          );
+          insertOrUpdateBlockForSlashMenu(editor, {
+            type: "sourceBlock",
+            props: { entityType: "opendata", displayMode: "callout" },
+          });
         },
         aliases: ["opendata", "dataset", "datagouv", "donnees", "govdata", "dataeuropa"],
         group: t.editor.slashGroupTitle,
@@ -402,10 +395,10 @@ export const App: React.FC = () => {
     if (!editor) {
       return;
     }
-    const currentBlock =
-      editor.getTextCursorPosition()?.block ||
-      editor.document[editor.document.length - 1];
-    editor.insertBlocks([createEmptySourceBlock(type)], currentBlock, "after");
+    insertOrUpdateBlockForSlashMenu(editor, {
+      type: "sourceBlock",
+      props: { entityType: type, displayMode: "callout" },
+    });
   };
 
   const handleReset = () => {

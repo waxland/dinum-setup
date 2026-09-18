@@ -47,41 +47,22 @@ const THEMATIC_TABS: ThematicTab[] = [
   },
   {
     id: 'legal',
-    label: 'Juridique & Lois',
+    label: 'Juridique',
     icon: '⚖️',
     types: ['law', 'case-law', 'parliament', 'custom'],
   },
   {
     id: 'economy',
-    label: 'Économie & Marchés',
+    label: 'Économie',
     icon: '🏢',
     types: ['company', 'procurement', 'grant'],
   },
   {
     id: 'territory',
-    label: 'Territoires & Données',
+    label: 'Territoires',
     icon: '📍',
     types: ['address', 'place', 'cadastre', 'statistics', 'insee', 'demarche', 'opendata', 'agent', 'research'],
   },
-];
-
-export const CATEGORIES: { type: SourceEntityType; label: string; icon: string; group: ThematicGroup }[] = [
-  { type: 'law', label: 'Loi & Règlements', icon: '⚖️', group: 'legal' },
-  { type: 'case-law', label: 'Jurisprudence', icon: '📜', group: 'legal' },
-  { type: 'company', label: 'Fiche Entreprise (RNE)', icon: '🏢', group: 'economy' },
-  { type: 'parliament', label: 'Débats & Amendements', icon: '🏛️', group: 'legal' },
-  { type: 'address', label: 'Adresse Certifiée (BAN)', icon: '📍', group: 'territory' },
-  { type: 'place', label: 'Lieu & POI', icon: '🗺️', group: 'territory' },
-  { type: 'procurement', label: 'Marchés Publics (BOAMP)', icon: '🛍️', group: 'economy' },
-  { type: 'grant', label: 'Aides & Subventions', icon: '💶', group: 'economy' },
-  { type: 'statistics', label: 'Statistiques Publiques', icon: '📈', group: 'territory' },
-  { type: 'insee', label: 'Stats Démographiques', icon: '📊', group: 'territory' },
-  { type: 'agent', label: 'Annuaire Service Public', icon: '👤', group: 'territory' },
-  { type: 'cadastre', label: 'Cadastre & Parcelles', icon: '🗺️', group: 'territory' },
-  { type: 'demarche', label: 'Démarches Administratives', icon: '📝', group: 'territory' },
-  { type: 'opendata', label: 'Open Data (data.gouv.fr)', icon: '🌐', group: 'territory' },
-  { type: 'research', label: 'Recherche & Publications', icon: '🔬', group: 'territory' },
-  { type: 'custom', label: 'Albert IA Souveraine RAG', icon: '🧠', group: 'legal' },
 ];
 
 export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
@@ -104,7 +85,7 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
       if (inputRef.current) {
         inputRef.current.focus();
       }
-    }, 50);
+    }, 30);
     return () => clearTimeout(timer);
   }, []);
 
@@ -112,7 +93,7 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
     if (selectedCountry === 'fr') {
       const groupConfig = THEMATIC_TABS.find((t) => t.id === selectedGroup);
       const allowedTypes = groupConfig ? groupConfig.types : [selectedCategory];
-      
+
       const pool: SourceEntityProps[] = [];
       for (const t of allowedTypes) {
         if (MOCK_SOURCES[t]) {
@@ -181,32 +162,29 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
       style={{
         position: 'relative',
         width: '100%',
-        maxWidth: '680px',
         userSelect: 'none',
-        fontFamily: 'var(--font-family-base, Marianne, sans-serif)',
+        fontFamily: 'inherit',
       }}
     >
-      {/* Barre de saisie DSFR / Cunningham */}
+      {/* Barre de saisie épurée sans ombre ni bordure épaisse */}
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '10px',
-          padding: '10px 14px',
-          borderRadius: '8px',
-          background: 'var(--c--contextuals--background--surface--primary, #ffffff)',
-          border: '2px solid var(--c--globals--colors--brand-primary, #000091)',
-          boxShadow: '0 4px 14px rgba(0, 0, 145, 0.12)',
+          gap: '8px',
+          padding: '6px 10px',
+          background: 'var(--bg-surface, #f6f6f6)',
+          border: '1px solid var(--border-color, #e5e5e5)',
         }}
       >
-        <span style={{ fontSize: '18px' }}>🔍</span>
+        <span style={{ fontSize: '14px', opacity: 0.6 }}>🔍</span>
         <input
           ref={inputRef}
           role="combobox"
           aria-expanded={true}
           aria-controls={dropdownId}
           aria-autocomplete="list"
-          aria-label="Search connected source"
+          aria-label="Recherche de source connectée"
           placeholder="Rechercher une loi, une entreprise, une adresse, un marché..."
           value={query}
           onChange={(e) => {
@@ -218,10 +196,10 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
             flex: 1,
             border: 'none',
             outline: 'none',
-            fontSize: '14px',
-            fontWeight: 500,
+            fontSize: '13px',
+            fontFamily: 'inherit',
             background: 'transparent',
-            color: 'var(--c--contextuals--content--semantic--neutral--primary, #161616)',
+            color: 'inherit',
           }}
         />
         {query && (
@@ -232,9 +210,9 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
               background: 'transparent',
               border: 'none',
               cursor: 'pointer',
-              fontSize: '12px',
-              color: '#929292',
-              padding: '2px 6px',
+              fontSize: '11px',
+              color: 'var(--text-muted, #888888)',
+              padding: '2px 4px',
             }}
             title="Effacer la saisie"
           >
@@ -245,14 +223,13 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
           type="button"
           onClick={onCancel}
           style={{
-            background: '#f6f6f6',
-            border: '1px solid #e5e5e5',
-            borderRadius: '4px',
+            background: 'transparent',
+            border: '1px solid var(--border-color, #d0d0d0)',
             cursor: 'pointer',
             fontSize: '11px',
-            fontWeight: 700,
-            color: '#666666',
-            padding: '3px 8px',
+            fontFamily: 'inherit',
+            color: 'var(--text-secondary, #666666)',
+            padding: '2px 6px',
           }}
           title="Annuler (Échap)"
         >
@@ -260,22 +237,21 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
         </button>
       </div>
 
-      {/* Palette déroulante 100% DSFR & Cunningham */}
+      {/* Palette déroulante sobre et plate */}
       <div
         style={{
           position: 'absolute',
-          top: 'calc(100% + 8px)',
+          top: 'calc(100% + 2px)',
           left: 0,
           width: '100%',
           zIndex: 150,
-          boxShadow: '0 12px 32px rgba(0, 0, 145, 0.16)',
-          borderRadius: '8px',
-          border: '1px solid var(--c--contextuals--border--surface--primary, #e5e5e5)',
-          background: 'var(--c--contextuals--background--surface--primary, #ffffff)',
+          border: '1px solid var(--border-color, #e5e5e5)',
+          background: 'var(--bg-page, #ffffff)',
           overflow: 'hidden',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
         }}
       >
-        {/* Navigation par Onglets (Tabs DSFR role=tablist) */}
+        {/* Navigation par Onglets simplifiée */}
         <div
           id={tablistId}
           role="tablist"
@@ -284,15 +260,15 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: '6px 8px',
-            background: 'var(--c--contextuals--background--surface--secondary, #f8f8fb)',
-            borderBottom: '1px solid var(--c--contextuals--border--surface--primary, #e5e5e5)',
+            padding: '4px 8px',
+            background: 'var(--bg-surface, #f6f6f6)',
+            borderBottom: '1px solid var(--border-color, #e5e5e5)',
             flexWrap: 'wrap',
-            gap: '6px',
+            gap: '4px',
           }}
         >
           {/* Groupes Thématiques */}
-          <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '2px', flexWrap: 'wrap' }}>
             {THEMATIC_TABS.map((tab) => {
               const isActive = selectedGroup === tab.id;
               return (
@@ -308,19 +284,17 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
                     inputRef.current?.focus();
                   }}
                   style={{
-                    padding: '5px 10px',
-                    borderRadius: '4px',
+                    padding: '3px 8px',
                     fontSize: '11px',
-                    fontWeight: isActive ? 700 : 500,
-                    border: isActive ? '1px solid #000091' : '1px solid transparent',
-                    background: isActive ? '#ffffff' : 'transparent',
-                    color: isActive ? '#000091' : '#666666',
-                    boxShadow: isActive ? '0 1px 3px rgba(0, 0, 145, 0.1)' : 'none',
+                    fontFamily: 'inherit',
+                    fontWeight: isActive ? 600 : 400,
+                    border: 'none',
+                    background: isActive ? 'var(--bg-page, #ffffff)' : 'transparent',
+                    color: 'inherit',
                     cursor: 'pointer',
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '4px',
-                    transition: 'all 0.15s ease',
                   }}
                 >
                   <span>{tab.icon}</span>
@@ -331,7 +305,7 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
           </div>
 
           {/* Sélecteur de Pays / Presets */}
-          <div style={{ display: 'flex', gap: '2px', background: '#eef0f5', padding: '2px', borderRadius: '6px' }}>
+          <div style={{ display: 'flex', gap: '2px' }}>
             {(['fr', 'de', 'nl', 'es', 'eu'] as SupportedCountry[]).map((c) => (
               <button
                 key={c}
@@ -343,14 +317,13 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
                 }}
                 style={{
                   border: 'none',
-                  background: selectedCountry === c ? '#ffffff' : 'transparent',
-                  padding: '3px 6px',
-                  borderRadius: '4px',
+                  background: selectedCountry === c ? 'var(--bg-page, #ffffff)' : 'transparent',
+                  padding: '2px 6px',
                   fontSize: '11px',
-                  fontWeight: selectedCountry === c ? 700 : 500,
+                  fontFamily: 'inherit',
+                  fontWeight: selectedCountry === c ? 600 : 400,
                   cursor: 'pointer',
-                  color: selectedCountry === c ? '#000091' : '#666666',
-                  boxShadow: selectedCountry === c ? '0 1px 2px rgba(0,0,0,0.1)' : 'none',
+                  color: 'inherit',
                 }}
               >
                 {c === 'fr' ? '🇫🇷 FR' : c === 'de' ? '🇩🇪 DE' : c === 'nl' ? '🇳🇱 NL' : c === 'es' ? '🇪🇸 ES' : '🇪🇺 EU'}
@@ -363,22 +336,22 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
         <div
           id={dropdownId}
           role="listbox"
-          aria-label="Résultats de recherche souveraine"
+          aria-label="Résultats de recherche"
           style={{
-            maxHeight: '300px',
+            maxHeight: '260px',
             overflowY: 'auto',
           }}
         >
           {items.length === 0 ? (
             <div
               style={{
-                padding: '24px 16px',
+                padding: '16px',
                 textAlign: 'center',
-                fontSize: '13px',
-                color: 'var(--c--contextuals--content--semantic--neutral--secondary, #666666)',
+                fontSize: '12px',
+                color: 'var(--text-muted, #888888)',
               }}
             >
-              Aucun résultat certifié trouvé pour « {query} ».
+              Aucun résultat trouvé pour « {query} ».
             </div>
           ) : (
             items.map((item, index) => {
@@ -391,35 +364,23 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
                   onClick={() => onSelect(item)}
                   onMouseEnter={() => setSelectedIndex(index)}
                   style={{
-                    padding: '10px 14px',
+                    padding: '8px 12px',
                     cursor: 'pointer',
-                    borderBottom: '1px solid var(--c--contextuals--border--surface--primary, #f0f0f0)',
-                    background: isSelected ? 'var(--c--contextuals--background--surface--secondary, #f0f3ff)' : 'transparent',
-                    transition: 'background-color 0.1s ease',
+                    borderBottom: '1px solid var(--border-color, #f0f0f0)',
+                    background: isSelected ? 'var(--bg-surface, #f6f6f6)' : 'transparent',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '2px',
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
-                      <div
-                        style={{
-                          width: '26px',
-                          height: '26px',
-                          borderRadius: '6px',
-                          background: isSelected ? 'var(--blue-france-975, #f5f5fe)' : 'rgba(0, 0, 145, 0.04)',
-                          color: 'var(--blue-france-sun-113, #000091)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flexShrink: 0,
-                        }}
-                      >
-                        <SourceIcon type={item.entityType} size={15} color="currentColor" />
-                      </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0 }}>
+                      <SourceIcon type={item.entityType} size={13} color="currentColor" />
                       <span
                         style={{
-                          fontWeight: 700,
+                          fontWeight: 600,
                           fontSize: '13px',
-                          color: isSelected ? 'var(--c--globals--colors--brand-primary, #000091)' : 'var(--c--contextuals--content--semantic--neutral--primary, #161616)',
+                          color: 'inherit',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap',
@@ -429,21 +390,18 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
                       </span>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
                       {item.freshness && (
                         <span
                           style={{
                             fontSize: '9px',
-                            fontWeight: 600,
-                            padding: '1px 5px',
-                            borderRadius: '4px',
-                            background: item.freshness === 'live' ? '#ecfdf5' : '#fef3c7',
-                            color: item.freshness === 'live' ? '#047857' : '#b45309',
-                            border: item.freshness === 'live' ? '1px solid #a7f3d0' : '1px solid #fde68a',
+                            fontFamily: 'monospace',
+                            padding: '1px 4px',
+                            background: 'var(--bg-surface, #f0f0f0)',
+                            color: 'inherit',
                           }}
-                          title={item.freshness === 'live' ? 'Live API query' : 'Served from verified cache / local index'}
                         >
-                          {item.freshness === 'live' ? '⚡ Live' : '🕒 Cache'}
+                          {item.freshness === 'live' ? '⚡ live' : '🕒 cache'}
                         </span>
                       )}
 
@@ -451,13 +409,10 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
                         <span
                           style={{
                             fontSize: '10px',
-                            fontWeight: 700,
-                            padding: '2px 8px',
-                            borderRadius: '10px',
-                            background: item.statusColor === 'green' ? '#e8f7ee' : item.statusColor === 'purple' ? '#f3e8ff' : '#e8edff',
-                            color: item.statusColor === 'green' ? '#0e793c' : item.statusColor === 'purple' ? '#6b21a8' : '#0063cb',
-                            border: '1px solid transparent',
-                            flexShrink: 0,
+                            fontFamily: 'monospace',
+                            padding: '1px 5px',
+                            background: 'var(--bg-surface, #f0f0f0)',
+                            color: 'inherit',
                           }}
                         >
                           {item.status}
@@ -470,12 +425,11 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
                     <div
                       style={{
                         fontSize: '11px',
-                        color: 'var(--c--contextuals--content--semantic--neutral--secondary, #666666)',
-                        marginTop: '3px',
+                        color: 'var(--text-muted, #777777)',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
-                        paddingLeft: '21px',
+                        paddingLeft: '19px',
                       }}
                     >
                       {item.subtitle}
@@ -486,13 +440,12 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
                     <div
                       style={{
                         fontSize: '11px',
-                        color: 'var(--c--contextuals--content--semantic--neutral--tertiary, #4a5568)',
-                        marginTop: '3px',
+                        color: 'var(--text-muted, #888888)',
                         fontStyle: 'italic',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
-                        paddingLeft: '21px',
+                        paddingLeft: '19px',
                       }}
                     >
                       « {item.excerpt} »
@@ -502,31 +455,6 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
               );
             })
           )}
-        </div>
-
-        {/* Pied d'aide navigation clavier & Certification */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '8px 14px',
-            background: 'var(--c--contextuals--background--surface--secondary, #f8f8fb)',
-            borderTop: '1px solid var(--c--contextuals--border--surface--primary, #e5e5e5)',
-            fontSize: '11px',
-            color: 'var(--c--contextuals--content--semantic--neutral--secondary, #666666)',
-          }}
-        >
-          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-            <span><kbd style={{ background: '#ffffff', padding: '1px 4px', borderRadius: '3px', border: '1px solid #ccc' }}>↑</kbd><kbd style={{ background: '#ffffff', padding: '1px 4px', borderRadius: '3px', border: '1px solid #ccc' }}>↓</kbd> Naviguer</span>
-            <span>•</span>
-            <span><kbd style={{ background: '#ffffff', padding: '1px 4px', borderRadius: '3px', border: '1px solid #ccc' }}>↵</kbd> Valider</span>
-            <span>•</span>
-            <span><kbd style={{ background: '#ffffff', padding: '1px 4px', borderRadius: '3px', border: '1px solid #ccc' }}>Échap</kbd> Fermer</span>
-          </div>
-          <span style={{ fontWeight: 600, color: '#000091' }}>
-            🔒 Sources Souveraines Certifiées
-          </span>
         </div>
       </div>
     </div>

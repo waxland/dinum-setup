@@ -11,14 +11,12 @@ export const SourceCalloutFormat: React.FC<SourceCalloutFormatProps> = ({ props 
     <div
       contentEditable={false}
       style={{
-        padding: '16px',
-        borderRadius: '6px',
-        borderLeft: '4px solid var(--c--globals--colors--brand-primary, #000091)',
-        borderTop: '1px solid var(--c--contextuals--border--surface--primary, #e5e5e5)',
-        borderRight: '1px solid var(--c--contextuals--border--surface--primary, #e5e5e5)',
-        borderBottom: '1px solid var(--c--contextuals--border--surface--primary, #e5e5e5)',
-        background: 'var(--c--contextuals--background--surface--secondary, #f8f8fb)',
-        boxShadow: '0 1px 3px rgba(0, 0, 145, 0.05)',
+        padding: '12px 14px',
+        borderLeft: '3px solid var(--blue-france, #000091)',
+        borderTop: '1px solid var(--border-color, #e5e5e5)',
+        borderRight: '1px solid var(--border-color, #e5e5e5)',
+        borderBottom: '1px solid var(--border-color, #e5e5e5)',
+        background: 'var(--bg-surface, #f9f9fb)',
       }}
     >
       <div
@@ -27,30 +25,16 @@ export const SourceCalloutFormat: React.FC<SourceCalloutFormatProps> = ({ props 
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: '8px',
-          marginBottom: '8px',
+          marginBottom: '6px',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
-          <div
-            style={{
-              width: '26px',
-              height: '26px',
-              borderRadius: '6px',
-              background: 'var(--blue-france-975, #f5f5fe)',
-              color: 'var(--blue-france-sun-113, #000091)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-            }}
-          >
-            <SourceIcon type={props.entityType} size={15} color="currentColor" />
-          </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0 }}>
+          <SourceIcon type={props.entityType} size={14} color="currentColor" />
           <span
             style={{
-              fontSize: '14px',
-              fontWeight: 700,
-              color: 'var(--c--contextuals--content--semantic--neutral--primary, #1e1e1e)',
+              fontSize: '13px',
+              fontWeight: 600,
+              color: 'inherit',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
@@ -61,8 +45,8 @@ export const SourceCalloutFormat: React.FC<SourceCalloutFormatProps> = ({ props 
           {props.subtitle && (
             <span
               style={{
-                fontSize: '12px',
-                color: 'var(--c--contextuals--content--semantic--neutral--secondary, #666666)',
+                fontSize: '11px',
+                color: 'var(--text-muted, #777777)',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
@@ -76,14 +60,12 @@ export const SourceCalloutFormat: React.FC<SourceCalloutFormatProps> = ({ props 
         {props.status && (
           <span
             style={{
-              fontSize: '11px',
-              fontWeight: 700,
-              padding: '2px 8px',
-              borderRadius: '10px',
-              background: '#e8f7ee',
-              color: '#0e793c',
-              border: '1px solid #9de2b8',
-              flexShrink: 0,
+              fontSize: '10px',
+              fontFamily: 'monospace',
+              padding: '1px 5px',
+              background: 'var(--bg-page, #ffffff)',
+              border: '1px solid var(--border-color, #e5e5e5)',
+              color: 'inherit',
             }}
           >
             {props.status}
@@ -91,47 +73,14 @@ export const SourceCalloutFormat: React.FC<SourceCalloutFormatProps> = ({ props 
         )}
       </div>
 
-      {(props.meta1 || props.meta2 || props.meta3) && (
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '6px',
-            marginBottom: '8px',
-            fontSize: '11px',
-            color: 'var(--c--contextuals--content--semantic--neutral--secondary, #666666)',
-          }}
-        >
-          {props.meta1 && (
-            <span style={{ padding: '2px 6px', background: '#eeeeee', borderRadius: '3px' }}>
-              {props.meta1}
-            </span>
-          )}
-          {props.meta2 && (
-            <span style={{ padding: '2px 6px', background: '#eeeeee', borderRadius: '3px' }}>
-              {props.meta2}
-            </span>
-          )}
-          {props.meta3 && (
-            <span style={{ padding: '2px 6px', background: '#eeeeee', borderRadius: '3px' }}>
-              {props.meta3}
-            </span>
-          )}
-        </div>
-      )}
-
       {props.excerpt && (
         <div
           style={{
-            margin: '6px 0',
-            padding: '8px 12px',
-            background: 'var(--c--contextuals--background--surface--primary, #ffffff)',
-            border: '1px solid var(--c--contextuals--border--surface--primary, #e5e5e5)',
-            borderRadius: '3px',
-            fontStyle: 'italic',
-            fontSize: '13px',
+            fontSize: '12px',
+            color: 'inherit',
             lineHeight: 1.5,
-            color: 'var(--c--contextuals--content--semantic--neutral--primary, #1e1e1e)',
+            fontStyle: 'italic',
+            marginTop: '4px',
           }}
         >
           « {props.excerpt} »
@@ -139,46 +88,36 @@ export const SourceCalloutFormat: React.FC<SourceCalloutFormatProps> = ({ props 
       )}
 
       {props.summary && !props.excerpt && (
-        <p style={{ margin: '6px 0', fontSize: '13px', lineHeight: 1.4, color: '#333333' }}>
+        <div
+          style={{
+            fontSize: '12px',
+            color: 'inherit',
+            lineHeight: 1.5,
+            marginTop: '4px',
+          }}
+        >
           {props.summary}
-        </p>
+        </div>
       )}
 
-      <div
-        style={{
-          marginTop: '8px',
-          paddingTop: '6px',
-          borderTop: '1px solid var(--c--contextuals--border--surface--primary, #e5e5e5)',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          fontSize: '11px',
-          color: 'var(--c--contextuals--content--semantic--neutral--tertiary, #929292)',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <span>{props.verifiedAt ? `Verified on ${props.verifiedAt}` : 'Official verified source'}</span>
-          {props.freshness === 'cached' && (
-            <span style={{ fontSize: '10px', color: '#b45309', background: '#fef3c7', padding: '1px 5px', borderRadius: '3px' }}>
-              Cached Mode
-            </span>
-          )}
+      {(props.meta1 || props.meta2 || props.meta3) && (
+        <div
+          style={{
+            display: 'flex',
+            gap: '12px',
+            marginTop: '8px',
+            paddingTop: '6px',
+            borderTop: '1px solid var(--border-color, #ebebeb)',
+            fontSize: '11px',
+            color: 'var(--text-muted, #777777)',
+            flexWrap: 'wrap',
+          }}
+        >
+          {props.meta1 && <span>{props.meta1}</span>}
+          {props.meta2 && <span>{props.meta2}</span>}
+          {props.meta3 && <span>{props.meta3}</span>}
         </div>
-        {props.url && (
-          <a
-            href={props.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              color: 'var(--c--globals--colors--brand-primary, #000091)',
-              fontWeight: 600,
-              textDecoration: 'none',
-            }}
-          >
-            View on official platform ↗
-          </a>
-        )}
-      </div>
+      )}
     </div>
   );
 };
