@@ -428,22 +428,41 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
                       </span>
                     </div>
 
-                    {item.status && (
-                      <span
-                        style={{
-                          fontSize: '10px',
-                          fontWeight: 700,
-                          padding: '2px 8px',
-                          borderRadius: '10px',
-                          background: item.statusColor === 'green' ? '#e8f7ee' : item.statusColor === 'purple' ? '#f3e8ff' : '#e8edff',
-                          color: item.statusColor === 'green' ? '#0e793c' : item.statusColor === 'purple' ? '#6b21a8' : '#0063cb',
-                          border: '1px solid transparent',
-                          flexShrink: 0,
-                        }}
-                      >
-                        {item.status}
-                      </span>
-                    )}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+                      {item.freshness && (
+                        <span
+                          style={{
+                            fontSize: '9px',
+                            fontWeight: 600,
+                            padding: '1px 5px',
+                            borderRadius: '4px',
+                            background: item.freshness === 'live' ? '#ecfdf5' : '#fef3c7',
+                            color: item.freshness === 'live' ? '#047857' : '#b45309',
+                            border: item.freshness === 'live' ? '1px solid #a7f3d0' : '1px solid #fde68a',
+                          }}
+                          title={item.freshness === 'live' ? 'Live API query' : 'Served from verified cache / local index'}
+                        >
+                          {item.freshness === 'live' ? '⚡ Live' : '🕒 Cache'}
+                        </span>
+                      )}
+
+                      {item.status && (
+                        <span
+                          style={{
+                            fontSize: '10px',
+                            fontWeight: 700,
+                            padding: '2px 8px',
+                            borderRadius: '10px',
+                            background: item.statusColor === 'green' ? '#e8f7ee' : item.statusColor === 'purple' ? '#f3e8ff' : '#e8edff',
+                            color: item.statusColor === 'green' ? '#0e793c' : item.statusColor === 'purple' ? '#6b21a8' : '#0063cb',
+                            border: '1px solid transparent',
+                            flexShrink: 0,
+                          }}
+                        >
+                          {item.status}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   {item.subtitle && (
