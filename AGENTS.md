@@ -27,7 +27,41 @@ The repository consists of distinct layers:
 
 ---
 
-## 🧭 3. Specialized Skills Routing Table
+## 🏛️ 3. DINUM / La Suite Engineering Standards (Mandatory Skills)
+
+Before creating, modifying, refactoring, or reviewing application code, determine which DINUM engineering skill applies:
+
+### React / Frontend
+For any work involving React, TypeScript, JavaScript, JSX/TSX, HTML, CSS, frontend components, Next.js, forms, or browser-side behaviour:
+1. **Read `.agents/skills/dinum-react/SKILL.md`** (or `.skills/dinum-react.md`) before implementation.
+2. Apply its rules throughout implementation and code review.
+3. Re-read its final verification section before declaring the task complete.
+4. Follow repository-local configuration whenever it conflicts with a generic recommendation in the skill.
+
+### Python / Backend
+For any work involving Python, Django, Django REST Framework, Python APIs, workers, scripts, Python tests, or Python dependency/configuration files:
+1. **Read `.agents/skills/dinum-python/SKILL.md`** (or `.skills/dinum-python.md`) before implementation.
+2. Apply its rules throughout implementation and code review.
+3. Re-read its final verification section before declaring the task complete.
+4. Follow repository-local configuration whenever it conflicts with a generic recommendation in the skill.
+
+### Full-Stack Changes
+If a task touches both Python and frontend code, read and apply both skills systematically.
+
+### Mandatory Quality Gate
+Before considering implementation complete, the agent must:
+1. Inspect the resulting diff.
+2. Verify that relevant DINUM skill requirements were respected.
+3. Run the repository's relevant formatter / linter / type-check / test commands.
+4. Verify accessibility for user-facing frontend changes (100% keyboard, contrast $\ge 4.5:1$).
+5. Verify automated tests for changed behaviour.
+6. Report any checks that were not executed or could not be executed.
+
+*The agent must never state that a quality check passed unless that check was actually run.*
+
+---
+
+## 🧭 4. Specialized Skills Routing Table
 
 Before executing a task, load and read the detailed procedure from `.skills/en/` (or `.skills/` for French):
 
@@ -49,7 +83,7 @@ Before executing a task, load and read the detailed procedure from `.skills/en/`
 
 ---
 
-## 📋 4. Session Tracking & Structured Memory
+## 📋 5. Session Tracking & Structured Memory
 
 For complex or multi-step missions, create or update tracking files in the **`.sessions/`** directory (ignored by git):
 
