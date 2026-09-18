@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "dev": "npm --prefix documentation run dev",
-    "build": "npm run packages:build && npm --prefix documentation run build",
+    "build": "npm --prefix packages/slash-sources-sdk run build && npm --prefix packages/blocknote-sources run build && npm --prefix documentation run build",
     "docs:nav": "npm --prefix documentation run docs:nav",
     "docs:dev": "npm --prefix documentation run dev",
     "docs:build": "npm run packages:build && npm --prefix documentation run build",
@@ -28,5 +28,8 @@
   },
   "devDependencies": {
     "typescript": "^5.9.2"
+  },
+  "engines": {
+    "node": ">=22.0.0"
   }
 }

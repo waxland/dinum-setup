@@ -35,3 +35,5 @@ packages/*/.venv/
 *.pyc
 .pytest_cache/
 
+.vercel
+.env*
