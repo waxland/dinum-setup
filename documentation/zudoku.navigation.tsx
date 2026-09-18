@@ -171,9 +171,27 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
             "items": [
               "/fr/01-onboarding/02-workflow-et-contribution/bonnes-pratiques-dinum",
               "/fr/01-onboarding/02-workflow-et-contribution/guide-du-premier-commit",
+              "/fr/01-onboarding/02-workflow-et-contribution/qualite-et-architecture-la-suite",
               "/fr/01-onboarding/02-workflow-et-contribution/securite-du-poste-developpeur",
               "/fr/01-onboarding/02-workflow-et-contribution/tests-et-qualite",
-              "/fr/01-onboarding/02-workflow-et-contribution/workflow"
+              "/fr/01-onboarding/02-workflow-et-contribution/workflow",
+              {
+                "type": "category",
+                "label": "Adr",
+                "icon": "folder",
+                "collapsed": false,
+                "items": [
+                  {
+                    "type": "doc",
+                    "file": "fr/01-onboarding/02-workflow-et-contribution/adr/index.mdx",
+                    "path": "/fr/01-onboarding/02-workflow-et-contribution/adr"
+                  },
+                  "/fr/01-onboarding/02-workflow-et-contribution/adr/0001-architecture-monorepo-4-piliers",
+                  "/fr/01-onboarding/02-workflow-et-contribution/adr/0002-rendu-tri-format-dsfr-cunningham",
+                  "/fr/01-onboarding/02-workflow-et-contribution/adr/0003-proxy-django-anti-ssrf-circuit-breaker",
+                  "/fr/01-onboarding/02-workflow-et-contribution/adr/0004-dual-trigger-slash-et-mention"
+                ]
+              }
             ]
           },
           {
