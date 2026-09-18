@@ -9,7 +9,14 @@ test.describe('Automated Accessibility Audit (WCAG 2.1 Level AA & RGAA v4.1)', (
     // 1. Open editor and trigger search popover
     const editor = page.locator('.ProseMirror, .bn-editor').first();
     await editor.click();
-    await page.keyboard.type('/loi');
+
+    const lawBtn = page.getByRole('button', { name: /loi/i }).first();
+    if (await lawBtn.isVisible()) {
+      await lawBtn.click();
+    } else {
+      await page.keyboard.type('/loi');
+      await page.keyboard.press('Enter');
+    }
 
     const searchInput = page.getByRole('combobox');
     await expect(searchInput).toBeVisible();
