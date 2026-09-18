@@ -13,7 +13,7 @@ Ce skill définit la procédure pour concevoir et intégrer des interfaces utili
 - Création ou modification d'un composant d'interface utilisateur (Boutons, Modales, Formulaires, Tableaux, Alertes, Header, Breadcrumb).
 - Stylisation d'une vue respectant les couleurs institutionnelles (Bleu France `#000091`, Rouge Marianne `#E1000F`) et sémantiques.
 - Configuration du support du mode sombre (_Dark Mode_) ou de la typographie Marianne.
-- _Ne pas utiliser pour :_ un simple audit d'accessibilité sans modification de code (utiliser [Skill RGAA](/07-skills/rgaa-review)).
+- _Ne pas utiliser pour :_ un simple audit d'accessibilité sans modification de code (utiliser [Skill RGAA](rgaa-review.md)).
 
 ---
 

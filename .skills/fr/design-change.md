@@ -13,7 +13,7 @@ Ce skill fournit la méthodologie pour concevoir une évolution technique, compa
 - Conception d'un nouveau module, connecteur ou extension (ex: commande slash `/law` dans BlockNote, intégration LiveKit).
 - Choix structurant entre plusieurs approches techniques nécessitant une comparaison argumentée.
 - Formalisation d'un arbitrage technique d'équipe (_Architectural Decision Record_).
-- _Ne pas utiliser pour :_ une revue de code sur un diff existant (utiliser [Skill Code Review](/07-skills/code-review)).
+- _Ne pas utiliser pour :_ une revue de code sur un diff existant (utiliser [Skill Code Review](code-review.md)).
 
 ---
 

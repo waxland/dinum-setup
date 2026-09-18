@@ -25,20 +25,20 @@ Le dépôt est composé de trois couches distinctes à ne pas confondre :
 
 ---
 
-## 🧭 3. Table de Routage des Skills Spécialisés
+## 🧭 3. Table de Routage des Skills Spécialisés / Specialized Skills Routing
 
-Avant d'effectuer une tâche, chargez et lisez la procédure détaillée dans le fichier correspondant du dossier racine `.skills/` :
+Avant d'effectuer une tâche, chargez et lisez la procédure détaillée dans le fichier correspondant du dossier racine `.skills/` (version française ou version anglaise dans `.skills/en/`) :
 
-| Intention / Type de Tâche                                                 | Skill à charger       | Fichier                                                                                                                    |
-| ------------------------------------------------------------------------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| **Normes TypeScript, Cunningham & Zéro any/cast**                         | `code-standards`      | [`.skills/code-standards.md`](.skills/code-standards.md)                                                                   |
-| **Composant ou vue DSFR** (Bouton, alerte, formulaire, tokens, thème)     | `dsfr`                | [`.skills/dsfr.md`](.skills/dsfr.md)                                                                                       |
-| **Audit ou correction d'accessibilité** (Clavier, ARIA, contrastes, RGAA) | `rgaa-review`         | [`.skills/rgaa-review.md`](.skills/rgaa-review.md)                                                                         |
-| **Orchestration & Démarrage local** (Makefile, Docker, PostgreSQL, ports) | `lasuite-dev`         | [`.skills/lasuite-dev.md`](.skills/lasuite-dev.md)                                                                         |
-| **Rédaction documentaire MDX** (Zudoku, navigation, composants React)     | `docs-mdx`            | [`.skills/docs-mdx.md`](.skills/docs-mdx.md)                                                                               |
-| **Revue de code / PR** (Bugs, régressions, conventions, secrets)          | `code-review`         | [`.skills/code-review.md`](.skills/code-review.md)                                                                         |
-| **Audit d'architecture** (Couplage, responsabilités, flux temps réel/S3)  | `architecture-review` | [`.skills/architecture-review.md`](.skills/architecture-review.md)                                                         |
-| **Conception d'évolution** (Nouvelle feature, comparaison d'options, ADR) | `design-change`       | [`.skills/design-change.md`](.skills/design-change.md)                                                                     |
+| Intention / Type de Tâche | Skill à charger | Fichier FR | English File |
+| ------------------------- | --------------- | ---------- | ------------ |
+| **Normes TypeScript, Cunningham & Zéro any/cast** | `code-standards` | [`.skills/code-standards.md`](.skills/code-standards.md) | [`.skills/en/code-standards.md`](.skills/en/code-standards.md) |
+| **Composant ou vue DSFR** (Bouton, alerte, formulaire, tokens, thème) | `dsfr` | [`.skills/dsfr.md`](.skills/dsfr.md) | [`.skills/en/dsfr.md`](.skills/en/dsfr.md) |
+| **Audit ou correction d'accessibilité** (Clavier, ARIA, contrastes, RGAA) | `rgaa-review` | [`.skills/rgaa-review.md`](.skills/rgaa-review.md) | [`.skills/en/rgaa-review.md`](.skills/en/rgaa-review.md) |
+| **Orchestration & Démarrage local** (Makefile, Docker, PostgreSQL, ports) | `lasuite-dev` | [`.skills/lasuite-dev.md`](.skills/lasuite-dev.md) | [`.skills/en/lasuite-dev.md`](.skills/en/lasuite-dev.md) |
+| **Rédaction documentaire MDX** (Zudoku, navigation, composants React) | `docs-mdx` | [`.skills/docs-mdx.md`](.skills/docs-mdx.md) | [`.skills/en/docs-mdx.md`](.skills/en/docs-mdx.md) |
+| **Revue de code / PR** (Bugs, régressions, conventions, secrets) | `code-review` | [`.skills/code-review.md`](.skills/code-review.md) | [`.skills/en/code-review.md`](.skills/en/code-review.md) |
+| **Audit d'architecture** (Couplage, responsabilités, flux temps réel/S3) | `architecture-review` | [`.skills/architecture-review.md`](.skills/architecture-review.md) | [`.skills/en/architecture-review.md`](.skills/en/architecture-review.md) |
+| **Conception d'évolution** (Nouvelle feature, comparaison d'options, ADR) | `design-change` | [`.skills/design-change.md`](.skills/design-change.md) | [`.skills/en/design-change.md`](.skills/en/design-change.md) |
 
 
 ---

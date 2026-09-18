@@ -14,7 +14,7 @@ Ce skill définit la procédure standardisée pour orchestrer et développer loc
 - Dépannage d'un problème de port ou de conteneur Docker.
 - Configuration des connexions PostgreSQL dans VS Code (SQLTools 1-clic).
 - Ajout ou modification des cibles du `Makefile` racine.
-- _Ne pas utiliser pour :_ éditer le contenu de la documentation Zudoku (utiliser [Skill Docs MDX](/07-skills/docs-mdx)).
+- _Ne pas utiliser pour :_ éditer le contenu de la documentation Zudoku (utiliser [Skill Docs MDX](docs-mdx.md)).
 
 ---
 

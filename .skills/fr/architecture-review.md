@@ -13,7 +13,7 @@ Ce skill fournit la méthodologie pour analyser la robustesse, la cohérence des
 - Audit de la structure globale du dépôt ou d'un projet de La Suite.
 - Détection des points de friction, couplages forts ou goulots d'étranglement de performance.
 - Analyse des flux d'authentification OIDC/ProConnect, synchronisation CRDT Yjs ou stockage S3.
-- _Ne pas utiliser pour :_ concevoir une nouvelle fonctionnalité (utiliser [Skill Design Change](/07-skills/design-change)).
+- _Ne pas utiliser pour :_ concevoir une nouvelle fonctionnalité (utiliser [Skill Design Change](design-change.md)).
 
 ---
 

@@ -13,7 +13,7 @@ Ce skill définit la procédure standardisée pour auditer un diff Git, identifi
 - Revue demandée par l'utilisateur : _"Revois mes changements"_, _"Audite cette PR"_, _"Cherche les régressions"_.
 - Vérification avant de soumettre ou de merger une Pull Request sur les dépôts de La Suite.
 - Contrôle de non-régression après un refactoring.
-- _Ne pas utiliser pour :_ auditer l'architecture générale d'un système sans diff de code (utiliser [Skill Architecture](/07-skills/architecture-review)).
+- _Ne pas utiliser pour :_ auditer l'architecture générale d'un système sans diff de code (utiliser [Skill Architecture](architecture-review.md)).
 
 ---
 
@@ -43,7 +43,7 @@ Ce skill définit la procédure standardisée pour auditer un diff Git, identifi
 ### Axe 3 : Sécurité des Secrets & Conventions de Code
 
 - [ ] 🔒 **Aucun secret en clair :** Vérifier l'absence de tokens, clés API ou mots de passe privés dans le diff.
-- [ ] 🛑 **Zéro `any` & Zéro cast abusif (`as ...`) :** Tout le code TypeScript doit être typé rigoureusement avec des types/interfaces explicites (voir [Skill Code Standards](/07-skills/code-standards)).
+- [ ] 🛑 **Zéro `any` & Zéro cast abusif (`as ...`) :** Tout le code TypeScript doit être typé rigoureusement avec des types/interfaces explicites (voir [Skill Code Standards](code-standards.md)).
 - [ ] 🎨 **Zéro Tailwind CSS & Zéro `@mantine/core` dans l'UI :** Utilisation exclusive de Cunningham (`<Box>`, `<Card>`, tokens CSS) et du DSFR (`@codegouvfr/react-dsfr`).
 - [ ] **Conventions de nommage :** Conventional Commits (`feat:`, `fix:`, `docs:`), exports d'index clairs.
 - [ ] **Conformité DSFR & RGAA AA :** Classes `fr-*` officielles, rôles ARIA (`combobox`, `listbox`), navigation clavier.
