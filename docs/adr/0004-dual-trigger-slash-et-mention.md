@@ -1,0 +1,23 @@
+# ADR-0004 — Dual Trigger d'Interlinking (`/` pour Blocs, `@` pour Inline)
+
+## Statut
+✅ **Accepté**
+
+## Contexte & Problématique
+Dans La Suite Docs, l'utilisateur a besoin d'insérer soit des blocs riches complets (citation de loi occupant toute la largeur), soit des mentions légères au cœur d'une phrase (ex: *« en vertu de l'article L. 111-1... »*).
+L'inspiration du composant `/link-doc` (`Interlinking`) d'Impress a démontré l'efficacité d'un déclenchement au fil de la frappe.
+
+## Décision Prise
+Activer simultanément **deux contrôleurs d'autocomplétion BlockNote** (`SuggestionMenuController`) :
+1. **Déclencheur `/` (Slash Command)** : Insère un `sourceBlock` (`createReactBlockSpec`) avec la palette complète organisée en Tabs DSFR.
+2. **Déclencheur `@` (Mention)** : Insère un `sourceLink` (`createReactInlineContentSpec`) sous forme de badge inline compact dans le paragraphe en cours, avec popover de prévisualisation flottant au survol/focus clavier.
+
+## Conséquences
+- **Positives :**
+  - Fluidité d'écriture sans rupture de contexte.
+  - Double usage (bloc complet vs inline) sans confusion.
+  - Conformité RGAA v4.1 AA (100% accessible au clavier).
+
+## Références
+- `AUDIT_TODO.md`
+- Tests E2E Playwright : `packages/blocknote-sources/tests/e2e/slash-sources.spec.ts`

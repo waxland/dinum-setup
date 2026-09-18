@@ -1,0 +1,26 @@
+# ADR-0003 — Proxy Backend Django avec Sécurité Anti-SSRF & Circuit Breaker
+
+## Statut
+✅ **Accepté**
+
+## Contexte & Problématique
+La consultation directe d'APIs publiques par le navigateur du client pose des problèmes de CORS, expose des clés d'API ministérielles secrètes, et rend le client vulnérable aux pannes ou lenteurs des serveurs tiers.
+Côté serveur, un proxy non sécurisé est vulnérable aux attaques par falsification de requête côté serveur (**SSRF** - *Server-Side Request Forgery*).
+
+## Décision Prise
+Mettre en place une application Django réutilisable (`django-lasuite-sources`) servant de proxy sécurisé avec :
+1. **Validation Anti-SSRF stricte** : Résolution DNS préalable et blocage systématique des adresses IP locales, privées et de loopback (`127.0.0.0/8`, `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `169.254.169.254`).
+2. **Circuit Breaker & Timeouts Déterministes** : Timeout strict de 3.5s par requête externe et bascule automatique en mode dégradé/fallback.
+3. **Cache SHA-256 en mémoire / Redis** : Mise en cache déterministe pour économiser les quotas d'API et garantir des temps de réponse < 50ms.
+
+## Conséquences
+- **Positives :**
+  - Protection totale du réseau interne de l'administration contre l'introspection SSRF.
+  - Résilience garantie de l'éditeur collaboratif même en cas d'indisponibilité d'une API tierce.
+  - Respect des standards de sécurité de La Suite Numérique.
+- **Compromis :**
+  - Nécessité d'exécuter un service Django ou conteneur backend pour les environnements en production.
+
+## Références
+- La Suite Security Rules : [security.md](https://github.com/suitenumerique/dev-handbook/blob/main/security.md)
+- Tests de sécurité : `packages/django-lasuite-sources/tests/test_security_ssrf.py`

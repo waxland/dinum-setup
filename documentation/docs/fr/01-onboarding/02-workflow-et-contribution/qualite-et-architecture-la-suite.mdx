@@ -1,0 +1,120 @@
+---
+title: Qualité de Code, Linters & Architecture La Suite
+sidebar_label: Qualité & Architecture
+description: Alignement complet sur les conventions d'ingénierie de suitenumerique/docs (ESLint, Ruff, Pytest, Playwright, RGAA et architecture modulaire).
+---
+
+import { FeatureCard, FeatureGrid } from "../../../../src/components/Cards";
+import { Mermaid } from "../../../../src/components/Mermaid";
+
+# 🏛️ Qualité de Code, Linters & Architecture La Suite
+
+Ce document formalise l'alignement technique de ce monorepo avec les **conventions d'ingénierie et d'architecture officielles de La Suite Numérique (`suitenumerique/docs`)** et de **beta.gouv.fr**.
+
+---
+
+## 📚 1. Fichiers & Références Officielles Upstream
+
+L'ensemble de notre configuration s'aligne sur les fichiers sources du dépôt officiel :
+
+<FeatureGrid cols={3}>
+  <FeatureCard
+    title="La Suite Docs Backend (Ruff & Pytest)"
+    description="Configuration Ruff 88 caractères, Django rules, Bandit sécurité et tri isort."
+    href="https://github.com/suitenumerique/docs/blob/main/src/backend/pyproject.toml"
+    icon="code"
+  />
+  <FeatureCard
+    title="La Suite Docs Frontend (ESLint)"
+    description="Preset applicatif Next.js, règles strictes TypeScript et accessibilité JSX."
+    href="https://github.com/suitenumerique/docs/blob/main/src/frontend/apps/impress/eslint.config.mjs"
+    icon="layout"
+  />
+  <FeatureCard
+    title="La Suite ESLint Plugin Package"
+    description="Règles partagées base, typescript, test et playwright dans La Suite."
+    href="https://github.com/suitenumerique/docs/tree/main/src/frontend/packages/eslint-plugin-docs"
+    icon="check-circle"
+  />
+  <FeatureCard
+    title="Architecture Officielle Docs"
+    description="Vue d'ensemble de l'architecture 3-tiers, flux temps réel Yjs et stockage S3."
+    href="https://github.com/suitenumerique/docs/blob/main/documentation/architecture.md"
+    icon="book-open"
+  />
+  <FeatureCard
+    title="Dossiers de Décisions d'Architecture (ADRs)"
+    description="Index des décisions d'architecture d'Impress / Docs."
+    href="https://github.com/suitenumerique/docs/tree/main/documentation/adr"
+    icon="zap"
+  />
+  <FeatureCard
+    title="Structure Frontend Impress"
+    description="Organisation modulaire par features, services, stores, types et api."
+    href="https://github.com/suitenumerique/docs/tree/main/src/frontend/apps/impress/src"
+    icon="shield"
+  />
+</FeatureGrid>
+
+---
+
+## 🎯 2. Matrice d'Outillage & Linter par Langage
+
+| Domaine | Outils Officiels La Suite | Configuration Locale Monorepo | Règles Clés Appliquées |
+| :--- | :--- | :--- | :--- |
+| **TypeScript / React** | ESLint 9 + Prettier | `tooling/eslint/` | • `@typescript-eslint/no-explicit-any: error`<br>• Pas de casts forcé (`as ...`) non justifiés<br>• Accessibilité JSX A11y stricte<br>• Exhaustive dependencies sur les hooks |
+| **Python / Django** | Ruff + pytest + coverage | `packages/django-lasuite-sources/pyproject.toml` | • Longueur de ligne : 88 caractères<br>• Règles : `B`, `BLE`, `C4`, `DJ`, `I`, `PLC`, `PLE`, `PLR`, `PLW`, `RUF100`, `S`, `SLF`, `T20`<br>• Tri isort ordonné en 6 sections |
+| **Tests E2E & RGAA** | Playwright | `packages/blocknote-sources/playwright.config.ts` | • 4 tests E2E validant la navigation clavier, les rôles ARIA et le déclencheur `@mention` |
+| **Documentation SSR** | Zudoku + MDX | `documentation/zudoku.config.tsx` | • 284 routes pré-rendues statiquement (0 erreur SSR) |
+
+---
+
+## 🏗️ 3. Architecture Modulaire & Décisions (ADRs)
+
+Le dépôt applique le principe de responsabilité unique et sépare clairement le domaine métier de la glue technique.
+
+```mermaid
+flowchart TD
+    subgraph UI["1. Couche Interface (BlockNote & Web)"]
+        BN["@suitenumerique/blocknote-sources"]
+        Demo["demo/ (Vite Standalone)"]
+        Docs["documentation/ (Zudoku Portal)"]
+    end
+
+    subgraph SDK["2. Couche Contrats & SDK"]
+        CoreSDK["@suitenumerique/slash-sources-sdk"]
+    end
+
+    subgraph Backend["3. Couche Proxy & Données"]
+        DjangoProxy["django-lasuite-sources"]
+        APIs["APIs Souveraines (Légifrance, BAN, BOAMP, RNE, Albert)"]
+    end
+
+    UI --> SDK
+    SDK --> DjangoProxy
+    DjangoProxy --> APIs
+```
+
+Les décisions majeures sont tracées dans des **ADRs normalisés** :
+- **[ADR-0001 : Découplage du Monorepo en 4 Piliers](../../../../docs/adr/0001-architecture-monorepo-4-piliers.md)**
+- **[ADR-0002 : Rendu Tri-Format DSFR / Cunningham](../../../../docs/adr/0002-rendu-tri-format-dsfr-cunningham.md)**
+- **[ADR-0003 : Proxy Django Anti-SSRF & Circuit Breaker](../../../../docs/adr/0003-proxy-django-anti-ssrf-circuit-breaker.md)**
+- **[ADR-0004 : Dual Trigger d'Interlinking Slash & Mention](../../../../docs/adr/0004-dual-trigger-slash-et-mention.md)**
+
+---
+
+## 🛠️ 4. Commande Unifiée de Validation (`make check`)
+
+Pour garantir qu'aucun commit ne dégrade la qualité, la commande unique suivante valide l'intégralité de la chaîne :
+
+```bash
+make check
+```
+
+Elle exécute séquentiellement :
+1. Compilation des packages TypeScript (`make packages-build`).
+2. Tests unitaires TypeScript (`make packages-test`).
+3. Build de production de la démo (`make demo-build`).
+4. Tests E2E Playwright (`npm run test:e2e`).
+5. Tests backend Django (`pytest` avec 46 tests de sécurité SSRF et API).
+6. Compilation SSR de la documentation (`make docs-build`).

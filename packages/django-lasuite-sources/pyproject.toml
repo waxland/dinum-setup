@@ -55,3 +55,61 @@ test = [
 
 [tool.hatch.build.targets.wheel]
 packages = ["lasuite_sources"]
+
+# -----------------------------------------------------------------------------
+# Configuration Qualité & Linting Ruff (Conforme aux standards La Suite Docs)
+# Référence : https://github.com/suitenumerique/docs/blob/main/src/backend/pyproject.toml
+# -----------------------------------------------------------------------------
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+exclude = [
+    ".git",
+    "__pycache__",
+    ".pytest_cache",
+    "dist",
+    "build",
+    "migrations",
+]
+
+[tool.ruff.lint]
+select = [
+    "B",      # flake8-bugbear
+    "BLE",    # blind exceptions (except Exception)
+    "C4",     # flake8-comprehensions
+    "DJ",     # flake8-django
+    "I",      # isort (import sorting)
+    "PLC",    # pylint conventions
+    "PLE",    # pylint errors
+    "PLR",    # pylint refactoring
+    "PLW",    # pylint warnings
+    "RUF100", # unused noqa
+    "RUF200", # pyproject checks
+    "S",      # flake8-bandit (security checks)
+    "SLF",    # private member access
+    "T20",    # print statements detection
+]
+ignore = [
+    "DJ001",  # null=True on text-based fields where appropriate
+    "PLR0913", # too many arguments in function definition
+]
+
+[tool.ruff.lint.isort]
+section-order = [
+    "future",
+    "standard-library",
+    "django",
+    "third-party",
+    "first-party",
+    "local-folder",
+]
+known-first-party = ["lasuite_sources"]
+extra-standard-library = ["typing_extensions"]
+
+[tool.ruff.lint.isort.sections]
+django = ["django", "rest_framework"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "PLR2004", "T201"] # Autorise assert, magic numbers et print dans les tests
+
