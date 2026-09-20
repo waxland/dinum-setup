@@ -165,11 +165,11 @@ Les nouvelles vérifications viseront les défauts observés : pas de test qui c
 
 Fichiers principaux : [package.json](./package.json), [package-lock.json](./package-lock.json), manifestes des cinq workspaces JavaScript et workflows dans `.github/workflows/`.
 
-- [ ] **T-001.01** Comparer la liste réelle des workspaces au manifeste racine et à `package-lock.json`. Vérifier les noms de packages, liens de workspaces, dépendances internes et éventuels lockfiles secondaires avant de décider de leur rôle.
-- [ ] **T-001.02** Régénérer le lockfile avec le runtime et la version npm retenus. Inspecter le diff pour distinguer l'ajout du workspace international des mises à jour de versions éventuellement nécessaires ; isoler les montées majeures dans T-009.
-- [ ] **T-001.03** Installer depuis un environnement sans `node_modules` avec `npm ci`, sans recours à `npm install` en cas d'échec. Vérifier les scripts d'installation requis par les outils ; l'option `--ignore-scripts` seule ne constitue pas la recette finale des builds.
-- [ ] **T-001.04** Retirer les replis `npm ci || npm install` des workflows concernés. Un lockfile incohérent doit devenir une erreur visible et reproductible.
-- [ ] **T-001.05** Rendre Vitest, ESLint, TypeScript, tsup et Playwright explicitement disponibles dans les workspaces qui les exécutent, ou via une convention racine documentée. Éviter le téléchargement opportuniste d'un runner par `npx`.
+- [x] **T-001.01** (**R-01.01**, *validé 18/09/2026*) Comparer la liste réelle des workspaces au manifeste racine et à `package-lock.json`. Vérifier les noms de packages, liens de workspaces, dépendances internes et éventuels lockfiles secondaires avant de décider de leur rôle.
+- [x] **T-001.02** (**R-01.02**, *validé 18/09/2026*) Régénérer le lockfile avec le runtime et la version npm retenus. Inspecter le diff pour distinguer l'ajout du workspace international des mises à jour de versions éventuellement nécessaires ; isoler les montées majeures dans T-009.
+- [x] **T-001.03** (**R-01.03**, *validé 18/09/2026*) Installer depuis un environnement sans `node_modules` avec `npm ci`, sans recours à `npm install` en cas d'échec. Vérifier les scripts d'installation requis par les outils ; l'option `--ignore-scripts` seule ne constitue pas la recette finale des builds.
+- [x] **T-001.04** (**R-01.04**, *validé 18/09/2026*) Retirer les replis `npm ci || npm install` des workflows concernés. Un lockfile incohérent doit devenir une erreur visible et reproductible.
+- [x] **T-001.05** (**R-01.05**, *validé 18/09/2026*) Rendre Vitest, ESLint, TypeScript, tsup et Playwright explicitement disponibles dans les workspaces qui les exécutent, ou via une convention racine documentée. Éviter le téléchargement opportuniste d'un runner par `npx`.
 - [ ] **T-001.06** Rejouer installation, compilation des packages, lint, typage et collecte des tests. Requalifier les erreurs qui restent après restauration des dépendances : elles deviennent des défauts source à traiter, et non des erreurs d'environnement supposées.
 
 **Validation :** deux installations propres successives utilisent les mêmes versions et ne modifient pas le lockfile ; tous les binaires attendus sont résolus localement ; le workspace international est installé.

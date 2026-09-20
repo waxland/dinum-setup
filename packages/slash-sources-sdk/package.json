@@ -45,6 +45,7 @@
     "open-data"
   ],
   "devDependencies": {
+    "eslint": "^9.39.5",
     "typescript": "^5.9.2",
     "vitest": "4.1.11"
   }

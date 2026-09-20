@@ -37,6 +37,7 @@
     "zudoku": "^0.86.0"
   },
   "devDependencies": {
+    "eslint": "^9.39.5",
     "pagefind": "1.5.2",
     "typescript": "^5.9.2"
   }
