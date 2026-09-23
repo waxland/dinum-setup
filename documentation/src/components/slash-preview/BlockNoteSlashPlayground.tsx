@@ -407,12 +407,16 @@ const BlockNoteSlashEditorInner: React.FC = () => {
 
   return (
     <div
+      data-theme="light"
+      className="light not-dark"
       style={{
         margin: "24px 0",
         width: "100%",
         borderRadius: "12px",
         border: "1px solid #e5e5e5",
-        background: isDark ? "#0f172a" : "#ffffff",
+        background: "#ffffff",
+        color: "#1e1e1e",
+        colorScheme: "light",
         boxShadow: "0 4px 16px rgba(0, 0, 145, 0.06)",
         overflow: "hidden",
         fontFamily: "var(--font-family-base, sans-serif)",
@@ -422,7 +426,7 @@ const BlockNoteSlashEditorInner: React.FC = () => {
       <div
         style={{
           padding: "12px 16px",
-          background: isDark ? "#1e293b" : "#f8f8fb",
+          background: "#f8f8fb",
           borderBottom: "1px solid #e5e5e5",
           display: "flex",
           flexWrap: "wrap",
@@ -432,7 +436,7 @@ const BlockNoteSlashEditorInner: React.FC = () => {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <span style={{ fontSize: "13px", fontWeight: 700, color: isDark ? "#8585f6" : "#000091" }}>
+          <span style={{ fontSize: "13px", fontWeight: 700, color: "#000091" }}>
             Interactive BlockNote.js Demonstrator
           </span>
           <span
@@ -440,8 +444,8 @@ const BlockNoteSlashEditorInner: React.FC = () => {
               fontSize: "10px",
               padding: "2px 8px",
               borderRadius: "10px",
-              background: isDark ? "#172554" : "#e8edff",
-              color: isDark ? "#93c5fd" : "#000091",
+              background: "#e8edff",
+              color: "#000091",
               fontWeight: 700,
               border: "1px solid #b8c5ff",
             }}
@@ -466,8 +470,8 @@ const BlockNoteSlashEditorInner: React.FC = () => {
                 padding: "3px 8px",
                 borderRadius: "4px",
                 border: "1px solid #e5e5e5",
-                background: isDark ? "#334155" : "#ffffff",
-                color: isDark ? "#f8fafc" : "#1e1e1e",
+                background: "#ffffff",
+                color: "#1e1e1e",
                 cursor: "pointer",
                 display: "inline-flex",
                 alignItems: "center",
@@ -503,13 +507,13 @@ const BlockNoteSlashEditorInner: React.FC = () => {
         style={{
           padding: "16px 24px",
           minHeight: "380px",
-          background: isDark ? "#0f172a" : "#ffffff",
-          color: isDark ? "#f8fafc" : "#1e1e1e",
+          background: "#ffffff",
+          color: "#1e1e1e",
         }}
       >
         <BlockNoteView
           editor={editor}
-          theme={isDark ? "dark" : "light"}
+          theme="light"
           slashMenu={false}
         >
           <SuggestionMenuController
@@ -541,7 +545,7 @@ const BlockNoteSlashEditorInner: React.FC = () => {
       <div
         style={{
           padding: "8px 16px",
-          background: isDark ? "#1e293b" : "#f8f8fb",
+          background: "#f8f8fb",
           borderTop: "1px solid #e5e5e5",
           fontSize: "11px",
           color: "#666666",

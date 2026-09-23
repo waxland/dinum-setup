@@ -13,23 +13,9 @@ import { SourceEntityType } from "./types";
 
 export const BlockNoteSlashPlayground: React.FC = () => {
   const [mounted, setMounted] = useState(false);
-  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    if (typeof document === "undefined") {
-      return;
-    }
-    setIsDark(document.documentElement.classList.contains("dark"));
-
-    const observer = new MutationObserver(() => {
-      setIsDark(document.documentElement.classList.contains("dark"));
-    });
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-    return () => observer.disconnect();
   }, []);
 
   if (!mounted) {
@@ -43,6 +29,7 @@ export const BlockNoteSlashPlayground: React.FC = () => {
           background: "var(--background-alt-grey, #f6f6f6)",
           textAlign: "center",
           fontFamily: "var(--font-family-base, sans-serif)",
+          colorScheme: "light",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", fontSize: "12px", color: "#666666" }}>
@@ -52,7 +39,7 @@ export const BlockNoteSlashPlayground: React.FC = () => {
     );
   }
 
-  return <BlockNoteSlashEditorInner isDark={isDark} />;
+  return <BlockNoteSlashEditorInner />;
 };
 
 const createEmptySourceBlock = (sourceType: SourceEntityType) => ({
@@ -79,7 +66,7 @@ const createEmptySourceBlock = (sourceType: SourceEntityType) => ({
   },
 });
 
-const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) => {
+const BlockNoteSlashEditorInner: React.FC = () => {
   const playgroundSchema = useMemo(() => {
     return BlockNoteSchema.create({
       blockSpecs: {
@@ -420,12 +407,16 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
 
   return (
     <div
+      data-theme="light"
+      className="light not-dark"
       style={{
         margin: "24px 0",
         width: "100%",
         borderRadius: "12px",
         border: "1px solid #e5e5e5",
-        background: isDark ? "#0f172a" : "#ffffff",
+        background: "#ffffff",
+        color: "#1e1e1e",
+        colorScheme: "light",
         boxShadow: "0 4px 16px rgba(0, 0, 145, 0.06)",
         overflow: "hidden",
         fontFamily: "var(--font-family-base, sans-serif)",
@@ -435,7 +426,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       <div
         style={{
           padding: "12px 16px",
-          background: isDark ? "#1e293b" : "#f8f8fb",
+          background: "#f8f8fb",
           borderBottom: "1px solid #e5e5e5",
           display: "flex",
           flexWrap: "wrap",
@@ -445,7 +436,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <span style={{ fontSize: "13px", fontWeight: 700, color: isDark ? "#8585f6" : "#000091" }}>
+          <span style={{ fontSize: "13px", fontWeight: 700, color: "#000091" }}>
             Interactive BlockNote.js Demonstrator
           </span>
           <span
@@ -453,8 +444,8 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
               fontSize: "10px",
               padding: "2px 8px",
               borderRadius: "10px",
-              background: isDark ? "#172554" : "#e8edff",
-              color: isDark ? "#93c5fd" : "#000091",
+              background: "#e8edff",
+              color: "#000091",
               fontWeight: 700,
               border: "1px solid #b8c5ff",
             }}
@@ -479,8 +470,8 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
                 padding: "3px 8px",
                 borderRadius: "4px",
                 border: "1px solid #e5e5e5",
-                background: isDark ? "#334155" : "#ffffff",
-                color: isDark ? "#f8fafc" : "#1e1e1e",
+                background: "#ffffff",
+                color: "#1e1e1e",
                 cursor: "pointer",
                 display: "inline-flex",
                 alignItems: "center",
@@ -516,13 +507,13 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
         style={{
           padding: "16px 24px",
           minHeight: "380px",
-          background: isDark ? "#0f172a" : "#ffffff",
-          color: isDark ? "#f8fafc" : "#1e1e1e",
+          background: "#ffffff",
+          color: "#1e1e1e",
         }}
       >
         <BlockNoteView
           editor={editor}
-          theme={isDark ? "dark" : "light"}
+          theme="light"
           slashMenu={false}
         >
           <SuggestionMenuController
@@ -554,7 +545,7 @@ const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) =>
       <div
         style={{
           padding: "8px 16px",
-          background: isDark ? "#1e293b" : "#f8f8fb",
+          background: "#f8f8fb",
           borderTop: "1px solid #e5e5e5",
           fontSize: "11px",
           color: "#666666",
