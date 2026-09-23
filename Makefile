@@ -2,7 +2,7 @@ SHELL := /usr/bin/env bash
 
 ROOT_DIR := $(CURDIR)
 SRC_DIR ?= $(ROOT_DIR)/LaSuite
-PYTHON ?= python3
+PYTHON ?= $(shell if [ -f $(ROOT_DIR)/packages/django-lasuite-sources/.venv/bin/python ]; then echo $(ROOT_DIR)/packages/django-lasuite-sources/.venv/bin/python; else echo python3; fi)
 
 # Default repository list (customizable)
 # Example:

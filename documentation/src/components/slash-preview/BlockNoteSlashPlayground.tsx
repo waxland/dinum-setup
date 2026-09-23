@@ -13,23 +13,9 @@ import { SourceEntityType } from "./types";
 
 export const BlockNoteSlashPlayground: React.FC = () => {
   const [mounted, setMounted] = useState(false);
-  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    if (typeof document === "undefined") {
-      return;
-    }
-    setIsDark(document.documentElement.classList.contains("dark"));
-
-    const observer = new MutationObserver(() => {
-      setIsDark(document.documentElement.classList.contains("dark"));
-    });
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-    return () => observer.disconnect();
   }, []);
 
   if (!mounted) {
@@ -43,6 +29,7 @@ export const BlockNoteSlashPlayground: React.FC = () => {
           background: "var(--background-alt-grey, #f6f6f6)",
           textAlign: "center",
           fontFamily: "var(--font-family-base, sans-serif)",
+          colorScheme: "light",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", fontSize: "12px", color: "#666666" }}>
@@ -52,7 +39,7 @@ export const BlockNoteSlashPlayground: React.FC = () => {
     );
   }
 
-  return <BlockNoteSlashEditorInner isDark={isDark} />;
+  return <BlockNoteSlashEditorInner />;
 };
 
 const createEmptySourceBlock = (sourceType: SourceEntityType) => ({
@@ -79,7 +66,7 @@ const createEmptySourceBlock = (sourceType: SourceEntityType) => ({
   },
 });
 
-const BlockNoteSlashEditorInner: React.FC<{ isDark: boolean }> = ({ isDark }) => {
+const BlockNoteSlashEditorInner: React.FC = () => {
   const playgroundSchema = useMemo(() => {
     return BlockNoteSchema.create({
       blockSpecs: {

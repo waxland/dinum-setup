@@ -32,19 +32,30 @@ export default defineConfig({
       ],
     },
   },
+  ssr: {
+    noExternal: [
+      "@codegouvfr/react-dsfr",
+      "@suitenumerique/blocknote-sources",
+      "@suitenumerique/slash-sources-sdk",
+      "style-to-js",
+      "style-to-object",
+      "tsafe",
+    ],
+  },
   optimizeDeps: {
     include: ["style-to-js", "style-to-object"],
-    esbuildOptions: {
-      plugins: [
-        {
-          name: "ignore-virtual-zudoku-modules",
-          setup(build) {
-            build.onResolve({ filter: /^virtual:zudoku/ }, (args) => {
-              return { path: args.path, external: true };
-            });
-          },
-        },
-      ],
-    },
+    exclude: [
+      "virtual:zudoku-api-keys-plugin",
+      "virtual:zudoku-api-plugins",
+      "virtual:zudoku-auth",
+      "virtual:zudoku-config",
+      "virtual:zudoku-custom-pages-plugin",
+      "virtual:zudoku-docs-plugin",
+      "virtual:zudoku-markdown-files",
+      "virtual:zudoku-navigation",
+      "virtual:zudoku-search-plugin",
+      "virtual:zudoku-shiki-register",
+      "virtual:zudoku-theme.css",
+    ],
   },
 });
