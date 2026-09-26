@@ -1,5 +1,5 @@
 ---
-title: Sauvegardes & Plan de Continuité (PRA / PCA)
+title: "Sauvegardes PRA"
 description: Stratégie de sauvegarde continue PostgreSQL (WAL-G / pgBackRest), réplication S3 inter-régionale et procédures de restauration d'urgence.
 ---
 
@@ -46,7 +46,6 @@ La résilience des données critiques des agents publics (documents collaboratif
 Pour restaurer une base de données à un instant précis (par exemple, juste avant une corruption accidentelle survenue à `2026-04-12 14:32:00 UTC`) :
 
 ```bash
-# 1. Récupérer le backup complet le plus proche
 wal-g backup-fetch /var/lib/postgresql/data LATEST
 
 # 2. Configurer la cible de restauration dans postgresql.conf

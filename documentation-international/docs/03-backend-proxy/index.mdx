@@ -1,23 +1,20 @@
 ---
-title: "Backend Proxy & Deterministic Caching"
-sidebar_label: "Backend Proxy"
+title: "Proxy"
+sidebar_label: "Proxy"
 description: Overview of the Django REST Framework proxy, Redis deterministic SHA-256 caching, and anti-SSRF defensive security.
 ---
 
 
 
-# 🛡️ Backend Proxy & Deterministic Caching
 
 The backend layer (`django-slasher-core`) acts as a secure, high-performance gateway between client-side rich text editors and upstream sovereign APIs.
 
-```mermaid
-flowchart LR
+<Mermaid chart={`flowchart LR
     Editor["Client Editor"] -->|GET /slashers/suggest/| Proxy["Django REST Proxy"]
     Proxy -->|SHA-256 Key| Cache{"Redis Cache (24h)"}
     Cache -->|Hit| Editor
     Cache -->|Miss| Upstream["Upstream Sovereign API"]
-    Upstream -->|Normalize| Cache
-```
+    Upstream -->|Normalize| Cache`} />
 
 ---
 

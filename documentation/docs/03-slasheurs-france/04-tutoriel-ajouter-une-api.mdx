@@ -1,6 +1,6 @@
 ---
-title: Tutoriel — Ajouter une Nouvelle API en 10 Minutes
-sidebar_label: Ajouter une API
+title: "Tutoriel API"
+sidebar_label: "Tutoriel API"
 description: "Guide pratique pas-à-pas pour brancher une nouvelle API souveraine (ex: Base Adresse Nationale) sur le socle technique unifié."
 ---
 
@@ -58,7 +58,6 @@ class AddressSourceProvider(BaseSourceProvider):
 ## 🔌 Enregistrer le Provider dans le Registry Backend
 
 ```python
-# packages/django-lasuite-sources/lasuite_sources/registry.py
 from .providers.law import LawSourceProvider
 from .providers.company import CompanySourceProvider
 from .providers.parliament import ParliamentSourceProvider

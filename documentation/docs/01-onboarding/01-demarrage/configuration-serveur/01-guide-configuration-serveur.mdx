@@ -1,6 +1,6 @@
 ---
-title: Configurer Docs sur un Serveur Distant
-sidebar_label: Guide Configuration Serveur
+title: "Serveur Distant"
+sidebar_label: "Serveur Distant"
 description: Guide complet pour configurer La Suite Docs sur une machine distante, une VM ou un serveur cloud avec IP publique ou nom de domaine.
 ---
 
@@ -81,7 +81,6 @@ chmod 600 .env.local
 Contenu type pour une IP de serveur `<VOTRE_IP>` :
 
 ```dotenv
-# URL publique de l'API Docs appelée par le navigateur du client
 NEXT_PUBLIC_API_ORIGIN=http://<VOTRE_IP>:8071
 
 # Désactiver le service worker en cas de diagnostic local

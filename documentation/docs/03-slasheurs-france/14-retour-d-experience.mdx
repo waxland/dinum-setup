@@ -1,6 +1,6 @@
 ---
-title: "Retour d'Expérience (RXP) : L'Industrialisation des Packages Souverains"
-sidebar_label: "14. Retour d'Expérience (RXP)"
+title: "Retour Expérience"
+sidebar_label: "Retour Expérience"
 description: Analyse des enseignements, gains de productivité, arbitrages d'ingénierie et bonnes pratiques issus du découpage modulaire pour la DINUM.
 ---
 
@@ -37,8 +37,7 @@ Ce document synthétise le **Retour d'Expérience (RXP)** sur le chantier de con
 
 ## 📈 2. Métriques & Gains Observés
 
-```mermaid
-flowchart LR
+<Mermaid chart={`flowchart LR
     subgraph Monolithe["Monolithe In-Tree (+45 fichiers)"]
         M1["Temps de review PR : ~10 jours"]
         M2["Risque de régression : Élevé"]
@@ -51,8 +50,7 @@ flowchart LR
         P3["Réutilisabilité externe : 100%"]
     end
 
-    Monolithe ==>|Gain de Productivité x10| Packages
-```
+    Monolithe ==>|Gain de Productivité x10| Packages`} />
 
 | Indicateur | Approche Monolithique Initiale | Approche Packagée Modulaire | Gain pour l'État |
 | :--- | :--- | :--- | :---: |

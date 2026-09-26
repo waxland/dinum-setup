@@ -1,17 +1,15 @@
 ---
-title: "Multi-Country Extensibility Model"
-sidebar_label: "International Vision"
+title: "Vision"
+sidebar_label: "Vision"
 description: Architectural approach for connecting public and private European data APIs to rich text editors.
 ---
 
 
 
-# 🌍 Multi-Country Extensibility Model
 
 Slasher is designed from the ground up as a **universal, borderless standard** for rich connected documents. Any country, public administration, or enterprise can implement its own custom slasher providers in less than 15 minutes.
 
-```mermaid
-flowchart TD
+<Mermaid chart={`flowchart TD
     subgraph Standard["🌐 Universal Slasher Core (@slasher/sdk & @slasher/blocknote)"]
         Core["Immutable Schema + 3 Display Formats + WAI-ARIA Popover"]
     end
@@ -30,5 +28,4 @@ flowchart TD
     Standard --> NL
     Standard --> ES
     Standard --> EU
-    Standard --> Custom
-```
+    Standard --> Custom`} />

@@ -1,16 +1,14 @@
 ---
-title: "3-Tier Architecture Pattern"
-sidebar_label: "3-Tier Architecture"
+title: "Architecture"
+sidebar_label: "Architecture"
 description: Complete breakdown of the Editor Client, Provider SDK, and Backend Proxy tiers.
 ---
 
 
-# 🏛️ 3-Tier Architecture Pattern
 
 Slasher is structured in 3 decoupled, independently deployable tiers:
 
-```mermaid
-flowchart TD
+<Mermaid chart={`flowchart TD
     subgraph Tier1["🖥️ Tier 1: Editor Client Layer (@slasher/blocknote)"]
         CustomBlock["createReactBlockSpec({ type: 'sourceBlock' })"]
         Popover["<SourceSearchPopover /> (cmdk + ARIA combobox)"]
@@ -29,5 +27,4 @@ flowchart TD
     end
 
     Tier1 --> Tier2
-    Tier2 --> Tier3
-```
+    Tier2 --> Tier3`} />

@@ -1,267 +1,286 @@
-# Audit technique de dinum-setup
-
-Date : 18 septembre 2026. Révision examinée : `f447bf3ce7dcc76fac975ffd3b8f270a24594c30`.
-
-## Conclusion
-
-Le dépôt dispose d'une séparation utile entre SDK, extension BlockNote, backend Django, démonstrateur et documentation. Toutefois, il n'est pas prêt pour une livraison reproductible ou une utilisation connectée en production : le lockfile empêche une installation propre, plusieurs mécanismes de protection ne fonctionnent pas sur les chemins réellement utilisés et la recherche de l'éditeur reste alimentée par des données fictives.
-
-**18 constats : 1 bloquant de livraison (P0), 10 majeurs (P1), 7 améliorations nécessaires (P2).** La classification P0 concerne ici l'installation et la CI ; aucune compromission de production n'a été démontrée.
-
-Les **46 tests Python** et **15 tests TypeScript** exécutés passent, avec les réserves d'environnement précisées ci-dessous. Ce résultat ne valide pas les garanties annoncées : des reproductions supplémentaires confirment notamment un blocage de découverte des plugins, une incompatibilité du contrat API, un contournement des quotas et une mauvaise gestion des réponses HTTP 429.
-
-## Périmètre et méthode
-
-L'inventaire initial couvre **502 fichiers suivis** dans le dépôt principal, dont 183 dans `packages/`, 176 dans `documentation/`, 54 dans `documentation-international/` et 21 dans `demo/`. Les deux portails contiennent respectivement 148 et 27 fichiers MDX.
-
-| Zone | Examen réalisé | Limites |
-| --- | --- | --- |
-| Racine, `Makefile`, `.github/`, `tooling/` | Commandes, dépendances, règles de qualité, CI et publication | Pas de bootstrap, de modification de services, de publication ou de déploiement |
-| `packages/django-lasuite-sources/` | Registre, vues, quotas, tâches, ingestion, connecteurs, tests et configuration | Appels externes simulés pour les reproductions ; pas de Redis ni de charge distribuée réelle |
-| SDK et extension BlockNote | Contrats, recherche, formats, exports, typage et tests | Compilation complète bloquée par l'environnement npm et le lockfile |
-| `demo/` | Intégration BlockNote, sélection des pays et dépendances | Pas de validation dans un navigateur |
-| Deux portails documentaires | Structure, manifestes, composants partagés, navigation et cohérence des garanties documentées | Pas de relecture éditoriale exhaustive des 175 pages ; build SSR non atteint |
-| `PR/`, guides et règles locales | Cohérence de la préparation des contributions et liens locaux ciblés | Statut des PR distantes non vérifié |
-| Copies applicatives `src/` | Inventaire Git des six dépôts et lecture ciblée d'orchestration | Le dossier a disparu pendant l'audit, sans action de l'auditeur ; pas d'audit complet de leur code métier |
-
-À l'inventaire initial, les copies `src/` avaient toutes un état Git propre :
-
-| Copie | Révision | Fichiers suivis |
-| --- | --- | ---: |
-| `src/accounts` | `850736b` | 308 |
-| `src/docs` | `2986cc61` | 1 560 |
-| `src/meet` | `3fa05ea7` | 1 177 |
-| `src/people` | `5eafad1d` | 770 |
-| `src/projects` | `7858be2a` | 977 |
-| `src/transfers` | `1286dfa` | 217 |
-
-Ces 5 009 fichiers ne sont donc **pas couverts par une revue exhaustive**. Les dépendances installées, caches, artefacts générés et historique Git complet sont également exclus d'une revue ligne par ligne.
-
-Référentiel : `AGENTS.md`, `GUIDELINES.md`, procédures locales d'architecture, revue, DINUM React/Python, accessibilité, quotas, orchestration et distribution. Les constats distinguent reproduction exécutée, lecture statique et risque conditionnel. Les journaux et le script de reproduction sont conservés localement sous `.sessions/`, répertoire ignoré par Git.
-
-## Architecture observée
-
-```mermaid
-flowchart LR
-    SDK[SDK TypeScript] --> BN[Extension BlockNote]
-    BN --> DEMO[Demonstrateur]
-    BN --> DOCS[Portails FR et international]
-    MOCK[Donnees fictives embarquees] --> POPOVER[Palette de recherche]
-    POPOVER --> BN
-    HOOK[Hook useSourceSearch] -. contrat incompatible .-> API[API Django authentifiee]
-    API --> REG[Registre de fournisseurs]
-    REG --> CACHE[Cache Django et quotas]
-    REG --> PROVIDERS[Fournisseurs]
-    PROVIDERS --> FIXTURES[Jeux de donnees statiques]
-    PROVIDERS --> HTTP[Appels BAN et Albert]
-    MAKE[Makefile racine] -. repertoire LaSuite .-> CLONES[Applications autonomes]
-```
-
-Le cache est celui configuré par l'application hôte : la démo et les tests utilisent `LocMemCache`. La présence du mot Redis dans les commentaires ne garantit pas un cache partagé en déploiement. Les points de rupture concrets sont détaillés ci-dessous.
-
-## Constats prioritaires
-
-### AUD-001 | P0 | Installation npm reproductible impossible
-
-- **Emplacement :** `package.json:5`, `package-lock.json:1`, `.github/workflows/deploy-vercel.yml:23`.
-- **Constat :** le workspace `documentation-international` figure dans le manifeste mais manque dans le lockfile, y compris dans sa liste de workspaces racine.
-- **Preuve exécutée :** `npm ci --dry-run --ignore-scripts` termine avec le code 1 : `Missing: @dinum/documentation-international@1.0.0 from lock file`.
-- **Impact :** la CI Vercel, qui exécute `npm ci`, échouera sur cette révision avant les tests. Les workflows utilisant `npm ci || npm install` contournent cette erreur en recalculant les dépendances.
-- **Correction :** régénérer et versionner le lockfile avec tous les workspaces ; supprimer le repli automatique vers `npm install`. Critère d'acceptation : installation propre puis contrôles complets avec le lockfile conservé à l'identique.
-
-### AUD-002 | P1 | Interblocage lors de la découverte d'un plugin
-
-- **Emplacement :** `packages/django-lasuite-sources/lasuite_sources/registry.py:35`, `:50`, `:66`, `:85`.
-- **Constat :** `discover_entry_points()` détient un `threading.Lock` puis appelle `register()`, qui reprend le même verrou non réentrant.
-- **Preuve exécutée :** injection d'un entry point valide retournant `LawSourceProvider` ; le thread reste bloqué après 0,5 seconde. L'auto-acquisition du verrou explique le blocage sans borne.
-- **Impact :** dès qu'une extension est effectivement installée, le premier accès au registre peut suspendre un worker ; les autres accès attendant ce verrou sont également affectés.
-- **Correction :** charger les plugins hors de la section verrouillée puis les enregistrer, ou employer un verrou réentrant avec une portée maîtrisée. Ajouter un test de découverte d'un vrai fournisseur via entry point avec échéance de terminaison.
-
-### AUD-003 | P1 | Le hook React rejette les résultats de l'API Django
-
-- **Emplacement :** `packages/django-lasuite-sources/lasuite_sources/types.py:40`, `views.py:43`, `packages/blocknote-sources/src/hooks/useSourceSearch.ts:88`.
-- **Constat :** le backend expose `source_id`, `entity_type`, `display_mode`, `verified_at` ; le hook exige notamment `sourceId` avant d'accepter une ligne.
-- **Preuve exécutée :** une requête Django authentifiée à la recherche de lois retourne HTTP 200 et deux résultats. L'application du garde effectivement utilisé par le frontend en accepte zéro.
-- **Impact :** un consommateur du hook obtient une liste vide malgré une réponse valide ; aucune erreur ni donnée de secours n'est affichée puisque la réponse HTTP est un succès.
-- **Correction :** définir un DTO canonique et une conversion explicite à la frontière API, puis tester une réponse réelle de la vue dans le parcours de recherche frontend.
-
-### AUD-004 | P1 | La palette du package n'utilise pas les connecteurs
-
-- **Emplacement :** `packages/blocknote-sources/src/components/SourceSearchPopover.tsx:8`, `:111`, `packages/blocknote-sources/src/SourceBlock.tsx:116`.
-- **Constat statique :** la palette filtre exclusivement `MOCK_SOURCES` et `ALL_INTERNATIONAL_MOCK_SOURCES`. Son API ne reçoit ni fournisseur ni client de recherche ; le hook réseau exporté n'y est pas utilisé.
-- **Impact :** configurer le backend ou déclarer un fournisseur avec le SDK ne suffit pas à alimenter la recherche du bloc distribué. Le fonctionnement fictif convient à un démonstrateur, mais ne réalise pas l'intégration connectée annoncée.
-- **Correction :** injecter une interface de recherche dans le bloc et la palette ; réserver les fixtures à un mode démo explicite. Vérifier qu'une réponse serveur absente des fixtures est affichée et insérable.
-
-### AUD-005 | P1 | Des fixtures sont présentées comme des données vérifiées
-
-- **Emplacement :** `packages/django-lasuite-sources/lasuite_sources/providers/france/law.py:84`, `:104`, `providers/france/address.py:101`, `:110`, `providers/france/albert.py:95`.
-- **Constat :** `LawSourceProvider.search()` ne contient aucun appel PISTE et renvoie toujours des fixtures, même lorsque le mode mock est désactivé et des identifiants fournis. En l'absence de correspondance, les premières fixtures sont renvoyées. Plusieurs autres fournisseurs suivent le même modèle. Les résultats portent des mentions de certification et des dates de vérification constantes ; même la branche réseau BAN fixe sa date en dur.
-- **Preuve exécutée :** avec `PISTE_MOCK_ENABLED=false` et des identifiants factices non vides, une recherche sans correspondance retourne trois articles fictifs. Aucun identifiant réel ni appel externe n'a été utilisé.
-- **Impact :** un intégrateur ne peut pas distinguer résultat réel, démonstration et panne. La tâche de vérification des lois repose elle-même sur ce fournisseur statique.
-- **Correction :** expliciter la provenance des données, désactiver les fixtures hors démo, retourner un résultat vide pour une recherche vide de correspondances et un état indisponible pour un connecteur non implémenté. Ne renseigner une date de vérification qu'après une vérification effective.
-
-### AUD-006 | P1 | Quotas non appliqués et compteurs non atomiques
-
-- **Emplacement :** `packages/django-lasuite-sources/lasuite_sources/registry.py:130`, `:172`, `quota.py:104`, `:171`.
-- **Constat :** un refus de `check_user_rate_limit()` provoque seulement un avertissement ; une absence de cache déclenche quand même l'appel fournisseur. Les compteurs sont incrémentés par une lecture puis une écriture distinctes.
-- **Preuves exécutées :** avec une limite de 1 requête/minute, trois recherches distinctes du même utilisateur déclenchent trois appels fournisseur. Huit incréments concurrents, synchronisés après lecture dans un cache local, produisent un compteur final de 1.
-- **Impact :** les limites annoncées ne bornent pas la consommation et la concurrence sous-estime les quotas. Le test concurrent illustre la perte d'incréments ; aucun banc de charge Redis n'a été réalisé.
-- **Correction :** arrêter le chemin réseau dès le refus et exposer une réponse explicite ou un résultat de cache identifié ; utiliser une opération atomique adaptée au backend et réserver le budget avant l'appel. Tester le comportement public du registre sous concurrence.
-
-### AUD-007 | P1 | Les erreurs HTTP réelles ne déclenchent pas le circuit breaker
-
-- **Emplacement :** `packages/django-lasuite-sources/lasuite_sources/providers/france/address.py:79`, `:107`, `providers/france/albert.py:87`, `registry.py:153`.
-- **Constat :** les fournisseurs transforment les erreurs HTTP, timeouts ou réponses inutilisables en fixtures. Le registre voit un retour normal, enregistre un succès et efface le compteur d'erreurs. Il ne reçoit pas `Retry-After`.
-- **Preuve exécutée :** trois réponses BAN simulées avec HTTP 429 et `Retry-After: 120` déclenchent trois appels ; l'état final reste `healthy`, `is_live=true`, sans circuit ouvert.
-- **Impact :** poursuite des appels à un service qui demande d'attendre, masquage des incidents et mise en cache de données fictives pendant la panne.
-- **Correction :** propager des erreurs métier structurées contenant statut et délai de reprise ; appliquer la politique de secours au niveau du registre. Tester des réponses HTTP 429, 500 et des timeouts sur les fournisseurs réels, pas seulement un appel direct au gestionnaire de quotas.
-
-### AUD-008 | P1 | La protection anti-SSRF annoncée n'est pas exécutée
-
-- **Emplacement :** `packages/django-lasuite-sources/tests/test_security_ssrf.py:19`, `lasuite_sources/providers/france/albert.py:59`, `:81`, `documentation-international/docs/03-backend-proxy/defensive-security-ssrf.mdx:9`.
-- **Constat :** `is_safe_external_url()` est définie et appelée uniquement dans les tests. Le code de production effectue directement ses requêtes ; Albert accepte une URL configurée et les redirections HTTP ne sont pas explicitement contrôlées.
-- **Preuve exécutée sans réseau :** un fournisseur Albert configuré sur `http://127.0.0.1:8000` transmet bien `http://127.0.0.1:8000/search` à `requests.post`, intercepté par un mock.
-- **Portée :** défaut de défense confirmé. L'exploitation depuis une requête utilisateur arbitraire n'est pas démontrée : l'URL Albert provient de la configuration serveur et l'URL BAN est constante. La fonction de test ne résout d'ailleurs pas les noms DNS.
-- **Correction :** centraliser les appels HTTP, contrôler protocoles, destinations résolues et redirections, avec une politique explicite pour les éventuels services internes autorisés. Tester le transport effectivement utilisé. Le timeout Albert de 4 secondes doit aussi être aligné sur la limite locale annoncée de 3,5 secondes.
-
-### AUD-009 | P1 | Dépendances signalées vulnérables dans le lockfile
-
-- **Emplacement :** `package-lock.json`, `packages/slash-sources-sdk/package.json:49`.
-- **Preuve exécutée :** `npm audit --package-lock-only --json` retourne **13 entrées vulnérables : 1 critique, 5 élevées, 7 modérées**. Ces entrées incluent les remontées transitives ; ce ne sont pas nécessairement 13 failles indépendantes.
-- **Exemples :** Vitest `2.1.9` est verrouillé ; Vite `5.4.21` est présent sous Vitest et vite-node. D'autres alertes concernent notamment `lodash-es`, `toml`, `hono` et les dépendances de Zudoku.
-- **Portée vérifiée :** l'[avis Vitest GHSA-5xrq-8626-4rwp](https://github.com/advisories/GHSA-5xrq-8626-4rwp) concerne notamment l'exposition de son API/UI au réseau et certains usages sous Windows. L'[avis Vite GHSA-4w7w-66w2-5vf9](https://github.com/advisories/GHSA-4w7w-66w2-5vf9) concerne le serveur de développement. Une exploitation du site statique publié n'est pas démontrée.
-- **Correction :** examiner les chemins réellement utilisés, mettre à jour les dépendances compatibles, puis régénérer le lockfile et rejouer les contrôles. Ne pas appliquer automatiquement `npm audit fix --force` : certaines suggestions du rapport impliquent des changements majeurs ou des versions antérieures de dépendances directes.
-
-### AUD-010 | P1 | Dépendances des exports absentes du contrat de distribution
-
-- **Emplacement :** `packages/blocknote-sources/src/exporters/sourceBlockDocx.tsx:1`, `sourceBlockPDF.tsx:1`, `exporters/index.ts:1`, `tsup.config.ts:13`, `packages/blocknote-sources/package.json:57`, `src/types.ts:9`.
-- **Constat statique :** `docx` et `@react-pdf/renderer` sont importés et externalisés, mais ne figurent ni dans les dépendances ni dans les peer dependencies du package. Le SDK, dont les types sont réexportés, n'est pas déclaré non plus. Des déclarations ambiantes remplacent les types réels des bibliothèques d'export.
-- **Impact :** un consommateur isolé n'a pas la garantie de pouvoir importer `@suitenumerique/blocknote-sources/exporters` ou résoudre ses types. L'entrée commune exporte les trois formats, ce qui couple aussi l'import ODT aux bibliothèques des autres formats selon le consommateur.
-- **Preuve complémentaire :** les tests d'export remplacent les bibliothèques par des mocks et vérifient principalement qu'un objet existe ; ils ne chargent pas une archive npm dans un projet vierge.
-- **Correction :** déclarer les dépendances requises et, si nécessaire, des peer dependencies optionnelles avec des points d'entrée séparés ; supprimer les faux contrats ambiants au profit des types réels. Tester l'installation du tarball et la génération de fichiers ouvrables. Cette installation isolée n'a pas été exécutée durant l'audit.
-
-### AUD-011 | P1 | Accessibilité incomplète de la recherche et des modales
-
-- **Emplacement :** `packages/blocknote-sources/src/components/SourceSearchPopover.tsx:160`, `:203`, `:387`, `documentation/src/components/Mermaid.tsx:112`, `:228` ; composant Mermaid également copié dans le portail international.
-- **Constat statique :** la sélection au clavier change `selectedIndex` mais le focus reste dans le champ, sans `aria-activedescendant` ni identifiant d'option permettant de relier le résultat actif. La modale Mermaid possède `aria-modal=true` sans nom accessible lié au titre ni transfert/restauration explicite du focus.
-- **Impact :** la sélection visuelle n'est pas correctement reliée au focus accessible et la navigation dans la modale n'est pas suffisamment gérée.
-- **Correction :** employer les primitives accessibles prévues par le dépôt, relier l'option active au champ, gérer l'entrée et la sortie du focus ainsi que la fermeture clavier. Tester avec clavier et lecteur d'écran.
-- **Limite :** aucune certification RGAA, mesure globale de contrastes ou validation en navigateur n'a été réalisée ; l'E2E est bloqué. Les anciens pourcentages de conformité documentés ne constituent pas une preuve pour cette révision.
-
-## Autres corrections nécessaires
-
-### AUD-012 | P2 | Des résultats obsolètes peuvent réapparaître après effacement
-
-- **Emplacement :** `packages/blocknote-sources/src/hooks/useSourceSearch.ts:55`, `:149`, `:161`, `:171`.
-- **Constat statique :** la branche de requête vide retourne avant l'annulation de la requête précédente. Le nettoyage de l'effet annule uniquement le timer ; il n'annule pas la requête au démontage. Le `finally` d'une ancienne requête peut remettre `isLoading=false` pendant la suivante.
-- **Scénario :** lancer une recherche lente puis effacer le champ avec `setQuery('')` ; la réponse précédente peut repeupler les résultats. Scénario non exécuté dans un navigateur.
-- **Correction :** annuler les requêtes lors de l'effacement et du démontage, et protéger toutes les mises à jour par l'identifiant de la recherche active. Ajouter un test avec réponses différées et réponses arrivant dans le désordre.
-
-### AUD-013 | P2 | Paramètres API non bornés et contrat OpenAPI divergent
-
-- **Emplacement :** `packages/django-lasuite-sources/lasuite_sources/views.py:20`, `:57`, `docs/openapi.yaml:51`, `:103`.
-- **Constat statique :** les vues acceptent des limites négatives ou arbitrairement grandes après un simple `int()`, alors que le schéma annonce des maxima de 50 et 20. Un type inconnu produit une recherche vide HTTP 200 ; la longueur de la requête n'est pas bornée.
-- **Impact :** paramètres imprévisibles transmis aux connecteurs, fragmentation du cache par `limit` et absence de validation conforme au contrat publié.
-- **Correction :** valider avec des serializers DRF, appliquer des bornes explicites et documenter les erreurs 400. Tester limites négatives, dépassements, type inconnu et requête excessivement longue.
-
-### AUD-014 | P2 | Le pays sélectionné n'est pas propagé à la recherche du bloc
-
-- **Emplacement :** `demo/src/App.tsx:210`, `packages/blocknote-sources/src/SourceBlock.tsx:116`, `src/components/SourceSearchPopover.tsx:89`, `:335`.
-- **Constat statique :** le choix du pays change les données de la démo mais `SourceBlock` ne transmet pas `initialCountry` à la palette, qui revient donc à la France. Le Canada figure dans les types et les jeux de données mais pas dans les boutons de pays de cette palette.
-- **Impact :** après sélection d'un autre pays, une nouvelle recherche peut présenter les sources françaises. Le changement de pays remplace en outre tout le document par des exemples via `replaceBlocks(editor.document, ...)`, sans conserver les modifications saisies dans le démonstrateur.
-- **Correction :** propager le pays et le fournisseur à travers le schéma/contexte du bloc, inclure tous les pays supportés et dissocier le filtre de recherche du chargement d'un document d'exemple. Vérifier la conservation des saisies lors d'un simple changement de filtre.
-
-### AUD-015 | P2 | Les contrôles qualité ne couvrent pas les garanties affichées
-
-- **Emplacement :** `packages/blocknote-sources/tests/unit/accessibility.test.ts:26`, `tests/unit/useSourceSearch.test.ts:4`, `tests/e2e/axe-audit.spec.ts:4`, `.github/workflows/ci-packages.yml:4`, `publish-packages.yml:8`, `package.json:14`, `Makefile:335`.
-- **Constats :** le test unitaire de contraste compare une couleur constante à elle-même ; les tests nommés `useSourceSearch` n'importent pas le hook ; le fichier `axe-audit.spec.ts` ne lance pas Axe. Plusieurs assertions E2E sont conditionnelles à la visibilité et peuvent être sautées précisément lorsque le composant manque.
-- **CI :** le workflow packages est filtré sur `packages/**` et ne réagit pas à une modification isolée du lockfile racine. Il ne lance pas les linters ni l'E2E. Le workflow de publication construit et publie sans dépendance explicite à un job de validation. `npm run check` omet Python ; `make check` omet les linters et répète les tests Python.
-- **Preuve locale :** malgré les suites vertes, les reproductions AUD-002, 003, 006 et 007 exposent des bugs. Ruff retourne également 35 diagnostics et son contrôle de formatage demande de reformater 62 fichiers.
-- **Correction :** constituer une commande de référence commune à la CI et à la publication ; remplacer les assertions tautologiques par des tests de comportement, un vrai parcours API/éditeur, des tests des fournisseurs HTTP et une analyse Axe effective. Conserver une validation manuelle d'accessibilité.
-
-### AUD-016 | P2 | Prérequis et commande d'installation incohérents
-
-- **Emplacement :** `Makefile:76`, `package.json:42`, `.github/workflows/ci-packages.yml:46`.
-- **Constat statique :** `make install` appelle `./install.sh`, fichier absent du dépôt. Le projet annonce Node `>=22.0.0` alors que Zudoku `0.86.0`, verrouillé, exige `>=22.22.0`. La CI packages teste aussi Node 20 en installant les workspaces documentaires.
-- **Preuve exécutée :** l'essai `npm ci --dry-run --ignore-scripts` affiche `EBADENGINE` sur Node `22.20.0`, pourtant accepté par le manifeste racine. Ces avertissements sont distincts de l'erreur de lockfile AUD-001.
-- **Correction :** fournir le script annoncé ou corriger la cible d'installation ; aligner le prérequis documenté, les moteurs npm et la matrice CI. Distinguer le support Node des bibliothèques de celui de l'outillage du monorepo si nécessaire.
-
-### AUD-017 | P2 | Écarts aux règles de design system du dépôt
-
-- **Emplacement :** `documentation/src/components/Mermaid.tsx:229`, `documentation-international/src/components/Mermaid.tsx:229`, `packages/blocknote-sources/src/components/SourceSearchPopover.tsx:344`, `demo/src/App.tsx:2`.
-- **Constat statique :** des composants propres au projet utilisent des classes utilitaires Tailwind, de nombreuses couleurs codées en dur et des contrôles personnalisés malgré les règles d'exclusivité DSFR/Cunningham. La démo rend l'éditeur via `@blocknote/mantine` ; le manifeste documentaire déclare aussi directement `@mantine/core`.
-- **Portée :** l'écart Tailwind dans les composants est visible dans le code. La présence exacte de Mantine dans les bundles finaux n'a pas été mesurée puisque les builds sont bloqués. La procédure `code-standards` tolère les usages internes BlockNote, tandis que la règle racine est plus stricte : ce point doit être clarifié explicitement.
-- **Correction :** remplacer les styles et contrôles personnalisés par les primitives et tokens requis, et documenter précisément toute exception acceptée pour l'éditeur. Ce constat ne constitue pas à lui seul une preuve de faille de sécurité.
-
-### AUD-018 | P2 | Artefacts suivis et documentation de validation périmée
-
-- **Emplacement :** `.gitignore:37`, `packages/django-lasuite-sources/**/__pycache__/`, `packages/blocknote-sources/test-results/.last-run.json`, `PR/README.md:78`, `AUDIT_DOCUMENTATION.md:73`, `LINT_TODO.md:126`.
-- **Preuve :** `git ls-files '*.pyc' '*test-results*'` retourne 23 fichiers `.pyc` et un résultat local Playwright déjà versionnés ; les règles d'ignore n'agissent pas rétroactivement. `PR/README.md` référence `./04-guide-d-arbitrage.md`, absent de `PR/`.
-- **Constat :** les anciens rapports affirment un build sans erreur, des garanties d'accessibilité ou un quality gate vert sans preuve correspondant à la révision actuelle. Le README indique encore 22 tests Django alors que la suite collectée en compte 46.
-- **Correction :** retirer les artefacts générés de l'index dans une modification dédiée, corriger les liens et dater les résultats de validation avec leur révision, environnement et commandes. Séparer clairement spécification souhaitée, implémentation réelle et validation exécutée.
-
-## Vérifications exécutées
-
-Environnement : macOS ARM64, Node `22.20.0`, npm `10.9.3`. Un environnement Python isolé a été créé dans `.sessions/audit-venv` : Python `3.14.3`, Django `6.1.1`, DRF `3.18.1`, pytest `9.1.1`, Ruff `0.16.8`. Ces versions sont celles résolues par les dépendances déclarées, pas la matrice Python 3.12 / Django 4.2 et 5.0 de la CI.
-
-| Contrôle | Résultat observé | Preuve locale |
-| --- | --- | --- |
-| `npm ci --dry-run --ignore-scripts` | Échec, code 1 : workspace absent du lockfile ; avertissements de moteur Node | `.sessions/audit-npm-ci.log` |
-| `npm run packages:test` | 3 tests SDK + 12 tests BlockNote réussis | `.sessions/audit-js-tests.log` |
-| `npm run typecheck` | SDK réussi ; BlockNote en échec, code 2, avec modules non résolus et erreurs en cascade ; les workspaces suivants ne sont pas atteints | `.sessions/audit-typecheck.log` |
-| `npm run lint` | Bloqué, code 127 : `eslint` introuvable | `.sessions/audit-lint.log` |
-| `npm run docs:build` | SDK construit ; arrêt avec code 127 sur `tsup` introuvable, également après rédaction du rapport ; aucun build des portails atteint | `.sessions/audit-docs-build.log`, `.sessions/audit-docs-build-final.log` |
-| `npm run demo:build` | Même blocage `tsup`, code 127 | `.sessions/audit-demo-build.log` |
-| `npm --prefix packages/blocknote-sources run test:e2e` | Bloqué, code 127 : `playwright` introuvable | `.sessions/audit-e2e.log` |
-| `PYTHONPATH=. ../../.sessions/audit-venv/bin/pytest -v` depuis le package Django | 46 tests réussis, code 0 | `.sessions/audit-python-tests.log` |
-| `.sessions/audit-venv/bin/ruff check packages/django-lasuite-sources --output-format json` | 35 diagnostics dans 22 fichiers, code 1 | `.sessions/audit-ruff.json` |
-| `.sessions/audit-venv/bin/ruff format --check packages/django-lasuite-sources` | 62 fichiers à reformater, 25 déjà conformes, code 1 ; aucune correction appliquée | `.sessions/audit-ruff-format.log` |
-| `npm audit --package-lock-only --json` | 13 entrées vulnérables, code 1 | `.sessions/audit-dependencies.json` |
-| Reproductions backend avec transport HTTP simulé | Contrat incompatible, verrou bloqué, quotas ignorés, incréments perdus, HTTP 429 masqués, URL privée acceptée, fixtures malgré mode désactivé | `.sessions/audit-probes.log` |
-| Recherche de signatures de clés privées et tokens usuels | Aucune correspondance dans le périmètre parcouru ; pas de certification d'absence de secrets | Sortie `rg -l` vide, code 1 |
-
-**Réserve TypeScript :** le `node_modules` initial est incomplet. Le script de tests utilise `npx`, qui a téléchargé et exécuté Vitest `5.0.1`, au lieu de la version `2.1.9` du lockfile. Les 15 succès ne démontrent donc pas la reproductibilité de la configuration verrouillée. Les erreurs de résolution TypeScript ne sont pas toutes classées comme des bugs du code source.
-
-La recherche ciblée de secrets n'a pas porté sur l'historique Git ni sur tous les formats de secrets possibles. Les valeurs manifestement réservées aux tests et à la démo Django ne sont pas qualifiées ici de secrets de production compromis. Aucun secret réel n'a été recopié dans ce rapport.
-
-Les reproductions peuvent être rejouées dans l'environnement local créé pour cet audit :
-
-```sh
-PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=packages/django-lasuite-sources \
-  .sessions/audit-venv/bin/python .sessions/audit_probes.py
-```
-
-Résultats essentiels, incorporés ici pour ne pas dépendre des journaux ignorés par Git :
-
-```text
-api_contract: HTTP 200, results=2, accepted_by_frontend_guard=0
-user_rate_limit: allowed_per_minute=1, actual_provider_calls=3
-circuit_after_http_429: actual_provider_calls=3, status=healthy, is_live=true
-ssrf_validation: requested_url=http://127.0.0.1:8000/search (appel intercepte)
-mock_disabled: enabled=true, results=3
-concurrent_quota: calls=8, stored_count=1
-plugin_discovery_deadlock: blocked_after_half_second=true
-```
-
-## Plan de correction
-
-| Ordre | Lot limité et réversible | Critère d'acceptation |
-| --- | --- | --- |
-| 1 | Corriger le lockfile et les prérequis, puis relancer les contrôles sans modifier le comportement applicatif | `npm ci` reproductible ; typage, lint, démo, E2E et deux portails effectivement évalués |
-| 2 | Corriger le verrou, le contrat de données et brancher la palette sur un client injecté | Un plugin se charge ; une donnée d'API absente des fixtures peut être recherchée et insérée |
-| 3 | Séparer les fixtures des connecteurs réels et corriger quotas, erreurs HTTP et validation réseau | Tests de non-régression des reproductions ci-dessus ; pas de données fictives présentées comme réelles |
-| 4 | Corriger le packaging des exports et ajouter un test d'installation isolée | Import du tarball et export PDF/DOCX/ODT avec dépendances déclarées et fichiers lisibles |
-| 5 | Corriger les interactions clavier, le pays courant et les composants non conformes | Parcours clavier complet, annonces des résultats, fermeture/restauration du focus et tests Axe exécutés |
-| 6 | Unifier la CI, conditionner la publication à ses résultats et actualiser les rapports | Même quality gate local/CI ; preuves datées ; liens et index Git nettoyés |
-
-Les mises à jour de dépendances signalées par AUD-009 sont à intégrer au premier lot selon leur compatibilité, puis à vérifier après stabilisation du lockfile.
-
-## Points positifs et limites finales
-
-- Les vues de recherche, suggestion, détail et statut imposent explicitement `IsAuthenticated`.
-- Le registre utilise des clés de cache déterministes et inclut la limite de résultats dans la clé.
-- Le SDK possède des contrôles de définition et une configuration TypeScript stricte ; son typage et sa compilation ont été exécutés avec succès.
-- L'architecture en packages et les tests existants fournissent une base pour ajouter les non-régressions manquantes.
-- Aucun code applicatif ni manifeste n'a été corrigé dans le cadre de cet audit. Le livrable à versionner est ce fichier ; les installations et preuves d'audit sont locales.
-
-Non validés : fonctionnement Docker complet, services OIDC/S3/temps réel, flux des applications amont, contrats des API publiques en ligne, charge Redis, archives publiées, dépendances Python via une base d'avis de sécurité, navigation et contrastes dans un navigateur, SSR et hydratation des deux portails. L'échec de `npm run docs:build` est explicitement conservé : le quality gate obligatoire du dépôt **n'est pas satisfait** sur cet environnement et cette révision.
+# 📑 Audit & Révision des Titres de Navigation (Portails DINUM)
+
+Ce document liste l'ensemble des titres de pages et des catégories de navigation révisés pour respecter la règle de concision : **maximum 2 mots par titre**, afin de garantir une lisibilité optimale sans troncature dans la barre latérale de navigation Zudoku.
+
+---
+
+## 🎯 Synthèse des Modifications
+
+- **Portail International (`documentation-international`) :** 27 pages mises à jour
+- **Portail National FR (`documentation`) :** 179 pages mises à jour
+- **Total général :** 206 pages documentaires révisées
+- **Règle appliquée :** Titre court (<= 2 mots), suppression du verbiage technique long dans la navigation, conservation des descriptions riches dans les métadonnées SEO (`description`).
+
+---
+
+## 💡 0. Règle Zudoku & Suppression des Doublons de Titres (H1)
+
+> ⚠️ **Comportement Zudoku / SSR :** Zudoku génère et affiche automatiquement le titre principal de la page à partir du champ \`title\` situé dans le frontmatter YAML (métadonnées en haut de chaque fichier Markdown/MDX).
+>
+> **Bonne pratique et correction effectuée :**
+>
+> - **Aucun premier titre H1 (\`# Titre\`) manuel dans le corps du texte :** 63 fichiers comportaient un titre H1 redondant qui faisait doublon visuel immédiat avec le titre injecté par le layout Zudoku.
+> - **Suppression systématique des H1 redondants :** Tous les premiers titres H1 manuels ont été retirés du corps des fichiers MDX, laissant le titre de métadonnées gérer le rendu propre du haut de page.
+> - **Sous-titres :** Le contenu du document commence directement par l'introduction ou des sous-sections sémantiques (\`## Section\`, \`### Sous-section\`).
+
+---
+
+## 📊 0.bis Règle des Diagrammes : Utilisation Exclusive de \`<Mermaid />\`
+
+> ⚠️ **Standard MDX / Zudoku :** Ne jamais utiliser les blocs Markdown bruts \`\`\`mermaid\`\`\` dans les fichiers MDX. Il faut utiliser le composant React dédié \`<Mermaid chart={\`...\`} />\` fourni dans la librairie de composants partagés (\`./src/components\`).
+>
+> **Pourquoi cette règle ?**
+>
+> - Les blocs bruts \`\`\`mermaid\`\`\` peuvent être rendus comme de simples blocs de code texte ou provoquer des incohérences de thème (mode clair / mode sombre).
+> - Le composant \`<Mermaid />\` gère dynamiquement le rendu SVG vectoriel interactif, le centrage, la gestion du zoom et l'adaptation automatique aux thèmes sombre et clair de La Suite Numérique.
+>
+> **Fichiers audités et migrés vers \`<Mermaid chart={\`...\`} />\` (17 fichiers) :**
+>
+> 🇫🇷 **Portail National FR (\`documentation/docs\`) :**
+>
+> 1. \`documentation/docs/01-onboarding/02-workflow-et-contribution/bonnes-pratiques-dinum.mdx\`
+> 2. \`documentation/docs/01-onboarding/02-workflow-et-contribution/qualite-et-architecture-la-suite.mdx\`
+> 3. \`documentation/docs/01-onboarding/index.mdx\`
+> 4. \`documentation/docs/02-la-suite/index.mdx\`
+> 5. \`documentation/docs/03-slasheurs-france/13-reutilisation-transverse.mdx\`
+> 6. \`documentation/docs/03-slasheurs-france/14-retour-d-experience.mdx\`
+>
+> 🌍 **Portail International (\`documentation-international/docs\`) :** 7. \`documentation-international/docs/00-overview/architecture-3-tier.mdx\` 8. \`documentation-international/docs/00-overview/engineering-standards.mdx\` 9. \`documentation-international/docs/00-overview/index.mdx\` 10. \`documentation-international/docs/00-overview/international-vision.mdx\` 11. \`documentation-international/docs/01-blocknote-extension/3-display-formats.mdx\` 12. \`documentation-international/docs/03-backend-proxy/defensive-security-ssrf.mdx\` 13. \`documentation-international/docs/03-backend-proxy/deterministic-cache.mdx\` 14. \`documentation-international/docs/03-backend-proxy/index.mdx\` 15. \`documentation-international/docs/03-backend-proxy/quota-and-rate-limiting.mdx\` 16. \`documentation-international/docs/05-rfc-upstream/index.mdx\` 17. \`documentation-international/docs/index.mdx\`
+
+---
+
+## 🌍 1. Portail International (`documentation-international`)
+
+| Fichier                                                                               | Ancien Titre (Complet / Long)                                             | Nouveau Titre (Max 2 Mots) |  Statut   |
+| :------------------------------------------------------------------------------------ | :------------------------------------------------------------------------ | :------------------------- | :-------: |
+| `documentation-international/docs/00-overview/architecture-3-tier.mdx`                | 3-Tier Architecture Pattern                                               | **Architecture**           | ✅ Validé |
+| `documentation-international/docs/00-overview/engineering-standards.mdx`              | Engineering Standards & Quality Guidelines (DINUM / beta.gouv / La Suite) | **Standards**              | ✅ Validé |
+| `documentation-international/docs/00-overview/index.mdx`                              | The Universal Connected Data Standard                                     | **Overview**               | ✅ Validé |
+| `documentation-international/docs/00-overview/international-vision.mdx`               | Multi-Country Extensibility Model                                         | **Vision**                 | ✅ Validé |
+| `documentation-international/docs/01-blocknote-extension/3-display-formats.mdx`       | 3 Switchable Display Formats                                              | **Formats**                | ✅ Validé |
+| `documentation-international/docs/01-blocknote-extension/document-exports.mdx`        | Lossless Document Exporters (PDF, DOCX, ODF)                              | **Exports**                | ✅ Validé |
+| `documentation-international/docs/01-blocknote-extension/floating-search-popover.mdx` | Floating Search Popover & WAI-ARIA Accessibility                          | **Popover**                | ✅ Validé |
+| `documentation-international/docs/01-blocknote-extension/index.mdx`                   | Getting Started with @slasher/blocknote                                   | **Extension**              | ✅ Validé |
+| `documentation-international/docs/01-blocknote-extension/styling-and-themes.mdx`      | Custom Styling & Theme Integration                                        | **Thèmes**                 | ✅ Validé |
+| `documentation-international/docs/02-provider-sdk/build-provider-in-15-min.mdx`       | Build a Sovereign Country Connector in 15 Minutes                         | **Tutoriel**               | ✅ Validé |
+| `documentation-international/docs/02-provider-sdk/define-source-provider.mdx`         | defineSourceProvider() Schema Helper                                      | **Provider**               | ✅ Validé |
+| `documentation-international/docs/02-provider-sdk/index.mdx`                          | Slasher Provider SDK                                                      | **SDK**                    | ✅ Validé |
+| `documentation-international/docs/02-provider-sdk/typescript-contracts.mdx`           | TypeScript Contracts & DTO Reference                                      | **Types**                  | ✅ Validé |
+| `documentation-international/docs/03-backend-proxy/defensive-security-ssrf.mdx`       | Defensive Anti-SSRF Security & Circuit Breaker                            | **Sécurité**               | ✅ Validé |
+| `documentation-international/docs/03-backend-proxy/deterministic-cache.mdx`           | Deterministic Redis Caching Strategy                                      | **Cache**                  | ✅ Validé |
+| `documentation-international/docs/03-backend-proxy/index.mdx`                         | Backend Proxy & Deterministic Caching                                     | **Proxy**                  | ✅ Validé |
+| `documentation-international/docs/03-backend-proxy/quota-and-rate-limiting.mdx`       | Distributed Quota Management & Circuit Breaker Resilience                 | **Quotas**                 | ✅ Validé |
+| `documentation-international/docs/04-presets/canada.mdx`                              | 🇨🇦 Canada Sovereign Slasher Preset                                        | **Canada**                 | ✅ Validé |
+| `documentation-international/docs/04-presets/european-union.mdx`                      | 🇪🇺 European Union Slasher Preset                                          | **Europe**                 | ✅ Validé |
+| `documentation-international/docs/04-presets/germany-bund.mdx`                        | 🇩🇪 Germany Sovereign Slasher Preset                                       | **Allemagne**              | ✅ Validé |
+| `documentation-international/docs/04-presets/index.mdx`                               | Multi-Country Sovereign Presets                                           | **Presets**                | ✅ Validé |
+| `documentation-international/docs/04-presets/international.mdx`                       | 🌍 International Organizations Sovereign Slasher Preset                   | **International**          | ✅ Validé |
+| `documentation-international/docs/04-presets/netherlands-gov.mdx`                     | 🇳🇱 Netherlands Sovereign Slasher Preset                                   | **Pays-Bas**               | ✅ Validé |
+| `documentation-international/docs/04-presets/spain-boe.mdx`                           | 🇪🇸 Spain Sovereign Slasher Preset                                         | **Espagne**                | ✅ Validé |
+| `documentation-international/docs/05-rfc-upstream/blocknote-rfc-specification.mdx`    | BlockNote RFC: Standardized Connected Data Blocks                         | **Spécification**          | ✅ Validé |
+| `documentation-international/docs/05-rfc-upstream/index.mdx`                          | TypeCellOS / BlockNote Upstream RFC                                       | **RFC**                    | ✅ Validé |
+| `documentation-international/docs/index.mdx`                                          | Slasher — Universal Connected Data Blocks for BlockNote                   | **Accueil**                | ✅ Validé |
+
+---
+
+## 🇫🇷 2. Portail National FR (`documentation`)
+
+| Fichier                                                                                                            | Ancien Titre (Complet / Long)                                                  | Nouveau Titre (Max 2 Mots)   |  Statut   |
+| :----------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------- | :--------------------------- | :-------: |
+| `documentation/docs/01-onboarding/00-contexte/challenge-42.mdx`                                                    | Challenge La Suite Numérique x 42                                              | **Challenge 42**             | ✅ Validé |
+| `documentation/docs/01-onboarding/00-contexte/planning.mdx`                                                        | Planning & Agenda du Challenge DINUM x 42                                      | **Planning 42**              | ✅ Validé |
+| `documentation/docs/01-onboarding/01-demarrage/configuration-serveur/01-guide-configuration-serveur.mdx`           | Configurer Docs sur un Serveur Distant                                         | **Serveur Distant**          | ✅ Validé |
+| `documentation/docs/01-onboarding/01-demarrage/configuration-serveur/02-pr-support-serveurs-distants.mdx`          | Proposition de PR DINUM — Support des Serveurs Distants                        | **Support Serveurs**         | ✅ Validé |
+| `documentation/docs/01-onboarding/01-demarrage/environnement-machine-hote.mdx`                                     | Configuration de la Machine Hôte                                               | **Machine Hôte**             | ✅ Validé |
+| `documentation/docs/01-onboarding/01-demarrage/git-ssh.mdx`                                                        | Configuration Git & SSH                                                        | **Git SSH**                  | ✅ Validé |
+| `documentation/docs/01-onboarding/01-demarrage/urls-et-identifiants.mdx`                                           | Services, URLs & Identifiants                                                  | **Identifiants**             | ✅ Validé |
+| `documentation/docs/01-onboarding/01-demarrage/vscode.mdx`                                                         | Configuration VS Code & Outils                                                 | **VS Code**                  | ✅ Validé |
+| `documentation/docs/01-onboarding/02-workflow-et-contribution/adr/0001-architecture-monorepo-4-piliers.mdx`        | ADR-0001 — Découplage du Monorepo en 4 Piliers Autonomes                       | **ADR-0001 Architecture**    | ✅ Validé |
+| `documentation/docs/01-onboarding/02-workflow-et-contribution/adr/0002-rendu-tri-format-dsfr-cunningham.mdx`       | ADR-0002 — Rendu Tri-Format Unifié (Callout, Card, Link)                       | **ADR-0002 Tri-Format**      | ✅ Validé |
+| `documentation/docs/01-onboarding/02-workflow-et-contribution/adr/0003-proxy-django-anti-ssrf-circuit-breaker.mdx` | ADR-0003 — Proxy Backend Django avec Sécurité Anti-SSRF & Circuit Breaker      | **ADR-0003 Proxy**           | ✅ Validé |
+| `documentation/docs/01-onboarding/02-workflow-et-contribution/adr/0004-dual-trigger-slash-et-mention.mdx`          | ADR-0004 — Dual Trigger d'Interlinking (Slash pour Blocs, Mention pour Inline) | **ADR-0004 Triggers**        | ✅ Validé |
+| `documentation/docs/01-onboarding/02-workflow-et-contribution/adr/index.mdx`                                       | Dossiers de Décisions d'Architecture (ADRs)                                    | **ADRs**                     | ✅ Validé |
+| `documentation/docs/01-onboarding/02-workflow-et-contribution/bonnes-pratiques-dinum.mdx`                          | Standards d'Ingénierie & Qualité Logicielle (DINUM, beta.gouv.fr, La Suite)    | **Standards DINUM**          | ✅ Validé |
+| `documentation/docs/01-onboarding/02-workflow-et-contribution/guide-du-premier-commit.mdx`                         | Guide du Premier Commit & Workflow Git                                         | **Premier Commit**           | ✅ Validé |
+| `documentation/docs/01-onboarding/02-workflow-et-contribution/qualite-et-architecture-la-suite.mdx`                | Qualité de Code, Linters & Architecture La Suite                               | **Qualité Code**             | ✅ Validé |
+| `documentation/docs/01-onboarding/02-workflow-et-contribution/securite-du-poste-developpeur.mdx`                   | Sécurité du Poste Développeur                                                  | **Sécurité Poste**           | ✅ Validé |
+| `documentation/docs/01-onboarding/02-workflow-et-contribution/tests-et-qualite.mdx`                                | Tests, Linters & Qualité                                                       | **Tests Qualité**            | ✅ Validé |
+| `documentation/docs/01-onboarding/02-workflow-et-contribution/workflow.mdx`                                        | Workflow & Commandes Make                                                      | **Workflow Make**            | ✅ Validé |
+| `documentation/docs/01-onboarding/03-support/glossaire.mdx`                                                        | Glossaire & Termes Techniques                                                  | **Glossaire**                | ✅ Validé |
+| `documentation/docs/01-onboarding/03-support/troubleshooting.mdx`                                                  | Guide de Dépannage & FAQ                                                       | **Dépannage FAQ**            | ✅ Validé |
+| `documentation/docs/01-onboarding/04-ressources/communaute.mdx`                                                    | Communauté & Matrix                                                            | **Communauté**               | ✅ Validé |
+| `documentation/docs/01-onboarding/04-ressources/roadmap.mdx`                                                       | Roadmaps & Chantiers                                                           | **Roadmaps**                 | ✅ Validé |
+| `documentation/docs/01-onboarding/04-ressources/templates-et-outils.mdx`                                           | Templates & Outils Réutilisables                                               | **Templates Outils**         | ✅ Validé |
+| `documentation/docs/01-onboarding/index.mdx`                                                                       | Portail La Suite dev setup (42 x DINUM)                                        | **Onboarding**               | ✅ Validé |
+| `documentation/docs/02-la-suite/01-applications/01-documents-et-contenus/docs.mdx`                                 | Docs (Impress)                                                                 | **Docs**                     | ✅ Validé |
+| `documentation/docs/02-la-suite/01-applications/01-documents-et-contenus/fichiers-drive.mdx`                       | Fichiers & Drive (Espace de Stockage Centralisé)                               | **Drive**                    | ✅ Validé |
+| `documentation/docs/02-la-suite/01-applications/01-documents-et-contenus/grist.mdx`                                | Grist (Bases de Données Relationnelles No-Code)                                | **Grist**                    | ✅ Validé |
+| `documentation/docs/02-la-suite/01-applications/02-communication-et-echange/meet.mdx`                              | Meet (Visio)                                                                   | **Meet**                     | ✅ Validé |
+| `documentation/docs/02-la-suite/01-applications/02-communication-et-echange/tchap.mdx`                             | Tchap (Messagerie Sécurisée Matrix)                                            | **Tchap**                    | ✅ Validé |
+| `documentation/docs/02-la-suite/01-applications/02-communication-et-echange/transfers.mdx`                         | Transfers (Fichiers)                                                           | **Transfers**                | ✅ Validé |
+| `documentation/docs/02-la-suite/01-applications/03-gestion-et-utilisateurs/accounts.mdx`                           | Accounts (Identités)                                                           | **Accounts**                 | ✅ Validé |
+| `documentation/docs/02-la-suite/01-applications/03-gestion-et-utilisateurs/people.mdx`                             | People (Annuaire)                                                              | **People**                   | ✅ Validé |
+| `documentation/docs/02-la-suite/01-applications/03-gestion-et-utilisateurs/projects.mdx`                           | Projects (Kanban)                                                              | **Projects**                 | ✅ Validé |
+| `documentation/docs/02-la-suite/01-applications/index.mdx`                                                         | Matrice des Projets                                                            | **Applications**             | ✅ Validé |
+| `documentation/docs/02-la-suite/02-architecture/01-securite-et-identite/auth.mdx`                                  | Authentification & SSO                                                         | **Authentification SSO**     | ✅ Validé |
+| `documentation/docs/02-la-suite/02-architecture/01-securite-et-identite/federation-identite-proconnect.mdx`        | Fédération d'Identité & ProConnect                                             | **ProConnect**               | ✅ Validé |
+| `documentation/docs/02-la-suite/02-architecture/01-securite-et-identite/secrets-sops.mdx`                          | Gestion des Secrets (SOPS & age)                                               | **Secrets SOPS**             | ✅ Validé |
+| `documentation/docs/02-la-suite/02-architecture/02-donnees-et-temps-reel/flux-stockage-s3.mdx`                     | Stockage d'Objets & Flux S3                                                    | **Stockage S3**              | ✅ Validé |
+| `documentation/docs/02-la-suite/02-architecture/02-donnees-et-temps-reel/sauvegardes-et-restauration.mdx`          | Sauvegardes & Plan de Continuité (PRA / PCA)                                   | **Sauvegardes PRA**          | ✅ Validé |
+| `documentation/docs/02-la-suite/02-architecture/02-donnees-et-temps-reel/temps-reel-et-crdt.mdx`                   | Collaboration Temps Réel & CRDT (Yjs)                                          | **Temps Réel**               | ✅ Validé |
+| `documentation/docs/02-la-suite/02-architecture/03-devops-et-deploiement/cicd-github-actions.mdx`                  | Intégration Continue (CI/CD GitHub Actions)                                    | **CI/CD Actions**            | ✅ Validé |
+| `documentation/docs/02-la-suite/02-architecture/03-devops-et-deploiement/deploiement-production.mdx`               | Déploiement en Production & Cloud Souverain                                    | **Déploiement Production**   | ✅ Validé |
+| `documentation/docs/02-la-suite/02-architecture/03-devops-et-deploiement/env.mdx`                                  | Variables d'Environnement                                                      | **Environnement**            | ✅ Validé |
+| `documentation/docs/02-la-suite/02-architecture/03-devops-et-deploiement/hot-reload.mdx`                           | Hot-Reload & Dev Local                                                         | **Hot Reload**               | ✅ Validé |
+| `documentation/docs/02-la-suite/02-architecture/index.mdx`                                                         | Vue d'Ensemble & Schémas                                                       | **Architecture**             | ✅ Validé |
+| `documentation/docs/02-la-suite/03-design-system/01-fondations/accessibilite-rgaa.mdx`                             | Accessibilité RGAA & Bonnes Pratiques                                          | **Accessibilité RGAA**       | ✅ Validé |
+| `documentation/docs/02-la-suite/03-design-system/01-fondations/couleurs-et-themes.mdx`                             | Couleurs & Thèmes                                                              | **Couleurs Thèmes**          | ✅ Validé |
+| `documentation/docs/02-la-suite/03-design-system/01-fondations/figma.mdx`                                          | Kits Figma, Cunningham & UI Kit La Suite                                       | **Figma**                    | ✅ Validé |
+| `documentation/docs/02-la-suite/03-design-system/01-fondations/icones.mdx`                                         | Icônes & Visuels                                                               | **Icônes**                   | ✅ Validé |
+| `documentation/docs/02-la-suite/03-design-system/01-fondations/installation.mdx`                                   | Installation & Téléchargement                                                  | **Installation**             | ✅ Validé |
+| `documentation/docs/02-la-suite/03-design-system/01-fondations/typographie.mdx`                                    | Typographie & Échelle                                                          | **Typographie**              | ✅ Validé |
+| `documentation/docs/02-la-suite/03-design-system/02-composants/alertes-et-callouts.mdx`                            | Alertes & Callouts                                                             | **Alertes Callouts**         | ✅ Validé |
+| `documentation/docs/02-la-suite/03-design-system/02-composants/badges-et-statuts.mdx`                              | Badges, Tags & Statuts                                                         | **Badges Statuts**           | ✅ Validé |
+| `documentation/docs/02-la-suite/03-design-system/02-composants/boutons.mdx`                                        | Boutons & Actions                                                              | **Boutons**                  | ✅ Validé |
+| `documentation/docs/02-la-suite/03-design-system/02-composants/cartes-et-conteneurs.mdx`                           | Cartes & Conteneurs                                                            | **Cartes Conteneurs**        | ✅ Validé |
+| `documentation/docs/02-la-suite/03-design-system/02-composants/formulaires.mdx`                                    | Formulaires & Saisie                                                           | **Formulaires**              | ✅ Validé |
+| `documentation/docs/02-la-suite/03-design-system/02-composants/modales-et-dialogues.mdx`                           | Modales & Boîtes de Dialogue                                                   | **Modales**                  | ✅ Validé |
+| `documentation/docs/02-la-suite/03-design-system/02-composants/notices-et-bandeaux.mdx`                            | Notices & Bandeaux d'Information                                               | **Notices Bandeaux**         | ✅ Validé |
+| `documentation/docs/02-la-suite/03-design-system/02-composants/pagination-et-stepper.mdx`                          | Pagination & Stepper                                                           | **Pagination Stepper**       | ✅ Validé |
+| `documentation/docs/02-la-suite/03-design-system/02-composants/tableaux.mdx`                                       | Tableaux de Données                                                            | **Tableaux**                 | ✅ Validé |
+| `documentation/docs/02-la-suite/03-design-system/03-layout-et-structure/navigation-et-layout.mdx`                  | Navigation & Layout                                                            | **Navigation Layout**        | ✅ Validé |
+| `documentation/docs/02-la-suite/03-design-system/index.mdx`                                                        | Vue d'Ensemble & Principes DSFR                                                | **Design System**            | ✅ Validé |
+| `documentation/docs/02-la-suite/04-ressources/communaute.mdx`                                                      | Communauté & Matrix                                                            | **Communauté**               | ✅ Validé |
+| `documentation/docs/02-la-suite/04-ressources/roadmap.mdx`                                                         | Roadmaps & Chantiers                                                           | **Roadmaps**                 | ✅ Validé |
+| `documentation/docs/02-la-suite/04-ressources/templates-et-outils.mdx`                                             | Templates & Outils Réutilisables                                               | **Templates Outils**         | ✅ Validé |
+| `documentation/docs/02-la-suite/index.mdx`                                                                         | L'Écosystème de La Suite Numérique                                             | **La Suite**                 | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/00-socle-technique.mdx`                                                    | Socle Technique Unifié des Commandes Slash                                     | **Socle Technique**          | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/01-architecture-standardisee.mdx`                                          | Architecture Standardisée & Inspiration /link-doc                              | **Architecture Standard**    | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/01-loi/01-metier-loi/01-fondations-et-cadre.mdx`                           | Hiérarchie des Normes & Structure des Textes Juridiques                        | **Fondations Cadre**         | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/01-loi/01-metier-loi/02-cas-usage-et-scenarios.mdx`                        | Cas d'Usage Métier — Commande /loi                                             | **Cas Usage**                | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/01-loi/02-api-loi/01-benchmark-des-apis.mdx`                               | Benchmark des APIs Juridiques — PISTE vs Albert API vs Judilibre               | **Benchmark APIs**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/01-loi/02-api-loi/02-specifications-techniques.mdx`                        | Spécifications Techniques — Endpoints PISTE & Contrats de Données              | **Spécifications Endpoints** | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/01-loi/03-implementation-loi/01-provider-django.mdx`                       | Implémentation Backend — LawSourceProvider Django                              | **Provider Django**          | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/01-loi/03-implementation-loi/02-rendu-et-settings.mdx`                     | Rendu DSFR & Activation Conditionnelle (/loi)                                  | **Rendu Settings**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/01-loi/03-implementation-loi/03-gestion-des-quotas.mdx`                    | Nouveau fichier                                                                | **Gestion Quotas**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/01-loi/03-implementation-loi/04-tutoriel-ajouter-une-api.mdx`              | Nouveau fichier                                                                | **Tutoriel API**             | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/01-loi/04-pr-loi/01-fiche-pr.mdx`                                          | Nouveau fichier                                                                | **Fiche PR**                 | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/01-loi/04-pr-loi/02-patch-et-fichiers.mdx`                                 | Nouveau fichier                                                                | **Patch Fichiers**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/01-loi/04-pr-loi/03-tests-et-validation.mdx`                               | Nouveau fichier                                                                | **Tests Validation**         | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/01-loi/05-proposition/01-concept-et-valeur.mdx`                            | Nouveau fichier                                                                | **Concept Valeur**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/01-loi/05-proposition/02-maquette-et-flux.mdx`                             | Nouveau fichier                                                                | **Maquette Flux**            | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/01-loi/05-proposition/03-plan-implementation.mdx`                          | Nouveau fichier                                                                | **Plan Implémentation**      | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/01-loi/index.mdx`                                                          | Commande Slash /loi — Légifrance & Droit Français                              | **Slasheur Loi**             | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/02-assemblee/01-metier-assemblee/01-fondations-et-cadre.mdx`               | Fonctionnement du Travail Parlementaire & Navette Législative                  | **Fondations Cadre**         | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/02-assemblee/01-metier-assemblee/02-cas-usage-et-scenarios.mdx`            | Cas d'Usage — Fiches de Banc en Cabinet & Veille Législative                   | **Cas Usage**                | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/02-assemblee/02-api-assemblee/01-benchmark-des-apis.mdx`                   | Benchmark des APIs Parlementaires — claire.vite vs Tricoteuse vs Open Data AN  | **Benchmark APIs**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/02-assemblee/02-api-assemblee/02-specifications-techniques.mdx`            | Spécifications Techniques — Endpoints Parlementaires & DTOs                    | **Spécifications Endpoints** | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/02-assemblee/03-implementation-assemblee/01-provider-django.mdx`           | Implémentation Backend — ParliamentSourceProvider Django                       | **Provider Django**          | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/02-assemblee/03-implementation-assemblee/02-rendu-et-settings.mdx`         | Rendu DSFR Parlementaire & Feature Flagging                                    | **Rendu Settings**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/02-assemblee/index.mdx`                                                    | Commande Slash /assemblee — Travail Parlementaire & Assemblée Nationale        | **Slasheur Assemblée**       | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/02-composant-customblock-unique.mdx`                                       | Composant CustomBlock Unique & 3 Formats DSFR                                  | **Composant Block**          | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/03-entreprise/01-metier-entreprise/01-fondations-et-cadre.mdx`             | Immatriculation Légale des Entreprises & RNE                                   | **Fondations Cadre**         | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/03-entreprise/01-metier-entreprise/02-cas-usage-et-scenarios.mdx`          | Cas d'Usage — Marchés Publics & Instruction de Subventions                     | **Cas Usage**                | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/03-entreprise/02-api-entreprise/01-benchmark-des-apis.mdx`                 | Benchmark des APIs Entreprises — Pappers vs API Entreprise vs RNE              | **Benchmark APIs**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/03-entreprise/02-api-entreprise/02-specifications-techniques.mdx`          | Spécifications Techniques — API Pappers & Schémas JSON                         | **Spécifications Endpoints** | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/03-entreprise/03-implementation-entreprise/01-provider-django.mdx`         | Implémentation Backend — CompanySourceProvider Django                          | **Provider Django**          | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/03-implementation-entreprise/02-rendu-et-settings.mdx`                     | Rendu DSFR Entreprise & Configuration                                          | **Rendu Settings**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/03-entreprise/index.mdx`                                                   | Commande Slash /entreprise — Fiches Entreprises & Registre Légal               | **Slasheur Entreprises**     | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/03-proxy-backend-et-cache.mdx`                                             | Proxy Backend Django 5 & Provider Registry                                     | **Proxy Cache**              | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/04-adresse/01-metier-adresse/01-fondations-et-cadre.mdx`                   | La Base Adresse Nationale & la Loi 3DS                                         | **Fondations Cadre**         | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/04-adresse/01-metier-adresse/02-cas-usage-et-scenarios.mdx`                | Cas d'Usage Territoriaux & Courriers Administratifs (/adresse)                 | **Cas Usage**                | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/04-adresse/02-api-adresse/01-benchmark-des-apis.mdx`                       | Benchmark des APIs Géographiques — BAN vs Addok Local vs IGN vs OSM            | **Benchmark APIs**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/04-adresse/02-api-adresse/02-specifications-techniques.mdx`                | Spécifications de l'API Base Adresse Nationale (BAN)                           | **Spécifications Endpoints** | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/04-adresse/03-implementation-adresse/01-provider-django.mdx`               | Implémentation Backend — AddressSourceProvider Django                          | **Provider Django**          | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/04-adresse/03-implementation-adresse/02-rendu-et-settings.mdx`             | Rendu DSFR d'Adresse & Configuration                                           | **Rendu Settings**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/04-adresse/index.mdx`                                                      | Commande Slash /adresse — Base Adresse Nationale (BAN)                         | **Slasheur Adresse**         | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/04-tutoriel-ajouter-une-api.mdx`                                           | Tutoriel — Ajouter une Nouvelle API en 10 Minutes                              | **Tutoriel API**             | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/05-albert/01-metier-albert/01-fondations-et-cadre.mdx`                     | Cadrage Métier & Cas d'Usage de la Commande /albert                            | **Fondations Cadre**         | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/05-albert/01-metier-albert/02-cas-usage-et-scenarios.mdx`                  | Scénarios Métier & Cas d'Usage de la Commande /albert                          | **Cas Usage**                | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/05-albert/02-api-albert/01-benchmark-des-apis.mdx`                         | Benchmark & Architecture Technique de l'API Albert                             | **Benchmark APIs**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/05-albert/02-api-albert/02-specifications-techniques.mdx`                  | Spécifications Techniques de l'API Albert RAG                                  | **Spécifications Endpoints** | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/05-albert/03-implementation-albert/01-provider-django.mdx`                 | Implémentation du Connecteur AlbertSourceProvider                              | **Provider Django**          | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/05-albert/03-implementation-albert/02-rendu-et-settings.mdx`               | Rendu Visuel & Configuration de la Commande /albert                            | **Rendu Settings**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/05-albert/index.mdx`                                                       | Commande Slash /albert — IA Souveraine & RAG Administratif                     | **Slasheur Albert**          | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/05-proposition.md`                                                         | Propositions de Nouvelles Commandes Slash                                      | **Proposition Sources**      | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/06-sdk-developpeur/index.mdx`                                              | SDK Développeur pour les Ministères & Partenaires                              | **SDK Développeur**          | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/07-roadmap.mdx`                                                            | Roadmap des Commandes Slash (/)                                                | **Roadmap Sources**          | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/08-marche/01-metier-marche/01-fondations-et-cadre.mdx`                     | Fondations & Cadre Juridique des Marchés Publics (/marche)                     | **Fondations Cadre**         | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/08-marche/01-metier-marche/02-cas-usage-et-scenarios.mdx`                  | Scénarios Métier & Cas d'Usage de la Commande /marche                          | **Cas Usage**                | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/08-marche/02-api-marche/01-benchmark-des-apis.mdx`                         | Benchmark & Comparatif des APIs de Marchés Publics                             | **Benchmark APIs**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/08-marche/02-api-marche/02-specifications-techniques.mdx`                  | Spécifications Techniques de l'API BOAMP                                       | **Spécifications Endpoints** | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/08-marche/03-implementation-marche/01-provider-django.mdx`                 | Implémentation du Provider Django /marche                                      | **Provider Django**          | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/08-marche/03-implementation-marche/02-rendu-et-settings.mdx`               | Rendu Visuel & Configuration de la Commande /marche                            | **Rendu Settings**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/08-marche/index.mdx`                                                       | Commande Slash /marche — Marchés Publics & BOAMP                               | **Slasheur Marchés**         | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/09-subvention/01-metier-subvention/01-fondations-et-cadre.mdx`             | Fondations & Dispositifs Financiers Publics (/subvention)                      | **Fondations Cadre**         | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/09-subvention/01-metier-subvention/02-cas-usage-et-scenarios.mdx`          | Scénarios Métier & Cas d'Usage de la Commande /subvention                      | **Cas Usage**                | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/09-subvention/02-api-subvention/01-benchmark-des-apis.mdx`                 | Benchmark des Sources d'Aides Publiques                                        | **Benchmark APIs**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/09-subvention/02-api-subvention/02-specifications-techniques.mdx`          | Spécifications Techniques de l'API Aides-Territoires                           | **Spécifications Endpoints** | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/09-subvention/03-implementation-subvention/01-provider-django.mdx`         | Implémentation du Provider Django /subvention                                  | **Provider Django**          | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/09-subvention/03-implementation-subvention/02-rendu-et-settings.mdx`       | Rendu Visuel & Configuration de la Commande /subvention                        | **Rendu Settings**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/09-subvention/index.mdx`                                                   | Commande Slash /subvention — Aides-Territoires & Fonds Vert                    | **Slasheur Subventions**     | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/10-stats/01-metier-stats/01-fondations-et-cadre.mdx`                       | Fondations & Cadre Statistique Public (/stats)                                 | **Fondations Cadre**         | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/10-stats/01-metier-stats/02-cas-usage-et-scenarios.mdx`                    | Scénarios Métier & Cas d'Usage de la Commande /stats                           | **Cas Usage**                | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/10-stats/02-api-stats/01-benchmark-des-apis.mdx`                           | Benchmark des Sources Statistiques Territoriales                               | **Benchmark APIs**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/10-stats/02-api-stats/02-specifications-techniques.mdx`                    | Spécifications Techniques de l'API INSEE / Stats                               | **Spécifications Endpoints** | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/10-stats/03-implementation-stats/01-provider-django.mdx`                   | Implémentation du Provider Django /stats                                       | **Provider Django**          | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/10-stats/03-implementation-stats/02-rendu-et-settings.mdx`                 | Rendu Visuel & Configuration de la Commande /stats                             | **Rendu Settings**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/10-stats/index.mdx`                                                        | Commande Slash /stats — Données Territoriales INSEE                            | **Slasheur Statistiques**    | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/11-agent/01-metier-agent/01-fondations-et-cadre.mdx`                       | Fondations & Référentiel de l'Annuaire du Service Public (/agent)              | **Fondations Cadre**         | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/11-agent/01-metier-agent/02-cas-usage-et-scenarios.mdx`                    | Scénarios Métier & Cas d'Usage de la Commande /agent                           | **Cas Usage**                | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/11-agent/02-api-agent/01-benchmark-des-apis.mdx`                           | Benchmark des APIs d'Annuaires Publics                                         | **Benchmark APIs**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/11-agent/02-api-agent/02-specifications-techniques.mdx`                    | Spécifications Techniques de l'API Annuaire DILA                               | **Spécifications Endpoints** | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/11-agent/03-implementation-agent/01-provider-django.mdx`                   | Implémentation du Provider Django /agent                                       | **Provider Django**          | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/11-agent/03-implementation-agent/02-rendu-et-settings.mdx`                 | Rendu Visuel & Configuration de la Commande /agent                             | **Rendu Settings**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/11-agent/index.mdx`                                                        | Commande Slash /agent — Annuaire du Service Public & Contacts                  | **Slasheur Agents**          | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/12-cadastre/01-metier-cadastre/01-fondations-et-cadre.mdx`                 | Fondations & Cadre Juridique du Cadastre (/cadastre)                           | **Fondations Cadre**         | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/12-cadastre/01-metier-cadastre/02-cas-usage-et-scenarios.mdx`              | Scénarios Métier & Cas d'Usage de la Commande /cadastre                        | **Cas Usage**                | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/12-cadastre/02-api-cadastre/01-benchmark-des-apis.mdx`                     | Benchmark des APIs Cadastrales & Cartographiques                               | **Benchmark APIs**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/12-cadastre/02-api-cadastre/02-specifications-techniques.mdx`              | Spécifications Techniques de l'API Cadastre                                    | **Spécifications Endpoints** | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/12-cadastre/03-implementation-cadastre/01-provider-django.mdx`             | Implémentation du Provider Django /cadastre                                    | **Provider Django**          | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/12-cadastre/03-implementation-cadastre/02-rendu-et-settings.mdx`           | Rendu Visuel & Configuration de la Commande /cadastre                          | **Rendu Settings**           | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/12-cadastre/index.mdx`                                                     | Commande Slash /cadastre — Cadastre & Parcelles Foncières                      | **Slasheur Cadastre**        | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/13-reutilisation-transverse.mdx`                                           | Réutilisation Transverse & Mutualisation Interministérielle                    | **Réutilisation Transverse** | ✅ Validé |
+| `documentation/docs/03-slasheurs-france/14-retour-d-experience.mdx`                                                | Retour d'Expérience (RXP) : L'Industrialisation des Packages Souverains        | **Retour Expérience**        | ✅ Validé |
+| `documentation/docs/04-pr/01-docs-serveur-config.mdx`                                                              | Nouveau fichier                                                                | **PR Serveurs**              | ✅ Validé |
+| `documentation/docs/04-pr/02-docs-packages-souverains.mdx`                                                         | Nouveau fichier                                                                | **PR Packages**              | ✅ Validé |
+| `documentation/docs/04-pr/03-blocknote-external-sources.mdx`                                                       | Nouveau fichier                                                                | **PR BlockNote**             | ✅ Validé |
+| `documentation/docs/04-pr/04-guide-d-arbitrage-et-migration.mdx`                                                   | Nouveau fichier                                                                | **Arbitrage Migration**      | ✅ Validé |
+| `documentation/docs/04-pr/05-pr-interne-monolithique.mdx`                                                          | Nouveau fichier                                                                | **PR Interne**               | ✅ Validé |
+| `documentation/docs/04-pr/06-pr-externe-packagee.mdx`                                                              | Nouveau fichier                                                                | **PR Externe**               | ✅ Validé |
+| `documentation/docs/04-pr/index.mdx`                                                                               | Nouveau fichier                                                                | **Pull Requests**            | ✅ Validé |
+| `documentation/docs/05-skills/01-dinum-react.mdx`                                                                  | Nouveau fichier                                                                | **DINUM React**              | ✅ Validé |
+| `documentation/docs/05-skills/02-dinum-python.mdx`                                                                 | Nouveau fichier                                                                | **DINUM Python**             | ✅ Validé |
+| `documentation/docs/05-skills/03-code-standards.mdx`                                                               | Nouveau fichier                                                                | **Code Standards**           | ✅ Validé |
+| `documentation/docs/05-skills/04-dsfr.mdx`                                                                         | Nouveau fichier                                                                | **DSFR Design**              | ✅ Validé |
+| `documentation/docs/05-skills/05-rgaa-review.mdx`                                                                  | Nouveau fichier                                                                | **Revue RGAA**               | ✅ Validé |
+| `documentation/docs/05-skills/06-lasuite-dev.mdx`                                                                  | Nouveau fichier                                                                | **Dev LaSuite**              | ✅ Validé |
+| `documentation/docs/05-skills/07-docs-mdx.mdx`                                                                     | Nouveau fichier                                                                | **Docs MDX**                 | ✅ Validé |
+| `documentation/docs/05-skills/08-code-review.mdx`                                                                  | Nouveau fichier                                                                | **Code Review**              | ✅ Validé |
+| `documentation/docs/05-skills/09-architecture-review.mdx`                                                          | Nouveau fichier                                                                | **Revue Architecture**       | ✅ Validé |
+| `documentation/docs/05-skills/10-design-change.mdx`                                                                | Nouveau fichier                                                                | **Design Change**            | ✅ Validé |
+| `documentation/docs/05-skills/11-send-pr.mdx`                                                                      | Nouveau fichier                                                                | **Send PR**                  | ✅ Validé |
+| `documentation/docs/05-skills/12-package-versioning.mdx`                                                           | Nouveau fichier                                                                | **Versionnage Packages**     | ✅ Validé |
+| `documentation/docs/05-skills/13-quota-resilience.mdx`                                                             | Nouveau fichier                                                                | **Résilience Quotas**        | ✅ Validé |
+| `documentation/docs/05-skills/14-python-data-protocols.mdx`                                                        | Nouveau fichier                                                                | **Protocoles Données**       | ✅ Validé |
+| `documentation/docs/05-skills/15-dpg-review.mdx`                                                                   | Nouveau fichier                                                                | **Revue DPG**                | ✅ Validé |
+| `documentation/docs/05-skills/index.mdx`                                                                           | Nouveau fichier                                                                | **Compétences Agents**       | ✅ Validé |
+| `documentation/docs/index.mdx`                                                                                     | Portail La Suite dev setup (42 x DINUM)                                        | **Accueil**                  | ✅ Validé |
+
+---
+
+## 🧭 3. Catégories & Sections de Navigation (Zudoku)
+
+| Section / Catégorie         | Ancien Libellé                          | Nouveau Libellé (Max 2 Mots) |
+| :-------------------------- | :-------------------------------------- | :--------------------------- |
+| **00. Overview**            | `00. Vision & Architecture`             | **`00. Overview`**           |
+| **01. BlockNote**           | `01. BlockNote Extension Specification` | **`01. BlockNote`**          |
+| **02. SDK**                 | `02. Provider TypeScript SDK`           | **`02. SDK`**                |
+| **03. Proxy**               | `03. Backend Proxy & Resilience`        | **`03. Proxy`**              |
+| **04. Presets**             | `04. Multi-Country Sovereign Presets`   | **`04. Presets`**            |
+| **05. RFC**                 | `05. Upstream BlockNote RFC`            | **`05. RFC`**                |
+| **01. Onboarding FR**       | `Onboarding & Démarrage`                | **`01. Onboarding`**         |
+| **02. La Suite FR**         | `La Suite Numérique`                    | **`02. La Suite`**           |
+| **03. Slasheurs France FR** | `Slasheurs France (DINUM)`              | **`03. Slasheurs France`**   |
+| **04. Pull Requests FR**    | `Pull Requests & Contributions`         | **`04. Pull Requests`**      |
+| **05. Skills FR**           | `Compétences Agents & Skills`           | **`05. Skills`**             |

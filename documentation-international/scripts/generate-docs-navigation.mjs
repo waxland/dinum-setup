@@ -20,32 +20,32 @@ function formatLabel(name) {
   const clean = name.replace(/^(\d+-)+/, "");
 
   const specialLabels = {
-    overview: "00. Vision & Architecture",
-    "blocknote-extension": "01. BlockNote Extension Specification",
-    "provider-sdk": "02. Provider TypeScript SDK",
-    "backend-proxy": "03. Backend Proxy & Resilience",
-    presets: "04. Multi-Country Sovereign Presets",
-    "rfc-upstream": "05. Upstream BlockNote RFC",
-    "european-union": "European Union (13 Connectors)",
-    canada: "Canada Federal (8 Connectors)",
-    "germany-bund": "Germany Bund (5 Connectors)",
-    "netherlands-gov": "Netherlands Gov (5 Connectors)",
-    "spain-boe": "Spain BOE (6 Connectors)",
-    international: "International & UN (4 Connectors)",
-    "3-display-formats": "3 Display Formats",
-    "document-exports": "Document Vector Exporters",
-    "floating-search-popover": "Accessible Search Popover",
-    "styling-and-themes": "Styling & Theme Customization",
-    "build-provider-in-15-min": "Build a Sovereign Connector (15 min)",
-    "define-source-provider": "defineSourceProvider Reference",
-    "typescript-contracts": "TypeScript Type Definitions",
-    "defensive-security-ssrf": "Anti-SSRF Defensive Security",
-    "deterministic-cache": "Deterministic Redis SHA-256 Cache",
-    "quota-and-rate-limiting": "Distributed Quota & Rate Limiting",
-    "blocknote-rfc-specification": "Formal Upstream RFC Specification",
-    "architecture-3-tier": "3-Tier Architecture Flow",
-    "engineering-standards": "Engineering & DPGA Standards",
-    "international-vision": "International Sovereign Vision",
+    overview: "00. Overview",
+    "blocknote-extension": "01. BlockNote",
+    "provider-sdk": "02. SDK",
+    "backend-proxy": "03. Proxy",
+    presets: "04. Presets",
+    "rfc-upstream": "05. RFC",
+    "european-union": "Europe",
+    canada: "Canada",
+    "germany-bund": "Allemagne",
+    "netherlands-gov": "Pays-Bas",
+    "spain-boe": "Espagne",
+    international: "International",
+    "3-display-formats": "Formats",
+    "document-exports": "Exports",
+    "floating-search-popover": "Popover",
+    "styling-and-themes": "Thèmes",
+    "build-provider-in-15-min": "Tutoriel",
+    "define-source-provider": "Provider",
+    "typescript-contracts": "Types",
+    "defensive-security-ssrf": "Sécurité",
+    "deterministic-cache": "Cache",
+    "quota-and-rate-limiting": "Quotas",
+    "blocknote-rfc-specification": "Spécification",
+    "architecture-3-tier": "Architecture",
+    "engineering-standards": "Standards",
+    "international-vision": "Vision",
   };
 
   if (specialLabels[clean]) {
@@ -90,9 +90,9 @@ function getDefaultIcon(name, depth) {
 
   if (depth === 0) {
     if (lower === "fr") return "flag";
-    if (lower === "en" || lower === "de" || lower === "nl" || lower === "es") return "globe";
-    if (lower.includes("accueil") || lower.includes("home"))
-      return "home";
+    if (lower === "en" || lower === "de" || lower === "nl" || lower === "es")
+      return "globe";
+    if (lower.includes("accueil") || lower.includes("home")) return "home";
     if (lower.includes("onboarding") || lower.includes("demarrage"))
       return "compass";
     if (lower.includes("archi")) return "layers";
@@ -115,10 +115,7 @@ function getDefaultIcon(name, depth) {
       lower.includes("competence")
     )
       return "bot";
-    if (
-      lower.includes("slash") ||
-      lower.includes("commande")
-    )
+    if (lower.includes("slash") || lower.includes("commande"))
       return "terminal";
     if (
       lower.includes("ressource") ||
@@ -130,7 +127,6 @@ function getDefaultIcon(name, depth) {
     if (lower.includes("lien") || lower.includes("link"))
       return "external-link";
   }
-
 
   // Depth > 0 (Sub-categories)
   if (lower.includes("metier")) return "briefcase";
@@ -149,19 +145,39 @@ function getDefaultIcon(name, depth) {
   if (lower.includes("donnees") || lower.includes("temps-reel"))
     return "database";
   if (lower.includes("devops") || lower.includes("deploiement")) return "cloud";
-  if (lower.includes("socle") || lower.includes("standard") || lower.includes("technique")) return "layers";
-  if (lower.includes("loi") || lower.includes("juridique") || lower.includes("legal"))
+  if (
+    lower.includes("socle") ||
+    lower.includes("standard") ||
+    lower.includes("technique")
+  )
+    return "layers";
+  if (
+    lower.includes("loi") ||
+    lower.includes("juridique") ||
+    lower.includes("legal")
+  )
     return "scale";
-  if (lower.includes("pappers") || lower.includes("entreprise") || lower.includes("societe"))
+  if (
+    lower.includes("pappers") ||
+    lower.includes("entreprise") ||
+    lower.includes("societe")
+  )
     return "building-2";
-  if (lower.includes("assemblee") || lower.includes("parlement") || lower.includes("claire"))
+  if (
+    lower.includes("assemblee") ||
+    lower.includes("parlement") ||
+    lower.includes("claire")
+  )
     return "landmark";
-  if (lower.includes("adresse") || lower.includes("ban") || lower.includes("geo"))
+  if (
+    lower.includes("adresse") ||
+    lower.includes("ban") ||
+    lower.includes("geo")
+  )
     return "map-pin";
   if (lower.includes("proposition") || lower.includes("idee"))
     return "lightbulb";
-  if (lower.includes("remplir") || lower.includes("auto"))
-    return "sparkles";
+  if (lower.includes("remplir") || lower.includes("auto")) return "sparkles";
   if (lower.includes("document") || lower.includes("contenu"))
     return "file-text";
   if (lower.includes("communication") || lower.includes("echange"))
@@ -172,10 +188,16 @@ function getDefaultIcon(name, depth) {
   if (lower.includes("integration") || lower.includes("test"))
     return "check-circle";
   if (lower.includes("serveur") || lower.includes("server")) return "server";
-  if (lower.includes("pr-") || lower.includes("pull-request")) return "git-pull-request";
+  if (lower.includes("pr-") || lower.includes("pull-request"))
+    return "git-pull-request";
 
   if (lower.includes("backend") || lower.includes("django")) return "server";
-  if (lower.includes("frontend") || lower.includes("blocknote") || lower.includes("react")) return "monitor";
+  if (
+    lower.includes("frontend") ||
+    lower.includes("blocknote") ||
+    lower.includes("react")
+  )
+    return "monitor";
   if (lower.includes("components")) return "box";
   if (lower.includes("sdk") || lower.includes("api")) return "code";
 
@@ -307,8 +329,14 @@ function generateNavForTarget(target) {
     { from: "/fr/index", to: "/fr" },
     { from: "/fr/00-accueil", to: "/fr" },
     { from: "/fr/00-accueil/index", to: "/fr" },
-    { from: "/fr/00-accueil/challenge-42", to: "/fr/01-onboarding/00-contexte/challenge-42" },
-    { from: "/fr/00-accueil/planning", to: "/fr/01-onboarding/00-contexte/planning" },
+    {
+      from: "/fr/00-accueil/challenge-42",
+      to: "/fr/01-onboarding/00-contexte/challenge-42",
+    },
+    {
+      from: "/fr/00-accueil/planning",
+      to: "/fr/01-onboarding/00-contexte/planning",
+    },
     { from: "/challenge-42", to: "/fr/01-onboarding/00-contexte/challenge-42" },
     { from: "/planning", to: "/fr/01-onboarding/00-contexte/planning" },
     { from: "/en/index", to: "/en" },
@@ -324,7 +352,10 @@ function generateNavForTarget(target) {
     { from: "/design-system", to: "/fr/02-la-suite/03-design-system" },
     { from: "/dsfr", to: "/fr/02-la-suite/03-design-system" },
     { from: "/05-ressources", to: "/fr/02-la-suite/04-ressources/communaute" },
-    { from: "/fr/05-ressources", to: "/fr/02-la-suite/04-ressources/communaute" },
+    {
+      from: "/fr/05-ressources",
+      to: "/fr/02-la-suite/04-ressources/communaute",
+    },
     { from: "/ressources", to: "/fr/02-la-suite/04-ressources/communaute" },
 
     // Slasheurs France redirects
@@ -338,8 +369,6 @@ function generateNavForTarget(target) {
     { from: "/onboarding", to: "/fr/01-onboarding" },
     { from: "/01-onboarding", to: "/fr/01-onboarding" },
     { from: "/guide", to: "/fr/01-onboarding" },
-
-
 
     // Flat to subfolder backwards compatibility: Accueil / Onboarding
     {

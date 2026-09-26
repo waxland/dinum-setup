@@ -1,12 +1,11 @@
 ---
-title: "Engineering Standards & Quality Guidelines (DINUM / beta.gouv / La Suite)"
-sidebar_label: "Engineering Standards"
+title: "Standards"
+sidebar_label: "Standards"
 description: "Comprehensive software quality standards, React/TypeScript guidelines, Python/Django conventions, RGAA accessibility, and defensive security by DINUM."
 ---
 
 
 
-# 🏛️ Software Engineering & Quality Standards
 
 This document formalizes the **software engineering standards and quality guidelines** established by the **French Interministerial Digital Directorate (DINUM)**, **beta.gouv.fr**, and **La Suite Numérique**.
 
@@ -61,14 +60,12 @@ All contributions across this monorepo must adhere to the official state referen
 
 When technical guidelines appear to conflict across repositories, apply this strict precedence order:
 
-```mermaid
-flowchart TD
+<Mermaid chart={`flowchart TD
     P1["1. Explicit User Instruction"] --> P2["2. AGENTS.md / Repository Instructions"]
     P2 --> P3["3. Repository Configuration (pyproject.toml, package.json, CI)"]
     P3 --> P4["4. Existing Architectural & Project Conventions"]
     P4 --> P5["5. DINUM / beta.gouv / La Suite Recommendations"]
-    P5 --> P6["6. Generic Framework & Language Practices"]
-```
+    P5 --> P6["6. Generic Framework & Language Practices"]`} />
 
 > 💡 **Example :** The historical La Suite handbook suggests PEP 8 with 99-character line lengths, whereas modern La Suite repositories configure Ruff with 88 characters. **Local repository configuration always wins.**
 

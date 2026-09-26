@@ -1,6 +1,6 @@
 ---
-title: "Réutilisation Transverse & Mutualisation Interministérielle"
-sidebar_label: "13. Mutualisation Transverse"
+title: "Réutilisation Transverse"
+sidebar_label: "Réutilisation Transverse"
 description: Guide d'intégration des packages souverains dans les autres produits de La Suite Numérique (Projects, Meet, People) et portails ministériels tiers.
 ---
 
@@ -12,8 +12,7 @@ L'un des avantages majeurs du découpage en **packages autonomes** (`django-lasu
 
 ## 🏛️ 1. Matrice de Mutualisation dans La Suite Numérique
 
-```mermaid
-flowchart TD
+<Mermaid chart={`flowchart TD
     subgraph Pkgs["📦 Packages Autonomes DINUM"]
         PyPkg["🐍 django-lasuite-sources (PyPI)"]
         JSPkg["📦 @suitenumerique/blocknote-sources (npm)"]
@@ -37,8 +36,7 @@ flowchart TD
     JSPkg --> Meet
 
     SDKPkg --> Docs
-    SDKPkg --> Tiers
-```
+    SDKPkg --> Tiers`} />
 
 ---
 
@@ -99,7 +97,6 @@ Dans **La Suite Meet**, lors de la préparation d'une réunion interministériel
 N'importe quel ministère ou collectivité développant un portail web en Python/Django peut bénéficier des 12 connecteurs souverains en 2 étapes :
 
 ```bash
-# 1. Installation du package
 pip install django-lasuite-sources
 ```
 

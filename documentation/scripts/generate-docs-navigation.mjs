@@ -21,10 +21,10 @@ function formatLabel(name) {
   const clean = name.replace(/^(\d+-)+/, "");
 
   if (clean === "fr") {
-    return "🇫🇷 Français (Socle DINUM)";
+    return "🇫🇷 Français";
   }
   if (clean === "en") {
-    return "🇬🇧 English (Universal Standard)";
+    return "🇬🇧 English";
   }
   if (clean === "de") {
     return "🇩🇪 Deutsch";
@@ -36,62 +36,132 @@ function formatLabel(name) {
     return "🇪🇸 Español";
   }
 
+  if (clean.toLowerCase() === "adr") {
+    return "ADRs";
+  }
+  if (clean === "configuration-serveur") {
+    return "Serveur";
+  }
   if (clean === "onboarding") {
-    return "Onboarding & Démarrage";
+    return "01. Onboarding";
   }
   if (clean === "contexte") {
-    return "Contexte & Hackathon 42";
+    return "Contexte 42";
   }
   if (clean === "la-suite") {
-    return "La Suite Numérique";
+    return "02. La Suite";
   }
   if (clean === "applications") {
-    return "Applications & Projets";
+    return "Applications";
   }
   if (clean === "architecture") {
-    return "Architecture & Données";
+    return "Architecture";
   }
   if (clean === "design-system") {
-    return "Design System & DSFR";
+    return "Design System";
   }
   if (clean === "slasheurs-france") {
-    return "Slasheurs France (DINUM)";
+    return "03. Slasheurs France";
   }
   if (clean === "socle-technique") {
-    return "Socle Technique Unifié";
+    return "Socle Technique";
   }
   if (clean.toLowerCase() === "pr") {
-    return "Pull Requests & Contributions";
+    return "04. Pull Requests";
+  }
+  if (clean === "skills") {
+    return "05. Skills";
   }
   if (clean === "docs-serveur-config") {
-    return "PR 1 : Serveurs Distants & VMs (Docs)";
+    return "PR Serveurs";
   }
   if (clean === "docs-packages-souverains") {
-    return "PR 2 : Packages Souverains & Opt-in (Docs)";
+    return "PR Packages";
   }
   if (clean === "blocknote-external-sources") {
-    return "PR 3 : Extension Amont BlockNote (RFC)";
+    return "PR BlockNote";
   }
-  if (clean === "guide-d-arbitrage-et-migration" || clean === "guide-d-arbitrage") {
-    return "04. Guide d'Arbitrage & Décision";
+  if (
+    clean === "guide-d-arbitrage-et-migration" ||
+    clean === "guide-d-arbitrage"
+  ) {
+    return "Arbitrage Migration";
   }
   if (clean === "pr-interne-monolithique") {
-    return "Typologie 1 : PR Interne In-Tree";
+    return "PR Interne";
   }
   if (clean === "pr-externe-packagee") {
-    return "Typologie 2 : PR Externe Packagée";
+    return "PR Externe";
   }
   if (clean.startsWith("metier")) {
-    return "Pôle Métier & Usages";
+    return "Pôle Métier";
   }
   if (clean.startsWith("api")) {
-    return "Pôle API & Veille";
+    return "Pôle API";
   }
   if (clean.startsWith("implementation")) {
     return "Pôle Implémentation";
   }
-
-
+  if (clean.startsWith("loi")) {
+    return "01. Loi";
+  }
+  if (clean.startsWith("pappers")) {
+    return "02. Entreprises";
+  }
+  if (clean.startsWith("assemblee")) {
+    return "03. Assemblée";
+  }
+  if (clean.startsWith("ban")) {
+    return "04. BAN";
+  }
+  if (clean.startsWith("remplir")) {
+    return "05. Remplir";
+  }
+  if (
+    clean.startsWith("propositions-sources") ||
+    clean.startsWith("proposition")
+  ) {
+    return "06. Propositions";
+  }
+  if (clean === "fondations") {
+    return "Fondations";
+  }
+  if (clean === "composants") {
+    return "Composants";
+  }
+  if (clean === "layout-et-structure" || clean === "layout") {
+    return "Structure";
+  }
+  if (clean === "ressources") {
+    return "Ressources";
+  }
+  if (clean === "support") {
+    return "Support";
+  }
+  if (clean === "demarrage") {
+    return "Démarrage";
+  }
+  if (clean === "workflow-et-contribution" || clean === "workflow") {
+    return "Workflow";
+  }
+  if (clean === "documents-et-contenus") {
+    return "Contenus";
+  }
+  if (clean === "communication-et-echange") {
+    return "Communication";
+  }
+  if (clean === "gestion-et-utilisateurs") {
+    return "Gestion";
+  }
+  if (clean === "securite-et-identite") {
+    return "Sécurité";
+  }
+  if (clean === "donnees-et-temps-reel") {
+    return "Données";
+  }
+  if (clean === "devops-et-deploiement") {
+    return "DevOps";
+  }
 
   const acronyms = {
     roi: "ROI",
@@ -176,9 +246,9 @@ function getDefaultIcon(name, depth) {
 
   if (depth === 0) {
     if (lower === "fr") return "flag";
-    if (lower === "en" || lower === "de" || lower === "nl" || lower === "es") return "globe";
-    if (lower.includes("accueil") || lower.includes("home"))
-      return "home";
+    if (lower === "en" || lower === "de" || lower === "nl" || lower === "es")
+      return "globe";
+    if (lower.includes("accueil") || lower.includes("home")) return "home";
     if (lower.includes("onboarding") || lower.includes("demarrage"))
       return "compass";
     if (lower.includes("archi")) return "layers";
@@ -201,10 +271,7 @@ function getDefaultIcon(name, depth) {
       lower.includes("competence")
     )
       return "bot";
-    if (
-      lower.includes("slash") ||
-      lower.includes("commande")
-    )
+    if (lower.includes("slash") || lower.includes("commande"))
       return "terminal";
     if (
       lower.includes("ressource") ||
@@ -216,7 +283,6 @@ function getDefaultIcon(name, depth) {
     if (lower.includes("lien") || lower.includes("link"))
       return "external-link";
   }
-
 
   // Depth > 0 (Sub-categories)
   if (lower.includes("metier")) return "briefcase";
@@ -235,19 +301,39 @@ function getDefaultIcon(name, depth) {
   if (lower.includes("donnees") || lower.includes("temps-reel"))
     return "database";
   if (lower.includes("devops") || lower.includes("deploiement")) return "cloud";
-  if (lower.includes("socle") || lower.includes("standard") || lower.includes("technique")) return "layers";
-  if (lower.includes("loi") || lower.includes("juridique") || lower.includes("legal"))
+  if (
+    lower.includes("socle") ||
+    lower.includes("standard") ||
+    lower.includes("technique")
+  )
+    return "layers";
+  if (
+    lower.includes("loi") ||
+    lower.includes("juridique") ||
+    lower.includes("legal")
+  )
     return "scale";
-  if (lower.includes("pappers") || lower.includes("entreprise") || lower.includes("societe"))
+  if (
+    lower.includes("pappers") ||
+    lower.includes("entreprise") ||
+    lower.includes("societe")
+  )
     return "building-2";
-  if (lower.includes("assemblee") || lower.includes("parlement") || lower.includes("claire"))
+  if (
+    lower.includes("assemblee") ||
+    lower.includes("parlement") ||
+    lower.includes("claire")
+  )
     return "landmark";
-  if (lower.includes("adresse") || lower.includes("ban") || lower.includes("geo"))
+  if (
+    lower.includes("adresse") ||
+    lower.includes("ban") ||
+    lower.includes("geo")
+  )
     return "map-pin";
   if (lower.includes("proposition") || lower.includes("idee"))
     return "lightbulb";
-  if (lower.includes("remplir") || lower.includes("auto"))
-    return "sparkles";
+  if (lower.includes("remplir") || lower.includes("auto")) return "sparkles";
   if (lower.includes("document") || lower.includes("contenu"))
     return "file-text";
   if (lower.includes("communication") || lower.includes("echange"))
@@ -258,10 +344,16 @@ function getDefaultIcon(name, depth) {
   if (lower.includes("integration") || lower.includes("test"))
     return "check-circle";
   if (lower.includes("serveur") || lower.includes("server")) return "server";
-  if (lower.includes("pr-") || lower.includes("pull-request")) return "git-pull-request";
+  if (lower.includes("pr-") || lower.includes("pull-request"))
+    return "git-pull-request";
 
   if (lower.includes("backend") || lower.includes("django")) return "server";
-  if (lower.includes("frontend") || lower.includes("blocknote") || lower.includes("react")) return "monitor";
+  if (
+    lower.includes("frontend") ||
+    lower.includes("blocknote") ||
+    lower.includes("react")
+  )
+    return "monitor";
   if (lower.includes("components")) return "box";
   if (lower.includes("sdk") || lower.includes("api")) return "code";
 
@@ -393,8 +485,14 @@ function generateNavForTarget(target) {
     { from: "/fr/index", to: "/fr" },
     { from: "/fr/00-accueil", to: "/fr" },
     { from: "/fr/00-accueil/index", to: "/fr" },
-    { from: "/fr/00-accueil/challenge-42", to: "/fr/01-onboarding/00-contexte/challenge-42" },
-    { from: "/fr/00-accueil/planning", to: "/fr/01-onboarding/00-contexte/planning" },
+    {
+      from: "/fr/00-accueil/challenge-42",
+      to: "/fr/01-onboarding/00-contexte/challenge-42",
+    },
+    {
+      from: "/fr/00-accueil/planning",
+      to: "/fr/01-onboarding/00-contexte/planning",
+    },
     { from: "/challenge-42", to: "/fr/01-onboarding/00-contexte/challenge-42" },
     { from: "/planning", to: "/fr/01-onboarding/00-contexte/planning" },
     { from: "/en/index", to: "/en" },
@@ -410,7 +508,10 @@ function generateNavForTarget(target) {
     { from: "/design-system", to: "/fr/02-la-suite/03-design-system" },
     { from: "/dsfr", to: "/fr/02-la-suite/03-design-system" },
     { from: "/05-ressources", to: "/fr/02-la-suite/04-ressources/communaute" },
-    { from: "/fr/05-ressources", to: "/fr/02-la-suite/04-ressources/communaute" },
+    {
+      from: "/fr/05-ressources",
+      to: "/fr/02-la-suite/04-ressources/communaute",
+    },
     { from: "/ressources", to: "/fr/02-la-suite/04-ressources/communaute" },
 
     // Slasheurs France redirects
@@ -424,8 +525,6 @@ function generateNavForTarget(target) {
     { from: "/onboarding", to: "/fr/01-onboarding" },
     { from: "/01-onboarding", to: "/fr/01-onboarding" },
     { from: "/guide", to: "/fr/01-onboarding" },
-
-
 
     // Flat to subfolder backwards compatibility: Accueil / Onboarding
     {

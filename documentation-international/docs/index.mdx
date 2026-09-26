@@ -1,18 +1,16 @@
 ---
-title: "Slasher — Universal Connected Data Blocks for BlockNote"
-sidebar_label: "Overview"
+title: "Accueil"
+sidebar_label: "Accueil"
 description: Standardized remote data connectors and multi-format connected blocks for BlockNote.js with WAI-ARIA accessibility and native vector exporters.
 ---
 
 
 
 
-# 🌐 Slasher — Universal Remote Data Connectors for BlockNote
 
 **Slasher** (`@blocknote/xl-external-sources`) is an open source community extension and lightweight SDK (`@blocknote/source-provider-sdk` < 5 kB) that connects rich text editors with remote public and private APIs.
 
-```mermaid
-flowchart TD
+<Mermaid chart={`flowchart TD
     subgraph SlasherEcosystem["🌐 Slasher 3-Tier Architecture"]
         Editor["📝 BlockNote.js Editor / React 18 & 19"]
         SlasherBlock["🧩 SlasherBlock (3 Switchable Formats)"]
@@ -26,8 +24,7 @@ flowchart TD
     Editor --> Popover
     Popover --> SDK
     SDK --> BackendProxy
-    BackendProxy --> RemoteAPIs
-```
+    BackendProxy --> RemoteAPIs`} />
 
 ---
 

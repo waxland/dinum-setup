@@ -1,11 +1,10 @@
 ---
-title: "Distributed Quota Management & Circuit Breaker Resilience"
-sidebar_label: "Quotas & Rate Limiting"
+title: "Quotas"
+sidebar_label: "Quotas"
 description: Architectural specification for distributed quota tracking, 80% safety margins, per-user burst rate limits, and HTTP 429 Retry-After circuit breakers.
 ---
 
 
-# ⚡ Distributed Quota Management & Resilience Engine
 
 In enterprise and public-sector collaborative deployments, public APIs often enforce strict rate limits and daily quota ceilings.
 
@@ -17,8 +16,7 @@ Slasher implements a **resilient multi-tier architecture** ensuring that documen
 
 Every sovereign connector operates under a 5-state health machine:
 
-```mermaid
-stateDiagram-v2
+<Mermaid chart={`stateDiagram-v2
     [*] --> HEALTHY
     HEALTHY --> DEGRADED : Quota > 80% used
     DEGRADED --> HEALTHY : Quota reset (New Day)
@@ -31,8 +29,7 @@ stateDiagram-v2
     
     CIRCUIT_OPEN --> HALF_OPEN : Cooldown elapsed (30s–60s)
     HALF_OPEN --> HEALTHY : Test probe succeeds
-    HALF_OPEN --> CIRCUIT_OPEN : Test probe fails
-```
+    HALF_OPEN --> CIRCUIT_OPEN : Test probe fails`} />
 
 | State | Condition | Backend Behavior | Frontend / UI Impact |
 |---|---|---|---|
@@ -47,16 +44,14 @@ stateDiagram-v2
 
 To prevent a single user or runaway automation from exhausting global public API quotas, Slasher enforces a 3-tier limit:
 
-```mermaid
-flowchart TD
+<Mermaid chart={`flowchart TD
     Req["Incoming User Keystroke (/law 'procurement')"] --> L1{"Per-User Burst Limit<br/>(Max 60 req/min)"}
     L1 -->|Exceeded| Cache1["Serve local suggest cache"]
     L1 -->|Allowed| L2{"Global Quota Ceiling<br/>(80% Safety Margin)"}
     L2 -->|Quota Exhausted| Cache2["Serve verified cached DTO"]
     L2 -->|Quota Available| L3{"Circuit Breaker Open?"}
     L3 -->|Open (429 / 5xx)| Cache3["Serve local index"]
-    L3 -->|Closed| API["Live Sovereign API (e.g. Légifrance, EUR-Lex)"]
-```
+    L3 -->|Closed| API["Live Sovereign API (e.g. Légifrance, EUR-Lex)"]`} />
 
 ---
 

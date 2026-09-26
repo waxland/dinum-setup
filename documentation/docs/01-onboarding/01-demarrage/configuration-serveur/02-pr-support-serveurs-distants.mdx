@@ -1,6 +1,6 @@
 ---
-title: Proposition de PR DINUM — Support des Serveurs Distants
-sidebar_label: Proposition PR DINUM
+title: "Support Serveurs"
+sidebar_label: "Support Serveurs"
 description: Document complet et argumenté prêt à être partagé avec l'équipe de La Suite Numérique / DINUM pour rendre La Suite Docs nativement compatible avec les serveurs distants.
 ---
 
@@ -166,7 +166,6 @@ module.exports = nextConfig;
 Documenter les variables publiques et sécuriser les endpoints internes :
 
 ```dotenv
-# Endpoints OIDC internes (toujours routés via le réseau Docker Nginx)
 OIDC_OP_JWKS_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-connect/certs
 OIDC_OP_TOKEN_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-connect/token
 OIDC_OP_USER_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-connect/userinfo

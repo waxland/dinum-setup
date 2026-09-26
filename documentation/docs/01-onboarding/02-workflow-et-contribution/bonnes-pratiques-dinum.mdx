@@ -1,6 +1,6 @@
 ---
-title: Standards d'Ingénierie & Qualité Logicielle (DINUM, beta.gouv.fr, La Suite)
-sidebar_label: Bonnes Pratiques DINUM
+title: "Standards DINUM"
+sidebar_label: "Standards DINUM"
 description: Corpus officiel des normes de qualité logicielle, standards React/TypeScript, conventions Python/Django, accessibilité RGAA et sécurité applicative de la DINUM.
 ---
 
@@ -65,14 +65,12 @@ Les normes appliquées dans ce monorepo s'appuient sur les référentiels offici
 
 Pour éviter les conflits d'outillage entre projets historiques et modernes, l'ordre de priorité suivant est **strictement appliqué** :
 
-```mermaid
-flowchart TD
+<Mermaid chart={`flowchart TD
     P1["1. Instruction explicite de l'utilisateur"] --> P2["2. Instructions AGENTS.md / AGENT.md"]
     P2 --> P3["3. Configuration du dépôt (pyproject.toml, package.json, CI)"]
     P3 --> P4["4. Conventions architecturales du projet existant"]
     P4 --> P5["5. Recommandations DINUM / beta.gouv.fr / La Suite"]
-    P5 --> P6["6. Bonnes pratiques génériques langage / framework"]
-```
+    P5 --> P6["6. Bonnes pratiques génériques langage / framework"]`} />
 
 > 💡 **Exemple concret :** Le handbook historique recommande PEP 8 avec une longueur de ligne à 99 caractères, tandis que les dépôts récents de La Suite configurent Ruff à 88 caractères. **La configuration locale du projet gagne toujours.**
 

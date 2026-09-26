@@ -1,22 +1,19 @@
 ---
-title: "The Universal Connected Data Standard"
-sidebar_label: "Standard Overview"
+title: "Overview"
+sidebar_label: "Overview"
 description: Architectural overview of Slasher, the open source connected data block standard for rich text editors.
 ---
 
 
 
-# 🌐 The Universal Connected Data Standard
 
 **Slasher** standardizes how rich text documents interact with verified remote public records, legal databases, corporate registers, and AI knowledge bases.
 
-```mermaid
-flowchart LR
+<Mermaid chart={`flowchart LR
     Slash["⌨️ User types /slash command"] --> Popover["🔍 Accessible Floating Popover"]
     Popover --> SDK["🛠️ Slasher Provider SDK (< 5 kB)"]
     SDK --> Proxy["🛡️ Defensive Backend Proxy (Anti-SSRF)"]
-    Proxy --> Block["🧩 3-Format Switchable SlasherBlock"]
-```
+    Proxy --> Block["🧩 3-Format Switchable SlasherBlock"]`} />
 
 ---
 

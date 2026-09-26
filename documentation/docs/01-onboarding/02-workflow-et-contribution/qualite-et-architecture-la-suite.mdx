@@ -1,12 +1,11 @@
 ---
-title: Qualité de Code, Linters & Architecture La Suite
-sidebar_label: Qualité & Architecture
+title: "Qualité Code"
+sidebar_label: "Qualité Code"
 description: Alignement complet sur les conventions d'ingénierie de suitenumerique/docs (ESLint, Ruff, Pytest, Playwright, RGAA et architecture modulaire).
 ---
 
 
 
-# 🏛️ Qualité de Code, Linters & Architecture La Suite
 
 Ce document formalise l'alignement technique de ce monorepo avec les **conventions d'ingénierie et d'architecture officielles de La Suite Numérique (`suitenumerique/docs`)** et de **beta.gouv.fr**.
 
@@ -72,8 +71,7 @@ L'ensemble de notre configuration s'aligne sur les fichiers sources du dépôt o
 
 Le dépôt applique le principe de responsabilité unique et sépare clairement le domaine métier de la glue technique.
 
-```mermaid
-flowchart TD
+<Mermaid chart={`flowchart TD
     subgraph UI["1. Couche Interface (BlockNote & Web)"]
         BN["@suitenumerique/blocknote-sources"]
         Demo["demo/ (Vite Standalone)"]
@@ -91,8 +89,7 @@ flowchart TD
 
     UI --> SDK
     SDK --> DjangoProxy
-    DjangoProxy --> APIs
-```
+    DjangoProxy --> APIs`} />
 
 Les décisions majeures sont tracées dans des **ADRs normalisés** :
 - **[ADR-0001 : Découplage du Monorepo en 4 Piliers](./adr/0001-architecture-monorepo-4-piliers.mdx)**

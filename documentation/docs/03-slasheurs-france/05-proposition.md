@@ -1,11 +1,10 @@
 ---
-title: Propositions de Nouvelles Commandes Slash
-sidebar_label: Propositions & Idées
+title: "Proposition Sources"
+sidebar_label: "Proposition Sources"
 description: "Document prospectif explorant 10 nouvelles commandes slash pour La Suite Docs (marchés publics, subventions, annuaire, cadastre, INSEE, Tchap, parapheur, démarches)."
 ---
 
 
-# 💡 Exploration & Propositions de Nouvelles Commandes Slash (`proposition.md`)
 
 Ce document prospectif recense et détaille **10 propositions concrètes de futures commandes slash (`/`)** pour enrichir l'éditeur collaboratif **La Suite Docs**.
 

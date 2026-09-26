@@ -10,7 +10,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     "type": "category",
-    "label": "00. Vision & Architecture",
+    "label": "00. Overview",
     "icon": "folder",
     "collapsed": false,
     "items": [
@@ -26,7 +26,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     "type": "category",
-    "label": "01. BlockNote Extension Specification",
+    "label": "01. BlockNote",
     "icon": "monitor",
     "collapsed": false,
     "items": [
@@ -43,7 +43,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     "type": "category",
-    "label": "02. Provider TypeScript SDK",
+    "label": "02. SDK",
     "icon": "code",
     "collapsed": false,
     "items": [
@@ -59,7 +59,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     "type": "category",
-    "label": "03. Backend Proxy & Resilience",
+    "label": "03. Proxy",
     "icon": "server",
     "collapsed": false,
     "items": [
@@ -75,7 +75,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     "type": "category",
-    "label": "04. Multi-Country Sovereign Presets",
+    "label": "04. Presets",
     "icon": "folder",
     "collapsed": false,
     "items": [
@@ -94,7 +94,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     "type": "category",
-    "label": "05. Upstream BlockNote RFC",
+    "label": "05. RFC",
     "icon": "folder",
     "collapsed": false,
     "items": [

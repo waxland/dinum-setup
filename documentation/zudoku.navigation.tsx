@@ -10,7 +10,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     "type": "category",
-    "label": "Onboarding & Démarrage",
+    "label": "01. Onboarding",
     "icon": "compass",
     "collapsed": false,
     "items": [
@@ -21,7 +21,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         "type": "category",
-        "label": "Contexte & Hackathon 42",
+        "label": "Contexte 42",
         "icon": "folder",
         "collapsed": false,
         "items": [
@@ -31,7 +31,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         "type": "category",
-        "label": "Demarrage",
+        "label": "Démarrage",
         "icon": "rocket",
         "collapsed": false,
         "items": [
@@ -41,7 +41,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           "/01-onboarding/01-demarrage/vscode",
           {
             "type": "category",
-            "label": "Configuration Serveur",
+            "label": "Serveur",
             "icon": "server",
             "collapsed": false,
             "items": [
@@ -53,7 +53,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         "type": "category",
-        "label": "Workflow Et Contribution",
+        "label": "Workflow",
         "icon": "git-pull-request",
         "collapsed": false,
         "items": [
@@ -65,7 +65,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           "/01-onboarding/02-workflow-et-contribution/workflow",
           {
             "type": "category",
-            "label": "Adr",
+            "label": "ADRs",
             "icon": "folder",
             "collapsed": false,
             "items": [
@@ -107,7 +107,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     "type": "category",
-    "label": "La Suite Numérique",
+    "label": "02. La Suite",
     "icon": "palette",
     "collapsed": false,
     "items": [
@@ -118,7 +118,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         "type": "category",
-        "label": "Applications & Projets",
+        "label": "Applications",
         "icon": "folder",
         "collapsed": false,
         "items": [
@@ -129,7 +129,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Documents Et Contenus",
+            "label": "Contenus",
             "icon": "file-text",
             "collapsed": false,
             "items": [
@@ -140,7 +140,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Communication Et Echange",
+            "label": "Communication",
             "icon": "message-square",
             "collapsed": false,
             "items": [
@@ -151,7 +151,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Gestion Et Utilisateurs",
+            "label": "Gestion",
             "icon": "users",
             "collapsed": false,
             "items": [
@@ -164,7 +164,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         "type": "category",
-        "label": "Architecture & Données",
+        "label": "Architecture",
         "icon": "folder",
         "collapsed": false,
         "items": [
@@ -175,7 +175,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Securite Et Identite",
+            "label": "Sécurité",
             "icon": "shield-check",
             "collapsed": false,
             "items": [
@@ -186,7 +186,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Donnees Et Temps Reel",
+            "label": "Données",
             "icon": "database",
             "collapsed": false,
             "items": [
@@ -197,7 +197,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Devops Et Deploiement",
+            "label": "DevOps",
             "icon": "cloud",
             "collapsed": false,
             "items": [
@@ -211,7 +211,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         "type": "category",
-        "label": "Design System & DSFR",
+        "label": "Design System",
         "icon": "folder",
         "collapsed": false,
         "items": [
@@ -253,7 +253,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Layout Et Structure",
+            "label": "Structure",
             "icon": "layout-grid",
             "collapsed": false,
             "items": [
@@ -277,7 +277,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     "type": "category",
-    "label": "Slasheurs France (DINUM)",
+    "label": "03. Slasheurs France",
     "icon": "terminal",
     "collapsed": false,
     "items": [
@@ -297,7 +297,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       "/03-slasheurs-france/14-retour-d-experience",
       {
         "type": "category",
-        "label": "Projet de Loi (/loi)",
+        "label": "01. Loi",
         "icon": "scale",
         "collapsed": false,
         "items": [
@@ -308,7 +308,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Pôle Métier & Usages",
+            "label": "Pôle Métier",
             "icon": "briefcase",
             "collapsed": false,
             "items": [
@@ -318,7 +318,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Pôle API & Veille",
+            "label": "Pôle API",
             "icon": "code",
             "collapsed": false,
             "items": [
@@ -340,7 +340,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         "type": "category",
-        "label": "Assemblée Nationale (/assemblee)",
+        "label": "03. Assemblée",
         "icon": "landmark",
         "collapsed": false,
         "items": [
@@ -351,7 +351,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Pôle Métier & Usages",
+            "label": "Pôle Métier",
             "icon": "briefcase",
             "collapsed": false,
             "items": [
@@ -361,7 +361,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Pôle API & Veille",
+            "label": "Pôle API",
             "icon": "code",
             "collapsed": false,
             "items": [
@@ -394,7 +394,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Pôle Métier & Usages",
+            "label": "Pôle Métier",
             "icon": "briefcase",
             "collapsed": false,
             "items": [
@@ -404,7 +404,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Pôle API & Veille",
+            "label": "Pôle API",
             "icon": "code",
             "collapsed": false,
             "items": [
@@ -437,7 +437,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Pôle Métier & Usages",
+            "label": "Pôle Métier",
             "icon": "briefcase",
             "collapsed": false,
             "items": [
@@ -447,7 +447,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Pôle API & Veille",
+            "label": "Pôle API",
             "icon": "code",
             "collapsed": false,
             "items": [
@@ -480,7 +480,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Pôle Métier & Usages",
+            "label": "Pôle Métier",
             "icon": "briefcase",
             "collapsed": false,
             "items": [
@@ -490,7 +490,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Pôle API & Veille",
+            "label": "Pôle API",
             "icon": "code",
             "collapsed": false,
             "items": [
@@ -536,7 +536,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Pôle Métier & Usages",
+            "label": "Pôle Métier",
             "icon": "briefcase",
             "collapsed": false,
             "items": [
@@ -546,7 +546,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Pôle API & Veille",
+            "label": "Pôle API",
             "icon": "code",
             "collapsed": false,
             "items": [
@@ -579,7 +579,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Pôle Métier & Usages",
+            "label": "Pôle Métier",
             "icon": "briefcase",
             "collapsed": false,
             "items": [
@@ -589,7 +589,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Pôle API & Veille",
+            "label": "Pôle API",
             "icon": "code",
             "collapsed": false,
             "items": [
@@ -622,7 +622,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Pôle Métier & Usages",
+            "label": "Pôle Métier",
             "icon": "briefcase",
             "collapsed": false,
             "items": [
@@ -632,7 +632,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Pôle API & Veille",
+            "label": "Pôle API",
             "icon": "code",
             "collapsed": false,
             "items": [
@@ -665,7 +665,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Pôle Métier & Usages",
+            "label": "Pôle Métier",
             "icon": "briefcase",
             "collapsed": false,
             "items": [
@@ -675,7 +675,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Pôle API & Veille",
+            "label": "Pôle API",
             "icon": "code",
             "collapsed": false,
             "items": [
@@ -708,7 +708,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Pôle Métier & Usages",
+            "label": "Pôle Métier",
             "icon": "briefcase",
             "collapsed": false,
             "items": [
@@ -718,7 +718,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             "type": "category",
-            "label": "Pôle API & Veille",
+            "label": "Pôle API",
             "icon": "code",
             "collapsed": false,
             "items": [

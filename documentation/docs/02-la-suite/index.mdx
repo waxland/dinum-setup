@@ -1,17 +1,15 @@
 ---
-title: "L'Écosystème de La Suite Numérique"
-sidebar_label: "Hub La Suite"
+title: "La Suite"
+sidebar_label: "La Suite"
 description: Vue d'ensemble des applications, architectures, design system et ressources de La Suite numérique de l'État français (DINUM).
 ---
 
 
 
-# 🏛️ L'Écosystème de La Suite Numérique
 
 **La Suite numérique** est un ensemble d'outils collaboratifs souverains, libres et sécurisés développés par la Direction Interministérielle du Numérique (**DINUM**) et l'Agence Nationale de la Cohésion des Territoires (**ANCT**), à destination de tous les agents publics.
 
-```mermaid
-flowchart TD
+<Mermaid chart={`flowchart TD
     subgraph LaSuiteHub["🏛️ Le Grand Hub La Suite Numérique"]
         Apps["📱 1. Applications & Projets<br/>• Docs (Éditeur riche / CRDT)<br/>• Meet (Visioconférence)<br/>• Tchap (Messagerie souveraine)<br/>• Transfers, People, Projects, Accounts"]
         Archi["⚙️ 2. Architecture & Sécurité<br/>• Fédération ProConnect & OIDC<br/>• Yjs CRDT & Stockage S3 MinIO<br/>• PRA/PCA & Déploiement K8s"]
@@ -21,8 +19,7 @@ flowchart TD
 
     Apps <--> Archi
     Apps <--> DS
-    Archi <--> Ressources
-```
+    Archi <--> Ressources`} />
 
 ---
 

@@ -1,6 +1,6 @@
 ---
-title: Portail La Suite dev setup (42 x DINUM)
-sidebar_label: Accueil
+title: "Onboarding"
+sidebar_label: "Onboarding"
 description: Portail de documentation d'ingénierie, onboarding et boîte à outils pour La Suite Numérique et le Socle des Sources Souveraines (/slash).
 ---
 
@@ -61,8 +61,7 @@ Pour assurer une cohérence visuelle parfaite entre les applications de La Suite
 
 Le projet **`/slash`** dote l'éditeur **La Suite Docs** d'un accès direct aux **12 grandes bases de données souveraines de l'État français** au fil de la frappe.
 
-```mermaid
-flowchart TD
+<Mermaid chart={`flowchart TD
     subgraph Client["📝 Éditeur Collaboratif (Navigateur)"]
         Saisie["Saisie au clavier : /loi, /marche, /entreprise..."] --> Popover["Palette de Recherche Popover (Cunningham + cmdk)"]
         Popover --> Block["CustomBlock Universel (3 Formats DSFR : Callout, Carte, Lien)"]
@@ -84,8 +83,7 @@ flowchart TD
 
     Client --> Pkg_JS
     Pkg_JS --> Pkg_Py
-    Pkg_Py --> APIs
-```
+    Pkg_Py --> APIs`} />
 
 ### ⚖️ La Première Proposition Pionnière : `/loi` & la Vision Juridique
 La commande **/loi** (alias `/legifrance`, `/code`, `/article`) constitue la première brique emblématique de cette vision :
@@ -170,7 +168,6 @@ Testez ci-dessous le moteur d'édition en direct avec les commandes `/loi`, `/en
 ## ⚡ Commandes Principales d'Orchestration
 
 ```bash
-# 1. Cloner tous les dépôts de La Suite dans ./src
 make clone
 
 # 2. Préparer les fichiers d'environnement locaux (.env)

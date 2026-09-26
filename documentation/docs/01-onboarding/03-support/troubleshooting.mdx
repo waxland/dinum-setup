@@ -1,5 +1,5 @@
 ---
-title: Guide de Dépannage & FAQ
+title: "Dépannage FAQ"
 description: Résolution pas à pas des erreurs fréquentes en environnement de développement local (Docker, bases de données, ports, SSH, disque).
 ---
 
@@ -106,7 +106,6 @@ Si vous souhaitez réinitialiser l'état d'une base de données PostgreSQL local
 
 ```bash
 cd src/docs
-# Arrête les conteneurs et supprime les volumes anonymes associés
 docker compose down -v
 # Relance l'amorçage avec migrations automatiques et données de démo
 make bootstrap FLUSH_ARGS='--no-input'

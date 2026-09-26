@@ -1,11 +1,10 @@
 ---
-title: "TypeCellOS / BlockNote Upstream RFC"
-sidebar_label: "RFC Overview"
+title: "RFC"
+sidebar_label: "RFC"
 description: Official proposal for standardizing remote connected data blocks and provider architecture in the BlockNote ecosystem.
 ---
 
 
-# 🐙 BlockNote Upstream RFC
 
 This document contains the official Request for Comments (RFC) proposed to [`TypeCellOS/BlockNote`](https://github.com/TypeCellOS/BlockNote) for introducing `@slasher/blocknote` (or `blocknote-slasher`) and `@slasher/sdk`.
 
@@ -20,11 +19,9 @@ This document contains the official Request for Comments (RFC) proposed to [`Typ
 | **Architecture** | 3 switchable display formats (Callout / Card / Inline Mention), WAI-ARIA popover, lossless PDF/DOCX/ODF exporters |
 | **Compatibility** | React 18 & 19, BlockNote >= 0.54.0 |
 
-```mermaid
-flowchart TD
+<Mermaid chart={`flowchart TD
     Core["@blocknote/core"] --> Ext["🌟 Slasher Extension (@slasher/blocknote)"]
     Ext --> F1["3 Switchable Display Formats"]
     Ext --> F2["WAI-ARIA Combobox Popover"]
     Ext --> F3["Lossless PDF, DOCX, ODF Exporters"]
-    Ext --> F4["Zero-Dependency Provider SDK (< 5 kB)"]
-```
+    Ext --> F4["Zero-Dependency Provider SDK (< 5 kB)"]`} />

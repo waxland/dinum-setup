@@ -1,5 +1,5 @@
 ---
-title: Sécurité du Poste Développeur
+title: "Sécurité Poste"
 description: Bonnes pratiques de sécurité, signature cryptographique des commits (SSH / GPG), hygiène des secrets et protection des données.
 ---
 
@@ -16,7 +16,6 @@ Tous les commits fusionnés sur les dépôts officiels doivent être cryptograph
 Git prend en charge nativement la signature via vos clés SSH existantes (sans nécessiter GPG) :
 
 ```bash
-# 1. Configurer Git pour utiliser SSH pour la signature
 git config --global gpg.format ssh
 
 # 2. Renseigner le chemin de votre clé publique SSH (ex: ed25519)

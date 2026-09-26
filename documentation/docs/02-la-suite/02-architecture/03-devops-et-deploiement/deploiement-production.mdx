@@ -1,5 +1,5 @@
 ---
-title: Déploiement en Production & Cloud Souverain
+title: "Déploiement Production"
 description: Infrastructure Kubernetes (K8s), charts Helm, ingress Traefik, hébergement SecNumCloud (Scaleway / OVHcloud / Outscale).
 ---
 
@@ -58,7 +58,6 @@ Les services de La Suite numérique sont déployés sur des infrastructures info
 Chaque microservice dispose de son propre chart Helm ou utilise un chart mutualisé décrivant les ressources K8s :
 
 ```yaml
-# values-production.yaml (Exemple)
 replicaCount: 4
 
 image:
