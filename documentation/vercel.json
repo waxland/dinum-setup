@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd .. && npm run packages:build && cd documentation-international && npm run build",
+  "buildCommand": "cd .. && npm run packages:build && cd documentation && npm run build",
   "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false

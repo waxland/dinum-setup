@@ -16,6 +16,7 @@
     "docs:nav": "node scripts/generate-docs-navigation.mjs",
     "dev": "node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku dev --host 0.0.0.0 --port 3001",
     "build": "node scripts/generate-docs-navigation.mjs && ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku build && pagefind --site dist --output-path dist/pagefind",
+    "docs:en:build": "npm run build",
     "preview": "ZUDOKU_DISABLE_UPDATE_CHECK=1 zudoku preview --host 0.0.0.0 --port 3001",
     "search": "pagefind --site dist --output-path dist/pagefind",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
