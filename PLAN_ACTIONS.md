@@ -8,7 +8,7 @@ Statut : **exécution en cours ; plusieurs lots corrigés, recette transversale 
 ## 0. Tableau de bord de reprise
 
 Mise à jour : **18 septembre 2026**, état du dépôt relu sur `0ec386b` (arbre propre avant cette mise à jour documentaire).
-Ce fichier est le plan de référence ; [PLAN_ACTION.md](./PLAN_ACTION.md) devient un renvoi, sans seconde checklist à synchroniser.
+Ce document est le plan d'action de référence unique pour la résolution de l'audit.
 
 **72 tâches historiques cochées sur 137 ; 65 restent ouvertes, dont certaines partiellement réalisées ou conditionnelles.** Ce décompte porte uniquement sur les identifiants `T-*` des sections 5 et 6, pas sur les checklists de recette et de reprise. Ce n'est pas un pourcentage de charge restante ni une certification de clôture des 18 constats.
 
