@@ -3,13 +3,11 @@
 from pathlib import Path
 from unittest.mock import Mock
 
-from django.contrib.auth.models import User
-from rest_framework.test import APIClient
-
 import pytest
 import yaml
-
+from django.contrib.auth.models import User
 from lasuite_sources.errors import SourceRateLimited, SourceUnavailable
+from rest_framework.test import APIClient
 
 pytestmark = pytest.mark.django_db
 
@@ -39,13 +37,13 @@ def _validate_scalar(key, val, prop_schema):
         assert isinstance(val, str), f"Field '{key}' expected str, got {type(val)}"
         if "enum" in prop_schema:
             valid_enums = [e for e in prop_schema["enum"] if e is not None]
-            assert val in valid_enums, (
-                f"Field '{key}' value '{val}' not in {valid_enums}"
-            )
+            assert (
+                val in valid_enums
+            ), f"Field '{key}' value '{val}' not in {valid_enums}"
     elif expected_type == "integer":
-        assert isinstance(val, int) and not isinstance(val, bool), (
-            f"Field '{key}' expected int"
-        )
+        assert isinstance(val, int) and not isinstance(
+            val, bool
+        ), f"Field '{key}' expected int"
     elif expected_type == "boolean":
         assert isinstance(val, bool), f"Field '{key}' expected bool"
 
