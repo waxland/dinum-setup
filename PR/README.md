@@ -70,18 +70,19 @@ flowchart TD
 
 ## 📊 3. Summary Table of Contributions
 
-| PR ID | Target Repo | Title & Scope | Status | Key Benefit |
-| :--- | :--- | :--- | :---: | :--- |
-| **[PR-0001](./PR-0001-TO-SUITENUMERIQUE-DOCS.md)** | [`suitenumerique/docs`](https://github.com/suitenumerique/docs) | Remote server & VM support (`API_ORIGIN`) | 🟢 [PR #2703](https://github.com/suitenumerique/docs/pull/2703) | Instant deployment on VM/Cloud without OIDC blocking |
-| **[PR-0002](./PR-0002-TO-SUITENUMERIQUE-DOCS.md)** | [`suitenumerique/docs`](https://github.com/suitenumerique/docs) | Sovereign packages & progressive activation | 🟡 Ready to submit | Zero in-tree pollution, granular command opt-in |
-| **[PR-0003](./PR-0003-TO-TYPECELLOS-BLOCKNOTE.md)** | [`TypeCellOS/BlockNote`](https://github.com/TypeCellOS/BlockNote) | External Data Blocks RFC & Multi-Format extension | 🟡 Ready to submit | Open source standardization, path to official ecosystem |
-| **[REF-04](./04-guide-d-arbitrage.md)** | *Internal Arbitrage* | Decision Guide & Arbitrage Matrix | Reference | Comparative analysis: In-Tree Monolith vs Decoupled Packages |
+| PR ID                                               | Target Repo                                                       | Title & Scope                                     |                             Status                              | Key Benefit                                                  |
+| :-------------------------------------------------- | :---------------------------------------------------------------- | :------------------------------------------------ | :-------------------------------------------------------------: | :----------------------------------------------------------- |
+| **[PR-0001](./PR-0001-TO-SUITENUMERIQUE-DOCS.md)**  | [`suitenumerique/docs`](https://github.com/suitenumerique/docs)   | Remote server & VM support (`API_ORIGIN`)         | 🟢 [PR #2703](https://github.com/suitenumerique/docs/pull/2703) | Instant deployment on VM/Cloud without OIDC blocking         |
+| **[PR-0002](./PR-0002-TO-SUITENUMERIQUE-DOCS.md)**  | [`suitenumerique/docs`](https://github.com/suitenumerique/docs)   | Sovereign packages & progressive activation       |                       🟡 Ready to submit                        | Zero in-tree pollution, granular command opt-in              |
+| **[PR-0003](./PR-0003-TO-TYPECELLOS-BLOCKNOTE.md)** | [`TypeCellOS/BlockNote`](https://github.com/TypeCellOS/BlockNote) | External Data Blocks RFC & Multi-Format extension |                       🟡 Ready to submit                        | Open source standardization, path to official ecosystem      |
+| **[REF-04](./04-guide-d-arbitrage.md)**             | _Internal Arbitrage_                                              | Decision Guide & Arbitrage Matrix                 |                            Reference                            | Comparative analysis: In-Tree Monolith vs Decoupled Packages |
 
 ---
 
 ## 🚀 4. Detailed PR Dossiers
 
 Access the complete ready-to-submit dossiers with exact `gh` CLI commands:
+
 - 🔗 **[PR 1: Remote Servers & Cloud VMs Support (suitenumerique/docs — PR #2703)](./PR-0001-TO-SUITENUMERIQUE-DOCS.md)**
 - 🔗 **[PR 2: Sovereign Packages Integration & Progressive Rollout (suitenumerique/docs)](./PR-0002-TO-SUITENUMERIQUE-DOCS.md)**
 - 🔗 **[PR 3: BlockNote RFC & Community Extension (TypeCellOS/BlockNote)](./PR-0003-TO-TYPECELLOS-BLOCKNOTE.md)**

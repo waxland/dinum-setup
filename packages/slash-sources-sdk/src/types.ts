@@ -3,15 +3,10 @@
  * Strict TypeScript definitions - Zero any, Zero unsafe casts.
  */
 
-export type ExternalSourceDisplayMode = 'callout' | 'card' | 'link';
+export type ExternalSourceDisplayMode = "callout" | "card" | "link";
 
 export type ProviderHealthStatus =
-  | 'healthy'
-  | 'degraded'
-  | 'cached_only'
-  | 'rate_limited'
-  | 'quota_exhausted'
-  | 'disabled';
+  "healthy" | "degraded" | "cached_only" | "rate_limited" | "quota_exhausted" | "disabled";
 
 export interface ProviderHealthInfo {
   status: ProviderHealthStatus;
@@ -23,19 +18,13 @@ export interface ProviderHealthInfo {
 }
 
 export type ExternalSourceStatus =
-  | 'valid'       // e.g., En vigueur / In force / In Kraft / Geldend
-  | 'repealed'    // e.g., Abrogé / Repealed / Außer Kraft / Vervallen
-  | 'pending'     // e.g., En cours / Pending / In Beratung / In behandeling
-  | 'archived'    // e.g., Archivé / Archived / Archiviert / Gearchiveerd
-  | 'custom';
+  | "valid" // e.g., En vigueur / In force / In Kraft / Geldend
+  | "repealed" // e.g., Abrogé / Repealed / Außer Kraft / Vervallen
+  | "pending" // e.g., En cours / Pending / In Beratung / In behandeling
+  | "archived" // e.g., Archivé / Archived / Archiviert / Gearchiveerd
+  | "custom";
 
-export type StatusColor =
-  | 'blue'
-  | 'green'
-  | 'yellow'
-  | 'red'
-  | 'purple'
-  | 'gray';
+export type StatusColor = "blue" | "green" | "yellow" | "red" | "purple" | "gray";
 
 export interface ExternalSourceMetadataField {
   key?: string;
@@ -46,7 +35,7 @@ export interface ExternalSourceMetadataField {
 
 export interface ExternalSourceEntity {
   id?: string;
-  provider?: string;               // e.g. "legifrance", "gesetze-im-internet", "overheid", "eurlex"
+  provider?: string; // e.g. "legifrance", "gesetze-im-internet", "overheid", "eurlex"
   title: string;
   subtitle?: string;
   contentHtml?: string;
@@ -55,16 +44,16 @@ export interface ExternalSourceEntity {
   summary?: string;
   url?: string;
   status?: ExternalSourceStatus | string;
-  statusLabel?: string;          // Human-readable status in current locale
+  statusLabel?: string; // Human-readable status in current locale
   statusColor?: StatusColor;
-  statusBadgeColor?: 'success' | 'warning' | 'error' | 'info' | 'neutral';
-  borderColor?: string;          // Institutional border color (e.g. #000091 for Marianne)
+  statusBadgeColor?: "success" | "warning" | "error" | "info" | "neutral";
+  borderColor?: string; // Institutional border color (e.g. #000091 for Marianne)
   displayMode: ExternalSourceDisplayMode;
   metadata?: Record<string, string | number | boolean>;
   metadataFields?: ExternalSourceMetadataField[];
   updatedAt?: string;
   verifiedAt?: string;
-  freshness?: 'live' | 'cached' | 'offline_index';
+  freshness?: "live" | "cached" | "offline_index";
   rawPayload?: Record<string, unknown> | string;
   // Legacy compatibility fields
   entityType?: SourceEntityType;
@@ -86,10 +75,10 @@ export interface ExternalSourceSuggestResult {
 
 export interface ExternalSourceProviderDefinition {
   name: string;
-  slashCommand: string;          // e.g. "law", "loi", "gesetz", "wet"
-  icon?: string;                  // e.g. "⚖️", "🏢", "📍", "🧠"
+  slashCommand: string; // e.g. "law", "loi", "gesetz", "wet"
+  icon?: string; // e.g. "⚖️", "🏢", "📍", "🧠"
   iconName?: string;
-  group?: string;                // Group header in slash menu
+  group?: string; // Group header in slash menu
   description?: string;
   placeholder?: string;
   type?: SourceEntityType;
@@ -104,22 +93,22 @@ export interface ExternalSourceProviderDefinition {
 // ============================================================================
 
 export type SourceEntityType =
-  | 'law'
-  | 'case-law'
-  | 'company'
-  | 'parliament'
-  | 'address'
-  | 'place'
-  | 'procurement'
-  | 'grant'
-  | 'statistics'
-  | 'insee'
-  | 'agent'
-  | 'cadastre'
-  | 'demarche'
-  | 'opendata'
-  | 'research'
-  | 'custom'
+  | "law"
+  | "case-law"
+  | "company"
+  | "parliament"
+  | "address"
+  | "place"
+  | "procurement"
+  | "grant"
+  | "statistics"
+  | "insee"
+  | "agent"
+  | "cadastre"
+  | "demarche"
+  | "opendata"
+  | "research"
+  | "custom"
   | string;
 
 export type DisplayMode = ExternalSourceDisplayMode;

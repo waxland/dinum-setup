@@ -15,6 +15,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=22.23.2"
+  },
   "author": "waxland",
   "license": "MIT",
   "homepage": "https://github.com/waxland/dinum-setup/tree/main/packages/slash-sources-sdk",

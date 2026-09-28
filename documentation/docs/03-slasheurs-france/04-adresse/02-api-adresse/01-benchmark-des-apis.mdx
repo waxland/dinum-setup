@@ -4,21 +4,20 @@ sidebar_label: "Benchmark APIs"
 description: "Comparatif technique entre l'API Adresse publique d'Etalab, l'instance Addok auto-hébergée, la Géoplateforme IGN et OpenStreetMap."
 ---
 
-
 Pour intégrer le géocodage et la recherche d'adresses postales dans La Suite Docs, plusieurs options techniques souveraines et ouvertes sont disponibles.
 
 ---
 
 ## 📊 Matrice Comparative des Solutions de Géocodage
 
-| Critère | 1. API Adresse BAN (`api-adresse.data.gouv.fr`) | 2. Moteur Addok Local (`etalab/addok`) | 3. Géoplateforme IGN | 4. OpenStreetMap / Nominatim |
-| :--- | :--- | :--- | :--- | :--- |
-| **Périmètre** | 50+ millions d'adresses certifiées France | Base BAN départementale ou nationale | Données géodésiques, cadastre, altimétrie | Cartographie mondiale collaborative |
-| **Certification Légale** | **Officielle de l'État (Loi 3DS)** | **Officielle de l'État (Loi 3DS)** | Officielle de l'IGN | Communautaire libre |
-| **Temps de Réponse** | ~30 à 60 ms | **~5 à 15 ms (Local)** | ~80 à 150 ms | ~200 à 500 ms |
-| **Mode Hors-Ligne** | Non (Nécessite Internet) | **100% Hors-Ligne / Intranet** | Non | Possible mais lourd |
-| **Clé d'API** | **Aucune clé requise** | Aucune clé requise | Clé Géoplateforme IGN | Soumis à politique d'usage |
-| **Format Données** | GeoJSON RFC 7946 | GeoJSON RFC 7946 | GeoJSON / WFS / OGC | JSON / XML |
+| Critère                  | 1. API Adresse BAN (`api-adresse.data.gouv.fr`) | 2. Moteur Addok Local (`etalab/addok`) | 3. Géoplateforme IGN                      | 4. OpenStreetMap / Nominatim        |
+| :----------------------- | :---------------------------------------------- | :------------------------------------- | :---------------------------------------- | :---------------------------------- |
+| **Périmètre**            | 50+ millions d'adresses certifiées France       | Base BAN départementale ou nationale   | Données géodésiques, cadastre, altimétrie | Cartographie mondiale collaborative |
+| **Certification Légale** | **Officielle de l'État (Loi 3DS)**              | **Officielle de l'État (Loi 3DS)**     | Officielle de l'IGN                       | Communautaire libre                 |
+| **Temps de Réponse**     | ~30 à 60 ms                                     | **~5 à 15 ms (Local)**                 | ~80 à 150 ms                              | ~200 à 500 ms                       |
+| **Mode Hors-Ligne**      | Non (Nécessite Internet)                        | **100% Hors-Ligne / Intranet**         | Non                                       | Possible mais lourd                 |
+| **Clé d'API**            | **Aucune clé requise**                          | Aucune clé requise                     | Clé Géoplateforme IGN                     | Soumis à politique d'usage          |
+| **Format Données**       | GeoJSON RFC 7946                                | GeoJSON RFC 7946                       | GeoJSON / WFS / OGC                       | JSON / XML                          |
 
 ---
 
@@ -38,6 +37,7 @@ Pour intégrer le géocodage et la recherche d'adresses postales dans La Suite D
     CheckConfig -->|Par défaut| PublicBAN
     CheckConfig -->|BAN_LOCAL_ENABLED=true| LocalAddok
     PublicBAN -.-> IGNPlatform
+
 `} />
 
 ---

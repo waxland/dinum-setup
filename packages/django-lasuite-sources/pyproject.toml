@@ -30,11 +30,16 @@ classifiers = [
     "Framework :: Django",
     "Framework :: Django :: 4.2",
     "Framework :: Django :: 5.0",
+    "Framework :: Django :: 5.1",
+    "Framework :: Django :: 5.2",
+    "Framework :: Django :: 6.0",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Internet :: WWW/HTTP",
 ]
 dependencies = [
@@ -60,6 +65,7 @@ test = [
     "pytest>=8.0.0",
     "pytest-django>=4.8.0",
     "fakeredis>=2.20.0",
+    "pyyaml>=6.0.0",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -100,8 +106,14 @@ select = [
     "T20",    # print statements detection
 ]
 ignore = [
-    "DJ001",  # null=True on text-based fields where appropriate
+    "BLE001",  # blind exception catching in defensive network resilience wrappers
+    "DJ001",   # null=True on text-based fields where appropriate
+    "PLC0415", # lazy import inside functions/fixtures
+    "PLR0911", # too many return statements in complex state machines
+    "PLR0912", # too many branches in complex handlers
     "PLR0913", # too many arguments in function definition
+    "PLR0915", # too many statements in complex tasks
+    "PLR0917", # too many positional arguments
 ]
 
 [tool.ruff.lint.isort]
@@ -120,4 +132,4 @@ extra-standard-library = ["typing_extensions"]
 django = ["django", "rest_framework"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["S101", "PLR2004", "T201"] # Autorise assert, magic numbers et print dans les tests
+"tests/*" = ["S101", "S105", "SLF001", "PLR2004", "T201"] # Autorise assert, fake test passwords, private helper tests, magic numbers et print dans les tests

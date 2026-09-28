@@ -70,8 +70,8 @@ export function ActionSuppression() {
         ]}
       >
         <p>
-          Êtes-vous certain de vouloir supprimer ce document collaboratif ?
-          Toutes les révisions associées seront purgées du stockage S3.
+          Êtes-vous certain de vouloir supprimer ce document collaboratif ? Toutes les révisions
+          associées seront purgées du stockage S3.
         </p>
       </modalSuppression.Component>
     </>
@@ -85,29 +85,18 @@ export function ActionSuppression() {
 
 ```html
 <!-- Bouton déclencheur -->
-<button
-  class="fr-btn fr-btn--secondary"
-  data-fr-opened="false"
-  aria-controls="fr-modal-1"
->
+<button class="fr-btn fr-btn--secondary" data-fr-opened="false" aria-controls="fr-modal-1">
   Ouvrir la modale
 </button>
 
 <!-- Structure de la modale DSFR -->
-<dialog
-  aria-labelledby="fr-modal-title-modal-1"
-  role="dialog"
-  id="fr-modal-1"
-  class="fr-modal"
->
+<dialog aria-labelledby="fr-modal-title-modal-1" role="dialog" id="fr-modal-1" class="fr-modal">
   <div class="fr-container fr-container--fluid fr-container-md">
     <div class="fr-grid-row fr-grid-row--center">
       <div class="fr-col-12 fr-col-md-8 fr-col-lg-6">
         <div class="fr-modal__body">
           <div class="fr-modal__header">
-            <button class="fr-btn--close fr-btn" aria-controls="fr-modal-1">
-              Fermer
-            </button>
+            <button class="fr-btn--close fr-btn" aria-controls="fr-modal-1">Fermer</button>
           </div>
           <div class="fr-modal__content">
             <h1 id="fr-modal-title-modal-1" class="fr-modal__title">
@@ -117,17 +106,10 @@ export function ActionSuppression() {
             <p>Contenu textuel explicatif.</p>
           </div>
           <div class="fr-modal__footer">
-            <ul
-              class="fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse"
-            >
+            <ul class="fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse">
               <li><button class="fr-btn">Confirmer</button></li>
               <li>
-                <button
-                  class="fr-btn fr-btn--secondary"
-                  aria-controls="fr-modal-1"
-                >
-                  Annuler
-                </button>
+                <button class="fr-btn fr-btn--secondary" aria-controls="fr-modal-1">Annuler</button>
               </li>
             </ul>
           </div>

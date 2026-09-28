@@ -1,0 +1,25 @@
+{
+  "version": "1.0.0",
+  "date": "2026-09-28",
+  "artifacts": {
+    "npm": [
+      {
+        "package": "@suitenumerique/slash-sources-sdk",
+        "version": "1.0.0"
+      },
+      {
+        "package": "@suitenumerique/blocknote-sources",
+        "version": "1.0.0",
+        "exports": [".", "./exporters", "./exporters/pdf", "./exporters/docx", "./exporters/odt"]
+      }
+    ],
+    "python": [
+      {
+        "package": "django-lasuite-sources",
+        "version": "1.0.0",
+        "sdist": "django_lasuite_sources-1.0.0.tar.gz",
+        "wheel": "django_lasuite_sources-1.0.0-py3-none-any.whl"
+      }
+    ]
+  }
+}

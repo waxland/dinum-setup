@@ -4,7 +4,6 @@ sidebar_label: "Spécifications Endpoints"
 description: Spécification des contrats OpenAPI, endpoints de recherche sémantique et schémas JSON du moteur Albert IA Souveraine.
 ---
 
-
 Ce document décrit le protocole d'échange entre le backend Django `django-lasuite-sources` et l'infrastructure **Albert API**.
 
 ---
@@ -14,6 +13,7 @@ Ce document décrit le protocole d'échange entre le backend Django `django-lasu
 ### `POST /v1/chat/completions` (Mode RAG Souverain)
 
 #### En-têtes HTTP Requis :
+
 ```http
 Authorization: Bearer <ALBERT_API_KEY>
 Content-Type: application/json
@@ -21,6 +21,7 @@ X-Source-Application: LaSuiteDocs-Sources
 ```
 
 #### Schéma de la Requête (Request Body) :
+
 ```json
 {
   "model": "albert-large-fr",
@@ -41,6 +42,7 @@ X-Source-Application: LaSuiteDocs-Sources
 ```
 
 #### Schéma de la Réponse (Response Body) :
+
 ```json
 {
   "id": "alb-2026-98124",
@@ -70,13 +72,15 @@ X-Source-Application: LaSuiteDocs-Sources
 
 ## 🛡️ 2. Gestion des Quotas & Circuit Breaker
 
-<Mermaid chart={`flowchart LR
+<Mermaid
+  chart={`flowchart LR
     Request["Requête /albert"] --> CircuitBreaker{"Circuit Breaker<br/>(Timeout 3.5s)"}
     CircuitBreaker -->|Nominal| LiveAPI["API Albert RAG"]
     CircuitBreaker -->|Timeout ou 5xx| FallbackMock["Mock RAG Certifié (Local)"]
     LiveAPI --> Cache[("Redis Cache TTL 24h")]
     FallbackMock --> Cache
-`} />
+`}
+/>
 
 - **Timeout strict :** 3 500 ms sur la passerelle API.
 - **Cache Redis :** 24 heures par hachage SHA-256 de la requête en minuscules et tokenisée.

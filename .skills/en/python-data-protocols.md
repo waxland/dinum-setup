@@ -31,14 +31,14 @@ This skill defines the standardized procedure for integrating, configuring, and 
 
 ### Step 1: Map Public Service Registries to Standard Protocol Libraries
 
-| Standard Protocol | Python Library | Target Public Registries & Portals | Target Slash Commands |
-|---|---|---|:---:|
-| **CKAN Open Data** | `ckanapi` | `data.gouv.fr`, `data.overheid.nl`, `open.canada.ca`, `govdata.de`, `datos.gob.es` | `/opendata`, `/dataoverheid`, `/opencanada`, `/govdata`, `/datosgob` |
-| **SDMX Statistical Data** | `pandasdmx`, `pysdmx` | `Eurostat SDMX API`, `Statistics Canada WDS`, `OECD Data Explorer`, `Destatis Genesis` | `/eurostat`, `/statcan`, `/oecd`, `/destatis` |
-| **SPARQL / Linked Data** | `SPARQLWrapper`, `rdflib` | `EUR-Lex / CELLAR`, `data.europa.eu SPARQL endpoint`, `UK Parliament Linked Data` | `/eurlex`, `/dataeuropa`, `/whoiswho` |
-| **OGC Geospatial (WFS/WMS)** | `OWSLib` | `INSPIRE European Addresses & Cadastre`, `IGN Géoplateforme`, `PDOK / Kadaster BAG` | `/eu-address`, `/eu-cadastre`, `/cadastre` |
-| **Socrata Open Data** | `sodapy` | Public open data portals using Socrata Open Data API (SODA) | `/socrata`, `/us-opendata` |
-| **OAuth2 / REST** | `httpx`, `requests` | `Légifrance (PISTE)`, `BOAMP`, `Corporations Canada`, `DIP Bundestag` | `/loi`, `/marche`, `/corporation-ca`, `/bundestag` |
+| Standard Protocol            | Python Library            | Target Public Registries & Portals                                                     |                        Target Slash Commands                         |
+| ---------------------------- | ------------------------- | -------------------------------------------------------------------------------------- | :------------------------------------------------------------------: |
+| **CKAN Open Data**           | `ckanapi`                 | `data.gouv.fr`, `data.overheid.nl`, `open.canada.ca`, `govdata.de`, `datos.gob.es`     | `/opendata`, `/dataoverheid`, `/opencanada`, `/govdata`, `/datosgob` |
+| **SDMX Statistical Data**    | `pandasdmx`, `pysdmx`     | `Eurostat SDMX API`, `Statistics Canada WDS`, `OECD Data Explorer`, `Destatis Genesis` |            `/eurostat`, `/statcan`, `/oecd`, `/destatis`             |
+| **SPARQL / Linked Data**     | `SPARQLWrapper`, `rdflib` | `EUR-Lex / CELLAR`, `data.europa.eu SPARQL endpoint`, `UK Parliament Linked Data`      |                `/eurlex`, `/dataeuropa`, `/whoiswho`                 |
+| **OGC Geospatial (WFS/WMS)** | `OWSLib`                  | `INSPIRE European Addresses & Cadastre`, `IGN Géoplateforme`, `PDOK / Kadaster BAG`    |              `/eu-address`, `/eu-cadastre`, `/cadastre`              |
+| **Socrata Open Data**        | `sodapy`                  | Public open data portals using Socrata Open Data API (SODA)                            |                      `/socrata`, `/us-opendata`                      |
+| **OAuth2 / REST**            | `httpx`, `requests`       | `Légifrance (PISTE)`, `BOAMP`, `Corporations Canada`, `DIP Bundestag`                  |          `/loi`, `/marche`, `/corporation-ca`, `/bundestag`          |
 
 ---
 

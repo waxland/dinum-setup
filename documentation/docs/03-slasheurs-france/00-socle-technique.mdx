@@ -4,8 +4,6 @@ sidebar_label: "Socle Technique"
 description: Architecture standardisée, composant BlockNote universel à 3 modes d'affichage (Callout, Carte, Lien) et proxy Django générique pour toutes les commandes slash.
 ---
 
-
-
 Pour garantir l'évolutivité, la cohérence graphique et la simplicité de maintenance de **La Suite Docs**, l'ensemble des commandes slash connectées à des sources de données externes (**`/loi`**, **`/entreprise`**, **`/assemblee`**, **`/adresse`**, etc.) reposent sur un **Socle Technique Unifié**.
 
 Inspiré de l'architecture native de **`/link-doc` (`Interlinking`)**, ce socle abstrait la complexité technique et permet de brancher n'importe quelle nouvelle API en quelques minutes avec un rendu 100% conforme au **Design System de l'État (DSFR)** et aux normes d'accessibilité **RGAA v4.1**.
@@ -32,7 +30,7 @@ Inspiré de l'architecture native de **`/link-doc` (`Interlinking`)**, ce socle 
    - 🗂️ **Format Carte (Card DSFR)** : Encart de synthèse avec grille de métadonnées clés (3 colonnes).
    - 🔗 **Format Lien / Inline (Badge & Popover)** : Pastille compacte au fil du texte avec popover de prévisualisation au survol/clic (comme `/link-doc`).
 3. **Moteur Backend Unifié (Provider Registry & Cache Redis) :**  
-   Un proxy Django générique qui délègue à des *Providers* spécialisés avec mise en cache unifiée, gestion des quotas et activation conditionnelle par Feature Flagging.
+   Un proxy Django générique qui délègue à des _Providers_ spécialisés avec mise en cache unifiée, gestion des quotas et activation conditionnelle par Feature Flagging.
 
 ---
 
@@ -62,7 +60,7 @@ Inspiré de l'architecture native de **`/link-doc` (`Interlinking`)**, ce socle 
         UnifiedEndpoint["GET /api/v1/sources/search?type=...&q=..."]
         Registry["Provider Registry (Légifrance, Pappers, claire.vite)"]
         RedisCache[("Cache Redis Partagé (TTL 24h)")]
-        
+
         SearchPalette -->|Recherche asynchrone| UnifiedEndpoint
         UnifiedEndpoint --> RedisCache
         RedisCache -.->|Miss| Registry
@@ -73,12 +71,13 @@ Inspiré de l'architecture native de **`/link-doc` (`Interlinking`)**, ce socle 
         PappersAPI["Pappers / API Entreprise"]
         ClaireAPI["Assemblée / claire.vite"]
         BANAPI["Base Adresse Nationale"]
-        
+
         Registry --> PisteAPI
         Registry --> PappersAPI
         Registry --> ClaireAPI
         Registry --> BANAPI
     end
+
 `} />
 
 ---
@@ -124,7 +123,7 @@ Inspiré de l'architecture native de **`/link-doc` (`Interlinking`)**, ce socle 
   <FeatureCard
     icon="🐍"
     title="Package Backend : django-lasuite-sources"
-    description="Application Django autonome (PyPI) fournissant le registre des 12 connecteurs et le cache Redis 24h."
+    description="Application Django autonome (PyPI) fournissant le registre des 53 connecteurs enregistrés et le cache Redis 24h."
     href="/08-slash/03-proxy-backend-et-cache"
     badge="PyPI package"
   />
@@ -137,17 +136,21 @@ Inspiré de l'architecture native de **`/link-doc` (`Interlinking`)**, ce socle 
 Pour garantir une intégration **en 1 clic** sans polluer le cœur générique de `suitenumerique/docs`, le socle souverain est packagé de manière autonome :
 
 ### 1. Package Python (`django-lasuite-sources`)
+
 ```bash
 uv add django-lasuite-sources
 pip install django-lasuite-sources
 ```
+
 - **Configuration `settings.py` :** Ajouter `"lasuite_sources"` dans `INSTALLED_APPS`.
 - **Routage `urls.py` :** `path("api/v1.0/", include("lasuite_sources.urls"))`.
 
 ### 2. Package Frontend (`@suitenumerique/blocknote-sources`)
+
 ```bash
 pnpm add @suitenumerique/blocknote-sources
 ```
+
 - **Schéma BlockNote :** `sourceBlock: SourceBlock()` importé depuis `@suitenumerique/blocknote-sources`.
 - **Menu Slash :** `getSourceReactSlashMenuItems(editor, t, 'Sources Souveraines')`.
 

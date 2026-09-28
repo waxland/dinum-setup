@@ -173,25 +173,22 @@ dinum-setup/
 
 ## 🧭 3. Responsibilities & Data Flows Across Pillars
 
-| Pillar | Directory | Core Role & Function | Technology Stack | Entry Points & Commands |
-| :--- | :--- | :--- | :--- | :--- |
-| **1. Documentation** | `documentation/` | Reference portal, onboarding, API specifications, and PR dossiers. | Zudoku 0.86, Vite SSR, React 19, MDX | `npm run docs:dev` (Port 3000)<br/>`npm run docs:build` |
-| **2. Packages** | `packages/` | Reusable sovereign connectors, BlockNote CustomBlock, and universal SDK. | Django 5, DRF, BlockNote 0.54, TypeScript | `npm run packages:build`<br/>`npm run packages:test` |
-| **3. Demonstrator** | `demo/` | Isolated web app to test BlockNote editor and slash commands live. | Vite, React 19, `@suitenumerique/*` | `npm run demo:dev` (Port 5173)<br/>`npm run demo:build` |
-| **4. La Suite (Clones)**| `LaSuite/` | Workspace to compile, modify, and contribute to upstream state applications. | Docker Compose, Django, Next.js, Sails | `make clone`<br/>`make dev`<br/>`make status` |
+| Pillar                   | Directory        | Core Role & Function                                                         | Technology Stack                          | Entry Points & Commands                                 |
+| :----------------------- | :--------------- | :--------------------------------------------------------------------------- | :---------------------------------------- | :------------------------------------------------------ |
+| **1. Documentation**     | `documentation/` | Reference portal, onboarding, API specifications, and PR dossiers.           | Zudoku 0.86, Vite SSR, React 19, MDX      | `npm run docs:dev` (Port 3000)<br/>`npm run docs:build` |
+| **2. Packages**          | `packages/`      | Reusable sovereign connectors, BlockNote CustomBlock, and universal SDK.     | Django 5, DRF, BlockNote 0.54, TypeScript | `npm run packages:build`<br/>`npm run packages:test`    |
+| **3. Demonstrator**      | `demo/`          | Isolated web app to test BlockNote editor and slash commands live.           | Vite, React 19, `@suitenumerique/*`       | `npm run demo:dev` (Port 5173)<br/>`npm run demo:build` |
+| **4. La Suite (Clones)** | `LaSuite/`       | Workspace to compile, modify, and contribute to upstream state applications. | Docker Compose, Django, Next.js, Sails    | `make clone`<br/>`make dev`<br/>`make status`           |
 
 ---
 
 ## 🛠️ 4. Root Command Matrix (Makefile & npm)
 
 ### 📦 Monorepo npm Scripts (`package.json`)
+
 ```json
 {
-  "workspaces": [
-    "packages/*",
-    "documentation",
-    "demo"
-  ],
+  "workspaces": ["packages/*", "documentation", "demo"],
   "scripts": {
     "dev": "npm run docs:dev",
     "build": "npm run packages:build && npm --prefix documentation run build",
@@ -209,10 +206,11 @@ dinum-setup/
 ```
 
 ### ⚙️ Key `Makefile` Targets
-* `make clone`: Clones official upstream repositories into `./LaSuite/`.
-* `make dev`: Starts Docker services for cloned applications in `LaSuite/`.
-* `make docs-dev`: Launches Zudoku documentation server on `http://localhost:3000`.
-* `make docs-build`: Compiles packages and generates static SSR pre-rendered bundle in `documentation/dist/`.
-* `make demo-dev`: Launches standalone web demonstrator on `http://localhost:5173`.
-* `make packages-test`: Executes unit and RGAA compliance test suites.
-* `make packages-build`: Builds `.mjs`, `.js` bundles and `.d.ts` declaration files.
+
+- `make clone`: Clones official upstream repositories into `./LaSuite/`.
+- `make dev`: Starts Docker services for cloned applications in `LaSuite/`.
+- `make docs-dev`: Launches Zudoku documentation server on `http://localhost:3000`.
+- `make docs-build`: Compiles packages and generates static SSR pre-rendered bundle in `documentation/dist/`.
+- `make demo-dev`: Launches standalone web demonstrator on `http://localhost:5173`.
+- `make packages-test`: Executes unit and RGAA compliance test suites.
+- `make packages-build`: Builds `.mjs`, `.js` bundles and `.d.ts` declaration files.

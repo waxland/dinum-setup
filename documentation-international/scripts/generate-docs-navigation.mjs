@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { execSync } from "node:child_process";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -90,42 +91,22 @@ function getDefaultIcon(name, depth) {
 
   if (depth === 0) {
     if (lower === "fr") return "flag";
-    if (lower === "en" || lower === "de" || lower === "nl" || lower === "es")
-      return "globe";
+    if (lower === "en" || lower === "de" || lower === "nl" || lower === "es") return "globe";
     if (lower.includes("accueil") || lower.includes("home")) return "home";
-    if (lower.includes("onboarding") || lower.includes("demarrage"))
-      return "compass";
+    if (lower.includes("onboarding") || lower.includes("demarrage")) return "compass";
     if (lower.includes("archi")) return "layers";
     if (lower.includes("projet") || lower.includes("project")) return "boxes";
-    if (
-      lower.includes("design") ||
-      lower.includes("dsfr") ||
-      lower.includes("ui")
-    )
+    if (lower.includes("design") || lower.includes("dsfr") || lower.includes("ui"))
       return "palette";
-    if (
-      lower.includes("tutoriel") ||
-      lower.includes("tutorial") ||
-      lower.includes("recette")
-    )
+    if (lower.includes("tutoriel") || lower.includes("tutorial") || lower.includes("recette"))
       return "sparkles";
-    if (
-      lower.includes("skill") ||
-      lower.includes("agent") ||
-      lower.includes("competence")
-    )
+    if (lower.includes("skill") || lower.includes("agent") || lower.includes("competence"))
       return "bot";
-    if (lower.includes("slash") || lower.includes("commande"))
-      return "terminal";
-    if (
-      lower.includes("ressource") ||
-      lower.includes("roadmap") ||
-      lower.includes("communaute")
-    )
+    if (lower.includes("slash") || lower.includes("commande")) return "terminal";
+    if (lower.includes("ressource") || lower.includes("roadmap") || lower.includes("communaute"))
       return "map";
     if (lower.includes("guide") || lower.includes("doc")) return "book-open";
-    if (lower.includes("lien") || lower.includes("link"))
-      return "external-link";
+    if (lower.includes("lien") || lower.includes("link")) return "external-link";
   }
 
   // Depth > 0 (Sub-categories)
@@ -134,69 +115,34 @@ function getDefaultIcon(name, depth) {
   if (lower.includes("implementation")) return "terminal";
   if (lower.includes("fondation")) return "sliders";
   if (lower.includes("composant")) return "box";
-  if (lower.includes("layout") || lower.includes("structure"))
-    return "layout-grid";
+  if (lower.includes("layout") || lower.includes("structure")) return "layout-grid";
   if (lower.includes("demarrage")) return "rocket";
-  if (lower.includes("workflow") || lower.includes("contribution"))
-    return "git-pull-request";
+  if (lower.includes("workflow") || lower.includes("contribution")) return "git-pull-request";
   if (lower.includes("support")) return "life-buoy";
-  if (lower.includes("securite") || lower.includes("identite"))
-    return "shield-check";
-  if (lower.includes("donnees") || lower.includes("temps-reel"))
-    return "database";
+  if (lower.includes("securite") || lower.includes("identite")) return "shield-check";
+  if (lower.includes("donnees") || lower.includes("temps-reel")) return "database";
   if (lower.includes("devops") || lower.includes("deploiement")) return "cloud";
-  if (
-    lower.includes("socle") ||
-    lower.includes("standard") ||
-    lower.includes("technique")
-  )
+  if (lower.includes("socle") || lower.includes("standard") || lower.includes("technique"))
     return "layers";
-  if (
-    lower.includes("loi") ||
-    lower.includes("juridique") ||
-    lower.includes("legal")
-  )
+  if (lower.includes("loi") || lower.includes("juridique") || lower.includes("legal"))
     return "scale";
-  if (
-    lower.includes("pappers") ||
-    lower.includes("entreprise") ||
-    lower.includes("societe")
-  )
+  if (lower.includes("pappers") || lower.includes("entreprise") || lower.includes("societe"))
     return "building-2";
-  if (
-    lower.includes("assemblee") ||
-    lower.includes("parlement") ||
-    lower.includes("claire")
-  )
+  if (lower.includes("assemblee") || lower.includes("parlement") || lower.includes("claire"))
     return "landmark";
-  if (
-    lower.includes("adresse") ||
-    lower.includes("ban") ||
-    lower.includes("geo")
-  )
-    return "map-pin";
-  if (lower.includes("proposition") || lower.includes("idee"))
-    return "lightbulb";
+  if (lower.includes("adresse") || lower.includes("ban") || lower.includes("geo")) return "map-pin";
+  if (lower.includes("proposition") || lower.includes("idee")) return "lightbulb";
   if (lower.includes("remplir") || lower.includes("auto")) return "sparkles";
-  if (lower.includes("document") || lower.includes("contenu"))
-    return "file-text";
-  if (lower.includes("communication") || lower.includes("echange"))
-    return "message-square";
-  if (lower.includes("gestion") || lower.includes("utilisateur"))
-    return "users";
+  if (lower.includes("document") || lower.includes("contenu")) return "file-text";
+  if (lower.includes("communication") || lower.includes("echange")) return "message-square";
+  if (lower.includes("gestion") || lower.includes("utilisateur")) return "users";
   if (lower.includes("developpement")) return "code";
-  if (lower.includes("integration") || lower.includes("test"))
-    return "check-circle";
+  if (lower.includes("integration") || lower.includes("test")) return "check-circle";
   if (lower.includes("serveur") || lower.includes("server")) return "server";
-  if (lower.includes("pr-") || lower.includes("pull-request"))
-    return "git-pull-request";
+  if (lower.includes("pr-") || lower.includes("pull-request")) return "git-pull-request";
 
   if (lower.includes("backend") || lower.includes("django")) return "server";
-  if (
-    lower.includes("frontend") ||
-    lower.includes("blocknote") ||
-    lower.includes("react")
-  )
+  if (lower.includes("frontend") || lower.includes("blocknote") || lower.includes("react"))
     return "monitor";
   if (lower.includes("components")) return "box";
   if (lower.includes("sdk") || lower.includes("api")) return "code";
@@ -216,8 +162,7 @@ function scanDir(dir, baseDir, depth = 0) {
   const validEntries = entries.filter((e) => {
     if (e.name.startsWith("_") || e.name.startsWith(".")) return false;
     if (e.name === "README.md") return false;
-    if (e.isFile() && !e.name.endsWith(".md") && !e.name.endsWith(".mdx"))
-      return false;
+    if (e.isFile() && !e.name.endsWith(".md") && !e.name.endsWith(".mdx")) return false;
     return true;
   });
 
@@ -256,10 +201,7 @@ function scanDir(dir, baseDir, depth = 0) {
 
         items.push(categoryObj);
       }
-    } else if (
-      entry.isFile() &&
-      (entry.name.endsWith(".md") || entry.name.endsWith(".mdx"))
-    ) {
+    } else if (entry.isFile() && (entry.name.endsWith(".md") || entry.name.endsWith(".mdx"))) {
       if (entry.name.startsWith("index.")) {
         if (depth === 0) {
           items.push({
@@ -665,9 +607,12 @@ export const docsRedirects: ZudokuConfig["redirects"] = ${JSON.stringify(redirec
 
   fs.mkdirSync(path.dirname(config.outputFile), { recursive: true });
   fs.writeFileSync(config.outputFile, content, "utf-8");
-  console.log(
-    `✓ Successfully updated ${path.relative(ROOT_DIR, config.outputFile)}`,
-  );
+  try {
+    execSync(`npx prettier --write "${config.outputFile}"`, { stdio: "ignore" });
+  } catch {
+    // Fallback if prettier is not available
+  }
+  console.log(`✓ Successfully updated ${path.relative(ROOT_DIR, config.outputFile)}`);
 }
 
 // Main execution

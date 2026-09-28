@@ -32,7 +32,16 @@ export const BlockNoteSlashPlayground: React.FC = () => {
           colorScheme: "light",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", fontSize: "12px", color: "#666666" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
+            fontSize: "12px",
+            color: "#666666",
+          }}
+        >
           <span>Initializing interactive BlockNote.js editor...</span>
         </div>
       </div>
@@ -161,7 +170,7 @@ const BlockNoteSlashEditorInner: React.FC = () => {
           editor.insertBlocks(
             [createEmptySourceBlock("law")],
             editor.getTextCursorPosition().block,
-            "after"
+            "after",
           );
         },
         aliases: ["loi", "law", "legifrance", "code", "article", "decret"],
@@ -175,7 +184,7 @@ const BlockNoteSlashEditorInner: React.FC = () => {
           editor.insertBlocks(
             [createEmptySourceBlock("company")],
             editor.getTextCursorPosition().block,
-            "after"
+            "after",
           );
         },
         aliases: ["entreprise", "pappers", "siren", "siret", "societe", "kbis"],
@@ -189,12 +198,14 @@ const BlockNoteSlashEditorInner: React.FC = () => {
           editor.insertBlocks(
             [createEmptySourceBlock("parliament")],
             editor.getTextCursorPosition().block,
-            "after"
+            "after",
           );
         },
         aliases: ["assemblee", "assemble", "an", "amendement", "depute"],
         group: "Sovereign & Official Sources",
-        icon: <SourceIcon type="parliament" size={16} color="var(--blue-france-sun-113, #000091)" />,
+        icon: (
+          <SourceIcon type="parliament" size={16} color="var(--blue-france-sun-113, #000091)" />
+        ),
         subtext: "Track a parliamentary amendment or legislative bill",
       },
       {
@@ -203,7 +214,7 @@ const BlockNoteSlashEditorInner: React.FC = () => {
           editor.insertBlocks(
             [createEmptySourceBlock("address")],
             editor.getTextCursorPosition().block,
-            "after"
+            "after",
           );
         },
         aliases: ["adresse", "address", "ban", "geo", "rue"],
@@ -217,12 +228,14 @@ const BlockNoteSlashEditorInner: React.FC = () => {
           editor.insertBlocks(
             [createEmptySourceBlock("procurement")],
             editor.getTextCursorPosition().block,
-            "after"
+            "after",
           );
         },
         aliases: ["marche", "boamp", "achat", "dce", "dae"],
         group: "Sovereign & Official Sources",
-        icon: <SourceIcon type="procurement" size={16} color="var(--blue-france-sun-113, #000091)" />,
+        icon: (
+          <SourceIcon type="procurement" size={16} color="var(--blue-france-sun-113, #000091)" />
+        ),
         subtext: "Insert an official public procurement notice (BOAMP)",
       },
       {
@@ -231,7 +244,7 @@ const BlockNoteSlashEditorInner: React.FC = () => {
           editor.insertBlocks(
             [createEmptySourceBlock("grant")],
             editor.getTextCursorPosition().block,
-            "after"
+            "after",
           );
         },
         aliases: ["subvention", "aides", "fonds-vert", "detr", "dsil", "anct"],
@@ -245,7 +258,7 @@ const BlockNoteSlashEditorInner: React.FC = () => {
           editor.insertBlocks(
             [createEmptySourceBlock("insee")],
             editor.getTextCursorPosition().block,
-            "after"
+            "after",
           );
         },
         aliases: ["insee", "stats", "population", "territoire"],
@@ -259,7 +272,7 @@ const BlockNoteSlashEditorInner: React.FC = () => {
           editor.insertBlocks(
             [createEmptySourceBlock("agent")],
             editor.getTextCursorPosition().block,
-            "after"
+            "after",
           );
         },
         aliases: ["agent", "annuaire", "service-public", "contact"],
@@ -273,7 +286,7 @@ const BlockNoteSlashEditorInner: React.FC = () => {
           editor.insertBlocks(
             [createEmptySourceBlock("cadastre")],
             editor.getTextCursorPosition().block,
-            "after"
+            "after",
           );
         },
         aliases: ["cadastre", "parcelle", "foncier", "dgfip"],
@@ -287,7 +300,7 @@ const BlockNoteSlashEditorInner: React.FC = () => {
           editor.insertBlocks(
             [createEmptySourceBlock("demarche")],
             editor.getTextCursorPosition().block,
-            "after"
+            "after",
           );
         },
         aliases: ["demarche", "formulaire", "usager", "procedure"],
@@ -301,7 +314,7 @@ const BlockNoteSlashEditorInner: React.FC = () => {
           editor.insertBlocks(
             [createEmptySourceBlock("opendata")],
             editor.getTextCursorPosition().block,
-            "after"
+            "after",
           );
         },
         aliases: ["opendata", "dataset", "datagouv", "donnees"],
@@ -315,7 +328,7 @@ const BlockNoteSlashEditorInner: React.FC = () => {
           editor.insertBlocks(
             [createEmptySourceBlock("custom")],
             editor.getTextCursorPosition().block,
-            "after"
+            "after",
           );
         },
         aliases: ["albert", "ia", "rag", "etalab", "service-public"],
@@ -339,7 +352,9 @@ const BlockNoteSlashEditorInner: React.FC = () => {
     return allItems.map((item) => ({
       title: item.title,
       subtext: `${item.subtitle || ""} (${item.entityType})`,
-      icon: <SourceIcon type={item.entityType} size={15} color="var(--blue-france-sun-113, #000091)" />,
+      icon: (
+        <SourceIcon type={item.entityType} size={15} color="var(--blue-france-sun-113, #000091)" />
+      ),
       onItemClick: () => {
         editor.insertInlineContent([
           {
@@ -367,8 +382,7 @@ const BlockNoteSlashEditorInner: React.FC = () => {
       return;
     }
     const currentBlock =
-      editor.getTextCursorPosition()?.block ||
-      editor.document[editor.document.length - 1];
+      editor.getTextCursorPosition()?.block || editor.document[editor.document.length - 1];
     editor.insertBlocks([createEmptySourceBlock(type)], currentBlock, "after");
   };
 
@@ -511,20 +525,14 @@ const BlockNoteSlashEditorInner: React.FC = () => {
           color: "#1e1e1e",
         }}
       >
-        <BlockNoteView
-          editor={editor}
-          theme="light"
-          slashMenu={false}
-        >
+        <BlockNoteView editor={editor} theme="light" slashMenu={false}>
           <SuggestionMenuController
             triggerCharacter={"/"}
             getItems={async (query) =>
               customSlashMenuItems.filter(
                 (item) =>
                   item.title.toLowerCase().includes(query.toLowerCase()) ||
-                  item.aliases?.some((a) =>
-                    a.toLowerCase().includes(query.toLowerCase())
-                  )
+                  item.aliases?.some((a) => a.toLowerCase().includes(query.toLowerCase())),
               )
             }
           />
@@ -534,7 +542,7 @@ const BlockNoteSlashEditorInner: React.FC = () => {
               customMentionMenuItems.filter(
                 (item) =>
                   item.title.toLowerCase().includes(query.toLowerCase()) ||
-                  item.subtext?.toLowerCase().includes(query.toLowerCase())
+                  item.subtext?.toLowerCase().includes(query.toLowerCase()),
               )
             }
           />
@@ -554,7 +562,10 @@ const BlockNoteSlashEditorInner: React.FC = () => {
           justifyContent: "space-between",
         }}
       >
-        <span>💡 Astuce : Tapez <strong>/</strong> n'importe où dans le texte pour ouvrir le menu d'autocomplétion.</span>
+        <span>
+          💡 Astuce : Tapez <strong>/</strong> n'importe où dans le texte pour ouvrir le menu
+          d'autocomplétion.
+        </span>
         <span>Moteur BlockNote 0.54 • Design System de l'État (DSFR)</span>
       </div>
     </div>

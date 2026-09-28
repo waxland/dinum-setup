@@ -88,7 +88,10 @@ Dans le frontend Next.js, déclarez la nouvelle commande dans la liste d'autocom
 
 ```tsx
 // src/frontend/apps/impress/.../useSlashMenuItems.ts
-export function getAddressSlashMenuItem(editor: BlockNoteEditor, openSearchPopover: (type: string) => void) {
+export function getAddressSlashMenuItem(
+  editor: BlockNoteEditor,
+  openSearchPopover: (type: string) => void,
+) {
   return {
     key: "slash-address",
     name: "Adresse BAN (Base Adresse Nationale)",
@@ -106,6 +109,7 @@ export function getAddressSlashMenuItem(editor: BlockNoteEditor, openSearchPopov
 ## 🎉 Résultat Immédiat
 
 L'agent public peut dès lors :
+
 1. Taper `/adresse` dans son document ;
 2. Rechercher n'importe quelle adresse française dans le popover inline ;
 3. Choisir le format d'affichage souhaité : **Callout** (mise en avant de l'adresse), **Carte** (avec code INSEE et coordonnées) ou **Lien** (badge inline cliquable).

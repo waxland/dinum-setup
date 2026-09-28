@@ -64,7 +64,7 @@ def test_albert_rag_search_authenticated(api_client, user):
     """Vérifie que la recherche RAG Albert retourne des synthèses avec citations."""
     api_client.force_login(user)
     response = api_client.get("/api/v1.0/sources/search/?type=custom&q=rgaa")
-    
+
     assert response.status_code == 200
     data = response.json()
     assert data["type"] == "custom"

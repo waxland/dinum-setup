@@ -30,7 +30,7 @@ description: Présentation détaillée, architecture, roadmap et fonctionnalité
 ## 🏗️ Architecture & Stack Technique
 
 <Mermaid
-chart={`graph LR
+  chart={`graph LR
     UserA[Client WebRTC] <-->|Audio / Vidéo WebRTC| SFU[LiveKit SFU Server]
     UserB[Client WebRTC] <-->|Audio / Vidéo WebRTC| SFU
     UserA <-->|HTTP / WS Tokens| AppBackend[Backend Meet Django / Node]

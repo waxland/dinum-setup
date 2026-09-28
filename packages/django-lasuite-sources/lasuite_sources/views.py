@@ -1,5 +1,7 @@
 """API views for sovereign source search, autocomplete, and details."""
 
+import uuid
+
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -11,21 +13,41 @@ from lasuite_sources.registry import source_registry
 from lasuite_sources.serializers import SearchParameters, SuggestParameters
 
 MAX_SOURCE_ID_LENGTH = 256
+MAX_SOURCE_TYPE_LENGTH = 100
 
 
 class SourceAPIView(APIView):
     """Expose controlled errors, never provider exception bodies."""
 
+    def initial(self, request, *args, **kwargs):
+        super().initial(request, *args, **kwargs)
+        request.correlation_id = (
+            request.headers.get("X-Correlation-ID")
+            or request.headers.get("X-Request-ID")
+            or uuid.uuid4().hex[:12]
+        )
+
+    def finalize_response(self, request, response, *args, **kwargs):
+        response = super().finalize_response(request, response, *args, **kwargs)
+        if hasattr(request, "correlation_id"):
+            response.headers["X-Correlation-ID"] = request.correlation_id
+        return response
+
     def handle_exception(self, exc):
         if isinstance(exc, SourceRateLimited):
-            return Response(
+            response = Response(
                 {"code": "rate_limited"}, status=429, headers={"Retry-After": "60"}
             )
-        if isinstance(exc, SourceUnavailable):
-            return Response({"code": "provider_unavailable"}, status=503)
-        if isinstance(exc, RedisError):
-            return Response({"code": "quota_service_unavailable"}, status=503)
-        return super().handle_exception(exc)
+        elif isinstance(exc, SourceUnavailable):
+            response = Response({"code": "provider_unavailable"}, status=503)
+        elif isinstance(exc, RedisError):
+            response = Response({"code": "quota_service_unavailable"}, status=503)
+        else:
+            response = super().handle_exception(exc)
+
+        if hasattr(self.request, "correlation_id"):
+            response.headers["X-Correlation-ID"] = self.request.correlation_id
+        return response
 
 
 class SourceSearchView(SourceAPIView):
@@ -46,11 +68,13 @@ class SourceSearchView(SourceAPIView):
             return Response({"code": "provider_unavailable"}, status=503)
 
         user_id = str(request.user.id) if request.user.is_authenticated else None
+        correlation_id = getattr(request, "correlation_id", None)
         results = source_registry.search_with_cache(
             source_type=source_type,  # type: ignore[arg-type]
             query=query,
             limit=limit,
             user_id=user_id,
+            correlation_id=correlation_id,
         )
         health = source_registry.provider_health(source_type)
         return Response(
@@ -83,11 +107,13 @@ class SourceSuggestView(SourceAPIView):
             return Response({"code": "provider_unavailable"}, status=503)
 
         user_id = str(request.user.id) if request.user.is_authenticated else None
+        correlation_id = getattr(request, "correlation_id", None)
         suggestions = source_registry.suggest_with_cache(
             source_type=source_type,  # type: ignore[arg-type]
             query=query,
             limit=limit,
             user_id=user_id,
+            correlation_id=correlation_id,
         )
         health = source_registry.provider_health(source_type)
         return Response(
@@ -110,6 +136,15 @@ class SourceDetailView(SourceAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, source_type: str, source_id: str):
+        if len(source_type) > MAX_SOURCE_TYPE_LENGTH or not source_type.strip():
+            return Response(
+                {"code": "invalid_source_type"}, status=status.HTTP_400_BAD_REQUEST
+            )
+        if len(source_id) > MAX_SOURCE_ID_LENGTH or not source_id.strip():
+            return Response(
+                {"code": "invalid_source_id"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
         provider = source_registry.get_provider(source_type)  # type: ignore[arg-type]
         if not provider:
             return Response(
@@ -117,10 +152,12 @@ class SourceDetailView(SourceAPIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        if len(source_id) > MAX_SOURCE_ID_LENGTH:
-            return Response({"code": "invalid_source_id"}, status=400)
+        correlation_id = getattr(request, "correlation_id", None)
         detail = source_registry.detail_with_cache(
-            source_type, source_id, str(request.user.pk)
+            source_type,
+            source_id,
+            str(request.user.pk),
+            correlation_id=correlation_id,
         )
         if not detail:
             return Response(

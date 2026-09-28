@@ -4,22 +4,24 @@ sidebar_label: "Fondations Cadre"
 description: "Cycle de vie d'un projet de loi (dépôt, commission, séance, CMP), typologie des amendements et organisation des groupes politiques."
 ---
 
-
 L'adoption d'un texte de loi en France suit une procédure parlementaire codifiée par la Constitution de 1958 et les règlements de l'Assemblée nationale et du Sénat.
 
 ---
 
 ## 🏛️ Le Cycle de la Navette Parlementaire
 
-<Mermaid chart={`flowchart LR
+<Mermaid
+  chart={`flowchart LR
     Depot["1. Dépôt (Projet ou Proposition)"] --> Comm["2. Examen en Commission"]
     Comm --> Seance["3. Débat & Vote en Séance Publique"]
     Seance --> Navette["4. Transmission à l'autre Chambre (Navette)"]
     Navette --> CMP["5. Commission Mixte Paritaire (CMP)"]
     CMP --> Promulgation["6. Promulgation & Parution au JORF"]
-`} />
+`}
+/>
 
 ### Projet de Loi (PJL) vs Proposition de Loi (PPL)
+
 - **Projet de Loi (PJL) :** Émane du Gouvernement (Premier ministre). Il est obligatoirement soumis pour avis au **Conseil d'État**, adopté en **Conseil des ministres**, puis déposé sur le bureau de l'une des deux assemblées.
 - **Proposition de Loi (PPL) :** Émane d'un ou plusieurs parlementaires (députés ou sénateurs).
 
@@ -41,6 +43,7 @@ Tous les amendements déposés ne sont pas soumis au débat dans l'hémicycle. I
 Un amendement est une modification proposée au texte en discussion (suppression, substitution ou ajout d'un article).
 
 ### Les différents sorts d'un amendement :
+
 - **`Adopté`** : Voté à la majorité des suffrages exprimés dans l'hémicycle ; intégré au texte.
 - **`Rejeté`** : Repoussé lors du vote.
 - **`Retiré`** : Retiré par son auteur avant le vote (souvent après engagement ou explication du ministre).
@@ -52,6 +55,7 @@ Un amendement est une modification proposée au texte en discussion (suppression
 ## 👥 Avis du Gouvernement & Rôle du Cabinet
 
 Sur chaque amendement déposé, le ministre en charge du texte doit exprimer la position officielle du Gouvernement :
+
 - **`Favorable`** : Le Gouvernement soutient l'amendement.
 - **`Défavorable`** : Le Gouvernement s'oppose à l'amendement (argumentation technique ou budgétaire).
 - **`Sagesse`** : Le Gouvernement s'en remet à l'appréciation souveraine de l'Assemblée.

@@ -11,11 +11,13 @@ description: Schémas OpenAPI, filtres géographiques et formats JSON de l'API A
 ### `GET https://aides-territoires.beta.gouv.fr/api/aides/`
 
 #### Paramètres :
+
 - `text` : Mots-clés de recherche.
 - `perimeter` : Code INSEE de la commune ou département ciblé.
 - `targeted_audiences` : `commune`, `epci`, `department`, `region`.
 
 #### Réponse JSON :
+
 ```json
 {
   "count": 1,

@@ -52,21 +52,12 @@ import { DsfrHead } from "@codegouvfr/react-dsfr/next-appdir/DsfrHead";
 import { DsfrProvider } from "@codegouvfr/react-dsfr/next-appdir/DsfrProvider";
 import { getHtmlAttributes } from "@codegouvfr/react-dsfr/next-appdir/getHtmlAttributes";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html {...getHtmlAttributes({ defaultColorScheme: "system" })}>
       <head>
         <DsfrHead
-          preloadFonts={[
-            "Marianne-Light",
-            "Marianne-Regular",
-            "Marianne-Medium",
-            "Marianne-Bold",
-          ]}
+          preloadFonts={["Marianne-Light", "Marianne-Regular", "Marianne-Medium", "Marianne-Bold"]}
         />
       </head>
       <body>

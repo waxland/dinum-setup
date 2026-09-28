@@ -1,4 +1,3 @@
-
 export interface DocHeaderSummaryProps {
   readingTime?: string;
   level?: "Débutant" | "Intermédiaire" | "Avancé" | "Beginner" | "Intermediate" | "Advanced";

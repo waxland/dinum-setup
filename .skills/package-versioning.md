@@ -34,6 +34,7 @@ This skill defines the standardized procedure for managing versions, compiling d
 ### Step 1: Determine the Semantic Version Bump Type
 
 Follow **SemVer 2.0.0** (`MAJOR.MINOR.PATCH`):
+
 - **`PATCH` (`v1.0.0` $\to$ `v1.0.1`):** Bug fixes, internal refactoring, anti-SSRF security patches, zero contract changes.
 - **`MINOR` (`v1.0.0` $\to$ `v1.1.0`):** New sovereign API connectors, new export adapters, non-breaking schema additions.
 - **`MAJOR` (`v1.0.0` $\to$ `v2.0.0`):** Breaking changes to `SourceEntityProps` DTO, API signature changes, dropping runtime support.
@@ -41,6 +42,7 @@ Follow **SemVer 2.0.0** (`MAJOR.MINOR.PATCH`):
 ### Step 2: Synchronize Version Strings Across Manifests
 
 Update the version field in all relevant files:
+
 ```bash
 # Example for bumping to 1.0.1
 # packages/slash-sources-sdk/package.json -> "version": "1.0.1"

@@ -4,7 +4,6 @@ sidebar_label: "Spécifications Endpoints"
 description: Schémas JSON, endpoints REST OpenAPI et modèles de données de l'API BOAMP DILA.
 ---
 
-
 ---
 
 ## 📡 1. Endpoints de Recherche BOAMP
@@ -12,11 +11,13 @@ description: Schémas JSON, endpoints REST OpenAPI et modèles de données de l'
 ### `GET /api/v1/boamp/avis/search`
 
 #### Paramètres de Requête :
+
 - `q` : Chaîne de recherche (mots-clés, numéro AAPC).
 - `famille` : `FPA` (Formulaire Standard), `MAPA` (Procédure Adaptée).
 - `limit` : Nombre de résultats (défaut : 10).
 
 #### Exemple de Réponse JSON :
+
 ```json
 {
   "total": 1,

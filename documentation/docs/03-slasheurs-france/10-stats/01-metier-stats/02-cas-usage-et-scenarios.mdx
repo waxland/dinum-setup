@@ -4,17 +4,18 @@ sidebar_label: "Cas Usage"
 description: Parcours d'agents territoriaux, chargés d'études d'urbanisme et décideurs publics exploitant les statistiques INSEE dans Docs.
 ---
 
-
 ---
 
 ## 🎯 1. Parcours Types d'Utilisation
 
 ### 🏙️ Scénario A : Diagnostic de Plan Local d'Urbanisme (PLU)
+
 - **Contexte :** Un urbaniste rédige le rapport de présentation d'un PLU intercommunal.
 - **Action :** Il saisit `/stats Rennes` ou `/insee 35238`.
 - **Résultat :** Insertion immédiate de la fiche statistique officielle (225 000 hab, densité, évolution sur 5 ans).
 
 ### 💶 Scénario B : Justification d'une Demande de Dotation (DGS)
+
 - **Contexte :** Un directeur général des services prépare la demande de dotation de solidarité rurale (DSR).
 - **Action :** Saisie de `/stats 23096` (Guéret).
 - **Résultat :** Insertion de la carte de revenus médians et du taux d'activité certifiés.
@@ -39,4 +40,5 @@ description: Parcours d'agents territoriaux, chargés d'études d'urbanisme et d
     Popover-->>Agent: Suggestion avec population et code INSEE
     Agent->>Popover: Validation (Entrée)
     Popover->>Editor: Insertion du SourceBlock (Format Carte)
+
 `} />

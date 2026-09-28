@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * Visual Color Palette for DSFR documentation.
@@ -14,9 +14,7 @@ export function ColorPalettePreview() {
           <div className="p-4 rounded-lg bg-[#000091] text-white shadow-xs">
             <div className="text-sm font-bold">Bleu France</div>
             <div className="text-xs opacity-80 font-mono mt-1">#000091</div>
-            <div className="text-[11px] opacity-70 mt-2">
-              --blue-france-sun-113
-            </div>
+            <div className="text-[11px] opacity-70 mt-2">--blue-france-sun-113</div>
           </div>
           <div className="p-4 rounded-lg bg-[#f5f5fe] border border-blue-200 text-[#000091] shadow-xs">
             <div className="text-sm font-bold">Bleu France 975</div>
@@ -26,9 +24,7 @@ export function ColorPalettePreview() {
           <div className="p-4 rounded-lg bg-[#E1000F] text-white shadow-xs">
             <div className="text-sm font-bold">Rouge Marianne</div>
             <div className="text-xs opacity-80 font-mono mt-1">#E1000F</div>
-            <div className="text-[11px] opacity-70 mt-2">
-              --red-marianne-425
-            </div>
+            <div className="text-[11px] opacity-70 mt-2">--red-marianne-425</div>
           </div>
         </div>
       </div>
@@ -67,25 +63,19 @@ export function TypographySpecimen() {
   return (
     <div className="not-prose my-6 p-6 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-4 font-marianne">
       <div className="space-y-1 pb-4 border-b border-gray-100 dark:border-gray-800">
-        <div className="text-xs text-gray-400 font-mono">
-          Display 1 (2.5rem / 40px - Bold)
-        </div>
+        <div className="text-xs text-gray-400 font-mono">Display 1 (2.5rem / 40px - Bold)</div>
         <div className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 tracking-tight">
           La Suite Numérique
         </div>
       </div>
       <div className="space-y-1 pb-4 border-b border-gray-100 dark:border-gray-800">
-        <div className="text-xs text-gray-400 font-mono">
-          Heading 1 (2.0rem / 32px - Bold)
-        </div>
+        <div className="text-xs text-gray-400 font-mono">Heading 1 (2.0rem / 32px - Bold)</div>
         <div className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">
           Édition collaborative & souveraine
         </div>
       </div>
       <div className="space-y-1 pb-4 border-b border-gray-100 dark:border-gray-800">
-        <div className="text-xs text-gray-400 font-mono">
-          Heading 2 (1.5rem / 24px - Bold)
-        </div>
+        <div className="text-xs text-gray-400 font-mono">Heading 2 (1.5rem / 24px - Bold)</div>
         <div className="text-xl font-bold text-[#000091] dark:text-[#8585f6]">
           Structure des micro-services et API
         </div>
@@ -95,9 +85,8 @@ export function TypographySpecimen() {
           Body / Corps de texte (1.0rem / 16px - Regular)
         </div>
         <div className="text-base text-gray-700 dark:text-gray-300 leading-relaxed max-w-prose">
-          Les outils numériques de l'État sont conçus pour être accessibles,
-          ouverts et interopérables. Chaque composant respecte les critères
-          d'accessibilité numérique du RGAA.
+          Les outils numériques de l'État sont conçus pour être accessibles, ouverts et
+          interopérables. Chaque composant respecte les critères d'accessibilité numérique du RGAA.
         </div>
       </div>
       <div className="space-y-1">
@@ -137,9 +126,7 @@ export function IconsCatalog() {
             className="p-3 rounded-lg border border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 flex flex-col items-center gap-1.5 transition-colors"
           >
             <span className="text-2xl">{item.emoji}</span>
-            <span className="text-xs font-bold text-gray-800 dark:text-gray-200">
-              {item.name}
-            </span>
+            <span className="text-xs font-bold text-gray-800 dark:text-gray-200">{item.name}</span>
             <span className="text-[10px] text-gray-400">{item.desc}</span>
           </div>
         ))}
@@ -171,11 +158,7 @@ export function ButtonPreview() {
           <button type="button" className="fr-btn fr-btn--tertiary-no-outline">
             Tertiaire sans contour
           </button>
-          <button
-            type="button"
-            className="fr-btn"
-            style={{ backgroundColor: "#CE0500" }}
-          >
+          <button type="button" className="fr-btn" style={{ backgroundColor: "#CE0500" }}>
             Bouton Destructif
           </button>
           <button type="button" className="fr-btn" disabled>
@@ -206,10 +189,7 @@ export function ButtonPreview() {
           Avec Icônes Intégrées (Remix Icon / DSFR)
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <button
-            type="button"
-            className="fr-btn fr-icon-add-line fr-btn--icon-left"
-          >
+          <button type="button" className="fr-btn fr-icon-add-line fr-btn--icon-left">
             Créer un document
           </button>
           <button
@@ -304,29 +284,26 @@ export function AlertPreview() {
       <div className="fr-alert fr-alert--info">
         <h3 className="fr-alert__title">Information Système</h3>
         <div className="text-sm">
-          La mise à jour de la documentation est synchronisée automatiquement
-          avec le dépôt Git.
+          La mise à jour de la documentation est synchronisée automatiquement avec le dépôt Git.
         </div>
       </div>
       <div className="fr-alert fr-alert--success">
         <h3 className="fr-alert__title">Modifications Enregistrées</h3>
         <div className="text-sm">
-          Votre document a été sauvegardé avec succès sur le stockage souverain
-          S3.
+          Votre document a été sauvegardé avec succès sur le stockage souverain S3.
         </div>
       </div>
       <div className="fr-alert fr-alert--warning">
         <h3 className="fr-alert__title">Expiration de Session Proche</h3>
         <div className="text-sm">
-          Votre jeton OIDC expire dans 5 minutes. Pensez à enregistrer vos
-          travaux en cours.
+          Votre jeton OIDC expire dans 5 minutes. Pensez à enregistrer vos travaux en cours.
         </div>
       </div>
       <div className="fr-alert fr-alert--error">
         <h3 className="fr-alert__title">Erreur de Connexion à la Base</h3>
         <div className="text-sm">
-          Impossible de joindre le serveur PostgreSQL sur le port 15432.
-          Vérifiez que Docker est actif.
+          Impossible de joindre le serveur PostgreSQL sur le port 15432. Vérifiez que Docker est
+          actif.
         </div>
       </div>
     </div>
@@ -337,34 +314,95 @@ export function AlertPreview() {
  * DSFR Confirmation Modal showcase.
  */
 export function ModalPreview() {
+  const [isOpen, setIsOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const cancelBtnRef = useRef<HTMLButtonElement | null>(null);
+
+  const handleOpen = () => {
+    triggerRef.current = document.activeElement as HTMLButtonElement;
+    setIsOpen(false);
+    setTimeout(() => setIsOpen(true), 0);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+    setTimeout(() => {
+      triggerRef.current?.focus();
+    }, 0);
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      cancelBtnRef.current?.focus();
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          handleClose();
+        }
+      };
+      window.addEventListener("keydown", handleKeyDown);
+      return () => window.removeEventListener("keydown", handleKeyDown);
+    }
+  }, [isOpen]);
+
   return (
     <div className="not-prose my-6 p-6 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-4 max-w-xl">
       <div className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">
         Exemple de Modale de Confirmation DSFR
       </div>
-      <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-5 bg-gray-50 dark:bg-gray-850 shadow-md">
-        <div className="flex items-center gap-2 text-red-600 dark:text-red-400 font-bold text-base mb-2">
-          <span>⚠️</span>
-          <span>Confirmer la suppression du document</span>
+      <button
+        type="button"
+        ref={triggerRef}
+        className="fr-btn fr-btn--secondary fr-btn--sm"
+        onClick={handleOpen}
+      >
+        Ouvrir la modale de démonstration
+      </button>
+
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="dsfr-modal-title"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              handleClose();
+            }
+          }}
+        >
+          <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-5 bg-white dark:bg-gray-900 shadow-xl max-w-md w-full animate-in zoom-in-95 duration-150">
+            <div
+              id="dsfr-modal-title"
+              className="flex items-center gap-2 text-red-600 dark:text-red-400 font-bold text-base mb-2"
+            >
+              <span>⚠️</span>
+              <span>Confirmer la suppression du document</span>
+            </div>
+            <div className="text-sm text-gray-700 dark:text-gray-300 mb-4">
+              Êtes-vous sûr de vouloir supprimer définitivement{" "}
+              <strong>« Cahier des charges DINUM v2 »</strong> ? Cette action est irréversible.
+            </div>
+            <div className="flex items-center justify-end gap-2 pt-3 border-t border-gray-200 dark:border-gray-700">
+              <button
+                ref={cancelBtnRef}
+                type="button"
+                className="fr-btn fr-btn--secondary fr-btn--sm"
+                onClick={handleClose}
+              >
+                Annuler
+              </button>
+              <button
+                type="button"
+                className="fr-btn fr-btn--sm"
+                style={{ backgroundColor: "#CE0500" }}
+                onClick={handleClose}
+              >
+                Supprimer définitivement
+              </button>
+            </div>
+          </div>
         </div>
-        <div className="text-sm text-gray-700 dark:text-gray-300 mb-4">
-          Êtes-vous sûr de vouloir supprimer définitivement{" "}
-          <strong>« Cahier des charges DINUM v2 »</strong> ? Cette action est
-          irréversible.
-        </div>
-        <div className="flex items-center justify-end gap-2 pt-3 border-t border-gray-200 dark:border-gray-700">
-          <button type="button" className="fr-btn fr-btn--secondary fr-btn--sm">
-            Annuler
-          </button>
-          <button
-            type="button"
-            className="fr-btn fr-btn--sm"
-            style={{ backgroundColor: "#CE0500" }}
-          >
-            Supprimer définitivement
-          </button>
-        </div>
-      </div>
+      )}
     </div>
   );
 }
@@ -382,9 +420,9 @@ export function NoticePreview() {
           <div className="fr-container">
             <div className="fr-notice__body">
               <div className="fr-notice__title">
-                <span className="fr-text--bold">Maintenance planifiée :</span>{" "}
-                Une coupure de service interviendra le mardi 12 mai entre 02h00
-                et 04h00 pour la migration du cluster PostgreSQL.
+                <span className="fr-text--bold">Maintenance planifiée :</span> Une coupure de
+                service interviendra le mardi 12 mai entre 02h00 et 04h00 pour la migration du
+                cluster PostgreSQL.
               </div>
               <button
                 type="button"
@@ -402,9 +440,8 @@ export function NoticePreview() {
         <div className="fr-container">
           <div className="fr-notice__body">
             <div className="fr-notice__title">
-              <span className="fr-text--bold">Version de développement :</span>{" "}
-              Ce portail est une version de pré-qualification. Ne pas y saisir
-              de données classifiées.
+              <span className="fr-text--bold">Version de développement :</span> Ce portail est une
+              version de pré-qualification. Ne pas y saisir de données classifiées.
             </div>
           </div>
         </div>
@@ -436,9 +473,7 @@ export function TablePreview() {
               <td>vincent.guerand@numerique.gouv.fr</td>
               <td>Administrateur</td>
               <td>
-                <span className="fr-badge fr-badge--success fr-badge--sm">
-                  Actif
-                </span>
+                <span className="fr-badge fr-badge--success fr-badge--sm">Actif</span>
               </td>
             </tr>
             <tr>
@@ -446,9 +481,7 @@ export function TablePreview() {
               <td>damien.s@collectivite.fr</td>
               <td>Éditeur</td>
               <td>
-                <span className="fr-badge fr-badge--success fr-badge--sm">
-                  Actif
-                </span>
+                <span className="fr-badge fr-badge--success fr-badge--sm">Actif</span>
               </td>
             </tr>
             <tr>
@@ -456,9 +489,7 @@ export function TablePreview() {
               <td>claire.m@interieur.gouv.fr</td>
               <td>Lecteur</td>
               <td>
-                <span className="fr-badge fr-badge--info fr-badge--sm">
-                  Invité
-                </span>
+                <span className="fr-badge fr-badge--info fr-badge--sm">Invité</span>
               </td>
             </tr>
           </tbody>
@@ -477,9 +508,7 @@ export function FormPreview() {
       <div className="fr-input-group">
         <label className="fr-label" htmlFor="input-preview-title">
           Nom du document collaboratif
-          <span className="fr-hint-text">
-            Indiquez un titre clair pour faciliter la recherche.
-          </span>
+          <span className="fr-hint-text">Indiquez un titre clair pour faciliter la recherche.</span>
         </label>
         <input
           className="fr-input"
@@ -513,23 +542,14 @@ export function FormPreview() {
           defaultValue="nom.prenom@invalide"
           aria-describedby="input-preview-err-desc"
         />
-        <div
-          id="input-preview-err-desc"
-          className="fr-error-text text-xs text-red-600 mt-1"
-        >
-          Format d'adresse email incorrect (@gouv.fr ou @collectivite.fr
-          attendu).
+        <div id="input-preview-err-desc" className="fr-error-text text-xs text-red-600 mt-1">
+          Format d'adresse email incorrect (@gouv.fr ou @collectivite.fr attendu).
         </div>
       </div>
 
       <div className="fr-fieldset__element">
         <div className="fr-checkbox-group">
-          <input
-            type="checkbox"
-            id="checkbox-preview-1"
-            name="notifications"
-            defaultChecked
-          />
+          <input type="checkbox" id="checkbox-preview-1" name="notifications" defaultChecked />
           <label className="fr-label" htmlFor="checkbox-preview-1">
             Activer les notifications instantanées par email
           </label>
@@ -555,8 +575,8 @@ export function CardContainerPreview() {
                 <a href="#">Guide de Déploiement Souverain</a>
               </h3>
               <div className="fr-card__desc text-sm text-gray-600 dark:text-gray-300">
-                Architecture de référence pour l'installation sur clusters
-                Kubernetes et serveurs locaux DINUM.
+                Architecture de référence pour l'installation sur clusters Kubernetes et serveurs
+                locaux DINUM.
               </div>
               <div className="fr-card__start">
                 <div className="fr-card__detail text-xs text-gray-500">
@@ -574,8 +594,8 @@ export function CardContainerPreview() {
                 <a href="#">Sprint 42 : Authentification ProConnect</a>
               </h3>
               <div className="fr-card__desc text-sm text-gray-600 dark:text-gray-300">
-                Mise en place de la fédération OIDC et configuration des
-                redirections inter-domaines.
+                Mise en place de la fédération OIDC et configuration des redirections
+                inter-domaines.
               </div>
               <div className="fr-card__start">
                 <div className="fr-card__detail text-xs text-gray-500">
@@ -601,8 +621,7 @@ export function CardContainerPreview() {
         {accordionOpen && (
           <div className="fr-collapse" id="accordion-preview-1">
             <div className="text-sm p-4 text-gray-700 dark:text-gray-300">
-              Les conteneurs communiquent sur le réseau de pont{" "}
-              <code>lasuite-network</code>.
+              Les conteneurs communiquent sur le réseau de pont <code>lasuite-network</code>.
             </div>
           </div>
         )}
@@ -628,14 +647,9 @@ export function PaginationStepperPreview() {
             <span className="fr-stepper__state">Étape 2 sur 3</span>
             Configuration des accès et rôles
           </h2>
-          <div
-            className="fr-stepper__steps"
-            data-fr-current-step="2"
-            data-fr-steps="3"
-          ></div>
+          <div className="fr-stepper__steps" data-fr-current-step="2" data-fr-steps="3"></div>
           <div className="fr-stepper__details text-xs mt-2">
-            <span className="fr-text--bold">Étape suivante :</span> Validation
-            et déploiement
+            <span className="fr-text--bold">Étape suivante :</span> Validation et déploiement
           </div>
         </div>
       </div>
@@ -644,11 +658,7 @@ export function PaginationStepperPreview() {
         <div className="text-xs font-semibold uppercase tracking-wider text-gray-400">
           Pagination DSFR
         </div>
-        <nav
-          role="navigation"
-          className="fr-pagination"
-          aria-label="Pagination"
-        >
+        <nav role="navigation" className="fr-pagination" aria-label="Pagination">
           <ul className="fr-pagination__list">
             <li>
               <button
@@ -745,11 +755,7 @@ export function HeaderBreadcrumbPreview() {
         </div>
       </header>
 
-      <nav
-        role="navigation"
-        className="fr-breadcrumb"
-        aria-label="vous êtes ici :"
-      >
+      <nav role="navigation" className="fr-breadcrumb" aria-label="vous êtes ici :">
         <button
           className="fr-breadcrumb__button"
           aria-expanded="false"

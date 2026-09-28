@@ -21,8 +21,8 @@ npm install @suitenumerique/blocknote-sources
 ### 1. Register in BlockNote Schema
 
 ```tsx
-import { BlockNoteSchema, defaultBlockSpecs } from '@blocknote/core';
-import { SourceBlock } from '@suitenumerique/blocknote-sources';
+import { BlockNoteSchema, defaultBlockSpecs } from "@blocknote/core";
+import { SourceBlock } from "@suitenumerique/blocknote-sources";
 
 export const customSchema = BlockNoteSchema.create({
   blockSpecs: {
@@ -32,25 +32,46 @@ export const customSchema = BlockNoteSchema.create({
 });
 ```
 
-### 2. Add to Slash Suggestion Menu (`/`)
+### 2. Configure Injected Search Client (`SourceSearchProvider`)
 
 ```tsx
-import { getSourceReactSlashMenuItems } from '@suitenumerique/blocknote-sources';
+import { SourceSearchProvider, createHttpSourceClient } from "@suitenumerique/blocknote-sources";
+
+// Injected search client owned by host application
+const searchClient = createHttpSourceClient("/api/v1.0/sources");
+
+export function EditorWrapper() {
+  return (
+    <SourceSearchProvider value={{ client: searchClient, country: "fr", locale: "fr" }}>
+      <BlockNoteView editor={editor} />
+    </SourceSearchProvider>
+  );
+}
+```
+
+### 3. Add to Slash Suggestion Menu (`/`)
+
+```tsx
+import { getSourceReactSlashMenuItems } from "@suitenumerique/blocknote-sources";
 
 const slashMenuItems = [
   ...defaultMenu,
-  ...getSourceReactSlashMenuItems(editor, t, 'Sovereign Sources'),
+  ...getSourceReactSlashMenuItems(editor, t, "Sovereign Sources"),
 ];
 ```
 
-### 3. Register Exporters (PDF / Word DOCX / LibreOffice ODT)
+### 4. Register Exporters (PDF / Word DOCX / LibreOffice ODT)
+
+You can import all exporters from the aggregated entry point `@suitenumerique/blocknote-sources/exporters`, or import decoupled format-specific entry points to avoid bundling unused export engines:
 
 ```tsx
-import {
-  blockMappingSourceBlockPDF,
-  blockMappingSourceBlockDocx,
-  blockMappingSourceBlockODT,
-} from '@suitenumerique/blocknote-sources/exporters';
+// Option A: Decoupled independent entry points (Recommended for tree-shaking)
+import { blockMappingSourceBlockPDF } from "@suitenumerique/blocknote-sources/exporters/pdf";
+import { blockMappingSourceBlockDocx } from "@suitenumerique/blocknote-sources/exporters/docx";
+import { blockMappingSourceBlockODT } from "@suitenumerique/blocknote-sources/exporters/odt";
+
+// Option B: Aggregated entry point
+// import { blockMappingSourceBlockPDF, blockMappingSourceBlockDocx, blockMappingSourceBlockODT } from '@suitenumerique/blocknote-sources/exporters';
 
 // PDF (@blocknote/xl-pdf-exporter)
 pdfSchemaMappings.blockMapping.sourceBlock = blockMappingSourceBlockPDF;
@@ -72,7 +93,31 @@ odtSchemaMappings.blockMapping.sourceBlock = blockMappingSourceBlockODT;
 
 ---
 
-## 🛡️ Code Standards Compliance
+## � Consumer Migration & Architectural Principles
+
+### 1. Injected Search Client (`SourceSearchProvider`)
+
+Host applications must now inject an explicit search client via `<SourceSearchProvider value={{ client, country, locale }}>`. Host applications retain full ownership of authentication, credentials, base URLs, and network headers. No API tokens, secrets, or function instances are ever stored inside the persisted BlockNote document JSON props.
+
+### 2. Explicit Demo Mode (`demoSearchClient`)
+
+Static demonstration fixtures (`MOCK_SOURCES`, `ALL_INTERNATIONAL_MOCK_SOURCES`) are no longer used as silent fallbacks. Host applications in playground, demo, or offline testing environments must explicitly pass `demoSearchClient` to `SourceSearchProvider`.
+
+### 3. Removal of Implicit Mock Fallbacks
+
+If an HTTP request returns an error (e.g. `HTTP 401`, `HTTP 403`, `HTTP 429` Rate Limit, `HTTP 503` Provider Unavailable), the search palette displays an honest, localized error message (`Fournisseur indisponible`, `Authentification requise`, `Limite de requêtes atteinte`). Network failures will never silently substitute mock data or present mock results as verified live data.
+
+### 4. Legacy Document Snapshots & Immutability
+
+Document JSON snapshots created with earlier schema versions (lacking `verifiedAt`, `retrievedAt`, `freshness`, `provider`, `origin`, `country`) remain 100% backward compatible. Reloading and rendering old documents offline or online operates cleanly without errors. No new verification dates or default properties are injected silently into legacy snapshots when re-deserializing or saving documents.
+
+### 5. Node.js & Tooling Runtime Requirements
+
+Building, SSR pre-rendering, and running package tools require **Node.js >= 22.23.2** and **npm >= 10.9.0**.
+
+---
+
+## �🛡️ Code Standards Compliance
 
 - **Zero `any` & Zero Cast:** Strict TypeScript typing across all components.
 - **Zero Tailwind CSS:** Exclusive Cunningham and DSFR Marianne primitives.

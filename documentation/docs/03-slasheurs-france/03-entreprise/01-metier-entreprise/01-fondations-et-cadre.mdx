@@ -4,18 +4,19 @@ sidebar_label: "Fondations Cadre"
 description: "Comprendre le numéro SIREN, SIRET, code NAF/APE, formes juridiques, rôle de l'INPI et mentions obligatoires du Kbis."
 ---
 
-
 L'identification des entreprises françaises repose sur le système national de gestion du répertoire des entreprises géré par l'INSEE et l'INPI.
 
 ---
 
 ## 🏢 Les Identifiants Légaux Uniques
 
-<Mermaid chart={`flowchart LR
+<Mermaid
+  chart={`flowchart LR
     Entreprise["Personne Morale ou Physique"] --> SIREN["Numéro SIREN (9 chiffres)<br/>Identifiant univoque du siège et de la société"]
     SIREN --> SIRET1["SIRET Établissement Siège (14 chiffres : SIREN + NIC)"]
     SIREN --> SIRET2["SIRET Établissement Secondaire (14 chiffres)"]
-`} />
+`}
+/>
 
 - **SIREN (9 chiffres) :** Identifie l'entreprise dans son ensemble (ex: `849 201 928`).
 - **SIRET (14 chiffres) :** Identifie chaque établissement géographique d'une entreprise (SIREN + Numéro Interne de Classement NIC de 5 chiffres).
@@ -32,6 +33,7 @@ Depuis le 1er janvier 2023, le **Registre National des Entreprises (RNE)** opér
 ## ⚖️ Procédures Collectives (BODACC) & In Bonis
 
 Pour la commande publique et l'octroi d'aides :
+
 1. **`In Bonis` :** L'entreprise est en situation régulière et dispose de la pleine jouissance de ses droits.
 2. **`Procédure collective` :** Sauvegarde, redressement judiciaire ou liquidation judiciaire enregistrée au BODACC. Les candidats en liquidation sont exclus d'office des marchés publics.
 
@@ -40,6 +42,7 @@ Pour la commande publique et l'octroi d'aides :
 ## 👥 Registre des Bénéficiaires Effectifs (RBE) & LCB-FT
 
 Dans le cadre de la lutte contre le blanchiment de capitaux et le financement du terrorisme (LCB-FT), toutes les sociétés immatriculées doivent déclarer leurs **bénéficiaires effectifs** :
+
 - **Définition :** Toute personne physique qui possède, directement ou indirectement, **plus de 25% du capital ou des droits de vote**, ou qui exerce un pouvoir de contrôle sur les organes de direction.
 - **Intérêt pour l'acheteur public :** Prévention des conflits d'intérêts et vérification de l'actionnariat réel lors des attributions de subventions ou marchés stratégiques.
 
@@ -48,6 +51,7 @@ Dans le cadre de la lutte contre le blanchiment de capitaux et le financement du
 ## 📄 Le Principe « Dites-le-nous une fois » & le DUME
 
 Le **Document Unique de Marché Européen (DUME)** et l'**API Entreprise** (DINUM) permettent de dispenser les entreprises candidates de transmettre leurs pièces justificatives :
+
 - **Attestation de vigilance Urssaf :** Preuve du paiement des cotisations sociales.
 - **Attestation de régularité fiscale DGFiP :** Preuve du paiement de l'impôt sur les sociétés et de la TVA.
 - **Extrait d'immatriculation RNE :** Vérification de l'identité du représentant légal sans exiger de Kbis papier payant.

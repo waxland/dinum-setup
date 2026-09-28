@@ -39,9 +39,7 @@ export const Kanban: React.FC<KanbanProps> = ({
 
   // Extract all unique tags
   const allTags = Array.from(
-    new Set(
-      columns.flatMap((col) => col.items?.flatMap((item) => item.tags || []) || [])
-    )
+    new Set(columns.flatMap((col) => col.items?.flatMap((item) => item.tags || []) || [])),
   );
 
   const totalItems = columns.reduce((acc, col) => acc + (col.items?.length || 0), 0);
@@ -56,9 +54,7 @@ export const Kanban: React.FC<KanbanProps> = ({
             </h3>
           )}
           {description && (
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 m-0">
-              {description}
-            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 m-0">{description}</p>
           )}
         </div>
       )}
@@ -66,9 +62,7 @@ export const Kanban: React.FC<KanbanProps> = ({
       {/* Filter by tag - Minimal & Compact */}
       {filterTags && allTags.length > 0 && (
         <div className="mb-3 flex flex-wrap items-center gap-1">
-          <span className="text-[11px] text-gray-400 dark:text-gray-500 mr-1">
-            Filtre :
-          </span>
+          <span className="text-[11px] text-gray-400 dark:text-gray-500 mr-1">Filtre :</span>
           <button
             type="button"
             onClick={() => setSelectedTag(null)}
@@ -83,9 +77,8 @@ export const Kanban: React.FC<KanbanProps> = ({
           {allTags.map((tag) => {
             const count = columns.reduce(
               (acc, col) =>
-                acc +
-                (col.items?.filter((item) => item.tags?.includes(tag)).length || 0),
-              0
+                acc + (col.items?.filter((item) => item.tags?.includes(tag)).length || 0),
+              0,
             );
             return (
               <button
@@ -139,9 +132,7 @@ export const Kanban: React.FC<KanbanProps> = ({
                 <div className="flex flex-col gap-2 flex-1 min-h-[80px]">
                   {filteredItems.length === 0 ? (
                     <div className="flex-1 flex items-center justify-center border border-dashed border-gray-200/80 dark:border-gray-800/80 rounded p-3 text-center">
-                      <span className="text-[11px] text-gray-400 italic">
-                        Vide
-                      </span>
+                      <span className="text-[11px] text-gray-400 italic">Vide</span>
                     </div>
                   ) : (
                     filteredItems.map((item) => {
@@ -198,9 +189,7 @@ export const Kanban: React.FC<KanbanProps> = ({
                           {(item.assignee || (item.tags && item.tags.length > 0) || item.href) && (
                             <div className="pt-1 mt-0.5 border-t border-gray-100 dark:border-gray-800/80 flex items-center justify-between text-[10px] text-gray-400">
                               <div className="flex items-center gap-1 truncate max-w-[70%]">
-                                {item.assignee && (
-                                  <span className="truncate">{item.assignee}</span>
-                                )}
+                                {item.assignee && <span className="truncate">{item.assignee}</span>}
                               </div>
                               {item.href && (
                                 <span className="text-blue-600 dark:text-blue-400 font-medium flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform shrink-0">
@@ -214,11 +203,7 @@ export const Kanban: React.FC<KanbanProps> = ({
 
                       if (item.href) {
                         return (
-                          <a
-                            key={item.id}
-                            href={item.href}
-                            className="no-underline block"
-                          >
+                          <a key={item.id} href={item.href} className="no-underline block">
                             {cardNode}
                           </a>
                         );

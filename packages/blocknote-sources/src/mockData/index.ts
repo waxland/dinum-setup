@@ -1,19 +1,19 @@
-import { ExternalSourceEntity } from '../types';
-import { MOCK_CANADA } from './canada';
-import { MOCK_EUROPE } from './europe';
-import { MOCK_FRANCE } from './france';
-import { MOCK_GERMANY } from './germany';
-import { MOCK_NETHERLANDS } from './netherlands';
-import { MOCK_SPAIN } from './spain';
+import { ExternalSourceEntity } from "../types";
+import { MOCK_CANADA } from "./canada";
+import { MOCK_EUROPE } from "./europe";
+import { MOCK_FRANCE } from "./france";
+import { MOCK_GERMANY } from "./germany";
+import { MOCK_NETHERLANDS } from "./netherlands";
+import { MOCK_SPAIN } from "./spain";
 
-export * from './canada';
-export * from './europe';
-export * from './france';
-export * from './germany';
-export * from './netherlands';
-export * from './spain';
+export * from "./canada";
+export * from "./europe";
+export * from "./france";
+export * from "./germany";
+export * from "./netherlands";
+export * from "./spain";
 
-export type SupportedCountry = 'fr' | 'de' | 'nl' | 'es' | 'eu' | 'ca';
+export type SupportedCountry = "fr" | "de" | "nl" | "es" | "eu" | "ca";
 
 export interface InternationalSourceItem extends ExternalSourceEntity {
   country: SupportedCountry;
@@ -21,27 +21,27 @@ export interface InternationalSourceItem extends ExternalSourceEntity {
 
 export const MOCK_FRANCE_SOURCES: InternationalSourceItem[] = Object.values(MOCK_FRANCE)
   .flat()
-  .map((s) => ({ ...s, country: 'fr' as SupportedCountry }));
+  .map((s) => ({ ...s, country: "fr" as SupportedCountry }));
 
 export const MOCK_GERMANY_SOURCES: InternationalSourceItem[] = Object.values(MOCK_GERMANY)
   .flat()
-  .map((s) => ({ ...s, country: 'de' as SupportedCountry }));
+  .map((s) => ({ ...s, country: "de" as SupportedCountry }));
 
 export const MOCK_NETHERLANDS_SOURCES: InternationalSourceItem[] = Object.values(MOCK_NETHERLANDS)
   .flat()
-  .map((s) => ({ ...s, country: 'nl' as SupportedCountry }));
+  .map((s) => ({ ...s, country: "nl" as SupportedCountry }));
 
 export const MOCK_SPAIN_SOURCES: InternationalSourceItem[] = Object.values(MOCK_SPAIN)
   .flat()
-  .map((s) => ({ ...s, country: 'es' as SupportedCountry }));
+  .map((s) => ({ ...s, country: "es" as SupportedCountry }));
 
 export const MOCK_EUROPE_SOURCES: InternationalSourceItem[] = Object.values(MOCK_EUROPE)
   .flat()
-  .map((s) => ({ ...s, country: 'eu' as SupportedCountry }));
+  .map((s) => ({ ...s, country: "eu" as SupportedCountry }));
 
 export const MOCK_CANADA_SOURCES: InternationalSourceItem[] = Object.values(MOCK_CANADA)
   .flat()
-  .map((s) => ({ ...s, country: 'ca' as SupportedCountry }));
+  .map((s) => ({ ...s, country: "ca" as SupportedCountry }));
 
 export const ALL_INTERNATIONAL_MOCK_SOURCES: InternationalSourceItem[] = [
   ...MOCK_FRANCE_SOURCES,
@@ -54,22 +54,19 @@ export const ALL_INTERNATIONAL_MOCK_SOURCES: InternationalSourceItem[] = [
 
 export function getSourcesByCountry(country: SupportedCountry): InternationalSourceItem[] {
   switch (country) {
-    case 'fr':
+    case "fr":
       return MOCK_FRANCE_SOURCES;
-    case 'de':
+    case "de":
       return MOCK_GERMANY_SOURCES;
-    case 'nl':
+    case "nl":
       return MOCK_NETHERLANDS_SOURCES;
-    case 'es':
+    case "es":
       return MOCK_SPAIN_SOURCES;
-    case 'eu':
+    case "eu":
       return MOCK_EUROPE_SOURCES;
-    case 'ca':
+    case "ca":
       return MOCK_CANADA_SOURCES;
     default:
       return MOCK_FRANCE_SOURCES;
   }
 }
-
-
-

@@ -1,0 +1,14 @@
+node_modules
+dist
+.venv
+__pycache__
+.pytest_cache
+.zudoku
+.next
+storybook-static
+coverage
+LaSuite
+*.tgz
+*.whl
+*.tar.gz
+package-lock.json

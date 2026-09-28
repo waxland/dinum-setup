@@ -4,7 +4,6 @@ sidebar_label: "Support Serveurs"
 description: Document complet et argumenté prêt à être partagé avec l'équipe de La Suite Numérique / DINUM pour rendre La Suite Docs nativement compatible avec les serveurs distants.
 ---
 
-
 Ce document constitue une proposition de **Pull Request** complète et structurée à destination des mainteneurs de **La Suite Numérique (DINUM)** pour le dépôt [`suitenumerique/docs`](https://github.com/suitenumerique/docs).
 
 Elle explique le contexte, le diagnostic technique, l'architecture cible et fournit l'ensemble des diffs et du texte de PR prêt à l'emploi.
@@ -13,13 +12,13 @@ Elle explique le contexte, le diagnostic technique, l'architecture cible et four
 
 ## 📌 En bref
 
-| Métrique | Description |
-| :--- | :--- |
-| **Dépôt cible** | [`suitenumerique/docs`](https://github.com/suitenumerique/docs) |
-| **Statut Pull Request** | 🟢 **Soumise & Ouverte en ligne : [PR #2703](https://github.com/suitenumerique/docs/pull/2703)** |
-| **Titre officiel** | `✨(dev) make development URLs configurable for remote servers and VMs` |
-| **Impact sur l'existant** | **Zéro rupture** — Les valeurs par défaut restent `localhost` et le workflow local actuel est préservé à 100%. |
-| **Bénéfice principal** | Permet à n'importe quel développeur, contributeur ou prestataire de déployer et tester Docs sur une machine distante (VM, cloud, Codespaces) en quelques variables d'environnement, sans modifier le code source. |
+| Métrique                  | Description                                                                                                                                                                                                       |
+| :------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Dépôt cible**           | [`suitenumerique/docs`](https://github.com/suitenumerique/docs)                                                                                                                                                   |
+| **Statut Pull Request**   | 🟢 **Soumise & Ouverte en ligne : [PR #2703](https://github.com/suitenumerique/docs/pull/2703)**                                                                                                                  |
+| **Titre officiel**        | `✨(dev) make development URLs configurable for remote servers and VMs`                                                                                                                                           |
+| **Impact sur l'existant** | **Zéro rupture** — Les valeurs par défaut restent `localhost` et le workflow local actuel est préservé à 100%.                                                                                                    |
+| **Bénéfice principal**    | Permet à n'importe quel développeur, contributeur ou prestataire de déployer et tester Docs sur une machine distante (VM, cloud, Codespaces) en quelques variables d'environnement, sans modifier le code source. |
 
 ---
 
@@ -61,6 +60,7 @@ Dès qu'un développeur exécute le projet sur un serveur distant et tente de s'
     Note over Django,KC: ❌ Échec 2 : Hairpin NAT Timeout si Django appelle l'IP publique
     Dev->>Yjs: Connexion WebSocket BlockNote
     Note over Dev,Yjs: ❌ Échec 3 : Connexion tente ws://localhost:4444<br/>(Bloqué sur le poste du dev, éditeur inutilisable)
+
 `} />
 
 ---
@@ -70,18 +70,23 @@ Dès qu'un développeur exécute le projet sur un serveur distant et tente de s'
 Les blocages rencontrés sur un serveur distant proviennent de 4 mécanismes distincts :
 
 ### A. Keycloak et la perte du cookie d'authentification
+
 Keycloak construit les formulaires d'authentification et les actions de redirection à partir de `KC_HOSTNAME`. S'il vaut `http://localhost:8083`, le navigateur de l'utilisateur distant reçoit une redirection vers son propre poste local au lieu du serveur. La session est rompue et Keycloak renvoie l'erreur `Restart login cookie not found`.
 
 ### B. Hairpin NAT et Timeout sur les callbacks OIDC
+
 Lorsque Django valide un jeton OIDC ou télécharge les clés publiques (`JWKS`), il doit contacter Keycloak.
-- Si ces endpoints pointent vers l'IP publique du serveur, la plupart des environnements Cloud / VM interdisent aux conteneurs de contacter leur propre IP publique externe (problème classique de *hairpin NAT*).
+
+- Si ces endpoints pointent vers l'IP publique du serveur, la plupart des environnements Cloud / VM interdisent aux conteneurs de contacter leur propre IP publique externe (problème classique de _hairpin NAT_).
 - Django subit alors un `ReadTimeout` et lève une exception `SuspiciousOperation: OIDC callback state not found in session`.
 - **Règle architecturale :** Les flux serveur-à-serveur doivent rester dans le réseau Docker (`http://nginx:8083/...`), tandis que le flux d'autorisation (redirection 302 du navigateur) doit utiliser l'IP ou le domaine public.
 
 ### C. Collaboration temps réel BlockNote / Yjs
+
 Le composant éditeur s'appuie sur un provider WebSocket Yjs. Si `COLLABORATION_WS_URL` vaut `ws://localhost:4444/...`, le navigateur tente d'établir une socket vers sa propre machine `127.0.0.1:4444`. La connexion échoue silencieusement ou reste bloquée, rendant impossible la création ou l'édition de pages.
 
 ### D. Next.js `allowedDevOrigins` et `API_ORIGIN`
+
 Next.js bloque les connexions de développement provenant d'hôtes non enregistrés. De plus, pour les images frontend construites avec `output: "export"`, `API_ORIGIN` doit être injectée au build time pour pointer vers le serveur accessible depuis le navigateur.
 
 ---
@@ -100,13 +105,13 @@ La solution consiste à **rendre ces valeurs configurables par des variables d'e
 
 ## 📊 4. Matrice des Variables d'Environnement
 
-| Variable | Cible / Rôle | Valeur par défaut (Local) | Exemple Serveur Distant | Appelant |
-| :--- | :--- | :--- | :--- | :--- |
-| `DOCS_PUBLIC_ORIGIN` | URL publique du frontend Docs | `http://localhost:3000` | `http://207.175.155.66:3000` | Navigateur |
-| `API_ORIGIN` | URL publique de l'API Docs | `http://localhost:8071` | `http://207.175.155.66:8071` | Navigateur |
-| `KEYCLOAK_PUBLIC_ORIGIN` | URL publique de Keycloak | `http://localhost:8083` | `http://207.175.155.66:8083` | Navigateur |
-| `COLLABORATION_WS_URL` | WebSocket de collaboration Yjs | `ws://localhost:4444/collaboration/ws/` | `ws://207.175.155.66:4444/collaboration/ws/` | Navigateur |
-| `OIDC_INTERNAL_ORIGIN` | Endpoint OIDC inter-conteneurs | `http://nginx:8083` | `http://nginx:8083` | Conteneur Django |
+| Variable                 | Cible / Rôle                   | Valeur par défaut (Local)               | Exemple Serveur Distant                      | Appelant         |
+| :----------------------- | :----------------------------- | :-------------------------------------- | :------------------------------------------- | :--------------- |
+| `DOCS_PUBLIC_ORIGIN`     | URL publique du frontend Docs  | `http://localhost:3000`                 | `http://207.175.155.66:3000`                 | Navigateur       |
+| `API_ORIGIN`             | URL publique de l'API Docs     | `http://localhost:8071`                 | `http://207.175.155.66:8071`                 | Navigateur       |
+| `KEYCLOAK_PUBLIC_ORIGIN` | URL publique de Keycloak       | `http://localhost:8083`                 | `http://207.175.155.66:8083`                 | Navigateur       |
+| `COLLABORATION_WS_URL`   | WebSocket de collaboration Yjs | `ws://localhost:4444/collaboration/ws/` | `ws://207.175.155.66:4444/collaboration/ws/` | Navigateur       |
+| `OIDC_INTERNAL_ORIGIN`   | Endpoint OIDC inter-conteneurs | `http://nginx:8083`                     | `http://nginx:8083`                          | Conteneur Django |
 
 ---
 
@@ -179,6 +184,7 @@ OIDC_OP_INTROSPECTION_ENDPOINT=http://nginx:8083/realms/impress/protocol/openid-
 La PR a été testée et validée selon les deux scénarios suivants :
 
 ### Scénario 1 : Développement Local (Rétrocompatibilité)
+
 - **Commande :** `make bootstrap && make dev` sans aucune variable définie.
 - **Résultats validés :**
   - Frontend accessible sur `http://localhost:3000` ;
@@ -186,6 +192,7 @@ La PR a été testée et validée selon les deux scénarios suivants :
   - Création de document, édition BlockNote et collaboration temps réel validées.
 
 ### Scénario 2 : Serveur Distant / VM Cloud
+
 - **Commande :** Définition des variables publiques pointant vers l'IP distante.
 - **Résultats validés :**
   - Connexion depuis une machine cliente externe ;
@@ -199,7 +206,7 @@ La PR a été testée et validée selon les deux scénarios suivants :
 
 Voici le texte au format GitHub Markdown prêt à être soumis lors de l'ouverture de la PR sur `suitenumerique/docs` :
 
-````markdown
+```markdown
 # feat(dev): make Docs development URLs configurable for remote servers and VMs
 
 ## 🎯 Context & Motivation
@@ -207,6 +214,7 @@ Voici le texte au format GitHub Markdown prêt à être soumis lors de l'ouvertu
 When contributing to La Suite Docs or running the stack in remote environments (cloud development VMs, SecNumCloud environments, GitHub Codespaces, or remote dev instances), several URLs are currently hardcoded to `localhost` / `127.0.0.1`.
 
 This causes three main issues on remote machines:
+
 1. **Keycloak Authentication Loss:** `KC_HOSTNAME` defaults to `localhost:8083`, causing redirection back to the local client machine and losing the session cookie (`Restart login cookie not found`).
 2. **OIDC Callback Timeout (Hairpin NAT):** When Django contacts Keycloak to exchange authorization codes, using a public IP from within Docker causes network timeouts. Server-to-server endpoints must target `http://nginx:8083` internally, while the browser authorization endpoint must remain public.
 3. **BlockNote Collaboration WebSocket:** `COLLABORATION_WS_URL` defaults to `ws://localhost:4444`, preventing the BlockNote editor from initializing on remote instances.
@@ -232,4 +240,4 @@ This causes three main issues on remote machines:
 - [x] I have performed a self-review of my own code
 - [x] Documentation has been updated accordingly
 - [x] All existing automated tests continue to pass
-````
+```

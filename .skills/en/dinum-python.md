@@ -11,6 +11,7 @@ This skill defines the procedures and engineering standards to apply whenever cr
 ## 🎯 1. Activation Scope
 
 Activate this skill when working on:
+
 - Python modules and scripts (`.py`)
 - Django and Django REST Framework applications
 - ORM models, migrations, and database queries
@@ -37,6 +38,7 @@ Activate this skill when working on:
 ## 📋 3. Mandatory Implementation Checklist
 
 ### A. Style, Formatting & Imports
+
 - [ ] Obey the repository's configured linter/formatter (Ruff / Black / Flake8).
 - [ ] Group imports into 6 distinct sections:
   1. `__future__`
@@ -49,23 +51,27 @@ Activate this skill when working on:
 - [ ] No leftover `print()` debug calls or commented-out code.
 
 ### B. Django & Database Best Practices
+
 - [ ] Prevent $N+1$ query problems using `select_related()` and `prefetch_related()`.
 - [ ] Wrap multi-table mutations inside atomic transactions (`transaction.atomic`).
 - [ ] Ensure database migrations are idempotent, backwards-compatible, and safe.
 - [ ] Always enforce authorization server-side (never trust the client).
 
 ### C. Typing & Documentation
+
 - [ ] Type hints on all public functions, classes, and methods.
 - [ ] Explicit modeling of `Optional[T]` / `T | None`.
 - [ ] Clear docstrings explaining business intent, invariants, and edge cases.
 
 ### D. Defensive Security & Network Robustness
+
 - [ ] Zero hard-coded credentials or API tokens.
 - [ ] Mandatory anti-SSRF URL validation on all outgoing server-side requests (block private IP ranges: `127.0.0.0/8`, `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `169.254.169.254`).
 - [ ] Circuit Breaker and strict timeouts (e.g. 3.5s) on external API calls.
 - [ ] Avoid catching general exceptions without re-raising or logging (`except Exception: pass`).
 
 ### E. Automated Testing
+
 - [ ] Add or update pytest test suites for every feature and bug fix.
 - [ ] Mock external HTTP calls using `responses` or `unittest.mock`.
 - [ ] Execute `pytest` with `PYTHONPATH=.` to ensure a 100% green test suite.

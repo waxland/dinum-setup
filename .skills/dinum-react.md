@@ -11,6 +11,7 @@ This skill defines the procedures and engineering standards to apply whenever cr
 ## 🎯 1. Activation Scope
 
 Activate this skill when working on:
+
 - React components (`.tsx`, `.jsx`)
 - TypeScript & JavaScript modules (`.ts`, `.js`)
 - CSS stylesheets, tokens, and theme configurations
@@ -34,24 +35,28 @@ Activate this skill when working on:
 ## 📋 3. Mandatory Implementation Checklist
 
 ### A. Pre-flight Inspection
+
 - [ ] Inspect `package.json` and already installed UI libraries.
 - [ ] Inspect TypeScript compiler rules, ESLint/Biome, and Prettier configurations.
 - [ ] Reuse existing design system primitives (`@codegouvfr/react-dsfr`, Cunningham tokens).
 - [ ] Never add a third-party package if an existing dependency already solves the problem.
 
 ### B. TypeScript Quality & Typing
+
 - [ ] **Zero `any`** : create explicit domain interfaces.
 - [ ] **Zero forced casts (`as ...`)** without documented technical justification.
 - [ ] Fully type component `props` and API contracts.
 - [ ] Explicitly model nullable and optional states (`null | undefined`).
 
 ### C. React Component Architecture
+
 - [ ] Modular, single-responsibility components.
 - [ ] Derive state during render instead of synchronizing with `useEffect`.
-- [ ] Systematically design the 6 UI states: *Initial, Loading, Success, Empty, Recoverable Error, Disabled*.
+- [ ] Systematically design the 6 UI states: _Initial, Loading, Success, Empty, Recoverable Error, Disabled_.
 - [ ] Avoid premature memoization (`useMemo`/`useCallback` without clear benchmarks).
 
 ### D. RGAA v4.1 AA Accessibility
+
 - [ ] Use semantic HTML elements before reaching for ARIA.
 - [ ] 100% keyboard navigable with visible focus ring (`Tab`, `Arrows`, `Escape`, `Enter`).
 - [ ] Explicit accessible names on all interactive elements (`aria-label` or visible text).
@@ -59,6 +64,7 @@ Activate this skill when working on:
 - [ ] Color contrast ratio $\ge 4.5:1$.
 
 ### E. Testing & Verification
+
 - [ ] Update and maintain existing tests (Vitest / Playwright).
 - [ ] Test user-observable behaviour rather than internal implementation details.
 - [ ] Run `npm run packages:test` or `npm run test:e2e` before completion.

@@ -15,6 +15,7 @@ This skill defines the engineering and software architecture standards applicabl
 ## 🎯 Activation Scope
 
 Activate this skill whenever work touches:
+
 - `.tsx`, `.ts`, `.jsx`, `.js`
 - Frontend CSS / styling / design tokens
 - React components and custom hooks
@@ -42,7 +43,9 @@ When recommendations conflict, apply this strict precedence:
 ## 📋 Required Behaviour & Engineering Checklist
 
 ### 1. Inspect before modifying
+
 Before writing code:
+
 - Inspect `package.json` for installed dependencies and script names.
 - Inspect TypeScript configuration (`tsconfig.json`).
 - Inspect ESLint / Biome / Prettier / Stylelint configurations.
@@ -52,7 +55,9 @@ Before writing code:
 - Never replace repository conventions simply because another DINUM project uses a different convention.
 
 ### 2. Uniform source code
+
 DINUM/beta.gouv expects source code to be uniform and automatically checked:
+
 - Follow the repository formatter and linter.
 - Follow TypeScript compiler rules (`tsc --noEmit`).
 - Never disable lint rules without a justified reason; never add broad `eslint-disable`.
@@ -62,7 +67,9 @@ DINUM/beta.gouv expects source code to be uniform and automatically checked:
 - Preserve import conventions already used by the project.
 
 ### 3. TypeScript (Strict & Explicit)
+
 When TypeScript is available:
+
 - Prefer TypeScript over untyped JavaScript.
 - Avoid `any` strictly.
 - Prefer precise domain types and explicit interfaces.
@@ -73,7 +80,9 @@ When TypeScript is available:
 - Avoid duplicated types when a canonical type already exists.
 
 ### 4. React component design
+
 Prefer:
+
 - Small cohesive components with single responsibilities.
 - Explicit props and composition.
 - Clear ownership of state.
@@ -82,6 +91,7 @@ Prefer:
 - Reusable domain logic outside JSX when appropriate.
 
 Avoid:
+
 - Giant components handling unrelated responsibilities.
 - Unnecessary effects (`useEffect`) used to compute values that can be calculated during rendering.
 - Duplicated state.
@@ -89,20 +99,24 @@ Avoid:
 - Deeply nested conditional JSX when extracting a component improves readability.
 
 ### 5. Side effects and asynchronous work
+
 For asynchronous data:
+
 - Respect the project's existing query/fetching abstraction (e.g. TanStack Query, SWR, or dedicated API clients).
 - Handle all 6 interface states:
-  1. *Initial state*
-  2. *Loading state*
-  3. *Success state*
-  4. *Empty state*
-  5. *Recoverable error state*
-  6. *Disabled / unauthorized state*
+  1. _Initial state_
+  2. _Loading state_
+  3. _Success state_
+  4. _Empty state_
+  5. _Recoverable error state_
+  6. _Disabled / unauthorized state_
 - Prevent stale or race-prone state.
 - Do not introduce direct ad-hoc `fetch` calls if the project exposes an API client.
 
 ### 6. Accessibility (RGAA v4.1 AA) — Mandatory
+
 Accessibility is part of implementation, not an optional post-processing task:
+
 - Apply DesignGouv, RGAA v4.1 (Level AA), and La Suite accessibility principles.
 - Use semantic HTML first (`<button>`, `<a>`, `<nav>`, `<main>`, `<dialog>`) before adding ARIA.
 - Do not add ARIA when native HTML provides the required semantics.
@@ -116,7 +130,9 @@ Accessibility is part of implementation, not an optional post-processing task:
 - Contrast ratio must be $\ge 4.5:1$ for normal text and $\ge 3:1$ for UI components.
 
 ### 7. Tests & Quality Gates
+
 beta.gouv standards expect automated testing:
+
 - Identify and update existing tests when behaviour changes.
 - Add regression tests for bugs.
 - Test user-visible behaviour rather than implementation details.
@@ -124,6 +140,7 @@ beta.gouv standards expect automated testing:
 - Critical user flows must have integration/E2E protection when an E2E framework exists.
 
 ### 8. Security and Privacy
+
 - Never hard-code secrets or API tokens.
 - Never expose server-only secrets to browser bundles (`VITE_`, `NEXT_PUBLIC_`).
 - Never trust client-side authorization: always enforce authorization server-side.
@@ -131,11 +148,14 @@ beta.gouv standards expect automated testing:
 - Never use `dangerouslySetInnerHTML` without proving that content is sanitized (e.g. DOMPurify).
 
 ### 9. Design Systems (DSFR & Cunningham)
+
 - If the project uses DSFR (`@codegouvfr/react-dsfr`), Cunningham (`@openfun/cunningham-tokens`), or La Suite UI Kit, reuse existing components and tokens before writing custom CSS.
 - Never hardcode arbitrary hex colors when an official CSS variable exists (e.g. `--blue-france-sun-113: #000091`, `--red-marianne-425: #E1000F`).
 
 ### 10. Final Verification Checklist
+
 Before declaring a React/frontend task complete:
+
 1. Review the diff.
 2. Remove debugging code.
 3. Verify semantics and keyboard accessibility.

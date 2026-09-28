@@ -41,6 +41,7 @@ class SourceSearchResult(TypedDict):
     provider: NotRequired[str]
     origin: NotRequired[Literal["demo", "upstream"]]
     delivery: NotRequired[Literal["live", "cache"]]
+    country: NotRequired[str]
     retrieved_at: NotRequired[str]
     entity_type: SourceEntityType
     display_mode: DisplayMode

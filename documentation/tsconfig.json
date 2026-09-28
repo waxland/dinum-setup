@@ -16,11 +16,5 @@
       "@suitenumerique/slash-sources-sdk/*": ["../packages/slash-sources-sdk/src/*"]
     }
   },
-  "include": [
-    "src",
-    "docs",
-    "zudoku.config.tsx",
-    "zudoku.navigation.tsx",
-    "vite.config.ts"
-  ]
+  "include": ["src", "docs", "zudoku.config.tsx", "zudoku.navigation.tsx", "vite.config.ts"]
 }

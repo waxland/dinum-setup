@@ -4,7 +4,6 @@ sidebar_label: "Slasheur Assemblée"
 description: "Hub de la commande /assemblee : suivi des projets de loi, amendements en séance, fiches députés et benchmark claire.vite vs Tricoteuse."
 ---
 
-
 La commande **`/assemblee`** (alias **`/assemble`**, **`/an`**, **`/amendement`**, **`/depute`**, **`/loi-an`**) permet aux conseillers ministériels, chargés de mission législatifs et directions d'administration centrale d'insérer en temps réel le suivi des projets de loi, les fiches amendements et les résultats des scrutins publics dans **La Suite Docs**.
 
 Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le cadrage métier parlementaire, la veille sur les APIs de l'Assemblée et le raccordement au socle commun.
@@ -72,6 +71,7 @@ Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le
     DjangoProxy -.->|5. DTO normalisé SourceSearchResult| SearchPopover
     SearchPopover -->|"6. Insertion du bloc"| YDoc
     YDoc <==>|7. Synchronisation Temps Réel| YjsServer
+
 `} />
 
 ---
@@ -79,6 +79,7 @@ Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le
 ## 🧩 Formats d'Affichage Disponibles
 
 Conformément au **[Socle Technique Unifié](/08-slash/00-socle-technique)** :
+
 - 📢 **Format Callout** : Fiche de banc complète avec dispositif, avis du gouvernement et sort.
 - 🗂️ **Format Carte** : Encart avec groupe politique, auteur, article visé et date de vote.
 - 🔗 **Format Lien** : Mention inline `🏛️ Amdt n° 142 (Art. 4) — Adopté`.

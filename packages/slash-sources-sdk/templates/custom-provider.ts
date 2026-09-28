@@ -3,11 +3,7 @@
  * in under 15 minutes with @suitenumerique/slash-sources-sdk.
  */
 
-import {
-    defineSourceProvider,
-    type SourceEntityProps,
-    type SourceSuggestResult,
-} from '../src';
+import { defineSourceProvider, type SourceEntityProps, type SourceSuggestResult } from "../src";
 
 export interface MyMinistryApiItem {
   id: string;
@@ -15,7 +11,7 @@ export interface MyMinistryApiItem {
   label: string;
   full_description?: string;
   procedure_url?: string;
-  status: 'ACTIVE' | 'ARCHIVED' | 'PENDING';
+  status: "ACTIVE" | "ARCHIVED" | "PENDING";
   published_at?: string;
 }
 

@@ -8,18 +8,15 @@ export type MermaidProps = {
   caption?: string;
 };
 
-export const Mermaid: React.FC<MermaidProps> = ({
-  chart,
-  children,
-  title,
-  caption,
-}) => {
+export const Mermaid: React.FC<MermaidProps> = ({ chart, children, title, caption }) => {
   const content = (chart || children || "").trim();
   const containerRef = useRef<HTMLDivElement>(null);
   const [svg, setSvg] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [zoom, setZoom] = useState<number>(1);
+  const triggerRef = useRef<HTMLElement | null>(null);
+  const closeBtnRef = useRef<HTMLButtonElement | null>(null);
   const rawId = useId();
   const id = `mermaid-${rawId.replace(/[^a-zA-Z0-9_-]/g, "")}`;
 
@@ -132,6 +129,7 @@ export const Mermaid: React.FC<MermaidProps> = ({
   }, [isFullscreen]);
 
   const handleOpenFullscreen = useCallback(() => {
+    triggerRef.current = document.activeElement as HTMLElement;
     setIsFullscreen(true);
     setZoom(1);
   }, []);
@@ -139,7 +137,16 @@ export const Mermaid: React.FC<MermaidProps> = ({
   const handleCloseFullscreen = useCallback(() => {
     setIsFullscreen(false);
     setZoom(1);
+    setTimeout(() => {
+      triggerRef.current?.focus();
+    }, 0);
   }, []);
+
+  useEffect(() => {
+    if (isFullscreen) {
+      closeBtnRef.current?.focus();
+    }
+  }, [isFullscreen]);
 
   const handleZoomIn = useCallback(() => {
     setZoom((z) => Math.min(Number((z + 0.25).toFixed(2)), 3));
@@ -208,9 +215,7 @@ export const Mermaid: React.FC<MermaidProps> = ({
               dangerouslySetInnerHTML={{ __html: svg }}
             />
           ) : (
-            <div className="text-gray-400 text-sm italic">
-              Loading diagram...
-            </div>
+            <div className="text-gray-400 text-sm italic">Loading diagram...</div>
           )}
         </div>
 
@@ -229,6 +234,7 @@ export const Mermaid: React.FC<MermaidProps> = ({
             className="fixed inset-0 z-50 flex flex-col bg-white/95 dark:bg-gray-950/95 backdrop-blur-md p-4 sm:p-6 animate-in fade-in duration-200"
             role="dialog"
             aria-modal="true"
+            aria-label={title || "Architecture Diagram"}
           >
             {/* Top Toolbar */}
             <div className="flex items-center justify-between gap-4 pb-4 border-b border-gray-200 dark:border-gray-800 shrink-0">
@@ -238,11 +244,7 @@ export const Mermaid: React.FC<MermaidProps> = ({
                   <h3 className="text-base font-bold text-gray-900 dark:text-gray-100">
                     {title || "Architecture Diagram"}
                   </h3>
-                  {caption && (
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      {caption}
-                    </p>
-                  )}
+                  {caption && <p className="text-xs text-gray-500 dark:text-gray-400">{caption}</p>}
                 </div>
               </div>
 
@@ -301,6 +303,7 @@ export const Mermaid: React.FC<MermaidProps> = ({
                 </div>
 
                 <button
+                  ref={closeBtnRef}
                   type="button"
                   onClick={handleCloseFullscreen}
                   title="Close fullscreen (Esc)"

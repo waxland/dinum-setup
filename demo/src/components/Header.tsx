@@ -59,7 +59,9 @@ export const Header: React.FC<HeaderProps> = ({
               id="language-select"
               value={currentLocale}
               onChange={(e) => {
-                if (e.target.value === 'fr' || e.target.value === 'en') { onLocaleChange(e.target.value); }
+                if (e.target.value === "fr" || e.target.value === "en") {
+                  onLocaleChange(e.target.value);
+                }
               }}
               className="sober-select"
             >
@@ -77,11 +79,7 @@ export const Header: React.FC<HeaderProps> = ({
             {isDark ? "☀️ Clair" : "🌙 Sombre"}
           </button>
 
-          <button
-            type="button"
-            onClick={onReset}
-            className="sober-btn sober-btn-danger"
-          >
+          <button type="button" onClick={onReset} className="sober-btn sober-btn-danger">
             {t.reset}
           </button>
         </div>

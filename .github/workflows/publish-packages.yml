@@ -3,25 +3,45 @@ name: Publication des Packages Souverains
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 jobs:
   quality:
     uses: ./.github/workflows/ci-packages.yml
 
-  publish-npm:
+  verify-version:
     needs: quality
-    name: Publish npm packages
+    name: Verify Tag and Package Version Coherence
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Verify Tag matches package.json and pyproject.toml
+        run: node scripts/check-tag-version.mjs "${{ github.ref_name }}"
+
+  publish-npm:
+    needs: [quality, verify-version]
+    name: Publish npm packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          registry-url: "https://registry.npmjs.org/"
 
       - name: Install dependencies & Build
         run: |
@@ -32,29 +52,41 @@ jobs:
       - name: Publish slash-sources-sdk
         run: |
           cd packages/slash-sources-sdk
-          npm publish --access public
+          if [ -n "$NODE_AUTH_TOKEN" ]; then
+            npm publish --access public
+          else
+            echo "⚠️ NODE_AUTH_TOKEN not set: dry-run publish"
+            npm publish --access public --dry-run
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish blocknote-sources
         run: |
           cd packages/blocknote-sources
-          npm publish --access public
+          if [ -n "$NODE_AUTH_TOKEN" ]; then
+            npm publish --access public
+          else
+            echo "⚠️ NODE_AUTH_TOKEN not set: dry-run publish"
+            npm publish --access public --dry-run
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-pypi:
-    needs: quality
+    needs: [quality, verify-version]
     name: Publish django-lasuite-sources to PyPI
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install build tools
         run: python -m pip install --upgrade pip build twine
@@ -65,8 +97,12 @@ jobs:
           python -m build
 
       - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          packages-dir: packages/django-lasuite-sources/dist/
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          if [ -n "$PYPI_API_TOKEN" ]; then
+            python -m twine upload --repository pypi packages/django-lasuite-sources/dist/* -u __token__ -p "$PYPI_API_TOKEN"
+          else
+            echo "⚠️ PYPI_API_TOKEN not set: dry-run twine check"
+            python -m twine check packages/django-lasuite-sources/dist/*
+          fi
+        env:
+          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}

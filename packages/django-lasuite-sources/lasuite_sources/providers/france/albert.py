@@ -2,9 +2,15 @@
 
 import logging
 import os
+import unicodedata
 from typing import List, Optional
 
-from lasuite_sources.demo import DemoSourceProvider
+from django.conf import settings
+from django.utils import timezone
+
+from lasuite_sources.base import BaseSourceProvider
+from lasuite_sources.errors import SourceUnavailable
+from lasuite_sources.transport import get_json
 from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
 
 logger = logging.getLogger(__name__)
@@ -44,10 +50,12 @@ MOCK_ALBERT_RESULTS: List[SourceSearchResult] = [
 ]
 
 
-class AlbertSourceProvider(DemoSourceProvider):
+class AlbertSourceProvider(BaseSourceProvider):
     """
     Sovereign RAG AI provider using Albert API (Etalab / DINUM).
     Provides factual, source-backed answers to administrative & legal questions.
+    Requires server-side ALBERT_API_KEY environment variable.
+    When unconfigured, stays explicitly disabled (is_enabled=False).
     """
 
     source_type = "custom"
@@ -55,18 +63,18 @@ class AlbertSourceProvider(DemoSourceProvider):
 
     def __init__(self):
         self.api_url = os.getenv("ALBERT_API_URL", ALBERT_DEFAULT_URL).rstrip("/")
-        self.api_key = os.getenv("ALBERT_API_KEY", "")
-        self.mock_mode = os.getenv("ALBERT_MOCK_ENABLED", "true").lower() in (
-            "true",
-            "1",
-            "yes",
-        )
+        self.api_key = os.getenv("ALBERT_API_KEY", "").strip()
 
     def is_enabled(self) -> bool:
-        return super().is_enabled()
+        """
+        In live mode, enabled only if ALBERT_API_KEY is configured.
+        In demo mode, enabled if LASUITE_SOURCES_DEMO is True.
+        """
+        if getattr(settings, "LASUITE_SOURCES_DEMO", False):
+            return True
+        return bool(self.api_key)
 
     def suggest(self, query: str, limit: int = 5) -> List[SourceSuggestResult]:
-        results = self.search(query=query, limit=limit)
         return [
             {
                 "id": r["source_id"],
@@ -74,14 +82,130 @@ class AlbertSourceProvider(DemoSourceProvider):
                 "subtitle": r["subtitle"] or "",
                 "type": "custom",
             }
-            for r in results
+            for r in self.search(query=query, limit=limit)
         ]
 
     def search(self, query: str, limit: int = 10) -> List[SourceSearchResult]:
-        return self.demo_search(MOCK_ALBERT_RESULTS, query, limit)
+        if not query or not query.strip():
+            return []
+
+        bounded_limit = min(max(1, limit), 50)
+
+        if getattr(settings, "LASUITE_SOURCES_DEMO", False):
+
+            def normalize(value: str) -> str:
+                return "".join(
+                    c
+                    for c in unicodedata.normalize("NFKD", value.casefold())
+                    if not unicodedata.combining(c)
+                )
+
+            norm_query = normalize(query.strip())
+            return [
+                {
+                    **item,
+                    "origin": "demo",
+                    "provider": self.source_type,
+                    "verified_at": None,
+                    "status": "Demonstration",
+                }
+                for item in MOCK_ALBERT_RESULTS
+                if norm_query in normalize(item["title"])
+                or norm_query in normalize(item.get("excerpt", ""))
+                or norm_query in normalize(item.get("summary", ""))
+            ][:bounded_limit]
+
+        if not self.api_key:
+            raise SourceUnavailable("Albert API key (ALBERT_API_KEY) not configured")
+
+        # Official Albert API /v1/search endpoint call with server-side Bearer token
+        try:
+            data = get_json(
+                f"{self.api_url}/search",
+                allowed_hosts=frozenset({"albert.api.etalab.gouv.fr"}),
+                params={"q": query.strip(), "limit": bounded_limit},
+            )
+        except Exception as err:
+            logger.warning("Albert API live request failed: %s", err)
+            raise SourceUnavailable("Albert API service unavailable") from err
+
+        if not isinstance(data, dict) or not isinstance(data.get("results"), list):
+            raise SourceUnavailable("Invalid Albert API response format")
+
+        results: List[SourceSearchResult] = []
+        for item in data["results"][:bounded_limit]:
+            if not isinstance(item, dict):
+                continue
+            s_id = item.get("id") or item.get("source_id")
+            title = item.get("title")
+            if not s_id or not title:
+                continue
+            results.append(
+                {
+                    "source_id": str(s_id),
+                    "entity_type": "custom",
+                    "display_mode": "callout",
+                    "title": str(title),
+                    "subtitle": item.get("subtitle", "IA Souveraine Albert"),
+                    "status": "Certifié Albert RAG",
+                    "status_color": "purple",
+                    "meta1": item.get("source", "DINUM / Albert"),
+                    "meta2": item.get("model", "Albert-v2"),
+                    "meta3": f"Confiance : {item.get('score', '90')}%",
+                    "excerpt": item.get("excerpt") or item.get("snippet", ""),
+                    "summary": item.get("summary", ""),
+                    "url": item.get("url", "https://albert.etalab.gouv.fr"),
+                    "verified_at": item.get("verified_at"),
+                    "retrieved_at": timezone.now().isoformat(),
+                    "provider": self.source_type,
+                    "origin": "upstream",
+                    "raw_payload": item.get("raw_payload", {}),
+                }
+            )
+        return results
 
     def get_detail(self, source_id: str) -> Optional[SourceSearchResult]:
-        for item in MOCK_ALBERT_RESULTS:
-            if item["source_id"] == source_id:
-                return self.demo_results([item])[0]
-        return None
+        if getattr(settings, "LASUITE_SOURCES_DEMO", False):
+            for item in MOCK_ALBERT_RESULTS:
+                if item["source_id"] == source_id:
+                    return {
+                        **item,
+                        "origin": "demo",
+                        "provider": self.source_type,
+                        "verified_at": None,
+                        "status": "Demonstration",
+                    }
+            return None
+
+        if not self.api_key:
+            raise SourceUnavailable("Albert API key (ALBERT_API_KEY) not configured")
+
+        try:
+            data = get_json(
+                f"{self.api_url}/documents/{source_id}",
+                allowed_hosts=frozenset({"albert.api.etalab.gouv.fr"}),
+                params={},
+            )
+        except Exception:
+            return None
+
+        if not isinstance(data, dict):
+            return None
+
+        return {
+            "source_id": str(data.get("id", source_id)),
+            "entity_type": "custom",
+            "display_mode": "callout",
+            "title": str(data.get("title", "")),
+            "subtitle": str(data.get("subtitle", "")),
+            "status": "Certifié Albert RAG",
+            "status_color": "purple",
+            "excerpt": str(data.get("excerpt", "")),
+            "summary": str(data.get("summary", "")),
+            "url": str(data.get("url", "https://albert.etalab.gouv.fr")),
+            "verified_at": data.get("verified_at"),
+            "retrieved_at": timezone.now().isoformat(),
+            "provider": self.source_type,
+            "origin": "upstream",
+            "raw_payload": data.get("raw_payload", {}),
+        }

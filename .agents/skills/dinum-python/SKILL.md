@@ -15,6 +15,7 @@ This skill defines the engineering standards applicable across backend Python se
 ## 🎯 Activation Scope
 
 Activate this skill whenever work touches:
+
 - Python source files (`.py`)
 - Django & Django REST Framework applications
 - FastAPI or other Python APIs
@@ -41,12 +42,15 @@ When recommendations conflict, apply this strict precedence:
 ## 📋 Required Behaviour & Engineering Checklist
 
 ### 1. Inspect repository rules first
+
 Before modifying Python:
+
 - Inspect `pyproject.toml`, `ruff.toml`, `.flake8`, `setup.cfg`, `pytest.ini`, and CI workflows.
 - Repository configuration always wins (e.g. Ruff with 88 characters wins over the historical handbook 99-character suggestion).
 - Do not change project-wide formatting rules as part of an unrelated task.
 
 ### 2. Style, automated linting & imports
+
 - Obey the project's configured formatter and linter (Ruff, Flake8, Black, isort).
 - Do not manually fight the formatter or disable lint checks globally.
 - Group imports into 6 distinct logical sections:
@@ -60,18 +64,22 @@ Before modifying Python:
 - Do not leave commented-out code or debug `print()` statements.
 
 ### 3. Documentation & intent
+
 - Public modules, classes, and functions must explain their purpose.
 - Follow existing repository docstring conventions.
 - Docstrings should explain intent and invariants, not merely paraphrase function names.
 
 ### 4. Functions & architecture
+
 Prefer:
+
 - Small cohesive functions with explicit inputs and outputs.
 - Early returns when simplifying control flow.
 - Clear domain boundaries and dependency injection for testability.
 - Pure functions for domain calculations.
 
 Avoid:
+
 - Large multipurpose functions.
 - Hidden global mutable state.
 - Boolean-parameter explosions.
@@ -79,18 +87,21 @@ Avoid:
 - Catching exceptions only to ignore them (`except Exception: pass`).
 
 ### 5. Type hints
+
 - Annotate public interfaces, parameters, and return types.
 - Model `None` explicitly (`Optional[T]` / `T | None`).
 - Avoid unnecessary `Any`.
 - Do not add type assertions solely to hide design flaws.
 
 ### 6. Errors & exception handling
+
 - Errors must be explicit, actionable, and properly scoped.
 - Never silently swallow unexpected exceptions.
 - Do not expose internal traceback details or sensitive data in HTTP responses.
 - Use stable machine-readable error schemas and correct HTTP status codes at API boundaries.
 
 ### 7. Django & database practices
+
 - Prevent $N+1$ queries using `select_related()` and `prefetch_related()`.
 - Wrap multi-table mutations inside atomic transactions (`transaction.atomic`).
 - Avoid expensive operations inside loops over querysets.
@@ -98,14 +109,18 @@ Avoid:
 - Enforce authorization strictly server-side (never trust the client).
 
 ### 8. Defensive security
+
 Follow La Suite security principles:
+
 - Never version secrets or hardcode passwords/tokens.
 - Mandatory anti-SSRF validation on outgoing HTTP requests (block private IP ranges: `127.0.0.0/8`, `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `169.254.169.254`).
 - Circuit Breaker and strict timeouts (3.5s max) on external API dependencies.
 - Never deserialize untrusted data with unsafe mechanisms (e.g. raw `pickle`).
 
 ### 9. Automated testing
+
 beta.gouv standards require automated testing:
+
 - Update existing tests and add regression tests for bug fixes.
 - Test critical business rules and failure paths.
 - Mock external network calls with `responses` or `unittest.mock`.
@@ -113,7 +128,9 @@ beta.gouv standards require automated testing:
 - Run `PYTHONPATH=. pytest` before declaring task complete.
 
 ### 10. Technical documentation
+
 Update technical documentation when a change introduces:
+
 - New dependencies
 - New environment variables
 - New background workers / Celery tasks
@@ -121,7 +138,9 @@ Update technical documentation when a change introduces:
 - Architecture modifications
 
 ### 11. Final Verification Checklist
+
 Before declaring a Python task complete:
+
 1. Review the diff.
 2. Remove debugging statements.
 3. Run the configured formatter / check mode.
@@ -144,4 +163,3 @@ Before declaring a Python task complete:
 - [beta.gouv — Unit & E2E Testing Standard](https://github.com/betagouv/standards/blob/main/qualit%C3%A9-logicielle/le-code-est-instrumente-par-des-tests-unitaires-et-des-tests-e2e.md)
 - [beta.gouv — Technical Documentation Standard](https://github.com/betagouv/standards/blob/main/qualit%C3%A9-logicielle/les-aspects-techniques-du-produit-sont-documentes.md)
 - [La Suite Docs Backend Configuration](https://github.com/suitenumerique/docs/blob/main/src/backend/pyproject.toml)
-

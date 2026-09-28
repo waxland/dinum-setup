@@ -4,7 +4,6 @@ sidebar_label: "Types"
 description: Complete TypeScript reference for ExternalSourceEntity, ExternalSourceSuggestResult, and DisplayMode types.
 ---
 
-
 The `@slasher/sdk` package exports strict, zero-dependency TypeScript interfaces with zero use of `any`:
 
 ---
@@ -12,14 +11,14 @@ The `@slasher/sdk` package exports strict, zero-dependency TypeScript interfaces
 ## 🧩 `ExternalSourceEntity`
 
 ```typescript
-export type ExternalSourceDisplayMode = 'callout' | 'card' | 'link';
+export type ExternalSourceDisplayMode = "callout" | "card" | "link";
 
 export type ExternalSourceStatus =
-  | 'valid'       // In force / En vigueur / In Kraft / Geldend / En vigor
-  | 'repealed'    // Repealed / Abrogé / Außer Kraft / Vervallen / Derogado
-  | 'pending'     // Pending / En cours / In Beratung / En trámite
-  | 'archived'    // Archived / Archivé / Archiviert / Archivado
-  | 'custom';
+  | "valid" // In force / En vigueur / In Kraft / Geldend / En vigor
+  | "repealed" // Repealed / Abrogé / Außer Kraft / Vervallen / Derogado
+  | "pending" // Pending / En cours / In Beratung / En trámite
+  | "archived" // Archived / Archivé / Archiviert / Archivado
+  | "custom";
 
 export interface ExternalSourceEntity {
   id?: string;
@@ -33,8 +32,8 @@ export interface ExternalSourceEntity {
   url?: string;
   status?: ExternalSourceStatus | string;
   statusLabel?: string;
-  statusColor?: 'blue' | 'green' | 'yellow' | 'red' | 'purple' | 'gray';
-  statusBadgeColor?: 'success' | 'warning' | 'error' | 'info' | 'neutral';
+  statusColor?: "blue" | "green" | "yellow" | "red" | "purple" | "gray";
+  statusBadgeColor?: "success" | "warning" | "error" | "info" | "neutral";
   borderColor?: string;
   displayMode: ExternalSourceDisplayMode;
   metadata?: Record<string, string | number | boolean>;

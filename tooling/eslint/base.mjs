@@ -11,7 +11,7 @@ export const baseConfig = {
     "no-console": ["warn", { allow: ["warn", "error"] }],
     "no-debugger": "error",
     "no-duplicate-imports": "error",
-    "curly": ["error", "all"],
-    "eqeqeq": ["error", "always"],
+    curly: ["error", "all"],
+    eqeqeq: ["error", "always"],
   },
 };

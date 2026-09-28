@@ -10,6 +10,7 @@ exécute les contrôles adaptés et npm run docs:build, puis relis le diff.
 Ne masque aucun échec et n’affaiblis aucun test pour obtenir un succès.
 
 Mets à jour PLAN_ACTIONS.md et le suivi .sessions/ :
+
 - coche uniquement ce qui est réellement terminé et vérifié ;
 - précise les commandes exécutées, résultats et preuves ;
 - laisse ouverts les éléments partiels, bloqués ou non vérifiés ;

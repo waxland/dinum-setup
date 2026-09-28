@@ -1,0 +1,45 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-09-28",
+  "default_startup_status": "no_index_autopopulated",
+  "summary": "No local index dataset is auto-populated on default startup. All 53 connectors operate in direct live HTTPS mode or explicit demo_only mode. Local indexing capabilities are provided by BulkDatasetIngestionEngine for scheduled ingestion, SHA-256 fingerprinting, versioning, and cache-backed index reconstruction.",
+  "engine": "lasuite_sources.ingestion.BulkDatasetIngestionEngine",
+  "indexes": [
+    {
+      "dataset_name": "canadabuys_sample",
+      "category": "procurement",
+      "format": "CSV",
+      "source": "CanadaBuys Open Government Portal",
+      "default_version": "2026.09.18",
+      "operational_status": "template_only",
+      "ingestion_engine": "BulkDatasetIngestionEngine",
+      "sha256_verification": true,
+      "reconstruction_supported": true,
+      "description": "Federal Canadian procurement tenders and awards sample CSV stream."
+    },
+    {
+      "dataset_name": "dvf_sample",
+      "category": "property",
+      "format": "CSV",
+      "source": "Demandes de Valeurs Foncières (DGFiP / Etalab)",
+      "default_version": "2026.04.01",
+      "operational_status": "template_only",
+      "ingestion_engine": "BulkDatasetIngestionEngine",
+      "sha256_verification": true,
+      "reconstruction_supported": true,
+      "description": "French real estate transactions and land value requests sample CSV stream."
+    },
+    {
+      "dataset_name": "boamp_sample",
+      "category": "procurement",
+      "format": "JSONL",
+      "source": "Bulletin Officiel des Annonces des Marchés Publics (DILA)",
+      "default_version": "2026.09.20",
+      "operational_status": "template_only",
+      "ingestion_engine": "BulkDatasetIngestionEngine",
+      "sha256_verification": true,
+      "reconstruction_supported": true,
+      "description": "French official public procurement notices sample JSON Lines stream."
+    }
+  ]
+}

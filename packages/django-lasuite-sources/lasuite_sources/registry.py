@@ -4,6 +4,8 @@ import hashlib
 import importlib.metadata
 import logging
 import threading
+import time
+import uuid
 from typing import Callable, Dict, List, Optional
 
 from django.conf import settings
@@ -12,7 +14,7 @@ from django.core.cache import caches
 from lasuite_sources.base import BaseSourceProvider
 from lasuite_sources.demo import DemoSourceProvider
 from lasuite_sources.errors import SourceRateLimited, SourceUnavailable
-from lasuite_sources.quota import ProviderHealthInfo, quota_manager
+from lasuite_sources.quota import ProviderHealthInfo, quota_manager, sanitize_redis_url
 from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
 
 logger = logging.getLogger(__name__)
@@ -44,8 +46,8 @@ class SourceProviderRegistry:
             with cls._lock:
                 if cls._instance is None:
                     cls._instance = super().__new__(cls)
-                    cls._instance._providers = {}  # noqa: SLF001 - initialize this class's singleton
-                    cls._instance._discovered = False  # noqa: SLF001 - initialize this class's singleton
+                    cls._instance._providers = {}  # noqa: SLF001
+                    cls._instance._discovered = False  # noqa: SLF001
         return cls._instance
 
     def discover_entry_points(self) -> None:
@@ -63,14 +65,25 @@ class SourceProviderRegistry:
         # Plugin constructors may call back into this registry. Never run them
         # while holding the registry lock; other discoverers wait for completion.
         try:
-            for ep in importlib.metadata.entry_points(group=ENTRY_POINT_GROUP):
+            try:
+                eps = list(importlib.metadata.entry_points(group=ENTRY_POINT_GROUP))
+            except Exception:
+                logger.warning(
+                    "Could not query entry points for group '%s'.", ENTRY_POINT_GROUP
+                )
+                eps = []
+
+            for ep in eps:
                 try:
                     provider = ep.load()()
                     if not isinstance(provider, BaseSourceProvider):
                         raise TypeError("Entry point must provide a BaseSourceProvider")
                     self.register(provider)
-                except Exception:  # noqa: BLE001 - isolate arbitrary third-party plugins
-                    logger.warning("Could not load source plugin '%s'.", ep.name)
+                except Exception:
+                    logger.warning(
+                        "Could not load source plugin '%s'.",
+                        getattr(ep, "name", "unknown"),
+                    )
         finally:
             with self._discovery_condition:
                 self._discovered = True
@@ -134,37 +147,130 @@ class SourceProviderRegistry:
         identity: str,
         user_id: Optional[str],
         fetch: Callable[[], T],
+        correlation_id: Optional[str] = None,
     ) -> tuple[T, bool]:
         """Share policy across search, suggestion, detail and background callers."""
+        start_time = time.monotonic()
+        cid = correlation_id or uuid.uuid4().hex[:12]
         source_type = provider.source_type
+
         if user_id and not quota_manager.check_user_rate_limit(user_id, source_type):
+            duration_ms = round((time.monotonic() - start_time) * 1000, 2)
+            logger.info(
+                "Source request telemetry: correlation_id=%s provider=%s operation=%s outcome=rate_limited duration_ms=%.2f",
+                cid,
+                source_type,
+                operation,
+                duration_ms,
+            )
             raise SourceRateLimited("User rate limit reached")
+
         mode = "demo" if getattr(settings, "LASUITE_SOURCES_DEMO", False) else "live"
         digest = hashlib.sha256(repr((identity, user_id)).encode()).hexdigest()
         key = f"source:v3:{mode}:{operation}:{source_type}:{digest}"
         storage = caches[getattr(settings, "LASUITE_SOURCES_CACHE_ALIAS", "default")]
-        cached = storage.get(key)
+        try:
+            cached = storage.get(key)
+        except Exception as err:
+            logger.warning(
+                "Cache read failed for key %s: %s", key, sanitize_redis_url(str(err))
+            )
+            cached = None
+
         if cached is not None:
+            duration_ms = round((time.monotonic() - start_time) * 1000, 2)
+            count = (
+                len(cached)
+                if isinstance(cached, list)
+                else (1 if cached is not None else 0)
+            )
+            logger.info(
+                "Source request telemetry: correlation_id=%s provider=%s operation=%s outcome=cache_hit duration_ms=%.2f count=%d mode=%s",
+                cid,
+                source_type,
+                operation,
+                duration_ms,
+                count,
+                mode,
+            )
             return cached, True
+
         is_demo = isinstance(provider, DemoSourceProvider) or mode == "demo"
         if not is_demo and not quota_manager.reserve_request(source_type):
+            duration_ms = round((time.monotonic() - start_time) * 1000, 2)
+            logger.info(
+                "Source request telemetry: correlation_id=%s provider=%s operation=%s outcome=quota_refused duration_ms=%.2f mode=%s",
+                cid,
+                source_type,
+                operation,
+                duration_ms,
+                mode,
+            )
             raise SourceUnavailable("Provider budget or circuit unavailable")
+
         try:
             result = fetch()
         except Exception as error:
+            duration_ms = round((time.monotonic() - start_time) * 1000, 2)
             if not is_demo:
-                quota_manager.record_request_failure(
-                    source_type,
-                    status_code=getattr(error, "status_code", None),
-                    retry_after=getattr(error, "retry_after", None),
-                )
-            logger.warning("Source operation failed: %s / %s", source_type, operation)
+                try:
+                    quota_manager.record_request_failure(
+                        source_type,
+                        status_code=getattr(error, "status_code", None),
+                        retry_after=getattr(error, "retry_after", None),
+                    )
+                except Exception as rec_err:
+                    logger.warning(
+                        "Failed to record failure for %s: %s",
+                        source_type,
+                        sanitize_redis_url(str(rec_err)),
+                    )
+            logger.warning(
+                "Source request telemetry: correlation_id=%s provider=%s operation=%s outcome=upstream_error duration_ms=%.2f mode=%s error=%s",
+                cid,
+                source_type,
+                operation,
+                duration_ms,
+                mode,
+                sanitize_redis_url(str(error)),
+            )
             raise SourceUnavailable("Provider operation unavailable") from error
-        if not is_demo:
-            quota_manager.record_request_success(source_type)
-        storage.set(
-            key, result, timeout=getattr(settings, "LASUITE_SOURCES_CACHE_TTL", 86400)
+
+        duration_ms = round((time.monotonic() - start_time) * 1000, 2)
+        count = (
+            len(result)
+            if isinstance(result, list)
+            else (1 if result is not None else 0)
         )
+        logger.info(
+            "Source request telemetry: correlation_id=%s provider=%s operation=%s outcome=live_success duration_ms=%.2f count=%d mode=%s",
+            cid,
+            source_type,
+            operation,
+            duration_ms,
+            count,
+            mode,
+        )
+
+        if not is_demo:
+            try:
+                quota_manager.record_request_success(source_type)
+            except Exception as rec_err:
+                logger.warning(
+                    "Failed to record success for %s: %s",
+                    source_type,
+                    sanitize_redis_url(str(rec_err)),
+                )
+        try:
+            storage.set(
+                key,
+                result,
+                timeout=getattr(settings, "LASUITE_SOURCES_CACHE_TTL", 86400),
+            )
+        except Exception as err:
+            logger.warning(
+                "Cache write failed for key %s: %s", key, sanitize_redis_url(str(err))
+            )
         return result, False
 
     def _require_provider(self, source_type: str) -> BaseSourceProvider:
@@ -179,6 +285,7 @@ class SourceProviderRegistry:
         query: str,
         limit: int = 10,
         user_id: Optional[str] = None,
+        correlation_id: Optional[str] = None,
     ) -> List[SourceSearchResult]:
         """Search with a user-scoped, versioned cache and explicit delivery metadata."""
         provider = self._require_provider(source_type)
@@ -189,11 +296,12 @@ class SourceProviderRegistry:
             repr((normalized, limit)),
             user_id,
             lambda: provider.search(query=normalized, limit=limit),
+            correlation_id=correlation_id,
         )
         return [
             {
-                **item,
                 "provider": provider.source_type,
+                **item,
                 "delivery": "cache" if cached else "live",
             }
             for item in result
@@ -205,6 +313,7 @@ class SourceProviderRegistry:
         query: str,
         limit: int = 5,
         user_id: Optional[str] = None,
+        correlation_id: Optional[str] = None,
     ) -> List[SourceSuggestResult]:
         """Autocomplete uses the same admission control as full search."""
         provider = self._require_provider(source_type)
@@ -214,6 +323,7 @@ class SourceProviderRegistry:
             repr((query.strip(), limit)),
             user_id,
             lambda: provider.suggest(query=query.strip(), limit=limit),
+            correlation_id=correlation_id,
         )
         return result
 
@@ -222,6 +332,7 @@ class SourceProviderRegistry:
         source_type: str,
         source_id: str,
         user_id: Optional[str] = None,
+        correlation_id: Optional[str] = None,
     ) -> Optional[SourceSearchResult]:
         """Detail requests cannot bypass rate limits, circuit state or cache isolation."""
         provider = self._require_provider(source_type)
@@ -231,12 +342,13 @@ class SourceProviderRegistry:
             source_id,
             user_id,
             lambda: provider.get_detail(source_id),
+            correlation_id=correlation_id,
         )
         if result is None:
             return None
         return {
-            **result,
             "provider": provider.source_type,
+            **result,
             "delivery": "cache" if cached else "live",
         }
 

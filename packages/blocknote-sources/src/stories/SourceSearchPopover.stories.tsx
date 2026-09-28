@@ -1,15 +1,15 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
-import { demoSearchClient } from '../demoSearchClient';
-import { SourceSearchPopover } from '../components/SourceSearchPopover';
+import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
+import { demoSearchClient } from "../demoSearchClient";
+import { SourceSearchPopover } from "../components/SourceSearchPopover";
 
 const meta: Meta<typeof SourceSearchPopover> = {
-  title: 'BlockNote Sources/Components/SourceSearchPopover',
+  title: "BlockNote Sources/Components/SourceSearchPopover",
   component: SourceSearchPopover,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   args: { client: demoSearchClient, onSelect: fn(), onCancel: fn() },
 };
 
@@ -18,18 +18,18 @@ type Story = StoryObj<typeof SourceSearchPopover>;
 
 export const DefaultLawSearch: Story = {
   args: {
-    initialType: 'law',
+    initialType: "law",
   },
 };
 
 export const CompanySearch: Story = {
   args: {
-    initialType: 'company',
+    initialType: "company",
   },
 };
 
 export const ProcurementSearch: Story = {
   args: {
-    initialType: 'procurement',
+    initialType: "procurement",
   },
 };

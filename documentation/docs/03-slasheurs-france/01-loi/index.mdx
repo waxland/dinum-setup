@@ -4,7 +4,6 @@ sidebar_label: "Slasheur Loi"
 description: "Hub complet de la commande /loi : accès au droit officiel, hiérarchie des normes, benchmark API PISTE vs Albert et implémentation sur le socle commun."
 ---
 
-
 La commande **`/loi`** (alias **`/law`**, **`/legifrance`**, **`/code`**, **`/article`**, **`/decret`**) permet aux agents publics d'accéder au droit positif français directement au fil de leur rédaction dans **La Suite Docs**.
 
 Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le cadrage métier, la veille sur les APIs juridiques et le raccordement au socle technique unifié.
@@ -70,6 +69,7 @@ Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le
     DjangoProxy -.->|5. DTO normalisé SourceSearchResult| SearchPopover
     SearchPopover -->|"6. Insertion du bloc"| YDoc
     YDoc <==>|7. Synchronisation Temps Réel| YjsServer
+
 `} />
 
 ---
@@ -77,6 +77,7 @@ Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le
 ## 🧩 Formats d'Affichage Disponibles
 
 Conformément au **[Socle Technique Unifié](/08-slash/00-socle-technique)**, les articles insérés sont déclinables en :
+
 - 📢 **Format Callout (Encadré DSFR)** : Reproduction intégrale du texte légal certifié avec badge `VIGUEUR`.
 - 🗂️ **Format Carte (Card DSFR)** : Synthèse avec code, article, date d'effet et lien officiel.
 - 🔗 **Format Lien (Inline Badge)** : Pastille compacte cliquable dans la phrase avec popover au survol.

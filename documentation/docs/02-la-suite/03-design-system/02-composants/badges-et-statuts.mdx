@@ -80,9 +80,7 @@ export function Statuts() {
 <p class="fr-badge fr-badge--sm fr-badge--info">v1.0</p>
 
 <!-- Tag Cliquable -->
-<button class="fr-tag" aria-pressed="true" type="button">
-  Label sélectionné
-</button>
+<button class="fr-tag" aria-pressed="true" type="button">Label sélectionné</button>
 ```
 
 ---
@@ -99,12 +97,7 @@ interface TagProps {
   onRemove?: () => void;
 }
 
-export const Tag: React.FC<TagProps> = ({
-  label,
-  selected = false,
-  onToggle,
-  onRemove,
-}) => {
+export const Tag: React.FC<TagProps> = ({ label, selected = false, onToggle, onRemove }) => {
   return (
     <span
       onClick={onToggle}

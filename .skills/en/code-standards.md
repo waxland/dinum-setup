@@ -48,6 +48,7 @@ flowchart TD
 ## 🛡️ Rule 1: Zero `any` and Zero Abusive Type Casting
 
 ### ❌ Anti-patterns (Strictly Forbidden)
+
 ```typescript
 // ❌ FORBIDDEN: Using any
 const handleSelect = (item: any) => { ... };
@@ -59,24 +60,33 @@ const props = block.props as unknown as SourceEntityProps;
 ```
 
 ### ✅ Best Practices (Mandatory)
+
 ```typescript
 // ✅ RECOMMENDED: Define explicit interfaces and use SDK exported types
-import { BlockConfig, BlockNoDefaults, BlockNoteEditor } from '@blocknote/core';
+import { BlockConfig, BlockNoDefaults, BlockNoteEditor } from "@blocknote/core";
 
 export type CreateSourceBlockConfig = BlockConfig<
-  'sourceBlock',
+  "sourceBlock",
   {
-    entityType: { default: 'law' };
-    displayMode: { default: 'callout' };
-    sourceId: { default: '' };
-    title: { default: '' };
+    entityType: { default: "law" };
+    displayMode: { default: "callout" };
+    sourceId: { default: "" };
+    title: { default: "" };
   },
-  'none'
+  "none"
 >;
 
 interface SourceComponentProps {
-  block: BlockNoDefaults<Record<'sourceBlock', CreateSourceBlockConfig>, InlineContentSchema, StyleSchema>;
-  editor: BlockNoteEditor<Record<'sourceBlock', CreateSourceBlockConfig>, InlineContentSchema, StyleSchema>;
+  block: BlockNoDefaults<
+    Record<"sourceBlock", CreateSourceBlockConfig>,
+    InlineContentSchema,
+    StyleSchema
+  >;
+  editor: BlockNoteEditor<
+    Record<"sourceBlock", CreateSourceBlockConfig>,
+    InlineContentSchema,
+    StyleSchema
+  >;
 }
 ```
 
@@ -95,12 +105,14 @@ In La Suite applications (e.g., Docs / Impress), **Tailwind CSS is prohibited in
    - Official React components: `@codegouvfr/react-dsfr`.
 
 ### ❌ Anti-patterns (Forbidden)
+
 ```tsx
 // ❌ FORBIDDEN: Arbitrary Tailwind utility classes
 <div className="flex flex-row items-center gap-4 bg-blue-600 text-white p-4 rounded-lg shadow-md">
 ```
 
 ### ✅ Best Practices (Required)
+
 ```tsx
 // ✅ RECOMMENDED: Cunningham Box and Tokens
 import { Box } from '@openfun/cunningham-react';
@@ -132,6 +144,7 @@ BlockNote uses Mantine internally under `@mantine/core`. However, **custom UI co
 ## 📋 Rule 4: Verification & Enforcement
 
 Before submitting code, ensure:
+
 1. `npx tsc --noEmit` returns **0 errors**.
 2. Zero occurrences of `any`, `as any`, or `as unknown as` in the modified files.
 3. Zero Tailwind class injections in Cunningham/DSFR-only packages.

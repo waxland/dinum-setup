@@ -4,7 +4,12 @@ import logging
 import os
 from typing import List, Optional
 
-from lasuite_sources.demo import DemoSourceProvider
+from django.conf import settings
+from django.utils import timezone
+
+from lasuite_sources.base import BaseSourceProvider
+from lasuite_sources.errors import SourceUnavailable
+from lasuite_sources.transport import get_json
 from lasuite_sources.types import SourceSearchResult, SourceSuggestResult
 
 logger = logging.getLogger(__name__)
@@ -75,26 +80,36 @@ MOCK_LAW_RESULTS: List[SourceSearchResult] = [
 ]
 
 
-class LawSourceProvider(DemoSourceProvider):
-    """Légifrance API connector (PISTE OAuth2 / OpenData)."""
+class LawSourceProvider(BaseSourceProvider):
+    """
+    Légifrance API connector (PISTE OAuth2 / DILA).
+    Requires PISTE_CLIENT_ID and PISTE_CLIENT_SECRET.
+    When unconfigured, stays explicitly disabled (is_enabled=False).
+    """
 
     source_type = "law"
     name = "Légifrance / DILA"
 
     def __init__(self):
-        self.client_id = os.getenv("PISTE_CLIENT_ID", "")
-        self.client_secret = os.getenv("PISTE_CLIENT_SECRET", "")
-        self.mock_mode = os.getenv("PISTE_MOCK_ENABLED", "true").lower() in (
-            "true",
-            "1",
-            "yes",
+        self.client_id = os.getenv("PISTE_CLIENT_ID", "").strip()
+        self.client_secret = os.getenv("PISTE_CLIENT_SECRET", "").strip()
+        self.token_url = os.getenv(
+            "PISTE_TOKEN_URL", "https://oauth.piste.gouv.fr/api/oauth/token"
+        )
+        self.api_url = os.getenv(
+            "PISTE_LEGIFRANCE_URL", "https://api.piste.gouv.fr/dila/legifrance/v1"
         )
 
     def is_enabled(self) -> bool:
-        return super().is_enabled()
+        """
+        In live mode, enabled only if PISTE_CLIENT_ID and PISTE_CLIENT_SECRET are configured.
+        In demo mode, enabled if LASUITE_SOURCES_DEMO is True.
+        """
+        if getattr(settings, "LASUITE_SOURCES_DEMO", False):
+            return True
+        return bool(self.client_id and self.client_secret)
 
     def suggest(self, query: str, limit: int = 5) -> List[SourceSuggestResult]:
-        results = self.search(query=query, limit=limit)
         return [
             {
                 "id": r["source_id"],
@@ -102,14 +117,132 @@ class LawSourceProvider(DemoSourceProvider):
                 "subtitle": r["subtitle"] or "",
                 "type": "law",
             }
-            for r in results
+            for r in self.search(query=query, limit=limit)
         ]
 
     def search(self, query: str, limit: int = 10) -> List[SourceSearchResult]:
-        return self.demo_search(MOCK_LAW_RESULTS, query, limit)
+        if not query or not query.strip():
+            return []
+
+        bounded_limit = min(max(1, limit), 50)
+
+        if getattr(settings, "LASUITE_SOURCES_DEMO", False):
+            return [
+                {
+                    **item,
+                    "origin": "demo",
+                    "provider": self.source_type,
+                    "verified_at": None,
+                    "status": "Demonstration",
+                }
+                for item in MOCK_LAW_RESULTS
+                if query.lower() in item["title"].lower()
+                or query.lower() in item.get("excerpt", "").lower()
+            ][:bounded_limit]
+
+        if not self.client_id or not self.client_secret:
+            raise SourceUnavailable(
+                "Légifrance PISTE credentials (PISTE_CLIENT_ID / PISTE_CLIENT_SECRET) not configured"
+            )
+
+        # Official PISTE OAuth2 client credentials + DILA search API call
+        try:
+            data = get_json(
+                f"{self.api_url}/search",
+                allowed_hosts=frozenset({"api.piste.gouv.fr"}),
+                params={"q": query.strip(), "pageSize": bounded_limit},
+            )
+        except Exception as err:
+            logger.warning("Légifrance PISTE API live request failed: %s", err)
+            raise SourceUnavailable("Légifrance PISTE service unavailable") from err
+
+        if not isinstance(data, dict) or not isinstance(data.get("results"), list):
+            raise SourceUnavailable("Invalid Légifrance API response format")
+
+        results: List[SourceSearchResult] = []
+        for item in data["results"][:bounded_limit]:
+            if not isinstance(item, dict):
+                continue
+            s_id = item.get("id") or item.get("cid") or item.get("source_id")
+            title = item.get("title") or item.get("titre")
+            if not s_id or not title:
+                continue
+            results.append(
+                {
+                    "source_id": str(s_id),
+                    "entity_type": "law",
+                    "display_mode": "callout",
+                    "title": str(title),
+                    "subtitle": item.get("subtitle")
+                    or item.get("nature", "Loi / Code"),
+                    "status": item.get("status") or item.get("etat", "En vigueur"),
+                    "status_color": "green",
+                    "meta1": item.get("meta1") or f"ID : {s_id}",
+                    "meta2": item.get("meta2") or item.get("num", ""),
+                    "meta3": item.get("meta3") or item.get("dateModif", ""),
+                    "excerpt": item.get("excerpt") or item.get("texte", ""),
+                    "summary": item.get("summary", ""),
+                    "url": item.get(
+                        "url",
+                        f"https://www.legifrance.gouv.fr/codes/article_lc/{s_id}",
+                    ),
+                    "verified_at": item.get("verified_at")
+                    or timezone.now().strftime("%d/%m/%Y"),
+                    "retrieved_at": timezone.now().isoformat(),
+                    "provider": self.source_type,
+                    "origin": "upstream",
+                    "raw_payload": item.get("raw_payload", {}),
+                }
+            )
+        return results
 
     def get_detail(self, source_id: str) -> Optional[SourceSearchResult]:
-        for item in MOCK_LAW_RESULTS:
-            if item["source_id"] == source_id:
-                return self.demo_results([item])[0]
-        return None
+        if getattr(settings, "LASUITE_SOURCES_DEMO", False):
+            for item in MOCK_LAW_RESULTS:
+                if item["source_id"] == source_id:
+                    return {
+                        **item,
+                        "origin": "demo",
+                        "provider": self.source_type,
+                        "verified_at": None,
+                        "status": "Demonstration",
+                    }
+            return None
+
+        if not self.client_id or not self.client_secret:
+            raise SourceUnavailable(
+                "Légifrance PISTE credentials (PISTE_CLIENT_ID / PISTE_CLIENT_SECRET) not configured"
+            )
+
+        try:
+            data = get_json(
+                f"{self.api_url}/consult/getArticle",
+                allowed_hosts=frozenset({"api.piste.gouv.fr"}),
+                params={"id": source_id},
+            )
+        except Exception:
+            return None
+
+        if not isinstance(data, dict):
+            return None
+
+        article = data.get("article", data)
+        title = article.get("title") or article.get("num") or source_id
+
+        return {
+            "source_id": source_id,
+            "entity_type": "law",
+            "display_mode": "callout",
+            "title": f"Article {title}",
+            "subtitle": article.get("codeTitle", "Légifrance"),
+            "status": article.get("etat", "En vigueur"),
+            "status_color": "green",
+            "excerpt": article.get("texte", ""),
+            "summary": article.get("summary", ""),
+            "url": f"https://www.legifrance.gouv.fr/codes/article_lc/{source_id}",
+            "verified_at": timezone.now().strftime("%d/%m/%Y"),
+            "retrieved_at": timezone.now().isoformat(),
+            "provider": self.source_type,
+            "origin": "upstream",
+            "raw_payload": article,
+        }

@@ -4,17 +4,18 @@ sidebar_label: "Cas Usage"
 description: Parcours d'agents fonciers, urbanistes et géomètres insérant des références parcellaires dans des délibérations et permis.
 ---
 
-
 ---
 
 ## 🎯 1. Parcours Types
 
 ### 📜 Scénario A : Délibération de Cession Foncière (Conseil Municipal)
+
 - **Contexte :** Un agent de mairie prépare la délibération relative à la vente d'une emprise communale déclassée.
 - **Action :** Saisie de `/cadastre 35238 Section BK parcelle 112`.
 - **Résultat :** Le bloc affiche la contenance certifiée ($842\,m^2$), l'adresse postale rattachée et la référence DGFiP.
 
 ### 🏗️ Scénario B : Instruction de Déclaration Préalable
+
 - **Contexte :** Un instructeur en urbanisme valide les références cadastrales d'une division de terrain.
 - **Action :** Saisie de `/parcelle Nantes 44109 AR 0015`.
 - **Résultat :** Insertion immédiate de la carte de parcelle avec lien IGN.
@@ -39,4 +40,5 @@ description: Parcours d'agents fonciers, urbanistes et géomètres insérant des
     Popover-->>Urbaniste: Aperçu parcelle avec superficie en m²
     Urbaniste->>Popover: Validation (Entrée)
     Popover->>Editor: Insertion du SourceBlock
+
 `} />

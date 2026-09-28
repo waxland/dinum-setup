@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import { SourceBlockExportBlock } from '../types';
+import { SourceBlockExportBlock } from "../types";
 
 export interface GenericExporterODT {
   options: {
@@ -19,75 +19,57 @@ export const blockMappingSourceBlockODT = (
 
   const contentElements: React.ReactNode[] = [
     React.createElement(
-      'text:span',
-      { key: 'title', 'text:style-name': 'Bold' },
-      `[${props.entityType?.toUpperCase() || 'SOURCE'}] ${props.title || ''}`,
+      "text:span",
+      { key: "title", "text:style-name": "Bold" },
+      `[${props.entityType?.toUpperCase() || "SOURCE"}] ${props.title || ""}`,
     ),
   ];
 
   if (props.status) {
-    contentElements.push(
-      React.createElement(
-        'text:span',
-        { key: 'status' },
-        ` (${props.status})`,
-      ),
-    );
+    contentElements.push(React.createElement("text:span", { key: "status" }, ` (${props.status})`));
   }
 
   if (props.subtitle) {
     contentElements.push(
-      React.createElement('text:line-break', { key: 'br-sub' }),
-      React.createElement(
-        'text:span',
-        { key: 'sub' },
-        props.subtitle,
-      ),
+      React.createElement("text:line-break", { key: "br-sub" }),
+      React.createElement("text:span", { key: "sub" }, props.subtitle),
     );
   }
 
   if (metaParts.length > 0) {
     contentElements.push(
-      React.createElement('text:line-break', { key: 'br-meta' }),
-      React.createElement(
-        'text:span',
-        { key: 'meta' },
-        metaParts.join(' • '),
-      ),
+      React.createElement("text:line-break", { key: "br-meta" }),
+      React.createElement("text:span", { key: "meta" }, metaParts.join(" • ")),
     );
   }
 
   if (props.excerpt) {
     contentElements.push(
-      React.createElement('text:line-break', { key: 'br-exc' }),
-      React.createElement(
-        'text:span',
-        { key: 'exc' },
-        `« ${props.excerpt} »`,
-      ),
+      React.createElement("text:line-break", { key: "br-exc" }),
+      React.createElement("text:span", { key: "exc" }, `« ${props.excerpt} »`),
     );
   } else if (props.summary) {
     contentElements.push(
-      React.createElement('text:line-break', { key: 'br-sum' }),
-      React.createElement(
-        'text:span',
-        { key: 'sum' },
-        props.summary,
-      ),
+      React.createElement("text:line-break", { key: "br-sum" }),
+      React.createElement("text:span", { key: "sum" }, props.summary),
     );
   }
 
   if (props.url) {
     contentElements.push(
-      React.createElement('text:line-break', { key: 'br-url' }),
-      React.createElement('text:a', { key: 'url', 'xlink:href': props.url, 'xlink:type': 'simple' }, props.url),
+      React.createElement("text:line-break", { key: "br-url" }),
+      React.createElement(
+        "text:a",
+        { key: "url", "xlink:href": props.url, "xlink:type": "simple" },
+        props.url,
+      ),
     );
   }
 
   return React.createElement(
-    'text:p',
+    "text:p",
     {
-      'text:style-name': 'Standard',
+      "text:style-name": "Standard",
     },
     ...contentElements,
   );

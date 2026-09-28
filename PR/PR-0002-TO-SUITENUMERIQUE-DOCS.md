@@ -11,13 +11,13 @@ import { DocHeaderSummary } from "../../../src/components/DocHeaderSummary";
 # 📦 PR 2: Modular Integration of Sovereign Sources into La Suite Docs
 
 <DocHeaderSummary
-  readingTime="7 min"
-  level="Advanced"
-  roles={["Backend Django", "Frontend React", "Maintainer"]}
-  prerequisites={["suitenumerique/docs", "DCO signoff", "Gitmoji"]}
-  status="Ready for Upstream Review"
-  statusColor="success"
-  takeaway="Integrate 41+ sovereign public data connectors into La Suite Docs in under 10 lines of diff with zero core domain pollution."
+readingTime="7 min"
+level="Advanced"
+roles={["Backend Django", "Frontend React", "Maintainer"]}
+prerequisites={["suitenumerique/docs", "DCO signoff", "Gitmoji"]}
+status="Ready for Upstream Review"
+statusColor="success"
+takeaway="Integrate 41+ sovereign public data connectors into La Suite Docs in under 10 lines of diff with zero core domain pollution."
 />
 
 This document provides the **complete, production-ready Pull Request dossier** prepared according to the **`send-pr`**, **`dinum-python`**, **`dinum-react`**, and **`dpg-review`** skills for submission to [`suitenumerique/docs`](https://github.com/suitenumerique/docs).
@@ -26,15 +26,15 @@ This document provides the **complete, production-ready Pull Request dossier** p
 
 ## 📌 Executive Summary
 
-| Attribute | Specification |
-| :--- | :--- |
-| **Target Repository** | [`suitenumerique/docs`](https://github.com/suitenumerique/docs) |
-| **Target Branch** | `main` |
-| **Suggested Commit & PR Title** | `✨(sources) integrate modular sovereign sources with staged rollout` |
-| **Footprint on Docs** | **Fewer than 10 lines of code across 3 files** (0 new in-tree domain files). |
-| **Package Governance** | `@suitenumerique/blocknote-sources` (npm) and `django-lasuite-sources` (PyPI) by **waxland** under MIT License. |
-| **Security & Resilience** | Anti-SSRF URL filtering (`is_safe_external_url`), strict 3.5s timeout, circuit breakers, and Redis SHA-256 caching. |
-| **Progressive Rollout** | **Staged activation:** Enable only priority commands initially (e.g., `/loi` and `/entreprise`), then expand progressively via configuration. |
+| Attribute                       | Specification                                                                                                                                 |
+| :------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Target Repository**           | [`suitenumerique/docs`](https://github.com/suitenumerique/docs)                                                                               |
+| **Target Branch**               | `main`                                                                                                                                        |
+| **Suggested Commit & PR Title** | `✨(sources) integrate modular sovereign sources with staged rollout`                                                                         |
+| **Footprint on Docs**           | **Fewer than 10 lines of code across 3 files** (0 new in-tree domain files).                                                                  |
+| **Package Governance**          | `@suitenumerique/blocknote-sources` (npm) and `django-lasuite-sources` (PyPI) by **waxland** under MIT License.                               |
+| **Security & Resilience**       | Anti-SSRF URL filtering (`is_safe_external_url`), strict 3.5s timeout, circuit breakers, and Redis SHA-256 caching.                           |
+| **Progressive Rollout**         | **Staged activation:** Enable only priority commands initially (e.g., `/loi` and `/entreprise`), then expand progressively via configuration. |
 
 ---
 
@@ -47,33 +47,33 @@ Integrate sovereign public data connectors into La Suite Docs as decoupled, ligh
 
 ## Proposal
 
-* [x] Add `django-lasuite-sources` dependency and register `lasuite_sources` in Django `INSTALLED_APPS` and URLs.
-* [x] Add `@suitenumerique/blocknote-sources` to frontend BlockNote schema and slash suggestion menu.
-* [x] Enable staged rollout of connectors per public service domain (/loi, /entreprise, /marche, /adresse, /albert, etc.).
-* [x] Enforce universal accessibility (RGAA v4.1 AA / WCAG 2.1 AA) and 100% DSFR/Cunningham rendering.
+- [x] Add `django-lasuite-sources` dependency and register `lasuite_sources` in Django `INSTALLED_APPS` and URLs.
+- [x] Add `@suitenumerique/blocknote-sources` to frontend BlockNote schema and slash suggestion menu.
+- [x] Enable staged rollout of connectors per public service domain (/loi, /entreprise, /marche, /adresse, /albert, etc.).
+- [x] Enforce universal accessibility (RGAA v4.1 AA / WCAG 2.1 AA) and 100% DSFR/Cunningham rendering.
 
 ## External contributions
 
 ### General requirements
 
-* [x] I have read and followed the contributing guidelines
-* [x] I have read and agreed to the Code of Conduct
-* [x] I have added corresponding tests for new features or bug fixes (if applicable)
-* [x] Before submitting a PR for a new feature I made sure to contact the product manager
+- [x] I have read and followed the contributing guidelines
+- [x] I have read and agreed to the Code of Conduct
+- [x] I have added corresponding tests for new features or bug fixes (if applicable)
+- [x] Before submitting a PR for a new feature I made sure to contact the product manager
 
 ### CI requirements
 
-* [x] I made sure that all existing tests are passing
-* [x] I have signed off my commits with `git commit --signoff` (DCO compliance)
-* [x] I have signed my commits with my SSH or GPG key (`git commit -S`)
-* [x] My commit messages follow the required format: `<gitmoji>(type) title description`
-* [x] I have added a changelog entry under `## [Unreleased]` section (if noticeable change)
+- [x] I made sure that all existing tests are passing
+- [x] I have signed off my commits with `git commit --signoff` (DCO compliance)
+- [x] I have signed my commits with my SSH or GPG key (`git commit -S`)
+- [x] My commit messages follow the required format: `<gitmoji>(type) title description`
+- [x] I have added a changelog entry under `## [Unreleased]` section (if noticeable change)
 
 ### AI requirements
 
-* [x] I used AI assistance to produce part or all of this contribution
-* [x] I have read, reviewed, understood and can explain the code I am submitting
-* [x] I can jump in a call or a chat to explain my work to a maintainer
+- [x] I used AI assistance to produce part or all of this contribution
+- [x] I have read, reviewed, understood and can explain the code I am submitting
+- [x] I can jump in a call or a chat to explain my work to a maintainer
 ```
 
 ---
@@ -81,12 +81,16 @@ Integrate sovereign public data connectors into La Suite Docs as decoupled, ligh
 ## 🎯 1. Motivation & Staged Rollout Strategy
 
 ### 💡 Upstream Architecture
+
 **La Suite Docs** is an open digital commons (MIT license) used by French public bodies and international partners. To avoid bloating core application code, all ministerial and sovereign connectors are housed in two decoupled packages:
+
 - 🐍 **`django-lasuite-sources`** (Autonomous Django app with dynamic `entry_points` plugin discovery and 24h deterministic Redis cache).
 - 📦 **`@suitenumerique/blocknote-sources`** (BlockNote CustomBlock extension with 3 Marianne DSFR display formats: Callout, Card, Link).
 
 ### 🪜 Staged Rollout Plan
+
 This Pull Request enables the maintainers of **La Suite Docs** to selectively activate connectors per release:
+
 1. **Stage 1 (Pilot Phase):** Activate `/loi` (Légifrance) and `/entreprise` (Corporate Registry / INSEE).
 2. **Stage 2 (Public Procurement):** Activate `/marche` (BOAMP) and `/subvention` (Aides-Territoires).
 3. **Stage 3 (Territories & Geography):** Activate `/adresse` (BAN), `/stats` (INSEE Local Data), and `/cadastre` (DGFiP).
@@ -125,6 +129,7 @@ flowchart LR
 ### 🐍 2.1. Django Backend (`src/backend/`)
 
 #### 1. `src/backend/pyproject.toml`
+
 ```diff
 --- a/src/backend/pyproject.toml
 +++ b/src/backend/pyproject.toml
@@ -137,6 +142,7 @@ flowchart LR
 ```
 
 #### 2. `src/backend/core/conf/base.py`
+
 ```diff
 --- a/src/backend/core/conf/base.py
 +++ b/src/backend/core/conf/base.py
@@ -148,6 +154,7 @@ flowchart LR
 ```
 
 #### 3. `src/backend/core/urls.py`
+
 ```diff
 --- a/src/backend/core/urls.py
 +++ b/src/backend/core/urls.py
@@ -162,6 +169,7 @@ flowchart LR
 ### ⚛️ 2.2. Frontend Next.js / BlockNote (`src/frontend/apps/impress/`)
 
 #### 1. `package.json`
+
 ```diff
 --- a/src/frontend/apps/impress/package.json
 +++ b/src/frontend/apps/impress/package.json
@@ -172,6 +180,7 @@ flowchart LR
 ```
 
 #### 2. `src/features/docs/components/editor/schema.ts`
+
 ```diff
 --- a/src/features/docs/components/editor/schema.ts
 +++ b/src/features/docs/components/editor/schema.ts

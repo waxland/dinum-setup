@@ -11,7 +11,7 @@ This skill defines the standardized procedure for auditing rate limits, monitori
 ## 1. When to Use
 
 - Configuring per-provider daily quotas and safety margins.
-- Diagnosing upstream HTTP 429 *Too Many Requests* or 5xx outage incidents.
+- Diagnosing upstream HTTP 429 _Too Many Requests_ or 5xx outage incidents.
 - Verifying fallback to local cache and indexed registries when an external API is down.
 - Testing per-user burst rate limiting rules.
 - _Do not use for:_ system-wide architectural audits without quotas (use [Architecture Review Skill](architecture-review.md)).
@@ -38,6 +38,7 @@ curl -H "Authorization: Bearer $TOKEN" http://localhost:8000/api/v1.0/sources/st
 ```
 
 Verify the 5 possible states:
+
 - `healthy`: Quota healthy, live API connected.
 - `degraded`: Quota > 80% used; serving cache on priority.
 - `cached_only`: Circuit breaker open (following repeated 5xx errors or 429).
@@ -70,6 +71,7 @@ LASUITE_SOURCES_QUOTA_POLICIES = {
 ### Step 3: Verify HTTP 429 Retry-After Handling
 
 When an upstream API returns HTTP 429:
+
 1. Ensure the backend captures the `Retry-After` header value (in seconds).
 2. The circuit breaker must open immediately for that duration.
 3. Subsequent user queries must return cached data without hitting the external API.
@@ -77,6 +79,7 @@ When an upstream API returns HTTP 429:
 ### Step 4: Validate Non-Breaking Document Rendering
 
 Ensure that when a provider is in `cached_only` or `quota_exhausted` state:
+
 1. Existing document blocks continue to render their saved immutable snapshot.
 2. The search popover displays the `🕒 Cache Mode` badge without crashing.
 

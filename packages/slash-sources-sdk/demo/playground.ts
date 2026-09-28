@@ -1,4 +1,4 @@
-import { defineSourceProvider } from '../src';
+import { defineSourceProvider } from "../src";
 
 /**
  * Standalone SDK demonstration: creating an open data source connector

@@ -30,3 +30,20 @@ def test_invalid_provider_or_query_is_rejected(parameters):
     client = APIClient()
     client.force_authenticate(user=Mock(is_authenticated=True, id=1))
     assert client.get("/sources/search/", parameters).status_code == 400
+
+
+@pytest.mark.parametrize(
+    "source_id,expected_code",
+    [
+        ("x" * 257, 400),
+        ("", 404),  # URL routing without source_id
+        ("   ", 400),
+    ],
+)
+def test_invalid_detail_source_id_is_rejected(source_id, expected_code):
+    client = APIClient()
+    client.force_authenticate(user=Mock(is_authenticated=True, id=1))
+    response = client.get(f"/sources/law/{source_id}/")
+    assert response.status_code == expected_code
+    if expected_code == 400:
+        assert response.json().get("code") == "invalid_source_id"

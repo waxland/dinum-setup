@@ -14,30 +14,52 @@ SOURCE_ID = "LEGIARTI000037812976"
 
 
 @pytest.mark.parametrize(
-    "detail",
+    ("detail", "expected_reason"),
     [
-        None,
-        {"origin": "demo", "status": "En vigueur"},
-        {"origin": "upstream", "status": "En vigueur"},
-        {"origin": "upstream", "status": "inconnu", "verified_at": "2026-09-18"},
+        (None, "data_missing"),
+        ({"origin": "demo", "status": "En vigueur"}, "demo"),
+        ({"origin": "upstream", "status": "En vigueur"}, "unverified_data"),
+        (
+            {"origin": "upstream", "status": "inconnu", "verified_at": "2026-09-18"},
+            "unverified_data",
+        ),
     ],
 )
-def test_unverified_data_remains_unknown(monkeypatch, detail):
+def test_unverified_data_remains_unknown(monkeypatch, detail, expected_reason):
     lookup = Mock(return_value=detail)
     monkeypatch.setattr(source_registry, "detail_with_cache", lookup)
     result = check_laws_validity_task([{"content": SOURCE_ID}])
     lookup.assert_called_once_with("law", SOURCE_ID)
     assert result["unknown_laws_count"] == 1
+    assert result["reasons_breakdown"][expected_reason] == 1
     record = cache.get(f"law:validity:{SOURCE_ID}")
     assert record["is_abrogated"] is None
     assert record["checked_at"] is None
+    assert record["reason"] == expected_reason
 
 
-def test_failed_lookup_remains_unknown(monkeypatch):
+def test_failed_lookup_remains_unknown_with_provider_outage_reason(monkeypatch):
     monkeypatch.setattr(
         source_registry, "detail_with_cache", Mock(side_effect=SourceUnavailable())
     )
-    assert check_laws_validity_task([{"content": SOURCE_ID}])["unknown_laws_count"] == 1
+    result = check_laws_validity_task([{"content": SOURCE_ID}])
+    assert result["unknown_laws_count"] == 1
+    assert result["reasons_breakdown"]["provider_outage"] == 1
+    record = cache.get(f"law:validity:{SOURCE_ID}")
+    assert record["is_abrogated"] is None
+    assert record["checked_at"] is None
+    assert record["reason"] == "provider_outage"
+
+
+def test_disabled_provider_logs_provider_disabled_reason(monkeypatch):
+    monkeypatch.setattr(source_registry, "get_provider", Mock(return_value=None))
+    result = check_laws_validity_task([{"content": SOURCE_ID}])
+    assert result["unknown_laws_count"] == 1
+    assert result["reasons_breakdown"]["provider_disabled"] == 1
+    record = cache.get(f"law:validity:{SOURCE_ID}")
+    assert record["is_abrogated"] is None
+    assert record["checked_at"] is None
+    assert record["reason"] == "provider_disabled"
 
 
 @pytest.mark.parametrize(
@@ -59,6 +81,8 @@ def test_explicit_upstream_verification_preserves_timestamp(
     )
     result = check_laws_validity_task([{"content": SOURCE_ID}])
     assert result["unknown_laws_count"] == 0
+    assert result["reasons_breakdown"]["verified"] == 1
     record = cache.get(f"law:validity:{SOURCE_ID}")
     assert record["is_abrogated"] is abrogated
     assert record["checked_at"] == "2026-09-01T12:00:00Z"
+    assert record["reason"] == "verified"

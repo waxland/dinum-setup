@@ -19,7 +19,8 @@ export const COUNTRY_PRESETS: Record<SupportedCountry, CountryPresetConfig> = {
     name: "France",
     flag: "🇫🇷",
     defaultLocale: "fr",
-    description: "Connecteurs Souverains DINUM / République Française (Légifrance, Annuaire Entreprises, BAN, BOAMP...)",
+    description:
+      "Connecteurs Souverains DINUM / République Française (Légifrance, Annuaire Entreprises, BAN, BOAMP...)",
     buttons: [
       { type: "law", label: "/loi", icon: "⚖️", desc: "Légifrance / DILA" },
       { type: "company", label: "/entreprise", icon: "🏢", desc: "Annuaire Entreprises / RNE" },
@@ -40,7 +41,8 @@ export const COUNTRY_PRESETS: Record<SupportedCountry, CountryPresetConfig> = {
     name: "Deutschland",
     flag: "🇩🇪",
     defaultLocale: "de",
-    description: "Souveräne Konnektoren Bundesrepublik Deutschland (Gesetze im Internet, Handelsregister, OpenCoDE...)",
+    description:
+      "Souveräne Konnektoren Bundesrepublik Deutschland (Gesetze im Internet, Handelsregister, OpenCoDE...)",
     buttons: [
       { type: "law", label: "/gesetz", icon: "⚖️", desc: "Gesetze im Internet (BMJ)" },
       { type: "company", label: "/register", icon: "🏢", desc: "Gemeinsames Registerportal" },
@@ -53,7 +55,8 @@ export const COUNTRY_PRESETS: Record<SupportedCountry, CountryPresetConfig> = {
     name: "Nederland",
     flag: "🇳🇱",
     defaultLocale: "nl",
-    description: "Overheidsconnectoren Koninkrijk der Nederlanden (Wetten.overheid.nl, KVK, BAG, Open Webconcept...)",
+    description:
+      "Overheidsconnectoren Koninkrijk der Nederlanden (Wetten.overheid.nl, KVK, BAG, Open Webconcept...)",
     buttons: [
       { type: "law", label: "/wet", icon: "⚖️", desc: "Wetten.overheid.nl (KOOP)" },
       { type: "company", label: "/kvk", icon: "🏢", desc: "Kamer van Koophandel Handelsregister" },
@@ -66,11 +69,17 @@ export const COUNTRY_PRESETS: Record<SupportedCountry, CountryPresetConfig> = {
     name: "España",
     flag: "🇪🇸",
     defaultLocale: "es",
-    description: "Conectores Soberanos Reino de España (BOE, Registro Mercantil, Plataforma de Contratación, Catastro...)",
+    description:
+      "Conectores Soberanos Reino de España (BOE, Registro Mercantil, Plataforma de Contratación, Catastro...)",
     buttons: [
       { type: "law", label: "/ley", icon: "⚖️", desc: "Boletín Oficial del Estado (BOE)" },
       { type: "company", label: "/empresa", icon: "🏢", desc: "Registro Mercantil de España" },
-      { type: "procurement", label: "/licitacion", icon: "🛍️", desc: "Plataforma de Contratación del Estado" },
+      {
+        type: "procurement",
+        label: "/licitacion",
+        icon: "🛍️",
+        desc: "Plataforma de Contratación del Estado",
+      },
       { type: "cadastre", label: "/catastro", icon: "🗺️", desc: "Sede Electrónica del Catastro" },
     ],
   },
@@ -79,7 +88,8 @@ export const COUNTRY_PRESETS: Record<SupportedCountry, CountryPresetConfig> = {
     name: "European Union",
     flag: "🇪🇺",
     defaultLocale: "en",
-    description: "Pan-European Sovereign Connectors (EUR-Lex, Europarl, TED, Eurostat, Funding & Tenders, data.europa.eu...)",
+    description:
+      "Pan-European Sovereign Connectors (EUR-Lex, Europarl, TED, Eurostat, Funding & Tenders, data.europa.eu...)",
     buttons: [
       { type: "law", label: "/eurlex", icon: "⚖️", desc: "EUR-Lex (EU Law & Treaties)" },
       { type: "parliament", label: "/europarl", icon: "🏛️", desc: "European Parliament Open Data" },
@@ -97,14 +107,40 @@ export const COUNTRY_PRESETS: Record<SupportedCountry, CountryPresetConfig> = {
     name: "Canada",
     flag: "🇨🇦",
     defaultLocale: "en",
-    description: "Canadian Federal Sovereign Connectors (Justice Laws, Corporations Canada, LEGISinfo, StatCan, GeoNames...)",
+    description:
+      "Canadian Federal Sovereign Connectors (Justice Laws, Corporations Canada, LEGISinfo, StatCan, GeoNames...)",
     buttons: [
-      { type: "law", label: "/canlaw", icon: "⚖️", desc: "Justice Laws Canada (Statutes & Regulations)" },
-      { type: "company", label: "/corporation-ca", icon: "🏢", desc: "Corporations Canada Federal Registry" },
-      { type: "parliament", label: "/parliament-ca", icon: "🏛️", desc: "House of Commons & LEGISinfo" },
-      { type: "statistics", label: "/statcan", icon: "📊", desc: "Statistics Canada (StatCan WDS)" },
+      {
+        type: "law",
+        label: "/canlaw",
+        icon: "⚖️",
+        desc: "Justice Laws Canada (Statutes & Regulations)",
+      },
+      {
+        type: "company",
+        label: "/corporation-ca",
+        icon: "🏢",
+        desc: "Corporations Canada Federal Registry",
+      },
+      {
+        type: "parliament",
+        label: "/parliament-ca",
+        icon: "🏛️",
+        desc: "House of Commons & LEGISinfo",
+      },
+      {
+        type: "statistics",
+        label: "/statcan",
+        icon: "📊",
+        desc: "Statistics Canada (StatCan WDS)",
+      },
       { type: "opendata", label: "/opencanada", icon: "🌐", desc: "Open Government Canada (CKAN)" },
-      { type: "procurement", label: "/canadabuys", icon: "🛍️", desc: "CanadaBuys Federal Procurement" },
+      {
+        type: "procurement",
+        label: "/canadabuys",
+        icon: "🛍️",
+        desc: "CanadaBuys Federal Procurement",
+      },
       { type: "place", label: "/geonames-ca", icon: "📍", desc: "GeoNames Canada (RNCan)" },
     ],
   },

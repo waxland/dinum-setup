@@ -4,9 +4,6 @@ sidebar_label: "Standards"
 description: "Comprehensive software quality standards, React/TypeScript guidelines, Python/Django conventions, RGAA accessibility, and defensive security by DINUM."
 ---
 
-
-
-
 This document formalizes the **software engineering standards and quality guidelines** established by the **French Interministerial Digital Directorate (DINUM)**, **beta.gouv.fr**, and **La Suite Numérique**.
 
 ---
@@ -60,12 +57,14 @@ All contributions across this monorepo must adhere to the official state referen
 
 When technical guidelines appear to conflict across repositories, apply this strict precedence order:
 
-<Mermaid chart={`flowchart TD
+<Mermaid
+  chart={`flowchart TD
     P1["1. Explicit User Instruction"] --> P2["2. AGENTS.md / Repository Instructions"]
     P2 --> P3["3. Repository Configuration (pyproject.toml, package.json, CI)"]
     P3 --> P4["4. Existing Architectural & Project Conventions"]
     P4 --> P5["5. DINUM / beta.gouv / La Suite Recommendations"]
-    P5 --> P6["6. Generic Framework & Language Practices"]`} />
+    P5 --> P6["6. Generic Framework & Language Practices"]`}
+/>
 
 > 💡 **Example :** The historical La Suite handbook suggests PEP 8 with 99-character line lengths, whereas modern La Suite repositories configure Ruff with 88 characters. **Local repository configuration always wins.**
 
@@ -74,20 +73,24 @@ When technical guidelines appear to conflict across repositories, apply this str
 ## ⚛️ 3. Frontend Standards (React, TypeScript & DSFR)
 
 ### Pre-flight Inspection
+
 - Inspect `package.json`, `tsconfig.json`, and ESLint/Prettier configurations before authoring code.
 - Reuse existing primitives (`@codegouvfr/react-dsfr`, `@openfun/cunningham-tokens`) rather than introducing redundant packages.
 
 ### Strict TypeScript
+
 - **Zero `any`** and **zero unsafe type assertions (`as ...`)** without technical documentation.
 - Explicitly model nullable and optional states (`null | undefined`).
 - Provide complete prop types and API response schemas.
 
 ### React Component Architecture
+
 - Single-responsibility, cohesive components.
 - Derive state during render instead of creating synchronized `useEffect` chains.
-- Explicitly handle all 6 UI states: *Initial, Loading, Success, Empty, Recoverable Error, Disabled*.
+- Explicitly handle all 6 UI states: _Initial, Loading, Success, Empty, Recoverable Error, Disabled_.
 
 ### RGAA v4.1 AA Accessibility
+
 - Native semantic HTML elements (`<button>`, `<a>`, `<nav>`, `<main>`, `<dialog>`) before ARIA.
 - 100% keyboard navigable with visible focus indicators.
 - Text contrast ratio $\ge 4.5:1$ and UI components contrast $\ge 3:1$.
@@ -97,15 +100,18 @@ When technical guidelines appear to conflict across repositories, apply this str
 ## 🐍 4. Backend Standards (Python, Django & Security)
 
 ### Code Style & Imports
+
 - Enforce automated formatters and linters (Ruff / Black / isort).
 - Group imports into 6 logical blocks: `__future__`, standard library, frameworks (Django/DRF), third-party libraries, first-party modules, and local imports.
 
 ### Django & Database Robustness
+
 - Eliminate $N+1$ query overhead with `select_related()` and `prefetch_related()`.
 - Wrap critical multi-table operations in atomic transactions (`transaction.atomic`).
 - Ensure safe, backward-compatible, and idempotent database migrations.
 
 ### Defensive Security
+
 - Zero plaintext credentials or hard-coded tokens.
 - Mandatory anti-SSRF IP filtering on all outbound network requests.
 - Circuit breaker with strict timeouts (e.g. 3.5s) on external APIs.

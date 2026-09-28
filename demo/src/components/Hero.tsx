@@ -1,4 +1,8 @@
-import { SourceIcon, type SourceEntityType, type SupportedCountry } from "@suitenumerique/blocknote-sources";
+import {
+  SourceIcon,
+  type SourceEntityType,
+  type SupportedCountry,
+} from "@suitenumerique/blocknote-sources";
 import React from "react";
 import type { DemoTranslations } from "../i18n/types";
 import { COUNTRY_PRESETS } from "../presets.config";
@@ -10,12 +14,7 @@ interface HeroProps {
   t: DemoTranslations["hero"];
 }
 
-export const Hero: React.FC<HeroProps> = ({
-  currentCountry,
-  onCountryChange,
-  onInsert,
-  t,
-}) => {
+export const Hero: React.FC<HeroProps> = ({ currentCountry, onCountryChange, onInsert, t }) => {
   const activePreset = COUNTRY_PRESETS[currentCountry];
   const presets = Object.values(COUNTRY_PRESETS);
 
@@ -37,14 +36,22 @@ export const Hero: React.FC<HeroProps> = ({
               tabIndex={currentCountry === c ? 0 : -1}
               onClick={() => onCountryChange(c)}
               onKeyDown={(event) => {
-                if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) { return; }
+                if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) {
+                  return;
+                }
                 event.preventDefault();
-                const direction = event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? -1 : 1;
-                const index = (presets.findIndex((preset) => preset.country === c) + direction + presets.length) % presets.length;
+                const direction = event.key === "ArrowLeft" || event.key === "ArrowUp" ? -1 : 1;
+                const index =
+                  (presets.findIndex((preset) => preset.country === c) +
+                    direction +
+                    presets.length) %
+                  presets.length;
                 const next = presets[index];
                 if (next) {
                   onCountryChange(next.country);
-                  event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="radio"]')[index]?.focus();
+                  event.currentTarget.parentElement
+                    ?.querySelectorAll<HTMLButtonElement>('[role="radio"]')
+                    [index]?.focus();
                 }
               }}
               className={`sober-chip ${currentCountry === c ? "active" : ""}`}

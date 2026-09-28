@@ -33,24 +33,31 @@ The repository consists of distinct layers:
 Before creating, modifying, refactoring, or reviewing application code, consult **[`GUIDELINES.md`](./GUIDELINES.md)** and determine which DINUM engineering skill applies:
 
 ### React / Frontend
+
 For any work involving React, TypeScript, JavaScript, JSX/TSX, HTML, CSS, frontend components, Next.js, forms, or browser-side behaviour:
+
 1. **Read `.agents/skills/dinum-react/SKILL.md`** (or `.skills/dinum-react.md`) before implementation.
 2. Apply its rules throughout implementation and code review.
 3. Re-read its final verification section before declaring the task complete.
 4. Follow repository-local configuration whenever it conflicts with a generic recommendation in the skill.
 
 ### Python / Backend
+
 For any work involving Python, Django, Django REST Framework, Python APIs, workers, scripts, Python tests, or Python dependency/configuration files:
+
 1. **Read `.agents/skills/dinum-python/SKILL.md`** (or `.skills/dinum-python.md`) before implementation.
 2. Apply its rules throughout implementation and code review.
 3. Re-read its final verification section before declaring the task complete.
 4. Follow repository-local configuration whenever it conflicts with a generic recommendation in the skill.
 
 ### Full-Stack Changes
+
 If a task touches both Python and frontend code, read and apply both skills systematically.
 
 ### Mandatory Quality Gate
+
 Before considering implementation complete, the agent must:
+
 1. Inspect the resulting diff.
 2. Verify that relevant DINUM skill requirements were respected.
 3. Run the repository's relevant formatter / linter / type-check / test commands.
@@ -58,7 +65,7 @@ Before considering implementation complete, the agent must:
 5. Verify automated tests for changed behaviour.
 6. Report any checks that were not executed or could not be executed.
 
-*The agent must never state that a quality check passed unless that check was actually run.*
+_The agent must never state that a quality check passed unless that check was actually run._
 
 ---
 
@@ -66,23 +73,23 @@ Before considering implementation complete, the agent must:
 
 Before executing a task, load and read the detailed procedure from `.skills/en/` (or `.skills/` for French):
 
-| Task Intent / Topic | Skill to Load | English File | French File |
-| ------------------- | ------------- | ------------ | ----------- |
-| **DINUM & beta.gouv React Standards** | `dinum-react` | [`.skills/en/dinum-react.md`](.skills/en/dinum-react.md) | [`.skills/dinum-react.md`](.skills/dinum-react.md) |
-| **DINUM & La Suite Python Standards** | `dinum-python` | [`.skills/en/dinum-python.md`](.skills/en/dinum-python.md) | [`.skills/dinum-python.md`](.skills/dinum-python.md) |
-| **TypeScript Standards, Cunningham & Zero any/cast** | `code-standards` | [`.skills/en/code-standards.md`](.skills/en/code-standards.md) | [`.skills/code-standards.md`](.skills/code-standards.md) |
-| **DSFR Component or View** (Buttons, alerts, forms, tokens, theme) | `dsfr` | [`.skills/en/dsfr.md`](.skills/en/dsfr.md) | [`.skills/dsfr.md`](.skills/dsfr.md) |
-| **Accessibility Audit or Fix** (Keyboard, ARIA, contrasts, RGAA) | `rgaa-review` | [`.skills/en/rgaa-review.md`](.skills/en/rgaa-review.md) | [`.skills/rgaa-review.md`](.skills/rgaa-review.md) |
-| **Local Orchestration & Dev** (Makefile, Docker, PostgreSQL, ports) | `lasuite-dev` | [`.skills/en/lasuite-dev.md`](.skills/en/lasuite-dev.md) | [`.skills/lasuite-dev.md`](.skills/lasuite-dev.md) |
-| **MDX Documentation Authoring** (Zudoku, navigation, React components) | `docs-mdx` | [`.skills/en/docs-mdx.md`](.skills/en/docs-mdx.md) | [`.skills/docs-mdx.md`](.skills/docs-mdx.md) |
-| **Code Review / PR Audit** (Bugs, regressions, conventions, secrets) | `code-review` | [`.skills/en/code-review.md`](.skills/en/code-review.md) | [`.skills/code-review.md`](.skills/code-review.md) |
-| **Architecture Review** (Coupling, responsibilities, real-time/S3 flows) | `architecture-review` | [`.skills/en/architecture-review.md`](.skills/en/architecture-review.md) | [`.skills/architecture-review.md`](.skills/architecture-review.md) |
-| **Evolution Design & ADR** (New feature, option trade-offs, ADR) | `design-change` | [`.skills/en/design-change.md`](.skills/en/design-change.md) | [`.skills/design-change.md`](.skills/design-change.md) |
-| **Pull Request Submission & CI Validation** (Gitlint, Gitmoji, DCO) | `send-pr` | [`.skills/en/send-pr.md`](.skills/en/send-pr.md) | [`.skills/send-pr.md`](.skills/send-pr.md) |
-| **Package Versioning & Distribution** (SemVer, Wheels, Tarballs, CLI) | `package-versioning` | [`.skills/en/package-versioning.md`](.skills/en/package-versioning.md) | [`.skills/package-versioning.md`](.skills/package-versioning.md) |
-| **Quota Management & Resilience** (Rate Limits, Circuit Breaker, Caching) | `quota-resilience` | [`.skills/en/quota-resilience.md`](.skills/en/quota-resilience.md) | [`.skills/quota-resilience.md`](.skills/quota-resilience.md) |
-| **Sovereign Data Protocols & Client Libraries** (CKAN, SDMX, SPARQL, OGC) | `python-data-protocols` | [`.skills/en/python-data-protocols.md`](.skills/en/python-data-protocols.md) | [`.skills/python-data-protocols.md`](.skills/python-data-protocols.md) |
-| **Digital Public Goods (DPG) Compliance & Standard** (DPGA 9 Indicators, SDGs) | `dpg-review` | [`.skills/en/dpg-review.md`](.skills/en/dpg-review.md) | [`.skills/dpg-review.md`](.skills/dpg-review.md) |
+| Task Intent / Topic                                                            | Skill to Load           | English File                                                                 | French File                                                            |
+| ------------------------------------------------------------------------------ | ----------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| **DINUM & beta.gouv React Standards**                                          | `dinum-react`           | [`.skills/en/dinum-react.md`](.skills/en/dinum-react.md)                     | [`.skills/dinum-react.md`](.skills/dinum-react.md)                     |
+| **DINUM & La Suite Python Standards**                                          | `dinum-python`          | [`.skills/en/dinum-python.md`](.skills/en/dinum-python.md)                   | [`.skills/dinum-python.md`](.skills/dinum-python.md)                   |
+| **TypeScript Standards, Cunningham & Zero any/cast**                           | `code-standards`        | [`.skills/en/code-standards.md`](.skills/en/code-standards.md)               | [`.skills/code-standards.md`](.skills/code-standards.md)               |
+| **DSFR Component or View** (Buttons, alerts, forms, tokens, theme)             | `dsfr`                  | [`.skills/en/dsfr.md`](.skills/en/dsfr.md)                                   | [`.skills/dsfr.md`](.skills/dsfr.md)                                   |
+| **Accessibility Audit or Fix** (Keyboard, ARIA, contrasts, RGAA)               | `rgaa-review`           | [`.skills/en/rgaa-review.md`](.skills/en/rgaa-review.md)                     | [`.skills/rgaa-review.md`](.skills/rgaa-review.md)                     |
+| **Local Orchestration & Dev** (Makefile, Docker, PostgreSQL, ports)            | `lasuite-dev`           | [`.skills/en/lasuite-dev.md`](.skills/en/lasuite-dev.md)                     | [`.skills/lasuite-dev.md`](.skills/lasuite-dev.md)                     |
+| **MDX Documentation Authoring** (Zudoku, navigation, React components)         | `docs-mdx`              | [`.skills/en/docs-mdx.md`](.skills/en/docs-mdx.md)                           | [`.skills/docs-mdx.md`](.skills/docs-mdx.md)                           |
+| **Code Review / PR Audit** (Bugs, regressions, conventions, secrets)           | `code-review`           | [`.skills/en/code-review.md`](.skills/en/code-review.md)                     | [`.skills/code-review.md`](.skills/code-review.md)                     |
+| **Architecture Review** (Coupling, responsibilities, real-time/S3 flows)       | `architecture-review`   | [`.skills/en/architecture-review.md`](.skills/en/architecture-review.md)     | [`.skills/architecture-review.md`](.skills/architecture-review.md)     |
+| **Evolution Design & ADR** (New feature, option trade-offs, ADR)               | `design-change`         | [`.skills/en/design-change.md`](.skills/en/design-change.md)                 | [`.skills/design-change.md`](.skills/design-change.md)                 |
+| **Pull Request Submission & CI Validation** (Gitlint, Gitmoji, DCO)            | `send-pr`               | [`.skills/en/send-pr.md`](.skills/en/send-pr.md)                             | [`.skills/send-pr.md`](.skills/send-pr.md)                             |
+| **Package Versioning & Distribution** (SemVer, Wheels, Tarballs, CLI)          | `package-versioning`    | [`.skills/en/package-versioning.md`](.skills/en/package-versioning.md)       | [`.skills/package-versioning.md`](.skills/package-versioning.md)       |
+| **Quota Management & Resilience** (Rate Limits, Circuit Breaker, Caching)      | `quota-resilience`      | [`.skills/en/quota-resilience.md`](.skills/en/quota-resilience.md)           | [`.skills/quota-resilience.md`](.skills/quota-resilience.md)           |
+| **Sovereign Data Protocols & Client Libraries** (CKAN, SDMX, SPARQL, OGC)      | `python-data-protocols` | [`.skills/en/python-data-protocols.md`](.skills/en/python-data-protocols.md) | [`.skills/python-data-protocols.md`](.skills/python-data-protocols.md) |
+| **Digital Public Goods (DPG) Compliance & Standard** (DPGA 9 Indicators, SDGs) | `dpg-review`            | [`.skills/en/dpg-review.md`](.skills/en/dpg-review.md)                       | [`.skills/dpg-review.md`](.skills/dpg-review.md)                       |
 
 ---
 

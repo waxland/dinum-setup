@@ -17,23 +17,27 @@ npm install @suitenumerique/slash-sources-sdk
 ## 🚀 Build a Source Connector in < 15 min
 
 ```typescript
-import { defineSourceProvider } from '@suitenumerique/slash-sources-sdk';
+import { defineSourceProvider } from "@suitenumerique/slash-sources-sdk";
 
 export const justiceProvider = defineSourceProvider({
-  type: 'custom',
-  name: 'National Criminal Record',
-  iconName: 'gavel',
-  slashCommand: 'record',
-  slashAliases: ['justice', 'bulletin'],
-  description: 'Search and reference official Criminal Record notices',
+  type: "custom",
+  name: "National Criminal Record",
+  iconName: "gavel",
+  slashCommand: "record",
+  slashAliases: ["justice", "bulletin"],
+  description: "Search and reference official Criminal Record notices",
 
   suggest: async (query, limit = 5) => {
-    const response = await fetch(`/api/v1.0/sources/suggest/?type=justice&q=${encodeURIComponent(query)}&limit=${limit}`);
+    const response = await fetch(
+      `/api/v1.0/sources/suggest/?type=justice&q=${encodeURIComponent(query)}&limit=${limit}`,
+    );
     return await response.json();
   },
 
   search: async (query, limit = 10) => {
-    const response = await fetch(`/api/v1.0/sources/search/?type=justice&q=${encodeURIComponent(query)}&limit=${limit}`);
+    const response = await fetch(
+      `/api/v1.0/sources/search/?type=justice&q=${encodeURIComponent(query)}&limit=${limit}`,
+    );
     const data = await response.json();
     return data.results;
   },

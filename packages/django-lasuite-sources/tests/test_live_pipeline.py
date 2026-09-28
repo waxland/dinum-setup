@@ -23,13 +23,13 @@ def live_settings(settings):
 
 
 def test_demo_only_connectors_cannot_be_enabled_by_credentials(monkeypatch, settings):
-    monkeypatch.setenv("PISTE_CLIENT_ID", "test")
-    monkeypatch.setenv("PISTE_CLIENT_SECRET", "test")
-    monkeypatch.setenv("ALBERT_API_KEY", "test")
+    monkeypatch.delenv("PISTE_CLIENT_ID", raising=False)
+    monkeypatch.delenv("PISTE_CLIENT_SECRET", raising=False)
+    monkeypatch.delenv("ALBERT_API_KEY", raising=False)
     for provider in (LawSourceProvider(), AlbertSourceProvider()):
         assert not provider.is_enabled()
         with pytest.raises(SourceUnavailable):
-            provider.search("")
+            provider.search("commande")
     settings.LASUITE_SOURCES_DEMO = True
     result = LawSourceProvider().search("commande")[0]
     assert result["origin"] == "demo"

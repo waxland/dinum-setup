@@ -1,0 +1,121 @@
+---
+title: "Consumer Migration Guide"
+sidebar_label: "Migration Guide"
+description: Architectural migration guide for consumers connecting BlockNote.js to sovereign data sources.
+---
+
+# 🔄 Consumer Migration & Integration Guide
+
+This guide details the architectural principles and migration steps for host applications integrating `@suitenumerique/blocknote-sources` (such as **La Suite Docs**, **Projects**, or third-party React applications).
+
+---
+
+## 🏛️ Core Architectural Principles
+
+### 1. Injected Search Client (`SourceSearchProvider`)
+
+Host applications retain full control over networking, credentials, and API endpoints. No search functions, API keys, or JWT tokens are stored in the persisted BlockNote document JSON props.
+
+Consumers wrap their editor instance with `<SourceSearchProvider>`:
+
+```tsx
+import { SourceSearchProvider, createHttpSourceClient } from "@suitenumerique/blocknote-sources";
+
+// Create custom HTTP client targeting your backend proxy endpoint
+const customSearchClient = createHttpSourceClient(
+  "/api/v1.0/sources",
+  ({ entityType, country }) => (country === "fr" ? entityType : undefined),
+  "fr", // locale for error messages
+);
+
+export function AppEditor() {
+  return (
+    <SourceSearchProvider
+      value={{
+        client: customSearchClient,
+        country: "fr",
+        locale: "fr",
+      }}
+    >
+      <BlockNoteView editor={editor} />
+    </SourceSearchProvider>
+  );
+}
+```
+
+---
+
+### 2. Explicit Demo Mode (`demoSearchClient`)
+
+Static demonstration fixtures (`MOCK_SOURCES`, `ALL_INTERNATIONAL_MOCK_SOURCES`) are decoupled from production search routines.
+
+Applications running in playground, offline, or demo environments must pass `demoSearchClient` explicitly:
+
+```tsx
+import { SourceSearchProvider, demoSearchClient } from "@suitenumerique/blocknote-sources";
+
+export function DemoPlayground() {
+  return (
+    <SourceSearchProvider
+      value={{
+        client: demoSearchClient,
+        country: "ca",
+        locale: "en",
+      }}
+    >
+      <BlockNoteView editor={editor} />
+    </SourceSearchProvider>
+  );
+}
+```
+
+---
+
+### 3. Removal of Implicit Mock Fallbacks (Honest Error Handling)
+
+In previous versions, a failed network call might silently drop back to static fixtures. In the current release, **implicit mock fallbacks are completely removed**.
+
+When an HTTP endpoint returns a error or rate limit:
+
+- `HTTP 401 / 403`: Displays `"Authentication or authorization required."`
+- `HTTP 429`: Displays `"Rate limit exceeded. Try again later."`
+- `HTTP 503`: Displays `"Provider unavailable for this country."`
+
+Network errors are surfaced honestly in the search popover status bar rather than deceiving users with mock data.
+
+---
+
+### 4. Legacy Document Snapshots & Immutability
+
+Document JSON snapshots created with earlier versions (which lack fields such as `verifiedAt`, `retrievedAt`, `freshness`, `provider`, `origin`, `country`) remain 100% backward compatible:
+
+- **Offline Readability:** Legacy blocks render without errors or missing property exceptions.
+- **Immutability:** Re-loading and saving a legacy document offline does **not** inject default values or fake `verifiedAt` dates silently.
+- **Data Integrity:** `verifiedAt` is populated _only_ when the upstream provider explicitly provides a verification timestamp.
+
+```json
+/* Legacy Block Snapshot (Fully Supported) */
+{
+  "id": "legacy-block-001",
+  "type": "sourceBlock",
+  "props": {
+    "entityType": "law",
+    "displayMode": "callout",
+    "sourceId": "LEGITEXT000006070721",
+    "title": "Code Civil (Legacy Snapshot)",
+    "excerpt": "Les lois sont exécutoires dans tout le territoire français...",
+    "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006419280"
+  },
+  "content": []
+}
+```
+
+---
+
+### 5. Node.js & Tooling Runtime Requirements
+
+For monorepo builds, Zudoku SSR pre-rendering, and downstream host integrations:
+
+- **Node.js**: `>= 22.23.2`
+- **npm**: `>= 10.9.0`
+- **Python**: `>= 3.12` (for `django-lasuite-sources` backend)

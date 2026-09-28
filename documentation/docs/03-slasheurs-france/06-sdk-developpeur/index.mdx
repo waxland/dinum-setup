@@ -4,7 +4,6 @@ sidebar_label: "SDK Développeur"
 description: Guide officiel et référence du package @suitenumerique/slash-sources-sdk pour étendre La Suite Docs avec de nouvelles sources de données ministérielles.
 ---
 
-
 Le package **`@suitenumerique/slash-sources-sdk`** permet à n'importe quelle équipe ministérielle ou opérateur public de brancher une nouvelle **Source de Données Souveraine** dans **La Suite Docs** en moins de **15 minutes**.
 
 ---
@@ -18,15 +17,15 @@ Le package **`@suitenumerique/slash-sources-sdk`** permet à n'importe quelle é
 ## ⚡ 2. Création d'un Provider avec `defineSourceProvider`
 
 ```typescript
-import { defineSourceProvider } from '@suitenumerique/slash-sources-sdk';
+import { defineSourceProvider } from "@suitenumerique/slash-sources-sdk";
 
 export const cadastreProvider = defineSourceProvider({
-  type: 'custom',
-  name: 'Cadastre & Parcelles (DGFiP)',
-  iconName: 'map',
-  slashCommand: 'parcelle',
-  slashAliases: ['cadastre', 'dgfip', 'section', 'terrain'],
-  description: 'Insérer une parcelle cadastrale certifiée DGFiP',
+  type: "custom",
+  name: "Cadastre & Parcelles (DGFiP)",
+  iconName: "map",
+  slashCommand: "parcelle",
+  slashAliases: ["cadastre", "dgfip", "section", "terrain"],
+  description: "Insérer une parcelle cadastrale certifiée DGFiP",
 
   suggest: async (query, limit = 5) => {
     const res = await fetch(
@@ -37,7 +36,7 @@ export const cadastreProvider = defineSourceProvider({
       id: item.id,
       title: `Parcelle ${item.section} n°${item.numero}`,
       subtitle: `${item.commune} (${item.code_insee})`,
-      type: 'custom',
+      type: "custom",
     }));
   },
 
@@ -47,19 +46,19 @@ export const cadastreProvider = defineSourceProvider({
     );
     const data = await res.json();
     return data.map((item: any) => ({
-      entityType: 'custom',
-      displayMode: 'card',
+      entityType: "custom",
+      displayMode: "card",
       sourceId: item.id,
       title: `Parcelle ${item.section} n°${item.numero}`,
       subtitle: `${item.commune} (${item.code_insee})`,
-      status: 'Certifié DGFiP',
-      statusColor: 'green',
+      status: "Certifié DGFiP",
+      statusColor: "green",
       meta1: `Contenance : ${item.contenance} m²`,
       meta2: `Feuille : ${item.feuille}`,
       meta3: `Mise à jour : ${item.date_maj}`,
       summary: `Parcelle située à ${item.adresse}. Surface cadastrale officielle.`,
       url: `https://cadastre.data.gouv.fr/map?parcelle=${item.id}`,
-      verifiedAt: new Date().toLocaleDateString('fr-FR'),
+      verifiedAt: new Date().toLocaleDateString("fr-FR"),
     }));
   },
 

@@ -12,13 +12,13 @@ import { DocHeaderSummary } from "../../../src/components/DocHeaderSummary";
 # 🌐 PR 3: RFC & Upstream Extension Proposal for BlockNote.js (`TypeCellOS/BlockNote`)
 
 <DocHeaderSummary
-  readingTime="8 min"
-  level="Advanced"
-  roles={["Frontend BlockNote", "Architect", "Open Source Maintainer"]}
-  prerequisites={["@blocknote/core", "TypeScript", "WCAG 2.1 AA"]}
-  status="Ready for Upstream RFC Submission"
-  statusColor="info"
-  takeaway="Formal Request for Comments (RFC) proposing @blocknote/xl-external-sources to standardize connected data blocks across the global BlockNote ecosystem."
+readingTime="8 min"
+level="Advanced"
+roles={["Frontend BlockNote", "Architect", "Open Source Maintainer"]}
+prerequisites={["@blocknote/core", "TypeScript", "WCAG 2.1 AA"]}
+status="Ready for Upstream RFC Submission"
+statusColor="info"
+takeaway="Formal Request for Comments (RFC) proposing @blocknote/xl-external-sources to standardize connected data blocks across the global BlockNote ecosystem."
 />
 
 Beyond internal integration within La Suite Docs, this specification represents an **upstream open source contribution to the international [`TypeCellOS/BlockNote`](https://github.com/TypeCellOS/BlockNote) ecosystem**.
@@ -27,13 +27,13 @@ Beyond internal integration within La Suite Docs, this specification represents 
 
 ## 📌 Upstream Contribution Summary
 
-| Parameter | Specification |
-| :--- | :--- |
-| **Target Repository** | [`TypeCellOS/BlockNote`](https://github.com/TypeCellOS/BlockNote) |
-| **Contribution Type** | **RFC Discussion & Community Extension Package** initially (`@blocknote/xl-external-sources`), with graduation path to official `@blocknote/xl-*` suite. |
-| **Proposed Package** | `@blocknote/xl-external-sources` (TypeScript, React 18/19, zero-UI lock-in, WAI-ARIA AA). |
-| **Author & Governance** | Contributed by **waxland** (DINUM / La Suite Numérique contributor) under **MIT License**. |
-| **Community Benefit** | Standardizes insertion, floating contextual search, and 3-format display (Callout, Card, Link) for any connected remote data with lossless PDF/DOCX exporters. |
+| Parameter               | Specification                                                                                                                                                  |
+| :---------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Target Repository**   | [`TypeCellOS/BlockNote`](https://github.com/TypeCellOS/BlockNote)                                                                                              |
+| **Contribution Type**   | **RFC Discussion & Community Extension Package** initially (`@blocknote/xl-external-sources`), with graduation path to official `@blocknote/xl-*` suite.       |
+| **Proposed Package**    | `@blocknote/xl-external-sources` (TypeScript, React 18/19, zero-UI lock-in, WAI-ARIA AA).                                                                      |
+| **Author & Governance** | Contributed by **waxland** (DINUM / La Suite Numérique contributor) under **MIT License**.                                                                     |
+| **Community Benefit**   | Standardizes insertion, floating contextual search, and 3-format display (Callout, Card, Link) for any connected remote data with lossless PDF/DOCX exporters. |
 
 ---
 
@@ -133,10 +133,12 @@ export function AppEditor() {
 **Author:** waxland (La Suite Numérique / DINUM Contributor)  
 **Status:** Community Extension Proposal -> Proposed Core Module  
 **Target Repository:** TypeCellOS/BlockNote  
-**License:** MIT  
+**License:** MIT
 
 ## 📌 Motivation
+
 Modern collaborative document workflows frequently reference live entities from external systems:
+
 - **Public Registers & Open Data APIs** (legislation, address registries, corporate databases, statistics).
 - **Enterprise Databases** (CRM records, tickets, inventory assets).
 - **AI Vector Stores** (RAG citations, semantic retrieval, factual synthesis).
@@ -144,6 +146,7 @@ Modern collaborative document workflows frequently reference live entities from 
 Currently, developers using BlockNote must handcraft custom blocks, handle keyboard-accessible search popovers, manage multi-format switching, and write PDF/DOCX export mappers from scratch.
 
 ## 💡 Proposed Solution
+
 We propose releasing `@blocknote/xl-external-sources` as a community extension, with a path to graduate into the official `@blocknote/xl-*` suite:
 
 1. **`createExternalSourceBlockSpec(config)`**: Factory supporting seamless in-place switching between **Callout**, **Card**, and **Inline Badge** formats.
@@ -153,6 +156,7 @@ We propose releasing `@blocknote/xl-external-sources` as a community extension, 
 5. **Themeable Styling**: Neutral default theme with simple configurable accent/border tokens.
 
 ## 🧪 Battle-Tested Implementation
+
 This architecture is currently running across **41 public service APIs** (France, EU, Canada, Germany, Netherlands, Spain, and UN/World Bank) in **La Suite Docs**, supporting full keyboard accessibility, zero hydration errors, and lossless document exports.
 
 We would be thrilled to submit this contribution to the BlockNote community!

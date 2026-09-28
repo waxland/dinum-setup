@@ -62,16 +62,11 @@ const frDocTitles = {
   "01-onboarding/02-workflow-et-contribution/adr/0004-dual-trigger-slash-et-mention.mdx":
     "ADR-0004 Triggers",
   "01-onboarding/02-workflow-et-contribution/adr/index.mdx": "ADRs",
-  "01-onboarding/02-workflow-et-contribution/bonnes-pratiques-dinum.mdx":
-    "Standards DINUM",
-  "01-onboarding/02-workflow-et-contribution/guide-du-premier-commit.mdx":
-    "Premier Commit",
-  "01-onboarding/02-workflow-et-contribution/qualite-et-architecture-la-suite.mdx":
-    "Qualité Code",
-  "01-onboarding/02-workflow-et-contribution/securite-du-poste-developpeur.mdx":
-    "Sécurité Poste",
-  "01-onboarding/02-workflow-et-contribution/tests-et-qualite.mdx":
-    "Tests Qualité",
+  "01-onboarding/02-workflow-et-contribution/bonnes-pratiques-dinum.mdx": "Standards DINUM",
+  "01-onboarding/02-workflow-et-contribution/guide-du-premier-commit.mdx": "Premier Commit",
+  "01-onboarding/02-workflow-et-contribution/qualite-et-architecture-la-suite.mdx": "Qualité Code",
+  "01-onboarding/02-workflow-et-contribution/securite-du-poste-developpeur.mdx": "Sécurité Poste",
+  "01-onboarding/02-workflow-et-contribution/tests-et-qualite.mdx": "Tests Qualité",
   "01-onboarding/02-workflow-et-contribution/workflow.mdx": "Workflow Make",
   "01-onboarding/03-support/glossaire.mdx": "Glossaire",
   "01-onboarding/03-support/troubleshooting.mdx": "Dépannage FAQ",
@@ -80,62 +75,43 @@ const frDocTitles = {
   "01-onboarding/04-ressources/templates-et-outils.mdx": "Templates Outils",
   "01-onboarding/index.mdx": "Onboarding",
   "02-la-suite/01-applications/01-documents-et-contenus/docs.mdx": "Docs",
-  "02-la-suite/01-applications/01-documents-et-contenus/fichiers-drive.mdx":
-    "Drive",
+  "02-la-suite/01-applications/01-documents-et-contenus/fichiers-drive.mdx": "Drive",
   "02-la-suite/01-applications/01-documents-et-contenus/grist.mdx": "Grist",
   "02-la-suite/01-applications/02-communication-et-echange/meet.mdx": "Meet",
   "02-la-suite/01-applications/02-communication-et-echange/tchap.mdx": "Tchap",
-  "02-la-suite/01-applications/02-communication-et-echange/transfers.mdx":
-    "Transfers",
-  "02-la-suite/01-applications/03-gestion-et-utilisateurs/accounts.mdx":
-    "Accounts",
+  "02-la-suite/01-applications/02-communication-et-echange/transfers.mdx": "Transfers",
+  "02-la-suite/01-applications/03-gestion-et-utilisateurs/accounts.mdx": "Accounts",
   "02-la-suite/01-applications/03-gestion-et-utilisateurs/people.mdx": "People",
-  "02-la-suite/01-applications/03-gestion-et-utilisateurs/projects.mdx":
-    "Projects",
+  "02-la-suite/01-applications/03-gestion-et-utilisateurs/projects.mdx": "Projects",
   "02-la-suite/01-applications/index.mdx": "Applications",
-  "02-la-suite/02-architecture/01-securite-et-identite/auth.mdx":
-    "Authentification SSO",
+  "02-la-suite/02-architecture/01-securite-et-identite/auth.mdx": "Authentification SSO",
   "02-la-suite/02-architecture/01-securite-et-identite/federation-identite-proconnect.mdx":
     "ProConnect",
-  "02-la-suite/02-architecture/01-securite-et-identite/secrets-sops.mdx":
-    "Secrets SOPS",
-  "02-la-suite/02-architecture/02-donnees-et-temps-reel/flux-stockage-s3.mdx":
-    "Stockage S3",
+  "02-la-suite/02-architecture/01-securite-et-identite/secrets-sops.mdx": "Secrets SOPS",
+  "02-la-suite/02-architecture/02-donnees-et-temps-reel/flux-stockage-s3.mdx": "Stockage S3",
   "02-la-suite/02-architecture/02-donnees-et-temps-reel/sauvegardes-et-restauration.mdx":
     "Sauvegardes PRA",
-  "02-la-suite/02-architecture/02-donnees-et-temps-reel/temps-reel-et-crdt.mdx":
-    "Temps Réel",
-  "02-la-suite/02-architecture/03-devops-et-deploiement/cicd-github-actions.mdx":
-    "CI/CD Actions",
+  "02-la-suite/02-architecture/02-donnees-et-temps-reel/temps-reel-et-crdt.mdx": "Temps Réel",
+  "02-la-suite/02-architecture/03-devops-et-deploiement/cicd-github-actions.mdx": "CI/CD Actions",
   "02-la-suite/02-architecture/03-devops-et-deploiement/deploiement-production.mdx":
     "Déploiement Production",
-  "02-la-suite/02-architecture/03-devops-et-deploiement/env.mdx":
-    "Environnement",
-  "02-la-suite/02-architecture/03-devops-et-deploiement/hot-reload.mdx":
-    "Hot Reload",
+  "02-la-suite/02-architecture/03-devops-et-deploiement/env.mdx": "Environnement",
+  "02-la-suite/02-architecture/03-devops-et-deploiement/hot-reload.mdx": "Hot Reload",
   "02-la-suite/02-architecture/index.mdx": "Architecture",
-  "02-la-suite/03-design-system/01-fondations/accessibilite-rgaa.mdx":
-    "Accessibilité RGAA",
-  "02-la-suite/03-design-system/01-fondations/couleurs-et-themes.mdx":
-    "Couleurs Thèmes",
+  "02-la-suite/03-design-system/01-fondations/accessibilite-rgaa.mdx": "Accessibilité RGAA",
+  "02-la-suite/03-design-system/01-fondations/couleurs-et-themes.mdx": "Couleurs Thèmes",
   "02-la-suite/03-design-system/01-fondations/figma.mdx": "Figma",
   "02-la-suite/03-design-system/01-fondations/icones.mdx": "Icônes",
   "02-la-suite/03-design-system/01-fondations/installation.mdx": "Installation",
   "02-la-suite/03-design-system/01-fondations/typographie.mdx": "Typographie",
-  "02-la-suite/03-design-system/02-composants/alertes-et-callouts.mdx":
-    "Alertes Callouts",
-  "02-la-suite/03-design-system/02-composants/badges-et-statuts.mdx":
-    "Badges Statuts",
+  "02-la-suite/03-design-system/02-composants/alertes-et-callouts.mdx": "Alertes Callouts",
+  "02-la-suite/03-design-system/02-composants/badges-et-statuts.mdx": "Badges Statuts",
   "02-la-suite/03-design-system/02-composants/boutons.mdx": "Boutons",
-  "02-la-suite/03-design-system/02-composants/cartes-et-conteneurs.mdx":
-    "Cartes Conteneurs",
+  "02-la-suite/03-design-system/02-composants/cartes-et-conteneurs.mdx": "Cartes Conteneurs",
   "02-la-suite/03-design-system/02-composants/formulaires.mdx": "Formulaires",
-  "02-la-suite/03-design-system/02-composants/modales-et-dialogues.mdx":
-    "Modales",
-  "02-la-suite/03-design-system/02-composants/notices-et-bandeaux.mdx":
-    "Notices Bandeaux",
-  "02-la-suite/03-design-system/02-composants/pagination-et-stepper.mdx":
-    "Pagination Stepper",
+  "02-la-suite/03-design-system/02-composants/modales-et-dialogues.mdx": "Modales",
+  "02-la-suite/03-design-system/02-composants/notices-et-bandeaux.mdx": "Notices Bandeaux",
+  "02-la-suite/03-design-system/02-composants/pagination-et-stepper.mdx": "Pagination Stepper",
   "02-la-suite/03-design-system/02-composants/tableaux.mdx": "Tableaux",
   "02-la-suite/03-design-system/03-layout-et-structure/navigation-et-layout.mdx":
     "Navigation Layout",
@@ -145,42 +121,28 @@ const frDocTitles = {
   "02-la-suite/04-ressources/templates-et-outils.mdx": "Templates Outils",
   "02-la-suite/index.mdx": "La Suite",
   "03-slasheurs-france/00-socle-technique.mdx": "Socle Technique",
-  "03-slasheurs-france/01-architecture-standardisee.mdx":
-    "Architecture Standard",
-  "03-slasheurs-france/01-loi/01-metier-loi/01-fondations-et-cadre.mdx":
-    "Fondations Cadre",
-  "03-slasheurs-france/01-loi/01-metier-loi/02-cas-usage-et-scenarios.mdx":
-    "Cas Usage",
-  "03-slasheurs-france/01-loi/02-api-loi/01-benchmark-des-apis.mdx":
-    "Benchmark APIs",
+  "03-slasheurs-france/01-architecture-standardisee.mdx": "Architecture Standard",
+  "03-slasheurs-france/01-loi/01-metier-loi/01-fondations-et-cadre.mdx": "Fondations Cadre",
+  "03-slasheurs-france/01-loi/01-metier-loi/02-cas-usage-et-scenarios.mdx": "Cas Usage",
+  "03-slasheurs-france/01-loi/02-api-loi/01-benchmark-des-apis.mdx": "Benchmark APIs",
   "03-slasheurs-france/01-loi/02-api-loi/02-specifications-techniques.mdx":
     "Spécifications Endpoints",
-  "03-slasheurs-france/01-loi/03-implementation-loi/01-provider-django.mdx":
-    "Provider Django",
-  "03-slasheurs-france/01-loi/03-implementation-loi/02-rendu-et-settings.mdx":
-    "Rendu Settings",
-  "03-slasheurs-france/01-loi/03-implementation-loi/03-gestion-des-quotas.mdx":
-    "Gestion Quotas",
+  "03-slasheurs-france/01-loi/03-implementation-loi/01-provider-django.mdx": "Provider Django",
+  "03-slasheurs-france/01-loi/03-implementation-loi/02-rendu-et-settings.mdx": "Rendu Settings",
+  "03-slasheurs-france/01-loi/03-implementation-loi/03-gestion-des-quotas.mdx": "Gestion Quotas",
   "03-slasheurs-france/01-loi/03-implementation-loi/04-tutoriel-ajouter-une-api.mdx":
     "Tutoriel API",
   "03-slasheurs-france/01-loi/04-pr-loi/01-fiche-pr.mdx": "Fiche PR",
-  "03-slasheurs-france/01-loi/04-pr-loi/02-patch-et-fichiers.mdx":
-    "Patch Fichiers",
-  "03-slasheurs-france/01-loi/04-pr-loi/03-tests-et-validation.mdx":
-    "Tests Validation",
-  "03-slasheurs-france/01-loi/05-proposition/01-concept-et-valeur.mdx":
-    "Concept Valeur",
-  "03-slasheurs-france/01-loi/05-proposition/02-maquette-et-flux.mdx":
-    "Maquette Flux",
-  "03-slasheurs-france/01-loi/05-proposition/03-plan-implementation.mdx":
-    "Plan Implémentation",
+  "03-slasheurs-france/01-loi/04-pr-loi/02-patch-et-fichiers.mdx": "Patch Fichiers",
+  "03-slasheurs-france/01-loi/04-pr-loi/03-tests-et-validation.mdx": "Tests Validation",
+  "03-slasheurs-france/01-loi/05-proposition/01-concept-et-valeur.mdx": "Concept Valeur",
+  "03-slasheurs-france/01-loi/05-proposition/02-maquette-et-flux.mdx": "Maquette Flux",
+  "03-slasheurs-france/01-loi/05-proposition/03-plan-implementation.mdx": "Plan Implémentation",
   "03-slasheurs-france/01-loi/index.mdx": "Slasheur Loi",
   "03-slasheurs-france/02-assemblee/01-metier-assemblee/01-fondations-et-cadre.mdx":
     "Fondations Cadre",
-  "03-slasheurs-france/02-assemblee/01-metier-assemblee/02-cas-usage-et-scenarios.mdx":
-    "Cas Usage",
-  "03-slasheurs-france/02-assemblee/02-api-assemblee/01-benchmark-des-apis.mdx":
-    "Benchmark APIs",
+  "03-slasheurs-france/02-assemblee/01-metier-assemblee/02-cas-usage-et-scenarios.mdx": "Cas Usage",
+  "03-slasheurs-france/02-assemblee/02-api-assemblee/01-benchmark-des-apis.mdx": "Benchmark APIs",
   "03-slasheurs-france/02-assemblee/02-api-assemblee/02-specifications-techniques.mdx":
     "Spécifications Endpoints",
   "03-slasheurs-france/02-assemblee/03-implementation-assemblee/01-provider-django.mdx":
@@ -193,8 +155,7 @@ const frDocTitles = {
     "Fondations Cadre",
   "03-slasheurs-france/03-entreprise/01-metier-entreprise/02-cas-usage-et-scenarios.mdx":
     "Cas Usage",
-  "03-slasheurs-france/03-entreprise/02-api-entreprise/01-benchmark-des-apis.mdx":
-    "Benchmark APIs",
+  "03-slasheurs-france/03-entreprise/02-api-entreprise/01-benchmark-des-apis.mdx": "Benchmark APIs",
   "03-slasheurs-france/03-entreprise/02-api-entreprise/02-specifications-techniques.mdx":
     "Spécifications Endpoints",
   "03-slasheurs-france/03-entreprise/03-implementation-entreprise/01-provider-django.mdx":
@@ -203,12 +164,9 @@ const frDocTitles = {
     "Rendu Settings",
   "03-slasheurs-france/03-entreprise/index.mdx": "Slasheur Entreprises",
   "03-slasheurs-france/03-proxy-backend-et-cache.mdx": "Proxy Cache",
-  "03-slasheurs-france/04-adresse/01-metier-adresse/01-fondations-et-cadre.mdx":
-    "Fondations Cadre",
-  "03-slasheurs-france/04-adresse/01-metier-adresse/02-cas-usage-et-scenarios.mdx":
-    "Cas Usage",
-  "03-slasheurs-france/04-adresse/02-api-adresse/01-benchmark-des-apis.mdx":
-    "Benchmark APIs",
+  "03-slasheurs-france/04-adresse/01-metier-adresse/01-fondations-et-cadre.mdx": "Fondations Cadre",
+  "03-slasheurs-france/04-adresse/01-metier-adresse/02-cas-usage-et-scenarios.mdx": "Cas Usage",
+  "03-slasheurs-france/04-adresse/02-api-adresse/01-benchmark-des-apis.mdx": "Benchmark APIs",
   "03-slasheurs-france/04-adresse/02-api-adresse/02-specifications-techniques.mdx":
     "Spécifications Endpoints",
   "03-slasheurs-france/04-adresse/03-implementation-adresse/01-provider-django.mdx":
@@ -217,12 +175,9 @@ const frDocTitles = {
     "Rendu Settings",
   "03-slasheurs-france/04-adresse/index.mdx": "Slasheur Adresse",
   "03-slasheurs-france/04-tutoriel-ajouter-une-api.mdx": "Tutoriel API",
-  "03-slasheurs-france/05-albert/01-metier-albert/01-fondations-et-cadre.mdx":
-    "Fondations Cadre",
-  "03-slasheurs-france/05-albert/01-metier-albert/02-cas-usage-et-scenarios.mdx":
-    "Cas Usage",
-  "03-slasheurs-france/05-albert/02-api-albert/01-benchmark-des-apis.mdx":
-    "Benchmark APIs",
+  "03-slasheurs-france/05-albert/01-metier-albert/01-fondations-et-cadre.mdx": "Fondations Cadre",
+  "03-slasheurs-france/05-albert/01-metier-albert/02-cas-usage-et-scenarios.mdx": "Cas Usage",
+  "03-slasheurs-france/05-albert/02-api-albert/01-benchmark-des-apis.mdx": "Benchmark APIs",
   "03-slasheurs-france/05-albert/02-api-albert/02-specifications-techniques.mdx":
     "Spécifications Endpoints",
   "03-slasheurs-france/05-albert/03-implementation-albert/01-provider-django.mdx":
@@ -233,12 +188,9 @@ const frDocTitles = {
   "03-slasheurs-france/05-proposition.md": "Proposition Sources",
   "03-slasheurs-france/06-sdk-developpeur/index.mdx": "SDK Développeur",
   "03-slasheurs-france/07-roadmap.mdx": "Roadmap Sources",
-  "03-slasheurs-france/08-marche/01-metier-marche/01-fondations-et-cadre.mdx":
-    "Fondations Cadre",
-  "03-slasheurs-france/08-marche/01-metier-marche/02-cas-usage-et-scenarios.mdx":
-    "Cas Usage",
-  "03-slasheurs-france/08-marche/02-api-marche/01-benchmark-des-apis.mdx":
-    "Benchmark APIs",
+  "03-slasheurs-france/08-marche/01-metier-marche/01-fondations-et-cadre.mdx": "Fondations Cadre",
+  "03-slasheurs-france/08-marche/01-metier-marche/02-cas-usage-et-scenarios.mdx": "Cas Usage",
+  "03-slasheurs-france/08-marche/02-api-marche/01-benchmark-des-apis.mdx": "Benchmark APIs",
   "03-slasheurs-france/08-marche/02-api-marche/02-specifications-techniques.mdx":
     "Spécifications Endpoints",
   "03-slasheurs-france/08-marche/03-implementation-marche/01-provider-django.mdx":
@@ -250,8 +202,7 @@ const frDocTitles = {
     "Fondations Cadre",
   "03-slasheurs-france/09-subvention/01-metier-subvention/02-cas-usage-et-scenarios.mdx":
     "Cas Usage",
-  "03-slasheurs-france/09-subvention/02-api-subvention/01-benchmark-des-apis.mdx":
-    "Benchmark APIs",
+  "03-slasheurs-france/09-subvention/02-api-subvention/01-benchmark-des-apis.mdx": "Benchmark APIs",
   "03-slasheurs-france/09-subvention/02-api-subvention/02-specifications-techniques.mdx":
     "Spécifications Endpoints",
   "03-slasheurs-france/09-subvention/03-implementation-subvention/01-provider-django.mdx":
@@ -259,38 +210,26 @@ const frDocTitles = {
   "03-slasheurs-france/09-subvention/03-implementation-subvention/02-rendu-et-settings.mdx":
     "Rendu Settings",
   "03-slasheurs-france/09-subvention/index.mdx": "Slasheur Subventions",
-  "03-slasheurs-france/10-stats/01-metier-stats/01-fondations-et-cadre.mdx":
-    "Fondations Cadre",
-  "03-slasheurs-france/10-stats/01-metier-stats/02-cas-usage-et-scenarios.mdx":
-    "Cas Usage",
-  "03-slasheurs-france/10-stats/02-api-stats/01-benchmark-des-apis.mdx":
-    "Benchmark APIs",
+  "03-slasheurs-france/10-stats/01-metier-stats/01-fondations-et-cadre.mdx": "Fondations Cadre",
+  "03-slasheurs-france/10-stats/01-metier-stats/02-cas-usage-et-scenarios.mdx": "Cas Usage",
+  "03-slasheurs-france/10-stats/02-api-stats/01-benchmark-des-apis.mdx": "Benchmark APIs",
   "03-slasheurs-france/10-stats/02-api-stats/02-specifications-techniques.mdx":
     "Spécifications Endpoints",
-  "03-slasheurs-france/10-stats/03-implementation-stats/01-provider-django.mdx":
-    "Provider Django",
-  "03-slasheurs-france/10-stats/03-implementation-stats/02-rendu-et-settings.mdx":
-    "Rendu Settings",
+  "03-slasheurs-france/10-stats/03-implementation-stats/01-provider-django.mdx": "Provider Django",
+  "03-slasheurs-france/10-stats/03-implementation-stats/02-rendu-et-settings.mdx": "Rendu Settings",
   "03-slasheurs-france/10-stats/index.mdx": "Slasheur Statistiques",
-  "03-slasheurs-france/11-agent/01-metier-agent/01-fondations-et-cadre.mdx":
-    "Fondations Cadre",
-  "03-slasheurs-france/11-agent/01-metier-agent/02-cas-usage-et-scenarios.mdx":
-    "Cas Usage",
-  "03-slasheurs-france/11-agent/02-api-agent/01-benchmark-des-apis.mdx":
-    "Benchmark APIs",
+  "03-slasheurs-france/11-agent/01-metier-agent/01-fondations-et-cadre.mdx": "Fondations Cadre",
+  "03-slasheurs-france/11-agent/01-metier-agent/02-cas-usage-et-scenarios.mdx": "Cas Usage",
+  "03-slasheurs-france/11-agent/02-api-agent/01-benchmark-des-apis.mdx": "Benchmark APIs",
   "03-slasheurs-france/11-agent/02-api-agent/02-specifications-techniques.mdx":
     "Spécifications Endpoints",
-  "03-slasheurs-france/11-agent/03-implementation-agent/01-provider-django.mdx":
-    "Provider Django",
-  "03-slasheurs-france/11-agent/03-implementation-agent/02-rendu-et-settings.mdx":
-    "Rendu Settings",
+  "03-slasheurs-france/11-agent/03-implementation-agent/01-provider-django.mdx": "Provider Django",
+  "03-slasheurs-france/11-agent/03-implementation-agent/02-rendu-et-settings.mdx": "Rendu Settings",
   "03-slasheurs-france/11-agent/index.mdx": "Slasheur Agents",
   "03-slasheurs-france/12-cadastre/01-metier-cadastre/01-fondations-et-cadre.mdx":
     "Fondations Cadre",
-  "03-slasheurs-france/12-cadastre/01-metier-cadastre/02-cas-usage-et-scenarios.mdx":
-    "Cas Usage",
-  "03-slasheurs-france/12-cadastre/02-api-cadastre/01-benchmark-des-apis.mdx":
-    "Benchmark APIs",
+  "03-slasheurs-france/12-cadastre/01-metier-cadastre/02-cas-usage-et-scenarios.mdx": "Cas Usage",
+  "03-slasheurs-france/12-cadastre/02-api-cadastre/01-benchmark-des-apis.mdx": "Benchmark APIs",
   "03-slasheurs-france/12-cadastre/02-api-cadastre/02-specifications-techniques.mdx":
     "Spécifications Endpoints",
   "03-slasheurs-france/12-cadastre/03-implementation-cadastre/01-provider-django.mdx":
@@ -298,8 +237,7 @@ const frDocTitles = {
   "03-slasheurs-france/12-cadastre/03-implementation-cadastre/02-rendu-et-settings.mdx":
     "Rendu Settings",
   "03-slasheurs-france/12-cadastre/index.mdx": "Slasheur Cadastre",
-  "03-slasheurs-france/13-reutilisation-transverse.mdx":
-    "Réutilisation Transverse",
+  "03-slasheurs-france/13-reutilisation-transverse.mdx": "Réutilisation Transverse",
   "03-slasheurs-france/14-retour-d-experience.mdx": "Retour Expérience",
   "04-pr/01-docs-serveur-config.mdx": "PR Serveurs",
   "04-pr/02-docs-packages-souverains.mdx": "PR Packages",
@@ -332,8 +270,7 @@ function updateFrontmatter(filePath, newTitle) {
   let oldTitle = "Sans titre";
 
   const oldTitleMatch =
-    content.match(/^title:\s*["\x27]?(.*?)["\x27]?\s*$/m) ||
-    content.match(/^#\s+(.+)$/m);
+    content.match(/^title:\s*["\x27]?(.*?)["\x27]?\s*$/m) || content.match(/^#\s+(.+)$/m);
   if (oldTitleMatch) {
     oldTitle = oldTitleMatch[1].trim();
   }
@@ -352,10 +289,7 @@ function updateFrontmatter(filePath, newTitle) {
       }
 
       if (/^sidebar_label:/m.test(fm)) {
-        fm = fm.replace(
-          /^sidebar_label:\s*.*$/m,
-          `sidebar_label: "${newTitle}"`,
-        );
+        fm = fm.replace(/^sidebar_label:\s*.*$/m, `sidebar_label: "${newTitle}"`);
       }
 
       updated = `---${fm}---${rest}`;
@@ -372,12 +306,7 @@ const auditRecords = [];
 
 console.log("Updating documentation-international/docs...");
 for (const [relPath, newTitle] of Object.entries(enDocTitles)) {
-  const fullPath = path.join(
-    ROOT_DIR,
-    "documentation-international",
-    "docs",
-    relPath,
-  );
+  const fullPath = path.join(ROOT_DIR, "documentation-international", "docs", relPath);
   if (fs.existsSync(fullPath)) {
     const oldTitle = updateFrontmatter(fullPath, newTitle);
     auditRecords.push({

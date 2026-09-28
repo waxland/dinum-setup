@@ -37,7 +37,7 @@ This skill defines the standardized procedure for auditing a Git diff, detecting
 ### Axis 2: Requirement Compliance & Scope
 
 - [ ] Are all requested features fully implemented without omissions?
-- [ ] No over-engineering (*YAGNI*): Does the code solve the problem cleanly without unnecessary abstraction?
+- [ ] No over-engineering (_YAGNI_): Does the code solve the problem cleanly without unnecessary abstraction?
 - [ ] Are expected user interactions and keyboard shortcuts preserved?
 
 ### Axis 3: Secrets Security & Code Conventions

@@ -4,7 +4,6 @@ sidebar_label: "Benchmark APIs"
 description: Spécifications techniques de l'API Albert, pipeline RAG, vectorisation sémantique, benchmark de latence et contrats d'échange JSON.
 ---
 
-
 ## 📡 1. Spécifications de l'API Albert
 
 L'API **Albert** (`https://albert.api.etalab.gouv.fr/v1`) expose une suite d'endpoints REST sécurisés par clé d'API (Bearer Token) pour la recherche sémantique, la vectorisation et la génération augmentée.
@@ -46,12 +45,12 @@ Content-Type: application/json
 
 ## ⚡ 2. Benchmark de Performance & Stratégie de Caching
 
-| Métrique | Appel Direct Albert API | Avec Cache Redis Impress (24h) |
-| :--- | :--- | :--- |
-| **Temps de Réponse (p50)** | ~ 350 ms | **< 3 ms** |
-| **Temps de Réponse (p95)** | ~ 780 ms | **< 5 ms** |
-| **Coût CPU / Inférence** | 1 passe Transformer RAG | **0 (Lecture mémoire clé-valeur)** |
-| **Résilience Réseau** | Dépendance externe | **100% garanti par fallback mock** |
+| Métrique                   | Appel Direct Albert API | Avec Cache Redis Impress (24h)     |
+| :------------------------- | :---------------------- | :--------------------------------- |
+| **Temps de Réponse (p50)** | ~ 350 ms                | **< 3 ms**                         |
+| **Temps de Réponse (p95)** | ~ 780 ms                | **< 5 ms**                         |
+| **Coût CPU / Inférence**   | 1 passe Transformer RAG | **0 (Lecture mémoire clé-valeur)** |
+| **Résilience Réseau**      | Dépendance externe      | **100% garanti par fallback mock** |
 
 ---
 
@@ -77,4 +76,5 @@ Content-Type: application/json
     end
     Backend-->>UI: SourceSearchResult[]
     UI-->>User: Affichage immédiat de la synthèse avec citations
+
 `} />

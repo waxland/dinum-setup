@@ -1,10 +1,10 @@
-import type { Preview } from '@storybook/react';
-import '@codegouvfr/react-dsfr/dsfr/dsfr.min.css';
-import '@codegouvfr/react-dsfr/dsfr/utility/icons/icons.min.css';
+import type { Preview } from "@storybook/react";
+import "@codegouvfr/react-dsfr/dsfr/dsfr.min.css";
+import "@codegouvfr/react-dsfr/dsfr/utility/icons/icons.min.css";
 
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: '^on[A-Z].*' },
+    actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -12,17 +12,17 @@ const preview: Preview = {
       },
     },
     a11y: {
-      element: '#storybook-root',
+      element: "#storybook-root",
       config: {},
       options: {},
       manual: false,
     },
     backgrounds: {
-      default: 'light',
+      default: "light",
       values: [
-        { name: 'light', value: '#ffffff' },
-        { name: 'dark', value: '#1b1b1b' },
-        { name: 'dsfr-grey-975', value: '#f6f6f6' },
+        { name: "light", value: "#ffffff" },
+        { name: "dark", value: "#1b1b1b" },
+        { name: "dsfr-grey-975", value: "#f6f6f6" },
       ],
     },
   },

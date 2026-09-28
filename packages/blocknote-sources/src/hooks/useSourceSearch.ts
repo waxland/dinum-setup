@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { createHttpSourceClient, SourceSearchClient } from '../searchClient';
-import type { SupportedCountry } from '../mockData';
-import { SourceEntityProps, SourceEntityType } from '../types';
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createHttpSourceClient, SourceSearchClient } from "../searchClient";
+import type { SupportedCountry } from "../mockData";
+import { SourceEntityProps, SourceEntityType } from "../types";
 
 export interface UseSourceSearchOptions {
   entityType: SourceEntityType;
@@ -22,11 +22,17 @@ export interface UseSourceSearchResult {
 }
 
 /** A generation owns every state update, even if the client ignores cancellation. */
-export function useSourceSearch({ entityType, country = 'fr', apiBaseUrl, client, debounceMs = 250 }: UseSourceSearchOptions): UseSourceSearchResult {
+export function useSourceSearch({
+  entityType,
+  country = "fr",
+  apiBaseUrl,
+  client,
+  debounceMs = 250,
+}: UseSourceSearchOptions): UseSourceSearchResult {
   const httpClient = useMemo(() => createHttpSourceClient(apiBaseUrl), [apiBaseUrl]);
   const search = client || httpClient;
-  const [query, updateQuery] = useState('');
-  const currentQuery = useRef('');
+  const [query, updateQuery] = useState("");
+  const currentQuery = useRef("");
   const [results, setResults] = useState<SourceEntityProps[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,37 +43,62 @@ export function useSourceSearch({ entityType, country = 'fr', apiBaseUrl, client
   const cancel = useCallback(() => {
     generation.current += 1;
     controller.current?.abort();
-    if (timer.current !== null) {clearTimeout(timer.current);}
+    if (timer.current !== null) {
+      clearTimeout(timer.current);
+    }
     timer.current = null;
   }, []);
 
-  const execute = useCallback(async (value: string) => {
-    const current = generation.current;
-    const abort = new AbortController();
-    controller.current = abort;
-    try {
-      const records = await search({ entityType, country, query: value.trim(), limit: 10, signal: abort.signal });
-      if (generation.current === current) {setResults(records);}
-    } catch (err: unknown) {
-      if (generation.current === current && !abort.signal.aborted) {
-        setError(err instanceof Error ? err.message : 'Recherche impossible.');
+  const execute = useCallback(
+    async (value: string) => {
+      const current = generation.current;
+      const abort = new AbortController();
+      controller.current = abort;
+      try {
+        const records = await search({
+          entityType,
+          country,
+          query: value.trim(),
+          limit: 10,
+          signal: abort.signal,
+        });
+        if (generation.current === current) {
+          setResults(records);
+        }
+      } catch (err: unknown) {
+        if (generation.current === current && !abort.signal.aborted) {
+          setError(err instanceof Error ? err.message : "Recherche impossible.");
+        }
+      } finally {
+        if (generation.current === current) {
+          setIsLoading(false);
+        }
       }
-    } finally {
-      if (generation.current === current) {setIsLoading(false);}
-    }
-  }, [country, entityType, search]);
+    },
+    [country, entityType, search],
+  );
 
-  const schedule = useCallback(async (value: string, immediate: boolean) => {
-    cancel();
-    currentQuery.current = value;
-    updateQuery(value);
-    setResults([]);
-    setError(null);
-    setIsLoading(Boolean(value.trim()));
-    if (!value.trim()) {return;}
-    if (immediate) {await execute(value);}
-    else {timer.current = setTimeout(() => { void execute(value); }, debounceMs);}
-  }, [cancel, execute, debounceMs]);
+  const schedule = useCallback(
+    async (value: string, immediate: boolean) => {
+      cancel();
+      currentQuery.current = value;
+      updateQuery(value);
+      setResults([]);
+      setError(null);
+      setIsLoading(Boolean(value.trim()));
+      if (!value.trim()) {
+        return;
+      }
+      if (immediate) {
+        await execute(value);
+      } else {
+        timer.current = setTimeout(() => {
+          void execute(value);
+        }, debounceMs);
+      }
+    },
+    [cancel, execute, debounceMs],
+  );
 
   useEffect(() => {
     void schedule(currentQuery.current, false);
@@ -76,9 +107,15 @@ export function useSourceSearch({ entityType, country = 'fr', apiBaseUrl, client
 
   return {
     query,
-    setQuery: (value) => { void schedule(value, false); },
-    results, isLoading, error,
+    setQuery: (value) => {
+      void schedule(value, false);
+    },
+    results,
+    isLoading,
+    error,
     searchImmediate: (value) => schedule(value, true),
-    reset: () => { void schedule('', false); },
+    reset: () => {
+      void schedule("", false);
+    },
   };
 }

@@ -4,7 +4,6 @@ sidebar_label: "Slasheur Cadastre"
 description: "Hub complet de la commande /cadastre : recherche et insertion de parcelles cadastrales, contenances, sections et plans officiels DGFiP / IGN."
 ---
 
-
 La commande **`/cadastre`** (alias **`/parcelle`**, **`/foncier`**, **`/dgfip`**, **`/section`**) permet aux urbanistes, chargés d'affaires foncières et agents de voirie d'interroger le plan cadastral vectoriel informatisé (**DGFiP / Géoplateforme IGN**) et d'insérer les références parcellaires officielles dans leurs actes, rapports et délibérations.
 
 ---
@@ -12,6 +11,7 @@ La commande **`/cadastre`** (alias **`/parcelle`**, **`/foncier`**, **`/dgfip`**
 ## 🎯 Problématique Métier
 
 Dans les déclarations de travaux, permis d'aménager, actes de cession foncière et délibérations municipales, les références cadastrales doivent être infaillibles :
+
 - **Section et numéro de parcelle** (`AK 0042`).
 - **Contenance cadastrale officielle** en mètres carrés.
 - **Code communal INSEE** et numéro de feuille.
@@ -43,6 +43,7 @@ Dans les déclarations de travaux, permis d'aménager, actes de cession foncièr
     Registry --> CadastreAPI
     CadastreAPI -.-> Registry
     Registry --> Block
+
 `} />
 
 ---

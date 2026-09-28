@@ -10,13 +10,13 @@ import { DocHeaderSummary } from "../../../src/components/DocHeaderSummary";
 # 🌐 PR 1: Remote Servers & Cloud VMs Support for La Suite Docs
 
 <DocHeaderSummary
-  readingTime="5 min"
-  level="Intermediate"
-  roles={["DevOps", "Backend Django", "Maintainer"]}
-  prerequisites={["suitenumerique/docs", "DCO signoff", "Docker"]}
-  status="Merged / Submitted (PR #2703)"
-  statusColor="success"
-  takeaway="Enables running La Suite Docs on remote servers, VMs, and cloud instances without modifying source code."
+readingTime="5 min"
+level="Intermediate"
+roles={["DevOps", "Backend Django", "Maintainer"]}
+prerequisites={["suitenumerique/docs", "DCO signoff", "Docker"]}
+status="Merged / Submitted (PR #2703)"
+statusColor="success"
+takeaway="Enables running La Suite Docs on remote servers, VMs, and cloud instances without modifying source code."
 />
 
 **Upstream Reference:** [suitenumerique/docs#2703](https://github.com/suitenumerique/docs/pull/2703)
@@ -25,13 +25,13 @@ import { DocHeaderSummary } from "../../../src/components/DocHeaderSummary";
 
 ## 📌 Executive Summary
 
-| Attribute | Specification |
-| :--- | :--- |
-| **Target Repository** | [`suitenumerique/docs`](https://github.com/suitenumerique/docs) |
-| **Target Branch** | `main` |
-| **Pull Request Status** | 🟢 **Open & Submitted:** [PR #2703](https://github.com/suitenumerique/docs/pull/2703) |
-| **Commit Title** | `✨(dev) make development URLs configurable for remote servers and VMs` |
-| **Scope** | Docker Compose environment configuration, Keycloak public hostname, Next.js `allowedDevOrigins`. |
+| Attribute               | Specification                                                                                    |
+| :---------------------- | :----------------------------------------------------------------------------------------------- |
+| **Target Repository**   | [`suitenumerique/docs`](https://github.com/suitenumerique/docs)                                  |
+| **Target Branch**       | `main`                                                                                           |
+| **Pull Request Status** | 🟢 **Open & Submitted:** [PR #2703](https://github.com/suitenumerique/docs/pull/2703)            |
+| **Commit Title**        | `✨(dev) make development URLs configurable for remote servers and VMs`                          |
+| **Scope**               | Docker Compose environment configuration, Keycloak public hostname, Next.js `allowedDevOrigins`. |
 
 ---
 
@@ -44,23 +44,23 @@ Make La Suite Docs easily runnable on remote servers, virtual machines, and clou
 
 ## Proposal
 
-* [x] Add dynamic `API_ORIGIN` variable to `env.d/development/common.dist`.
-* [x] Configure Keycloak public hostname support in `env.d/development/kc_auth.dist`.
-* [x] Support `allowedDevOrigins` parameterization in `src/frontend/apps/impress/next.config.js`.
+- [x] Add dynamic `API_ORIGIN` variable to `env.d/development/common.dist`.
+- [x] Configure Keycloak public hostname support in `env.d/development/kc_auth.dist`.
+- [x] Support `allowedDevOrigins` parameterization in `src/frontend/apps/impress/next.config.js`.
 
 ## External contributions
 
 ### General requirements
 
-* [x] I have read and followed the contributing guidelines
-* [x] I have read and agreed to the Code of Conduct
-* [x] I have added corresponding tests for new features or bug fixes (if applicable)
+- [x] I have read and followed the contributing guidelines
+- [x] I have read and agreed to the Code of Conduct
+- [x] I have added corresponding tests for new features or bug fixes (if applicable)
 
 ### CI requirements
 
-* [x] I made sure that all existing tests are passing
-* [x] I have signed off my commits with `git commit --signoff` (DCO compliance)
-* [x] My commit messages follow the required format: `<gitmoji>(type) title description`
+- [x] I made sure that all existing tests are passing
+- [x] I have signed off my commits with `git commit --signoff` (DCO compliance)
+- [x] My commit messages follow the required format: `<gitmoji>(type) title description`
 ```
 
 ---

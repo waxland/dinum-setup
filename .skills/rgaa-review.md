@@ -38,7 +38,7 @@ This skill provides the evaluation methodology to audit and correct digital acce
 - [ ] **Standard text:** Contrast ratio $\ge 4.5:1$ against its background.
 - [ ] **Large text (≥ 18.5px bold or ≥ 24px regular):** Contrast ratio $\ge 3:1$.
 - [ ] **Graphical components and UI controls:** Contrast ratio $\ge 3:1$.
-- [ ] Information is never conveyed *solely* through color (supplement with icons, text, or patterns).
+- [ ] Information is never conveyed _solely_ through color (supplement with icons, text, or patterns).
 
 ### Step 3: Structure Forms and Input Fields (RGAA Topic 11)
 
@@ -62,7 +62,7 @@ Produce a structured audit report (stored in `.sessions/AUDIT_<TOPIC>.md` for mu
 1. **Scope & Audited Targets:** File paths or page routes.
 2. **Findings Table:**
    | RGAA / WCAG Criterion | Severity (Blocker / Major / Minor) | Observed Issue | Recommended Fix |
-   |---|---|---|---|
+   | --------------------- | ---------------------------------- | -------------- | --------------- |
 3. **Overall Status:** Compliant / Non-compliant with prioritized remediation actions.
 
 ---

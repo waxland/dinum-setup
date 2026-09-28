@@ -23,25 +23,29 @@ const TRACKS: TrackConfig[] = [
     id: "frontend",
     title: "Frontend & BlockNote",
     icon: "⚛️",
-    subtitle: "Développement React 19, TypeScript strict, extension BlockNote et Design System DSFR / Cunningham.",
+    subtitle:
+      "Développement React 19, TypeScript strict, extension BlockNote et Design System DSFR / Cunningham.",
     steps: [
       {
         title: "1. Configuration de l'Éditeur & VS Code",
-        description: "Installation des extensions recommandées (ESLint, Prettier, GitLens) et typage strict.",
+        description:
+          "Installation des extensions recommandées (ESLint, Prettier, GitLens) et typage strict.",
         link: "/fr/01-onboarding/01-demarrage/vscode",
         badge: "Outillage",
         time: "5 min",
       },
       {
         title: "2. Découverte du Socle Technique Slasher",
-        description: "Comprendre le CustomBlock unique, les 3 modes DSFR (Callout, Carte, Lien) et les flux CRDT Yjs.",
+        description:
+          "Comprendre le CustomBlock unique, les 3 modes DSFR (Callout, Carte, Lien) et les flux CRDT Yjs.",
         link: "/fr/03-slasheurs-france/00-socle-technique",
         badge: "Architecture",
         time: "10 min",
       },
       {
         title: "3. Bac à Sable BlockNote & Démos Interactives",
-        description: "Tester en direct les commandes /loi, /entreprise, /albert et le rendu visuel.",
+        description:
+          "Tester en direct les commandes /loi, /entreprise, /albert et le rendu visuel.",
         link: "/fr/03-slasheurs-france/01-architecture-standardisee",
         badge: "Pratique",
         time: "15 min",
@@ -59,32 +63,37 @@ const TRACKS: TrackConfig[] = [
     id: "backend",
     title: "Backend Python & Django",
     icon: "🐍",
-    subtitle: "Architecture Django 5.2, DRF, Registry dynamique, cache Redis déterministe et sécurité anti-SSRF.",
+    subtitle:
+      "Architecture Django 5.2, DRF, Registry dynamique, cache Redis déterministe et sécurité anti-SSRF.",
     steps: [
       {
         title: "1. Standards d'Ingénierie Python DINUM",
-        description: "Règles de style Ruff (88 car.), typage statique typing et gestion sécurisée des secrets.",
+        description:
+          "Règles de style Ruff (88 car.), typage statique typing et gestion sécurisée des secrets.",
         link: "/fr/01-onboarding/02-workflow-et-contribution/qualite-et-architecture-la-suite",
         badge: "Standards",
         time: "5 min",
       },
       {
         title: "2. Proxy Backend, Anti-SSRF & Circuit Breakers",
-        description: "Protection contre les pannes réseau, timeouts 3.5s et isolation réseau SecNumCloud.",
+        description:
+          "Protection contre les pannes réseau, timeouts 3.5s et isolation réseau SecNumCloud.",
         link: "/fr/01-onboarding/02-workflow-et-contribution/adr/0003-proxy-django-anti-ssrf-circuit-breaker",
         badge: "Sécurité",
         time: "10 min",
       },
       {
         title: "3. Tutoriel : Ajouter une API en 10 minutes",
-        description: "Hériter de BaseSourceProvider, brancher une API publique et enregistrer le provider.",
+        description:
+          "Hériter de BaseSourceProvider, brancher une API publique et enregistrer le provider.",
         link: "/fr/03-slasheurs-france/04-tutoriel-ajouter-une-api",
         badge: "Tutoriel",
         time: "10 min",
       },
       {
         title: "4. Tests de Régression & Validation Pytest",
-        description: "Exécution des 46 tests unitaires et vérification de la résilience aux codes HTTP 429.",
+        description:
+          "Exécution des 46 tests unitaires et vérification de la résilience aux codes HTTP 429.",
         link: "/fr/01-onboarding/02-workflow-et-contribution/tests-et-qualite",
         badge: "Tests",
         time: "5 min",
@@ -95,11 +104,13 @@ const TRACKS: TrackConfig[] = [
     id: "devops",
     title: "DevOps & Infrastructure",
     icon: "🐳",
-    subtitle: "Orchestration Docker, déploiement sur serveurs distants, CI/CD GitHub Actions et DCO signoff.",
+    subtitle:
+      "Orchestration Docker, déploiement sur serveurs distants, CI/CD GitHub Actions et DCO signoff.",
     steps: [
       {
         title: "1. Configuration Machine Hôte (OrbStack / Colima)",
-        description: "Optimisation des ressources mémoire, conteneurs légers et Node.js / Python LTS.",
+        description:
+          "Optimisation des ressources mémoire, conteneurs légers et Node.js / Python LTS.",
         link: "/fr/01-onboarding/01-demarrage/environnement-machine-hote",
         badge: "Infra",
         time: "5 min",
@@ -124,25 +135,29 @@ const TRACKS: TrackConfig[] = [
     id: "product",
     title: "Produit, Métier & Juriste",
     icon: "⚖️",
-    subtitle: "Cadre juridique, conformité RGPD / DPGA, benchmark des données publiques et cas d'usage ministériels.",
+    subtitle:
+      "Cadre juridique, conformité RGPD / DPGA, benchmark des données publiques et cas d'usage ministériels.",
     steps: [
       {
         title: "1. Présentation des 6 Applications La Suite",
-        description: "Panorama de Docs, Meet, People, Projects, Transfers et Accounts pour les agents de l'État.",
+        description:
+          "Panorama de Docs, Meet, People, Projects, Transfers et Accounts pour les agents de l'État.",
         link: "/fr/02-la-suite",
         badge: "Produit",
         time: "10 min",
       },
       {
         title: "2. Les 10 Connecteurs Souverains de l'État",
-        description: "Fiches métiers pour la Loi (Légifrance), Entreprises (SIRENE), Marchés (BOAMP), Subventions, etc.",
+        description:
+          "Fiches métiers pour la Loi (Légifrance), Entreprises (SIRENE), Marchés (BOAMP), Subventions, etc.",
         link: "/fr/03-slasheurs-france",
         badge: "Sources",
         time: "15 min",
       },
       {
         title: "3. Conformité aux Biens Publics Numériques (DPGA)",
-        description: "Audit des 9 indicateurs DPGA et alignement avec les Objectifs de Développement Durable (ODD).",
+        description:
+          "Audit des 9 indicateurs DPGA et alignement avec les Objectifs de Développement Durable (ODD).",
         link: "/fr/01-onboarding/02-workflow-et-contribution/adr",
         badge: "DPGA",
         time: "10 min",
@@ -182,9 +197,7 @@ export function OnboardingTracks() {
               }`}
             >
               <div className="text-lg mb-0.5">{track.icon}</div>
-              <div className="font-semibold text-xs font-sans">
-                {track.title}
-              </div>
+              <div className="font-semibold text-xs font-sans">{track.title}</div>
             </button>
           );
         })}

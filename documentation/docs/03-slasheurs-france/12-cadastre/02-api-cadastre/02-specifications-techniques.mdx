@@ -11,11 +11,13 @@ description: Schémas GeoJSON, paramètres de requêtes et endpoints de recherch
 ### `GET https://apicarto.ign.fr/api/cadastre/parcelle`
 
 #### Paramètres :
+
 - `code_insee` : Code INSEE de la commune (ex: `75107`).
 - `section` : Lettres de section (ex: `AK`).
 - `numero` : Numéro de parcelle (ex: `0042`).
 
 #### Exemple de Réponse GeoJSON :
+
 ```json
 {
   "type": "FeatureCollection",
@@ -32,7 +34,14 @@ description: Schémas GeoJSON, paramètres de requêtes et endpoints de recherch
       },
       "geometry": {
         "type": "Polygon",
-        "coordinates": [[[2.3125, 48.8582], [2.3130, 48.8585], [2.3128, 48.8580], [2.3125, 48.8582]]]
+        "coordinates": [
+          [
+            [2.3125, 48.8582],
+            [2.313, 48.8585],
+            [2.3128, 48.858],
+            [2.3125, 48.8582]
+          ]
+        ]
       }
     }
   ]

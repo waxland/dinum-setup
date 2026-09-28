@@ -4,7 +4,6 @@ sidebar_label: "Slasheur Subventions"
 description: "Hub complet de la commande /subvention : recherche et insertion des aides financières d'État (Fonds Vert, DETR, DSIL, ADEME) aux collectivités."
 ---
 
-
 La commande **`/subvention`** (alias **`/aides`**, **`/fonds-vert`**, **`/detr`**, **`/dsil`**, **`/anct`**) permet aux collectivités territoriales, chargés de mission et secrétaires généraux de rechercher les dispositifs d'aides financières publiques recensés par **Aides-Territoires (ANCT)** et de les intégrer directement dans leurs dossiers de financement.
 
 ---
@@ -14,6 +13,7 @@ La commande **`/subvention`** (alias **`/aides`**, **`/fonds-vert`**, **`/detr`*
 Les porteurs de projets territoriaux (rénovation d'écoles, décarbonation, mobilités douces, tiers-lieux) doivent monter des plans de financement complexes combinant plusieurs guichets publics (Fonds Vert, DETR, DSIL, ADEME, Agences de l'Eau).
 
 La commande `/subvention` permet d'insérer instantanément :
+
 - Le **taux de subvention maximal** applicable.
 - Le **financeur officiel** (État, ADEME, Région).
 - Les **dépenses et bénéficiaires éligibles**.
@@ -45,12 +45,13 @@ La commande `/subvention` permet d'insérer instantanément :
     Registry --> AidesAPI
     AidesAPI -.-> Registry
     Registry --> Block
+
 `} />
 
 ---
 
 ## 🧩 Formats de Rendu (Design System Cunningham)
 
-- **🗂️ Carte 3 Colonnes :** Financeur • Taux Maximal (ex: *80%*) • Date Limite de Dépôt.
+- **🗂️ Carte 3 Colonnes :** Financeur • Taux Maximal (ex: _80%_) • Date Limite de Dépôt.
 - **📢 Encadré Marianne :** Résumé des objectifs environnementaux et conditions d'instruction.
 - **🔗 Pastille Lien :** Lien officiel vers le guichet de télédéclaration.

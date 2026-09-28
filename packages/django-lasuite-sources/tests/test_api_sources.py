@@ -1,15 +1,12 @@
 """Tests for sovereign sources registry and standalone API views."""
 
 from django.contrib.auth.models import User
-from rest_framework.status import (
-    HTTP_200_OK,
-    HTTP_401_UNAUTHORIZED,
-    HTTP_404_NOT_FOUND,
-)
+from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED, HTTP_404_NOT_FOUND
 from rest_framework.test import APIClient
 
 import pytest
 
+from lasuite_sources.base import BaseSourceProvider
 from lasuite_sources.registry import source_registry
 from lasuite_sources.tasks import check_laws_validity_task
 
@@ -195,3 +192,71 @@ def test_check_laws_validity_task():
     assert result["status"] == "completed"
     assert result["scanned_documents"] == 1
     assert result["checked_laws_count"] >= 1
+
+
+def test_custom_provider_with_non_fixture_data_roundtrip():
+    """R-02.03 / T-003.06: Custom provider returning non-fixture data traverses Django view cleanly."""
+
+    class TestCustomProvider(BaseSourceProvider):
+        source_type = "test-custom-roundtrip"
+        name = "Test Custom Roundtrip Provider"
+
+        def is_enabled(self) -> bool:
+            return True
+
+        def suggest(self, query: str, limit: int = 5):
+            return []
+
+        def search(self, query: str, limit: int = 10):
+            return [
+                {
+                    "source_id": f"custom-{query}-999",
+                    "entity_type": "custom",
+                    "display_mode": "card",
+                    "title": f"Live Custom Item: {query}",
+                    "subtitle": "Generated on the fly (Not in fixtures)",
+                    "status": "Validé",
+                    "status_color": "blue",
+                    "provider": "custom-backend-system",
+                    "origin": "upstream",
+                    "delivery": "live",
+                    "country": "fr",
+                    "verified_at": "2026-09-26T15:30:00Z",
+                    "retrieved_at": "2026-09-26T15:31:00Z",
+                    "url": f"https://sources.lasuite.numerique.gouv.fr/custom/{query}",
+                    "summary": f"Full verified summary for {query}",
+                    "raw_payload": {"unique_id": 999, "query_term": query},
+                }
+            ]
+
+        def get_detail(self, source_id: str):
+            return {
+                "source_id": source_id,
+                "entity_type": "custom",
+                "display_mode": "card",
+                "title": f"Detail for {source_id}",
+                "status": "Validé",
+                "origin": "upstream",
+            }
+
+    provider = TestCustomProvider()
+    source_registry.register(provider)
+
+    client = APIClient()
+    user = User.objects.create_user(username="agent.roundtrip")
+    client.force_authenticate(user=user)
+
+    response = client.get(
+        "/sources/search/?type=test-custom-roundtrip&q=sovereign-data"
+    )
+    assert response.status_code == HTTP_200_OK
+    payload = response.json()
+    assert payload["type"] == "test-custom-roundtrip"
+    assert len(payload["results"]) == 1
+    record = payload["results"][0]
+    assert record["source_id"] == "custom-sovereign-data-999"
+    assert record["origin"] == "upstream"
+    assert record["delivery"] == "live"
+    assert record["country"] == "fr"
+    assert record["provider"] == "custom-backend-system"
+    assert record["raw_payload"] == {"unique_id": 999, "query_term": "sovereign-data"}

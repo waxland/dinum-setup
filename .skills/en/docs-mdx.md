@@ -20,6 +20,7 @@ This skill provides mandatory engineering rules and styling standards for author
 ## 2. Core MDX Authoring Rules
 
 ### 🛑 Rule 1: Zero H1 Title Duplication (Frontmatter vs Markdown Heading)
+
 - **Principle:** Zudoku automatically renders the main page `<h1>` from the frontmatter `title` property.
 - **Strict Prohibition:** **NEVER** add a `# Page Title` (H1 Markdown heading) at the top of the body text after the frontmatter.
 - **Best Practice:**
@@ -31,6 +32,7 @@ This skill provides mandatory engineering rules and styling standards for author
   ---
 
   <!-- ✅ No "# Title" here! Start directly with <DocHeaderSummary> or introduction -->
+
   <DocHeaderSummary
     readingTime="5 min"
     level="Intermediate"
@@ -46,23 +48,27 @@ This skill provides mandatory engineering rules and styling standards for author
 ---
 
 ### 🎨 Rule 2: Mandatory `<Mermaid>` Component (Zero Raw Code Blocks)
-- **Principle:** **NEVER** use raw Markdown code blocks (```` ```mermaid ````) in `.mdx` files.
+
+- **Principle:** **NEVER** use raw Markdown code blocks (` ```mermaid `) in `.mdx` files.
 - **Rationale:** The interactive `<Mermaid chart={`...`} />` component provides:
   1. **Immersive Fullscreen Mode** with zoom, pan, and keyboard exit (<kbd>Escape</kbd>).
   2. Dynamic light/dark theme adaptation using official French State tokens (`#000091`, `#f5f5fe`).
   3. Prevention of layout shifts (CLS) and SSR hydration mismatches.
 - **Best Practice:**
   ```mdx
-  <Mermaid chart={`flowchart TD
+  <Mermaid
+    chart={`flowchart TD
       Client["BlockNote Editor"] --> SDK["@suitenumerique/slash-sources-sdk"]
       SDK --> Backend["django-lasuite-sources"]
       Backend --> API["Sovereign APIs"]
-  `} />
+  `}
+  />
   ```
 
 ---
 
 ### 📦 Rule 3: Systematize Dynamic Tabs (`<CodeTabs>`)
+
 For installation commands and language comparisons, never use separate static snippets:
 
 1. **JavaScript/TypeScript Packages:**
@@ -86,6 +92,7 @@ For installation commands and language comparisons, never use separate static sn
 ---
 
 ### 🛡️ Rule 4: JSX Purity & SSR Hydration Safety
+
 - ⚠️ **Self-closing Tags:** All HTML tags in MDX must be self-closing (e.g. `<br />`, `<hr />`, `<img ... />`).
 - **No Unparsed Empty Lines in HTML Blocks:** Avoid `<div>` containers enclosing raw paragraphs with blank lines (causes React `cannot appear as a descendant of <p>`).
 - Prefer reusable components: `<FeatureGrid cols={3}>`, `<FeatureCard ... />`, `<Kanban />`, `<LawSlashPreview />`.

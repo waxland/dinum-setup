@@ -49,6 +49,7 @@ git checkout -b feature/<feature-name> upstream/main
 ### Step 3: Enforce Gitlint & DCO Commit Message Conventions
 
 Commit messages must strictly follow the format: `<gitmoji>(<scope>) <subject>`:
+
 - `<gitmoji>`: Valid emoji from [gitmoji.dev](https://gitmoji.dev) (`✨` feature, `🐛` fix, `🔧` config, `📝` doc).
 - `(<scope>)`: Subsystem `(dev)`, `(frontend)`, `(backend)`, `(docker)`, `(sources)`, `(ci)`.
 - `<subject>`: Concise description (< 80 chars).

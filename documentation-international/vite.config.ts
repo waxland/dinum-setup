@@ -24,12 +24,7 @@ export default defineConfig({
   },
   server: {
     watch: {
-      ignored: [
-        "**/.next/**",
-        "**/.venv/**",
-        "**/coverage/**",
-        "**/dist/**",
-      ],
+      ignored: ["**/.next/**", "**/.venv/**", "**/coverage/**", "**/dist/**"],
     },
   },
   ssr: {

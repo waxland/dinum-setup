@@ -14,10 +14,10 @@ import {
   MOCK_FRANCE_SOURCES,
   MOCK_GERMANY_SOURCES,
   SourceBlock,
-  SourceSearchProvider,
-  demoSearchClient,
   SourceIcon,
   SourceInlineContent,
+  SourceSearchProvider,
+  demoSearchClient,
   isSourceEntityType,
   type ExternalSourceDisplayMode,
   type ExternalSourceEntity,
@@ -31,7 +31,7 @@ import { getDemoTranslations } from "./i18n";
 
 const convertEntityToBlockProps = (
   item: Partial<ExternalSourceEntity> & { country?: string },
-  mode: ExternalSourceDisplayMode = "callout"
+  mode: ExternalSourceDisplayMode = "callout",
 ) => ({
   entityType: isSourceEntityType(item.entityType) ? item.entityType : "law",
   displayMode: mode,
@@ -42,14 +42,18 @@ const convertEntityToBlockProps = (
   origin: "demo",
   country: item.country || "",
   statusColor: item.statusColor || "blue",
-  meta1: item.meta1 || (item.metadataFields?.[0]?.value ? String(item.metadataFields[0].value) : ""),
-  meta2: item.meta2 || (item.metadataFields?.[1]?.value ? String(item.metadataFields[1].value) : ""),
-  meta3: item.meta3 || (item.metadataFields?.[2]?.value ? String(item.metadataFields[2].value) : ""),
+  meta1:
+    item.meta1 || (item.metadataFields?.[0]?.value ? String(item.metadataFields[0].value) : ""),
+  meta2:
+    item.meta2 || (item.metadataFields?.[1]?.value ? String(item.metadataFields[1].value) : ""),
+  meta3:
+    item.meta3 || (item.metadataFields?.[2]?.value ? String(item.metadataFields[2].value) : ""),
   excerpt: item.excerpt || item.snippet || "",
   summary: item.summary || "",
   url: item.url || "",
   verifiedAt: "",
-  rawPayload: typeof item.rawPayload === "string" ? item.rawPayload : JSON.stringify(item.rawPayload || {}),
+  rawPayload:
+    typeof item.rawPayload === "string" ? item.rawPayload : JSON.stringify(item.rawPayload || {}),
 });
 
 export const App: React.FC = () => {
@@ -60,7 +64,7 @@ export const App: React.FC = () => {
   const t = useMemo(() => getDemoTranslations(currentLocale), [currentLocale]);
 
   useEffect(() => {
-    document.documentElement.dataset.frTheme = isDark ? 'dark' : 'light';
+    document.documentElement.dataset.frTheme = isDark ? "dark" : "light";
     if (isDark) {
       document.body.classList.add("dark");
     } else {
@@ -208,7 +212,17 @@ export const App: React.FC = () => {
             props: { entityType: "law", displayMode: "callout" },
           });
         },
-        aliases: ["loi", "law", "legifrance", "code", "article", "decret", "gesetz", "wet", "eurlex"],
+        aliases: [
+          "loi",
+          "law",
+          "legifrance",
+          "code",
+          "article",
+          "decret",
+          "gesetz",
+          "wet",
+          "eurlex",
+        ],
         group: t.editor.slashGroupTitle,
         icon: <SourceIcon type="law" size={16} color="var(--blue-france, #000091)" />,
         subtext: "Insert a certified official legal text",
@@ -221,7 +235,17 @@ export const App: React.FC = () => {
             props: { entityType: "company", displayMode: "callout" },
           });
         },
-        aliases: ["entreprise", "company", "pappers", "siren", "siret", "societe", "kbis", "register", "kvk"],
+        aliases: [
+          "entreprise",
+          "company",
+          "pappers",
+          "siren",
+          "siret",
+          "societe",
+          "kbis",
+          "register",
+          "kvk",
+        ],
         group: t.editor.slashGroupTitle,
         icon: <SourceIcon type="company" size={16} color="var(--blue-france, #000091)" />,
         subtext: "Insert certified commercial registry data",
@@ -234,7 +258,16 @@ export const App: React.FC = () => {
             props: { entityType: "parliament", displayMode: "callout" },
           });
         },
-        aliases: ["assemblee", "parliament", "assemble", "an", "amendement", "depute", "bundestag", "dip"],
+        aliases: [
+          "assemblee",
+          "parliament",
+          "assemble",
+          "an",
+          "amendement",
+          "depute",
+          "bundestag",
+          "dip",
+        ],
         group: t.editor.slashGroupTitle,
         icon: <SourceIcon type="parliament" size={16} color="var(--blue-france, #000091)" />,
         subtext: "Track a parliamentary amendment or bill in session",
@@ -273,7 +306,16 @@ export const App: React.FC = () => {
             props: { entityType: "grant", displayMode: "callout" },
           });
         },
-        aliases: ["subvention", "grant", "aides", "fonds-vert", "detr", "dsil", "anct", "subsidies"],
+        aliases: [
+          "subvention",
+          "grant",
+          "aides",
+          "fonds-vert",
+          "detr",
+          "dsil",
+          "anct",
+          "subsidies",
+        ],
         group: t.editor.slashGroupTitle,
         icon: <SourceIcon type="grant" size={16} color="var(--blue-france, #000091)" />,
         subtext: "Insert a public funding or territorial grant program",
@@ -317,14 +359,16 @@ export const App: React.FC = () => {
     const currentPool = [
       ...MOCK_FRANCE_SOURCES,
       ...ALL_INTERNATIONAL_MOCK_SOURCES.filter(
-        (s) => s.country === currentCountry && s.country !== "fr"
+        (s) => s.country === currentCountry && s.country !== "fr",
       ),
     ];
 
     return currentPool.map((item) => ({
       title: item.title,
       subtext: `${item.subtitle || ""} (${item.entityType || "law"})`,
-      icon: <SourceIcon type={item.entityType || "law"} size={15} color="var(--blue-france, #000091)" />,
+      icon: (
+        <SourceIcon type={item.entityType || "law"} size={15} color="var(--blue-france, #000091)" />
+      ),
       onItemClick: () => {
         editor.insertInlineContent([
           {
@@ -394,36 +438,36 @@ export const App: React.FC = () => {
         />
 
         <div className="sober-editor-card">
-          <SourceSearchProvider value={{ client: demoSearchClient, country: currentCountry }}>
-          <BlockNoteView
-            editor={editor}
-            theme={isDark ? "dark" : "light"}
-            slashMenu={false}
+          <SourceSearchProvider
+            value={{
+              client: demoSearchClient,
+              country: currentCountry,
+              locale: currentLocale,
+            }}
           >
-            <SuggestionMenuController
-              triggerCharacter={"/"}
-              getItems={async (query) =>
-                customSlashMenuItems.filter(
-                  (item) =>
-                    item.title.toLowerCase().includes(query.toLowerCase()) ||
-                    item.aliases?.some((a) =>
-                      a.toLowerCase().includes(query.toLowerCase())
-                    )
-                )
-              }
-            />
+            <BlockNoteView editor={editor} theme={isDark ? "dark" : "light"} slashMenu={false}>
+              <SuggestionMenuController
+                triggerCharacter={"/"}
+                getItems={async (query) =>
+                  customSlashMenuItems.filter(
+                    (item) =>
+                      item.title.toLowerCase().includes(query.toLowerCase()) ||
+                      item.aliases?.some((a) => a.toLowerCase().includes(query.toLowerCase())),
+                  )
+                }
+              />
 
-            <SuggestionMenuController
-              triggerCharacter={"@"}
-              getItems={async (query) =>
-                customMentionMenuItems.filter(
-                  (item) =>
-                    item.title.toLowerCase().includes(query.toLowerCase()) ||
-                    item.subtext?.toLowerCase().includes(query.toLowerCase())
-                )
-              }
-            />
-          </BlockNoteView>
+              <SuggestionMenuController
+                triggerCharacter={"@"}
+                getItems={async (query) =>
+                  customMentionMenuItems.filter(
+                    (item) =>
+                      item.title.toLowerCase().includes(query.toLowerCase()) ||
+                      item.subtext?.toLowerCase().includes(query.toLowerCase()),
+                  )
+                }
+              />
+            </BlockNoteView>
           </SourceSearchProvider>
         </div>
 

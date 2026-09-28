@@ -12,13 +12,13 @@ paths:
     get:
       summary: Search one registered provider
       parameters:
-        - $ref: '#/components/parameters/Provider'
-        - $ref: '#/components/parameters/Query'
+        - $ref: "#/components/parameters/Provider"
+        - $ref: "#/components/parameters/Query"
         - name: limit
           in: query
-          schema: {type: integer, minimum: 1, maximum: 50, default: 10}
+          schema: { type: integer, minimum: 1, maximum: 50, default: 10 }
       responses:
-        '200':
+        "200":
           description: Results, including an empty list when no match exists
           content:
             application/json:
@@ -26,29 +26,29 @@ paths:
                 type: object
                 required: [type, query, count, health, results]
                 properties:
-                  type: {type: string}
-                  query: {type: string}
-                  count: {type: integer}
-                  health: {$ref: '#/components/schemas/Health'}
+                  type: { type: string }
+                  query: { type: string }
+                  count: { type: integer }
+                  health: { $ref: "#/components/schemas/Health" }
                   results:
                     type: array
-                    items: {$ref: '#/components/schemas/SourceSearchResult'}
-        '400': {$ref: '#/components/responses/Invalid'}
-        '401': {$ref: '#/components/responses/Unauthorized'}
-        '403': {$ref: '#/components/responses/Unauthorized'}
-        '429': {$ref: '#/components/responses/Throttled'}
-        '503': {$ref: '#/components/responses/Unavailable'}
+                    items: { $ref: "#/components/schemas/SourceSearchResult" }
+        "400": { $ref: "#/components/responses/Invalid" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Unauthorized" }
+        "429": { $ref: "#/components/responses/Throttled" }
+        "503": { $ref: "#/components/responses/Unavailable" }
   /suggest/:
     get:
       summary: Provider suggestions (no guaranteed latency)
       parameters:
-        - $ref: '#/components/parameters/Provider'
-        - $ref: '#/components/parameters/Query'
+        - $ref: "#/components/parameters/Provider"
+        - $ref: "#/components/parameters/Query"
         - name: limit
           in: query
-          schema: {type: integer, minimum: 1, maximum: 20, default: 5}
+          schema: { type: integer, minimum: 1, maximum: 20, default: 5 }
       responses:
-        '200':
+        "200":
           description: Suggestions
           content:
             application/json:
@@ -56,17 +56,17 @@ paths:
                 type: object
                 required: [type, query, health, suggestions]
                 properties:
-                  type: {type: string}
-                  query: {type: string}
-                  health: {$ref: '#/components/schemas/Health'}
+                  type: { type: string }
+                  query: { type: string }
+                  health: { $ref: "#/components/schemas/Health" }
                   suggestions:
                     type: array
-                    items: {$ref: '#/components/schemas/SourceSuggestResult'}
-        '400': {$ref: '#/components/responses/Invalid'}
-        '401': {$ref: '#/components/responses/Unauthorized'}
-        '403': {$ref: '#/components/responses/Unauthorized'}
-        '429': {$ref: '#/components/responses/Throttled'}
-        '503': {$ref: '#/components/responses/Unavailable'}
+                    items: { $ref: "#/components/schemas/SourceSuggestResult" }
+        "400": { $ref: "#/components/responses/Invalid" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Unauthorized" }
+        "429": { $ref: "#/components/responses/Throttled" }
+        "503": { $ref: "#/components/responses/Unavailable" }
   /{source_type}/{source_id}/:
     get:
       summary: Retrieve a source snapshot when the provider supports detail
@@ -74,57 +74,60 @@ paths:
         - name: source_type
           in: path
           required: true
-          schema: {type: string}
+          schema: { type: string }
         - name: source_id
           in: path
           required: true
-          schema: {type: string, maxLength: 256}
+          schema: { type: string, maxLength: 256 }
       responses:
-        '200':
+        "200":
           description: Source snapshot, not necessarily verified
           content:
             application/json:
-              schema: {$ref: '#/components/schemas/SourceSearchResult'}
-        '400': {$ref: '#/components/responses/Invalid'}
-        '401': {$ref: '#/components/responses/Unauthorized'}
-        '403': {$ref: '#/components/responses/Unauthorized'}
-        '404': {description: Unknown or disabled provider, or missing entity}
-        '429': {$ref: '#/components/responses/Throttled'}
-        '503': {$ref: '#/components/responses/Unavailable'}
+              schema: { $ref: "#/components/schemas/SourceSearchResult" }
+        "400": { $ref: "#/components/responses/Invalid" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Unauthorized" }
+        "404": { description: Unknown or disabled provider, or missing entity }
+        "429": { $ref: "#/components/responses/Throttled" }
+        "503": { $ref: "#/components/responses/Unavailable" }
   /status/:
     get:
       summary: Local admission policy for enabled providers, not an upstream health probe
       responses:
-        '200':
+        "200":
           description: Provider policies
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  count: {type: integer}
+                  count: { type: integer }
                   providers:
                     type: object
-                    additionalProperties: {$ref: '#/components/schemas/Health'}
-        '401': {$ref: '#/components/responses/Unauthorized'}
-        '403': {$ref: '#/components/responses/Unauthorized'}
-        '503': {$ref: '#/components/responses/Unavailable'}
+                    additionalProperties: { $ref: "#/components/schemas/Health" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Unauthorized" }
+        "503": { $ref: "#/components/responses/Unavailable" }
 components:
   securitySchemes:
-    session: {type: apiKey, in: cookie, name: sessionid}
+    session: { type: apiKey, in: cookie, name: sessionid }
   parameters:
     Provider:
       name: type
       in: query
       description: Registered provider ID or alias; plugins may add identifiers
-      schema: {type: string, maxLength: 100, default: law}
+      schema: { type: string, maxLength: 100, default: law }
     Query:
       name: q
       in: query
-      schema: {type: string, maxLength: 500, default: ''}
+      schema: { type: string, maxLength: 500, default: "" }
   responses:
-    Invalid: {description: Invalid parameters; field errors or invalid_source_id code}
-    Unauthorized: {description: Authentication or permission required; exact status follows host DRF authentication}
+    Invalid: { description: Invalid parameters; field errors or invalid_source_id code }
+    Unauthorized:
+      {
+        description: Authentication or permission required; exact status follows host DRF authentication,
+      }
     Unavailable:
       description: Provider, quota service, circuit or budget unavailable
       content:
@@ -133,56 +136,73 @@ components:
             type: object
             required: [code]
             properties:
-              code: {type: string, enum: [provider_unavailable, quota_service_unavailable]}
+              code: { type: string, enum: [provider_unavailable, quota_service_unavailable] }
     Throttled:
       description: User request limit reached
       headers:
         Retry-After:
-          schema: {type: string}
+          schema: { type: string }
       content:
         application/json:
           schema:
             type: object
             properties:
-              code: {type: string, enum: [rate_limited]}
+              code: { type: string, enum: [rate_limited] }
   schemas:
     Health:
       type: object
       properties:
-        status: {type: string, enum: [healthy, degraded, cached_only, rate_limited, quota_exhausted, disabled]}
-        message: {type: string}
-        is_live: {type: boolean, description: Admission policy permits live requests, not proof of upstream availability}
-        remaining_quota_percent: {type: integer}
-        circuit_open_until: {type: number, nullable: true}
-        last_error: {type: string, nullable: true}
+        status:
+          {
+            type: string,
+            enum: [healthy, degraded, cached_only, rate_limited, quota_exhausted, disabled],
+          }
+        message: { type: string }
+        is_live:
+          {
+            type: boolean,
+            description: Admission policy permits live requests,
+            not proof of upstream availability,
+          }
+        remaining_quota_percent: { type: integer }
+        circuit_open_until: { type: number, nullable: true }
+        last_error: { type: string, nullable: true }
     SourceSearchResult:
       type: object
       required: [source_id, entity_type, display_mode, title]
       properties:
-        source_id: {type: string, minLength: 1}
-        entity_type: {type: string}
-        display_mode: {type: string, enum: [callout, card, link]}
-        title: {type: string}
-        subtitle: {type: string, nullable: true}
-        status: {type: string, nullable: true}
-        status_color: {type: string, nullable: true, enum: [blue, green, yellow, red, purple, gray, null]}
-        meta1: {type: string, nullable: true}
-        meta2: {type: string, nullable: true}
-        meta3: {type: string, nullable: true}
-        excerpt: {type: string, nullable: true}
-        summary: {type: string, nullable: true}
-        url: {type: string, nullable: true}
-        verified_at: {type: string, nullable: true, description: Business verification time, never invented at rendering}
-        retrieved_at: {type: string}
-        provider: {type: string}
-        origin: {type: string, enum: [demo, upstream]}
-        delivery: {type: string, enum: [live, cache]}
-        raw_payload: {type: object, nullable: true, additionalProperties: true}
+        source_id: { type: string, minLength: 1 }
+        entity_type: { type: string }
+        display_mode: { type: string, enum: [callout, card, link] }
+        title: { type: string }
+        subtitle: { type: string, nullable: true }
+        status: { type: string, nullable: true }
+        status_color:
+          { type: string, nullable: true, enum: [blue, green, yellow, red, purple, gray, null] }
+        meta1: { type: string, nullable: true }
+        meta2: { type: string, nullable: true }
+        meta3: { type: string, nullable: true }
+        excerpt: { type: string, nullable: true }
+        summary: { type: string, nullable: true }
+        url: { type: string, nullable: true }
+        verified_at:
+          {
+            type: string,
+            nullable: true,
+            description: Business verification time,
+            never invented at rendering,
+          }
+        retrieved_at: { type: string }
+        provider: { type: string }
+        country: { type: string, nullable: true }
+        origin: { type: string, enum: [demo, upstream] }
+        delivery: { type: string, enum: [live, cache] }
+        raw_payload: { type: object, nullable: true, additionalProperties: true }
     SourceSuggestResult:
       type: object
       required: [id, title, type]
       properties:
-        id: {type: string}
-        title: {type: string}
-        subtitle: {type: string}
-        type: {type: string}
+        id: { type: string }
+        title: { type: string }
+        subtitle: { type: string }
+        type: { type: string }

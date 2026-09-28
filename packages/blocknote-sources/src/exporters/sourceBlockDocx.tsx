@@ -1,18 +1,16 @@
-import { BorderStyle, ExternalHyperlink, Paragraph, TextRun } from 'docx';
+import { BorderStyle, ExternalHyperlink, Paragraph, TextRun } from "docx";
 
-import { SourceBlockExportBlock } from '../types';
+import { SourceBlockExportBlock } from "../types";
 
-export const blockMappingSourceBlockDocx = (
-  block: SourceBlockExportBlock,
-) => {
+export const blockMappingSourceBlockDocx = (block: SourceBlockExportBlock) => {
   const props = block.props;
   const metaParts = [props.meta1, props.meta2, props.meta3].filter(Boolean);
 
   const children: (TextRun | ExternalHyperlink)[] = [
     new TextRun({
-      text: props.title || 'Sovereign Source',
+      text: props.title || "Sovereign Source",
       bold: true,
-      color: '000091',
+      color: "000091",
       size: 22,
     }),
   ];
@@ -22,7 +20,7 @@ export const blockMappingSourceBlockDocx = (
       new TextRun({
         text: `  [${props.status}]`,
         bold: true,
-        color: '0E793C',
+        color: "0E793C",
         size: 18,
       }),
     );
@@ -33,7 +31,7 @@ export const blockMappingSourceBlockDocx = (
       new TextRun({
         text: props.subtitle,
         break: 1,
-        color: '666666',
+        color: "666666",
         size: 18,
       }),
     );
@@ -42,9 +40,9 @@ export const blockMappingSourceBlockDocx = (
   if (metaParts.length > 0) {
     children.push(
       new TextRun({
-        text: metaParts.join(' • '),
+        text: metaParts.join(" • "),
         break: 1,
-        color: '555555',
+        color: "555555",
         size: 16,
       }),
     );
@@ -56,7 +54,7 @@ export const blockMappingSourceBlockDocx = (
         text: `« ${props.excerpt} »`,
         break: 1,
         italics: true,
-        color: '1E1E1E',
+        color: "1E1E1E",
         size: 18,
       }),
     );
@@ -65,7 +63,7 @@ export const blockMappingSourceBlockDocx = (
       new TextRun({
         text: props.summary,
         break: 1,
-        color: '333333',
+        color: "333333",
         size: 18,
       }),
     );
@@ -74,15 +72,15 @@ export const blockMappingSourceBlockDocx = (
   if (props.url) {
     children.push(
       new TextRun({
-        text: '',
+        text: "",
         break: 1,
       }),
       new ExternalHyperlink({
         children: [
           new TextRun({
-            text: 'Consulter la source officielle',
-            style: 'Hyperlink',
-            color: '000091',
+            text: "Consulter la source officielle",
+            style: "Hyperlink",
+            color: "000091",
             underline: {},
             size: 16,
           }),
@@ -96,14 +94,14 @@ export const blockMappingSourceBlockDocx = (
     spacing: { before: 120, after: 120 },
     border: {
       left: {
-        color: '000091',
+        color: "000091",
         space: 10,
         style: BorderStyle.SINGLE,
         size: 24,
       },
     },
     shading: {
-      fill: 'F8F8FB',
+      fill: "F8F8FB",
     },
     children,
   });

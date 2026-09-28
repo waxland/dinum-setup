@@ -4,7 +4,6 @@ sidebar_label: "Slasheur Adresse"
 description: "Hub de la commande /adresse : autocomplétion d'adresses certifiées par les mairies, géocodage et benchmark BAN vs Addok."
 ---
 
-
 La commande **`/adresse`** (alias **`/ban`**, **`/address`**, **`/geo`**, **`/rue`**) permet aux agents territoriaux, secrétaires de mairie, instructeurs d'urbanisme et rédacteurs administratifs de rechercher et d'insérer des adresses postales certifiées par la **Base Adresse Nationale (BAN)** dans **La Suite Docs**.
 
 Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le cadre légal territorial (loi 3DS), la veille sur les APIs de géocodage et le raccordement au socle commun.
@@ -70,6 +69,7 @@ Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le
     DjangoProxy -.->|5. DTO normalisé SourceSearchResult| SearchPopover
     SearchPopover -->|"6. Insertion du bloc"| YDoc
     YDoc <==>|7. Synchronisation Temps Réel| YjsServer
+
 `} />
 
 ---
@@ -77,6 +77,7 @@ Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le
 ## 🧩 Formats d'Affichage Disponibles
 
 Conformément au **[Socle Technique Unifié](/08-slash/00-socle-technique)** :
+
 - 📢 **Format Callout** : Adresse complète certifiée BAN avec lien vers la fiche nationale.
 - 🗂️ **Format Carte** : Encart avec grille : Code INSEE • Type • Coordonnées GPS.
 - 🔗 **Format Lien** : Mention compacte `📍 20 Avenue de Ségur, 75007 Paris`.

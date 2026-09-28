@@ -20,6 +20,7 @@ Ce skill définit les règles fondamentales, les standards stylistiques et les b
 ## 2. Règles Fondamentales & Standards de Style MDX
 
 ### 🛑 Règle 1 : Zéro Doublon de Titre H1 (Frontmatter vs Titre Markdown)
+
 - **Principe :** Zudoku génère automatiquement le titre principal `<h1>` à partir de la propriété `title` du frontmatter YAML.
 - **Interdiction :** Ne **JAMAIS** ajouter un `# Titre de la page` (H1 Markdown) au début du texte après le frontmatter.
 - **Bonne Pratique :**
@@ -31,6 +32,7 @@ Ce skill définit les règles fondamentales, les standards stylistiques et les b
   ---
 
   <!-- ✅ Pas de "# Titre" ici ! Démarrez directement avec l'introduction ou <DocHeaderSummary> -->
+
   <DocHeaderSummary
     readingTime="5 min"
     level="Intermédiaire"
@@ -46,23 +48,27 @@ Ce skill définit les règles fondamentales, les standards stylistiques et les b
 ---
 
 ### 🎨 Règle 2 : Utilisation Obligatoire du Composant `<Mermaid>` (Zéro Code-Block Brut)
-- **Principe :** Ne **JAMAIS** utiliser de simple bloc de code Markdown brut (```` ```mermaid ````) dans les pages `.mdx`.
+
+- **Principe :** Ne **JAMAIS** utiliser de simple bloc de code Markdown brut (` ```mermaid `) dans les pages `.mdx`.
 - **Pourquoi :** Le composant interactif `<Mermaid chart={`...`} />` apporte :
   1. Le **mode plein écran immersif** avec zoom, pan et fermeture au clavier (<kbd>Échap</kbd>).
   2. L'adaptation dynamique aux thèmes clair et sombre avec la palette officielle de l'État (`#000091`, `#f5f5fe`).
   3. L'absence de flash ou de décalage de layout (CLS) lors du rendu SSR.
 - **Bonne Pratique :**
   ```mdx
-  <Mermaid chart={`flowchart TD
+  <Mermaid
+    chart={`flowchart TD
       Client["Éditeur BlockNote"] --> SDK["@suitenumerique/slash-sources-sdk"]
       SDK --> Backend["django-lasuite-sources"]
       Backend --> API["APIs Souveraines"]
-  `} />
+  `}
+  />
   ```
 
 ---
 
 ### 📦 Règle 3 : Systématisation des Onglets Dynamiques (`<CodeTabs>`)
+
 Pour toute commande d'installation ou comparatif de code, proscrire les listings statiques séparés et utiliser les composants prévus :
 
 1. **Installation de packages JavaScript/TypeScript :**
@@ -86,6 +92,7 @@ Pour toute commande d'installation ou comparatif de code, proscrire les listings
 ---
 
 ### 🛡️ Règle 4 : Pureté JSX & Prévention des Erreurs d'Hydratation
+
 - ⚠️ **Balises auto-fermantes :** Toutes les balises HTML dans le MDX doivent être explicitement fermées (ex : `<br />`, `<hr />`, `<img ... />`).
 - **Pas de blocs HTML avec lignes vides imbriquées :** Ne pas insérer de blocs `<div>` contenant des paragraphes séparés par des sauts de ligne non parsés (cause de l'erreur React `cannot appear as a descendant of <p>`).
 - Privilégier les composants réutilisables : `<FeatureGrid cols={3}>`, `<FeatureCard ... />`, `<Kanban />`, `<LawSlashPreview />`.

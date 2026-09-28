@@ -1,43 +1,55 @@
-import React from 'react';
-import { SourceIcon } from '../components/SourceIcon';
-import { SourceEntityProps } from '../types';
+import React from "react";
+import { SourceIcon } from "../components/SourceIcon";
+import { getI18nStrings } from "../i18n";
+import { useSourceSearchConfiguration } from "../SourceSearchContext";
+import { SourceEntityProps } from "../types";
 
 interface SourceCalloutFormatProps {
   props: SourceEntityProps;
 }
 
 export const SourceCalloutFormat: React.FC<SourceCalloutFormatProps> = ({ props }) => {
+  const configuration = useSourceSearchConfiguration();
+  const i18n = getI18nStrings(configuration.locale || "fr");
+
   return (
     <div
       contentEditable={false}
       style={{
-        padding: '12px 14px',
-        borderLeft: '3px solid var(--blue-france, #000091)',
-        borderTop: '1px solid var(--border-color, #e5e5e5)',
-        borderRight: '1px solid var(--border-color, #e5e5e5)',
-        borderBottom: '1px solid var(--border-color, #e5e5e5)',
-        background: 'var(--bg-surface, #f9f9fb)',
+        padding: "12px 14px",
+        borderLeft: "3px solid var(--blue-france, #000091)",
+        borderTop: "1px solid var(--border-color, #e5e5e5)",
+        borderRight: "1px solid var(--border-color, #e5e5e5)",
+        borderBottom: "1px solid var(--border-color, #e5e5e5)",
+        background: "var(--bg-surface, #f9f9fb)",
       }}
     >
       <div
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '8px',
-          marginBottom: '6px',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "8px",
+          marginBottom: "6px",
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0 }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            minWidth: 0,
+          }}
+        >
           <SourceIcon type={props.entityType} size={14} color="currentColor" />
           <span
             style={{
-              fontSize: '13px',
+              fontSize: "13px",
               fontWeight: 600,
-              color: 'inherit',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
+              color: "inherit",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
             }}
           >
             {props.title}
@@ -45,11 +57,11 @@ export const SourceCalloutFormat: React.FC<SourceCalloutFormatProps> = ({ props 
           {props.subtitle && (
             <span
               style={{
-                fontSize: '11px',
-                color: 'var(--text-muted, #777777)',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
+                fontSize: "11px",
+                color: "var(--text-muted, #777777)",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
               }}
             >
               • {props.subtitle}
@@ -60,12 +72,12 @@ export const SourceCalloutFormat: React.FC<SourceCalloutFormatProps> = ({ props 
         {props.status && (
           <span
             style={{
-              fontSize: '10px',
-              fontFamily: 'monospace',
-              padding: '1px 5px',
-              background: 'var(--bg-page, #ffffff)',
-              border: '1px solid var(--border-color, #e5e5e5)',
-              color: 'inherit',
+              fontSize: "10px",
+              fontFamily: "monospace",
+              padding: "1px 5px",
+              background: "var(--bg-page, #ffffff)",
+              border: "1px solid var(--border-color, #e5e5e5)",
+              color: "inherit",
             }}
           >
             {props.status}
@@ -76,11 +88,11 @@ export const SourceCalloutFormat: React.FC<SourceCalloutFormatProps> = ({ props 
       {props.excerpt && (
         <div
           style={{
-            fontSize: '12px',
-            color: 'inherit',
+            fontSize: "12px",
+            color: "inherit",
             lineHeight: 1.5,
-            fontStyle: 'italic',
-            marginTop: '4px',
+            fontStyle: "italic",
+            marginTop: "4px",
           }}
         >
           « {props.excerpt} »
@@ -90,10 +102,10 @@ export const SourceCalloutFormat: React.FC<SourceCalloutFormatProps> = ({ props 
       {props.summary && !props.excerpt && (
         <div
           style={{
-            fontSize: '12px',
-            color: 'inherit',
+            fontSize: "12px",
+            color: "inherit",
             lineHeight: 1.5,
-            marginTop: '4px',
+            marginTop: "4px",
           }}
         >
           {props.summary}
@@ -101,24 +113,26 @@ export const SourceCalloutFormat: React.FC<SourceCalloutFormatProps> = ({ props 
       )}
 
       <div className="fr-text--xs fr-mt-1w">
-          <span>{props.verifiedAt ? `Verified on ${props.verifiedAt}` : 'Verification not provided'}</span>
-          {props.freshness === 'cached' && (
-            <span className="fr-badge fr-badge--sm fr-ml-1w">
-              Cached Mode
-            </span>
-          )}
+        <span>
+          {props.verifiedAt
+            ? i18n.verification.verifiedOn(props.verifiedAt)
+            : i18n.verification.notProvided}
+        </span>
+        {props.freshness === "cached" && (
+          <span className="fr-badge fr-badge--sm fr-ml-1w">{i18n.verification.cachedMode}</span>
+        )}
       </div>
       {(props.meta1 || props.meta2 || props.meta3) && (
         <div
           style={{
-            display: 'flex',
-            gap: '12px',
-            marginTop: '8px',
-            paddingTop: '6px',
-            borderTop: '1px solid var(--border-color, #ebebeb)',
-            fontSize: '11px',
-            color: 'var(--text-muted, #777777)',
-            flexWrap: 'wrap',
+            display: "flex",
+            gap: "12px",
+            marginTop: "8px",
+            paddingTop: "6px",
+            borderTop: "1px solid var(--border-color, #ebebeb)",
+            fontSize: "11px",
+            color: "var(--text-muted, #777777)",
+            flexWrap: "wrap",
           }}
         >
           {props.meta1 && <span>{props.meta1}</span>}

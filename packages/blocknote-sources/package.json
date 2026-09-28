@@ -15,12 +15,29 @@
       "types": "./dist/exporters/index.d.ts",
       "import": "./dist/exporters/index.mjs",
       "require": "./dist/exporters/index.js"
+    },
+    "./exporters/pdf": {
+      "types": "./dist/exporters/pdf.d.ts",
+      "import": "./dist/exporters/pdf.mjs",
+      "require": "./dist/exporters/pdf.js"
+    },
+    "./exporters/docx": {
+      "types": "./dist/exporters/docx.d.ts",
+      "import": "./dist/exporters/docx.mjs",
+      "require": "./dist/exporters/docx.js"
+    },
+    "./exporters/odt": {
+      "types": "./dist/exporters/odt.d.ts",
+      "import": "./dist/exporters/odt.mjs",
+      "require": "./dist/exporters/odt.js"
     }
   },
   "files": [
     "dist"
   ],
-  "engines": { "node": ">=22.23.2" },
+  "engines": {
+    "node": ">=22.23.2"
+  },
   "author": "waxland",
   "license": "MIT",
   "homepage": "https://github.com/waxland/dinum-setup/tree/main/packages/blocknote-sources",
@@ -34,7 +51,7 @@
   },
   "scripts": {
     "build": "tsup",
-    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "lint": "eslint \"src/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run tests/unit/",
     "test:e2e": "playwright test",

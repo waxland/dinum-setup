@@ -4,8 +4,6 @@ sidebar_label: "Exports"
 description: Native export adapters converting connected Slasher blocks into vector PDF, Microsoft Word DOCX, and LibreOffice ODF documents.
 ---
 
-
-
 When exporting rich documents created with BlockNote to standard desktop formats, Slasher provides built-in transformer adapters:
 
 <FeatureGrid cols={3}>
@@ -25,3 +23,21 @@ When exporting rich documents created with BlockNote to standard desktop formats
     icon="archive"
   />
 </FeatureGrid>
+
+---
+
+## ⚡ Integration Code Example
+
+Import adapters from independent subpath entry points (`exporters/pdf`, `exporters/docx`, `exporters/odt`) to isolate dependencies and prevent unused export libraries from bundling into your application:
+
+```tsx
+// Independent format entry points (tree-shakable)
+import { blockMappingSourceBlockPDF } from "@suitenumerique/blocknote-sources/exporters/pdf";
+import { blockMappingSourceBlockDocx } from "@suitenumerique/blocknote-sources/exporters/docx";
+import { blockMappingSourceBlockODT } from "@suitenumerique/blocknote-sources/exporters/odt";
+
+// Register in BlockNote exporter schema mappings
+pdfSchemaMappings.blockMapping.sourceBlock = blockMappingSourceBlockPDF;
+docxSchemaMappings.blockMapping.sourceBlock = blockMappingSourceBlockDocx;
+odtSchemaMappings.blockMapping.sourceBlock = blockMappingSourceBlockODT;
+```

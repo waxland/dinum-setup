@@ -73,7 +73,7 @@ const codeCivilArticles = [
  */
 export function LawSlashPreview() {
   const [activeTab, setActiveTab] = useState<"search" | "extrait" | "reference" | "lien">("search");
-  
+
   // Search Menu states
   const [searchFilter, setSearchFilter] = useState<"all" | "codes" | "lois">("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -93,48 +93,48 @@ export function LawSlashPreview() {
   const currentResults = isBrowsingCode
     ? codeCivilArticles
     : searchFilter === "lois"
-    ? [
-        {
-          type: "article",
-          title: "Article 1 - Loi n° 2016-1321 (République numérique)",
-          subtitle: "Loi du 7 octobre 2016 · En vigueur",
-          code: "Loi République numérique",
-        },
-        {
-          type: "article",
-          title: "Article 5 - Loi n° 2022-217 (3DS)",
-          subtitle: "Loi du 21 février 2022 · En vigueur",
-          code: "Loi 3DS",
-        },
-        {
-          type: "article",
-          title: "Article 1 - Loi Informatique et Libertés",
-          subtitle: "Loi n° 78-17 du 6 janvier 1978 · En vigueur",
-          code: "Loi Informatique et Libertés",
-        },
-      ]
-    : searchFilter === "codes"
-    ? [
-        {
-          type: "article",
-          title: "Article 1240",
-          subtitle: "Code civil · En vigueur",
-          code: "Code civil",
-        },
-        {
-          type: "code_browse",
-          title: "Code de la commande publique — Parcourir",
-          subtitle: "1 820 articles · En vigueur",
-          code: "Code de la commande publique",
-        },
-        {
-          type: "code_browse",
-          title: "Code de la consommation — Parcourir",
-          subtitle: "1 150 articles · En vigueur",
-          code: "Code de la consommation",
-        },
-      ]
-    : sampleResults;
+      ? [
+          {
+            type: "article",
+            title: "Article 1 - Loi n° 2016-1321 (République numérique)",
+            subtitle: "Loi du 7 octobre 2016 · En vigueur",
+            code: "Loi République numérique",
+          },
+          {
+            type: "article",
+            title: "Article 5 - Loi n° 2022-217 (3DS)",
+            subtitle: "Loi du 21 février 2022 · En vigueur",
+            code: "Loi 3DS",
+          },
+          {
+            type: "article",
+            title: "Article 1 - Loi Informatique et Libertés",
+            subtitle: "Loi n° 78-17 du 6 janvier 1978 · En vigueur",
+            code: "Loi Informatique et Libertés",
+          },
+        ]
+      : searchFilter === "codes"
+        ? [
+            {
+              type: "article",
+              title: "Article 1240",
+              subtitle: "Code civil · En vigueur",
+              code: "Code civil",
+            },
+            {
+              type: "code_browse",
+              title: "Code de la commande publique — Parcourir",
+              subtitle: "1 820 articles · En vigueur",
+              code: "Code de la commande publique",
+            },
+            {
+              type: "code_browse",
+              title: "Code de la consommation — Parcourir",
+              subtitle: "1 150 articles · En vigueur",
+              code: "Code de la consommation",
+            },
+          ]
+        : sampleResults;
 
   return (
     <div className="not-prose my-6 rounded-xl border border-gray-200 bg-gray-50/50 p-4 sm:p-6 shadow-xs">
@@ -145,7 +145,10 @@ export function LawSlashPreview() {
             Démonstrateur Interactif
           </span>
           <h3 className="text-base font-bold text-gray-900 m-0">
-            Interface de la Commande <code className="text-sm font-mono text-[#000091] bg-blue-50 px-1.5 py-0.5 rounded">/loi</code>
+            Interface de la Commande{" "}
+            <code className="text-sm font-mono text-[#000091] bg-blue-50 px-1.5 py-0.5 rounded">
+              /loi
+            </code>
           </h3>
         </div>
 
@@ -219,16 +222,17 @@ export function LawSlashPreview() {
 
       {/* Editor simulation container */}
       <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-8 min-h-[360px] relative font-sans text-gray-800">
-        
         {/* State 1: Floating Search Contextual Menu */}
         {activeTab === "search" && (
           <div className="space-y-4">
             <div className="text-sm text-gray-500 font-serif leading-relaxed">
-              Pour engager la responsabilité civile de l'auteur d'une faute involontaire, nous nous fondons sur la règle générale :
+              Pour engager la responsabilité civile de l'auteur d'une faute involontaire, nous nous
+              fondons sur la règle générale :
             </div>
-            
+
             <div className="inline-flex items-center text-sm font-mono text-[#000091] bg-blue-50/80 px-2 py-0.5 rounded border border-blue-100">
-              /loi<span className="inline-block w-1.5 h-4 bg-[#000091] ml-0.5 animate-pulse" />
+              /loi
+              <span className="inline-block w-1.5 h-4 bg-[#000091] ml-0.5 animate-pulse" />
             </div>
 
             {/* Contextual Floating Menu (340-380px) */}
@@ -379,7 +383,8 @@ export function LawSlashPreview() {
         {activeTab === "extrait" && (
           <div className="space-y-4">
             <p className="text-sm text-gray-700 leading-relaxed m-0">
-              Dans le cadre de l'évaluation des risques et du régime de réparation civile, nous intégrons directement le texte de loi applicable :
+              Dans le cadre de l'évaluation des risques et du régime de réparation civile, nous
+              intégrons directement le texte de loi applicable :
             </p>
 
             {/* Extrait Block */}
@@ -387,8 +392,18 @@ export function LawSlashPreview() {
               {/* Compact Header Toolbar */}
               <div className="bg-gray-50/80 px-3 py-1.5 border-b border-gray-100 flex items-center justify-between text-xs">
                 <div className="flex items-center gap-1.5 text-gray-600 font-medium">
-                  <svg className="w-3.5 h-3.5 text-[#000091]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+                  <svg
+                    className="w-3.5 h-3.5 text-[#000091]"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"
+                    />
                   </svg>
                   <span>Référence juridique</span>
                 </div>
@@ -433,7 +448,9 @@ export function LawSlashPreview() {
                       >
                         <div>
                           <div>Extrait</div>
-                          <div className="text-[10px] text-gray-500 font-normal">Texte et source</div>
+                          <div className="text-[10px] text-gray-500 font-normal">
+                            Texte et source
+                          </div>
                         </div>
                         <span className="text-[#000091]">✓</span>
                       </button>
@@ -524,7 +541,12 @@ export function LawSlashPreview() {
                   >
                     Consulter la source
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                      />
                     </svg>
                   </a>
                 </div>
@@ -532,7 +554,8 @@ export function LawSlashPreview() {
             </div>
 
             <p className="text-sm text-gray-700 leading-relaxed m-0">
-              Ce principe fondamental impose la réparation intégrale de tout préjudice direct et certain.
+              Ce principe fondamental impose la réparation intégrale de tout préjudice direct et
+              certain.
             </p>
           </div>
         )}
@@ -547,8 +570,18 @@ export function LawSlashPreview() {
             {/* Reference Line */}
             <div className="h-[50px] border border-gray-200 bg-white rounded-lg px-3.5 flex items-center justify-between my-4">
               <div className="flex items-center gap-2.5 min-w-0 pr-2">
-                <svg className="w-4 h-4 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                <svg
+                  className="w-4 h-4 text-gray-400 shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
                 </svg>
                 <a
                   href={sampleArticle.url}
@@ -556,9 +589,21 @@ export function LawSlashPreview() {
                   rel="noreferrer"
                   className="text-xs font-semibold text-[#000091] hover:underline flex items-center gap-1 truncate"
                 >
-                  <span>{sampleArticle.articleNumber} · {sampleArticle.codeTitle}</span>
-                  <svg className="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  <span>
+                    {sampleArticle.articleNumber} · {sampleArticle.codeTitle}
+                  </span>
+                  <svg
+                    className="w-3 h-3 shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    />
                   </svg>
                 </a>
               </div>
@@ -614,7 +659,9 @@ export function LawSlashPreview() {
                     >
                       <div>
                         <div>Référence</div>
-                        <div className="text-[10px] text-gray-500 font-normal">Titre uniquement</div>
+                        <div className="text-[10px] text-gray-500 font-normal">
+                          Titre uniquement
+                        </div>
                       </div>
                       <span className="text-[#000091]">✓</span>
                     </button>
@@ -667,8 +714,18 @@ export function LawSlashPreview() {
                       className="text-[#000091] hover:underline flex items-center gap-1 font-medium"
                     >
                       <span>Légifrance</span>
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      <svg
+                        className="w-3 h-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        />
                       </svg>
                     </a>
 
@@ -733,7 +790,9 @@ export function LawSlashPreview() {
                           >
                             <div>
                               <div>Lien</div>
-                              <div className="text-[10px] text-gray-500 font-normal">Lien dans le texte</div>
+                              <div className="text-[10px] text-gray-500 font-normal">
+                                Lien dans le texte
+                              </div>
                             </div>
                             <span className="text-[#000091]">✓</span>
                           </button>
@@ -747,11 +806,11 @@ export function LawSlashPreview() {
             </p>
 
             <div className="text-xs text-gray-400 italic pt-6 border-t border-gray-100">
-              Astuce : Cliquez sur le lien souligné ci-dessus pour afficher ou masquer la barre d'outils contextuelle.
+              Astuce : Cliquez sur le lien souligné ci-dessus pour afficher ou masquer la barre
+              d'outils contextuelle.
             </div>
           </div>
         )}
-
       </div>
     </div>
   );

@@ -4,7 +4,6 @@ sidebar_label: "Roadmap Sources"
 description: Feuille de route interactive, tableau Kanban des étapes clés, priorités interministérielles et jalons de livraison des commandes slash dans La Suite Docs.
 ---
 
-
 export const slashRoadmapColumns = [
   {
     id: "backlog",
@@ -15,7 +14,8 @@ export const slashRoadmapColumns = [
       {
         id: "cmd-marches",
         title: "/marche — Marchés Publics & BOAMP",
-        description: "Avis d'appels publics à la concurrence (AAPC), critères d'attribution et DCE.",
+        description:
+          "Avis d'appels publics à la concurrence (AAPC), critères d'attribution et DCE.",
         badge: "Commande Slash",
         badgeColor: "gray",
         priority: "P2",
@@ -26,7 +26,8 @@ export const slashRoadmapColumns = [
       {
         id: "cmd-subvention",
         title: "/subvention — Aides-Territoires & Financements",
-        description: "Programmes d'aides publiques, Fonds Vert, DETR/DSIL et critères d'éligibilité.",
+        description:
+          "Programmes d'aides publiques, Fonds Vert, DETR/DSIL et critères d'éligibilité.",
         badge: "Commande Slash",
         badgeColor: "green",
         priority: "P2",
@@ -88,7 +89,8 @@ export const slashRoadmapColumns = [
       {
         id: "cmd-loi",
         title: "/loi — Légifrance & Droit Positif",
-        description: "Accès certifié aux articles de codes, lois, décrets et jurisprudence avec 3 formats.",
+        description:
+          "Accès certifié aux articles de codes, lois, décrets et jurisprudence avec 3 formats.",
         badge: "Terminé",
         badgeColor: "green",
         priority: "P0",
@@ -114,7 +116,8 @@ export const slashRoadmapColumns = [
       {
         id: "cmd-assemblee",
         title: "/assemblee — Travail Parlementaire",
-        description: "Suivi des projets de loi, amendements en direct et votes de l'Assemblée (claire.vite).",
+        description:
+          "Suivi des projets de loi, amendements en direct et votes de l'Assemblée (claire.vite).",
         badge: "Terminé",
         badgeColor: "green",
         priority: "P0",
@@ -140,7 +143,8 @@ export const slashRoadmapColumns = [
       {
         id: "cmd-albert",
         title: "/albert — IA Souveraine & RAG Public",
-        description: "Recherche sémantique et réponses factuelles sourcées sur corpus publics (DINUM/Etalab).",
+        description:
+          "Recherche sémantique et réponses factuelles sourcées sur corpus publics (DINUM/Etalab).",
         badge: "Terminé",
         badgeColor: "green",
         priority: "P0",
@@ -153,7 +157,8 @@ export const slashRoadmapColumns = [
       {
         id: "cmd-sdk",
         title: "SDK Développeur Ministères",
-        description: "Package @suitenumerique/slash-sources-sdk pour étendre l'éditeur en < 15 min.",
+        description:
+          "Package @suitenumerique/slash-sources-sdk pour étendre l'éditeur en < 15 min.",
         badge: "Terminé",
         badgeColor: "green",
         priority: "P0",
@@ -210,7 +215,8 @@ Ce tableau interactif résume l'état d'avancement des fonctionnalités, des sp�
 ## 🎯 Jalons & Calendrier de Livraison
 
 ### 🏁 Jalon 1 : Hackathon 42 x DINUM (Sprint Immédiat)
-*Objectif : Démontrer la puissance des commandes slash métier avec la commande juridique `/loi`.*
+
+_Objectif : Démontrer la puissance des commandes slash métier avec la commande juridique `/loi`._
 
 - [x] Spécification complète du bloc BlockNote et du proxy Django.
 - [x] Intégration de l'authentification OAuth2 PISTE / DILA.
@@ -221,7 +227,8 @@ Ce tableau interactif résume l'état d'avancement des fonctionnalités, des sp�
 ---
 
 ### 🚀 Jalon 2 : Enrichissement des Données Administratives (Q3 2026)
-*Objectif : Outiller les acheteurs publics, juristes, aménageurs et chargés de mission parlementaires.*
+
+_Objectif : Outiller les acheteurs publics, juristes, aménageurs et chargés de mission parlementaires._
 
 - **Commande `/entreprise` (ex `/pappers`) :**
   - Fiche d'entreprise certifiée à partir d'un SIREN / SIRET ou raison sociale (Pappers / API Entreprise).
@@ -236,7 +243,8 @@ Ce tableau interactif résume l'état d'avancement des fonctionnalités, des sp�
 ---
 
 ### 🌐 Jalon 3 : Déploiement Socle Interministériel & Nouvelles Pistes (Q4 2026)
-*Objectif : Généraliser l'ouverture et standardiser les commandes slash dans le Core de Docs.*
+
+_Objectif : Généraliser l'ouverture et standardiser les commandes slash dans le Core de Docs._
 
 - **Commande `/marche` (BOAMP & DAE) :**
   - Consultation des avis d'appels publics à la concurrence et critères de sélection.

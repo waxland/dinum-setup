@@ -4,10 +4,6 @@ sidebar_label: "Tutoriel"
 description: "Step-by-step tutorial for international and European developers to connect national registries (CKAN, SDMX, SPARQL, OGC API) to the Universal BlockNote Standard."
 ---
 
-
-
-
-
 This guide explains how **European and international public engineering teams** can build, test, and register a **national sovereign data connector** (e.g. National Laws, Companies, Procurement, Geospatial, or Statistics) into the **Universal Slasher & BlockNote ecosystem**.
 
 ---
@@ -42,6 +38,7 @@ The Sovereign Connector framework operates across **three decoupled layers**:
     TS_Contract --> DjangoEngine
     DjangoEngine --> QuotaMgr --> Cache
     QuotaMgr --> NationalAPI
+
 `} />
 
 ---
@@ -173,7 +170,9 @@ export const countryLawProvider = defineSourceProvider({
   description: "Search and insert consolidated national acts & legislation",
 
   suggest: async (query: string, limit = 5) => {
-    const res = await fetch(`/api/v1.0/sources/suggest/?type=law&q=${encodeURIComponent(query)}&limit=${limit}`);
+    const res = await fetch(
+      `/api/v1.0/sources/suggest/?type=law&q=${encodeURIComponent(query)}&limit=${limit}`,
+    );
     const data = await res.json();
     return data.map((item: any) => ({
       id: item.source_id,
@@ -184,7 +183,9 @@ export const countryLawProvider = defineSourceProvider({
   },
 
   search: async (query: string, limit = 10) => {
-    const res = await fetch(`/api/v1.0/sources/search/?type=law&q=${encodeURIComponent(query)}&limit=${limit}`);
+    const res = await fetch(
+      `/api/v1.0/sources/search/?type=law&q=${encodeURIComponent(query)}&limit=${limit}`,
+    );
     const data = await res.json();
     return data.results.map((item: any) => ({
       entityType: "law",

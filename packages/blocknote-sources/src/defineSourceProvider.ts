@@ -1,4 +1,4 @@
-import { SourceProviderDefinition } from './types';
+import { SourceProviderDefinition } from "./types";
 
 /**
  * Helper function to declare a type-safe sovereign source provider for La Suite Docs.
@@ -22,13 +22,13 @@ export function defineSourceProvider(
   definition: SourceProviderDefinition,
 ): SourceProviderDefinition {
   if (!definition.type) {
-    throw new Error('[SlashSourcesSDK] Provider definition must have a valid `type`.');
+    throw new Error("[SlashSourcesSDK] Provider definition must have a valid `type`.");
   }
   if (!definition.name) {
-    throw new Error('[SlashSourcesSDK] Provider definition must have a `name`.');
+    throw new Error("[SlashSourcesSDK] Provider definition must have a `name`.");
   }
   if (!definition.slashCommand) {
-    throw new Error('[SlashSourcesSDK] Provider definition must declare a `slashCommand`.');
+    throw new Error("[SlashSourcesSDK] Provider definition must declare a `slashCommand`.");
   }
   return definition;
 }

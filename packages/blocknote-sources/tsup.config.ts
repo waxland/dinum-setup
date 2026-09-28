@@ -4,6 +4,9 @@ export default defineConfig({
   entry: {
     index: "src/index.ts",
     "exporters/index": "src/exporters/index.ts",
+    "exporters/pdf": "src/exporters/pdf.ts",
+    "exporters/docx": "src/exporters/docx.ts",
+    "exporters/odt": "src/exporters/odt.ts",
   },
   format: ["esm", "cjs"],
   dts: true,

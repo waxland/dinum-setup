@@ -39,12 +39,12 @@ L'agent va générer et positionner automatiquement tous les fichiers `.local` r
 
 ## 📁 1. Les fichiers de configuration à connaître
 
-| Fichier | Emplacement | Rôle |
-| :--- | :--- | :--- |
-| `next.config.js` | `LaSuite/docs/src/frontend/apps/impress/next.config.js` | Configuration Next.js (notamment `allowedDevOrigins`). |
-| `.env.local` | `LaSuite/docs/src/frontend/apps/impress/.env.local` | Variables du frontend Next.js (URL de l'API Docs). |
-| `common.local` | `LaSuite/docs/env.d/development/common.local` | Surcharges du backend Docker Docs (URLs publiques, OIDC, collaboration Yjs). |
-| `kc_auth.local` | `LaSuite/docs/env.d/development/kc_auth.local` | Hostname public Keycloak pour éviter les redirections vers `localhost`. |
+| Fichier          | Emplacement                                             | Rôle                                                                         |
+| :--------------- | :------------------------------------------------------ | :--------------------------------------------------------------------------- |
+| `next.config.js` | `LaSuite/docs/src/frontend/apps/impress/next.config.js` | Configuration Next.js (notamment `allowedDevOrigins`).                       |
+| `.env.local`     | `LaSuite/docs/src/frontend/apps/impress/.env.local`     | Variables du frontend Next.js (URL de l'API Docs).                           |
+| `common.local`   | `LaSuite/docs/env.d/development/common.local`           | Surcharges du backend Docker Docs (URLs publiques, OIDC, collaboration Yjs). |
+| `kc_auth.local`  | `LaSuite/docs/env.d/development/kc_auth.local`          | Hostname public Keycloak pour éviter les redirections vers `localhost`.      |
 
 ---
 
@@ -54,11 +54,7 @@ Dans `LaSuite/docs/src/frontend/apps/impress/next.config.js`, l'option `allowedD
 
 ```js
 const nextConfig = {
-  allowedDevOrigins: [
-    "docs.127.0.0.1.nip.io",
-    "207.175.155.66",
-    "<VOTRE_IP_OU_DOMAINE>",
-  ],
+  allowedDevOrigins: ["docs.127.0.0.1.nip.io", "207.175.155.66", "<VOTRE_IP_OU_DOMAINE>"],
   output: "export",
   trailingSlash: true,
 };
@@ -172,14 +168,17 @@ make dev-docs
 ## 🛠️ 7. Diagnostic & Résolution de Problèmes
 
 ### Erreur « Restart login cookie not found »
+
 - **Cause :** `KC_HOSTNAME` est resté sur `localhost` ou le navigateur mélange des cookies provenant de `localhost:8083` et de l'IP distante.
 - **Solution :** Vérifier `kc_auth.local`, vider les cookies du navigateur pour l'IP du serveur, et redémarrer Keycloak avec `make dev-docs`.
 
 ### Erreur « OIDC callback state not found in session » (`SuspiciousOperation`)
+
 - **Cause :** Django n'a pas pu contacter Keycloak en arrière-plan pour échanger le code OIDC contre un jeton (timeout sur l'IP publique).
 - **Solution :** S'assurer que `OIDC_OP_JWKS_ENDPOINT`, `OIDC_OP_TOKEN_ENDPOINT` et `OIDC_OP_USER_ENDPOINT` pointent vers `http://nginx:8083/...` dans `common.local`.
 
 ### L'éditeur BlockNote reste vide ou affiche un avertissement WebSocket
+
 - **Cause :** `COLLABORATION_WS_URL` n'est pas accessible depuis le navigateur client.
 - **Solution :** S'assurer que le port `4444` est ouvert sur le pare-feu du serveur et que `COLLABORATION_WS_URL=ws://<VOTRE_IP>:4444/collaboration/ws/`.
 

@@ -16,15 +16,13 @@ export interface CodeTabsProps {
 export function CodeTabs({ items, defaultTab, title }: CodeTabsProps) {
   const [activeTab, setActiveTab] = useState<number>(() => {
     if (defaultTab) {
-      const idx = items.findIndex(
-        (it) => it.label.toLowerCase() === defaultTab.toLowerCase()
-      );
+      const idx = items.findIndex((it) => it.label.toLowerCase() === defaultTab.toLowerCase());
       return idx >= 0 ? idx : 0;
     }
     return 0;
   });
 
-  const [copied, setCopied] = useState<boolean>(false);
+  const [copyState, setCopyState] = useState<"idle" | "success" | "error">("idle");
 
   const currentItem = items[activeTab] || items[0];
 
@@ -34,10 +32,11 @@ export function CodeTabs({ items, defaultTab, title }: CodeTabsProps) {
     }
     try {
       await navigator.clipboard.writeText(currentItem.code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setCopyState("success");
+      setTimeout(() => setCopyState("idle"), 2000);
     } catch {
-      // Fallback if clipboard API is restricted
+      setCopyState("error");
+      setTimeout(() => setCopyState("idle"), 3000);
     }
   };
 
@@ -63,9 +62,7 @@ export function CodeTabs({ items, defaultTab, title }: CodeTabsProps) {
           className="flex items-center gap-1 overflow-x-auto"
         >
           {title && (
-            <span className="text-xs font-semibold text-gray-400 mr-2 font-sans">
-              {title}
-            </span>
+            <span className="text-xs font-semibold text-gray-400 mr-2 font-sans">{title}</span>
           )}
           {items.map((item, idx) => {
             const isActive = activeTab === idx;
@@ -78,9 +75,7 @@ export function CodeTabs({ items, defaultTab, title }: CodeTabsProps) {
                 onClick={() => setActiveTab(idx)}
                 onKeyDown={(e) => handleKeyDown(e, idx)}
                 className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-sans font-medium transition-colors ${
-                  isActive
-                    ? "bg-[#0d1117] text-white"
-                    : "text-gray-400 hover:text-gray-200"
+                  isActive ? "bg-[#0d1117] text-white" : "text-gray-400 hover:text-gray-200"
                 }`}
               >
                 {item.icon && <span>{item.icon}</span>}
@@ -97,13 +92,24 @@ export function CodeTabs({ items, defaultTab, title }: CodeTabsProps) {
 
         <button
           onClick={handleCopy}
-          aria-label={copied ? "Copié dans le presse-papier" : "Copier le code"}
+          aria-label={
+            copyState === "success"
+              ? "Copié dans le presse-papier"
+              : copyState === "error"
+                ? "Échec de la copie dans le presse-papier"
+                : "Copier le code"
+          }
           className="flex items-center gap-1 text-xs px-2 py-0.5 bg-gray-800 hover:bg-gray-700 text-gray-300 transition-colors font-sans cursor-pointer"
         >
-          {copied ? (
+          {copyState === "success" ? (
             <>
               <span className="text-green-400">✓</span>
               <span className="text-green-400 font-medium">Copié !</span>
+            </>
+          ) : copyState === "error" ? (
+            <>
+              <span className="text-red-400">⚠️</span>
+              <span className="text-red-400 font-medium">Échec de la copie</span>
             </>
           ) : (
             <>
@@ -191,10 +197,7 @@ export interface PythonInstallTabsProps {
   dev?: boolean;
 }
 
-export function PythonInstallTabs({
-  packages,
-  dev = false,
-}: PythonInstallTabsProps) {
+export function PythonInstallTabs({ packages, dev = false }: PythonInstallTabsProps) {
   const items: CodeTabItem[] = [
     {
       label: "uv",

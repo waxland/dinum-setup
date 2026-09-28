@@ -4,7 +4,6 @@ sidebar_label: "Proxy Cache"
 description: Architecture backend unifiée, classe abstraite BaseSourceProvider, cache Redis générique et gestion des quotas.
 ---
 
-
 Côté serveur, le **Socle Technique Unifié** s'appuie sur le patron de conception **Provider Registry** au sein du backend Django 5. Il centralise la sécurité des clés d'API, le cache Redis partagé et la résilience réseau.
 
 ---
@@ -28,6 +27,7 @@ Au lieu de créer des vues Django séparées pour chaque API, une vue unique gé
     CompP --> SaveCache
     ParlP --> SaveCache
     AddrP --> SaveCache
+
 `} />
 
 ---
@@ -137,7 +137,8 @@ class SourceSearchView(APIView):
 
 Pour protéger les quotas des APIs ministérielles et garantir qu'un document ne soit jamais bloqué en cas de panne d'un fournisseur tiers, le backend intègre le **`DistributedQuotaManager`** (`lasuite_sources/quota.py`) :
 
-<Mermaid chart={`stateDiagram-v2
+<Mermaid
+  chart={`stateDiagram-v2
     [*] --> HEALTHY
     HEALTHY --> DEGRADED : Quota journalier > 80% consommé
     DEGRADED --> HEALTHY : Réinitialisation quotidienne du quota
@@ -151,7 +152,8 @@ Pour protéger les quotas des APIs ministérielles et garantir qu'un document ne
     CIRCUIT_OPEN --> HALF_OPEN : Délai de refroidissement écoulé (30s à 60s)
     HALF_OPEN --> HEALTHY : Requête de test réussie
     HALF_OPEN --> CIRCUIT_OPEN : Échec de la requête de test
-`} />
+`}
+/>
 
 ### 🛡️ Niveaux de Protection & Règles de Résilience :
 

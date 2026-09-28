@@ -4,8 +4,6 @@ sidebar_label: "Rendu Settings"
 description: "Déclinaison des 3 modes d'affichage DSFR, Feature Flagging piloté par l'environnement et rétrocompatibilité CRDT."
 ---
 
-
-
 La commande `/loi` s'appuie sur le composant BlockNote universel **`SourceBlockSpec`** et le mécanisme de Feature Flagging dynamique du socle commun.
 
 ---
@@ -45,6 +43,7 @@ L'agent public peut basculer à tout moment entre les 3 formats :
     ConfigView --> SlashMenu
     SlashMenu -->|laws.enabled === true| ShowCmd
     SlashMenu -->|laws.enabled === false| HideCmd
+
 `} />
 
 ### Variables à Configurer

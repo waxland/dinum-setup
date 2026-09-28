@@ -38,23 +38,43 @@ flowchart TD
 
 ---
 
-## ⚡ 2. Quickstart & Command Matrix
+## 🛠️ 2. Environment Prerequisites
 
-| Action / Component | npm Command | Make Command | URL / Port |
-| :--- | :--- | :--- | :---: |
-| **🎮 Standalone Web Demo** | `npm run demo:dev` | `make demo-dev` | [`http://localhost:5173`](http://localhost:5173) |
-| **📚 Zudoku Documentation Portal** | `npm run docs:dev` | `make docs-dev` | [`http://localhost:3000`](http://localhost:3000) |
-| **🎨 BlockNote Component Storybook** | `npm run storybook` | `make storybook` | [`http://localhost:6006`](http://localhost:6006) |
-| **🐍 Django Sandbox Demo Server** | `cd packages/django-lasuite-sources/demo && PYTHONPATH=.. ../.venv/bin/python manage.py runserver 8000` | - | [`http://localhost:8000`](http://localhost:8000) |
-| **🧪 TypeScript Unit Tests (15/15)** | `npm run packages:test` | `make packages-test` | - |
-| **🧪 Django Unit Tests (22/22)** | `cd packages/django-lasuite-sources && PYTHONPATH=. .venv/bin/pytest` | `make -C packages/django-lasuite-sources test` | - |
-| **🏗️ Build TypeScript Packages** | `npm run packages:build` | `make packages-build` | `packages/*/dist/` |
-| **🏗️ Build Web Demonstrator** | `npm run demo:build` | `make demo-build` | `demo/dist/` |
-| **🏗️ Build Documentation (270 routes)** | `npm run docs:build` | `make docs-build` | `documentation/dist/` |
+Before running or developing on this monorepo, ensure the following local runtimes are installed:
+
+- **Node.js :** `>= 22.23.2` (enforced by `.nvmrc` and runtime verification scripts). Use `nvm use` or `nvm install`.
+- **npm :** `>= 10.9.0` (managed via workspaces).
+- **Python :** `>= 3.12` with `venv` (recommended for `packages/django-lasuite-sources`).
+- **Docker & Docker Compose :** Required only for local clones orchestration (`LaSuite/` stack).
+
+### 📁 Upstream Clones Directory (`LaSuite/` & `SRC_DIR`)
+
+Upstream application clones (`docs`, `projects`, `meet`, `transfers`, `people`, `accounts`) are strictly decoupled from the core monorepo packages:
+
+- **Default path :** `./LaSuite/` (ignored by Git).
+- **Custom path override :** You can override the path with `SRC_DIR=/custom/path make clone` or `SRC_DIR=/custom/path make dev`.
+- **Decoupling principle :** Developing, building, testing, or publishing the core packages (`packages/*`), demonstrator (`demo/`), and documentation (`documentation*`) does **not** require any upstream clones. The audit and quality gate conclusions apply strictly to the monorepo's own codebase.
 
 ---
 
-## 🎮 3. Running the Standalone Web Demo (`demo/`)
+## ⚡ 3. Quickstart & Command Matrix
+
+| Action / Component                      | npm Command                                                                                             | Make Command          |                    URL / Port                    |
+| :-------------------------------------- | :------------------------------------------------------------------------------------------------------ | :-------------------- | :----------------------------------------------: |
+| **🎮 Standalone Web Demo**              | `npm run demo:dev`                                                                                      | `make demo-dev`       | [`http://localhost:5173`](http://localhost:5173) |
+| **📚 Zudoku Documentation Portal (FR)** | `npm run docs:dev`                                                                                      | `make docs-dev`       | [`http://localhost:3000`](http://localhost:3000) |
+| **🌍 Zudoku Documentation Portal (EN)** | `npm run docs:en:dev`                                                                                   | `make docs-en-dev`    | [`http://localhost:3001`](http://localhost:3001) |
+| **🎨 BlockNote Component Storybook**    | `npm run storybook`                                                                                     | `make storybook`      | [`http://localhost:6006`](http://localhost:6006) |
+| **🐍 Django Sandbox Demo Server**       | `cd packages/django-lasuite-sources/demo && PYTHONPATH=.. ../.venv/bin/python manage.py runserver 8000` | -                     | [`http://localhost:8000`](http://localhost:8000) |
+| **🧪 TypeScript Unit Tests (68/68)**    | `npm run packages:test`                                                                                 | `make packages-test`  |                        -                         |
+| **🧪 Django Unit Tests (149/149)**      | `cd packages/django-lasuite-sources && PYTHONPATH=. .venv/bin/pytest`                                   | `make packages-test`  |                        -                         |
+| **🏗️ Build TypeScript Packages**        | `npm run packages:build`                                                                                | `make packages-build` |                `packages/*/dist/`                |
+| **🏗️ Build Web Demonstrator**           | `npm run demo:build`                                                                                    | `make demo-build`     |                   `demo/dist/`                   |
+| **🏗️ Build Documentation (FR + EN)**    | `npm run docs:build`                                                                                    | `make docs-build`     |              `documentation/dist/`               |
+
+---
+
+## 🎮 4. Running the Standalone Web Demo (`demo/`)
 
 The web demonstrator is a modern autonomous web application (Vite 6 + React 19) embedding the BlockNote.js editor to test all sovereign connectors **without requiring Docker or a local backend**.
 
@@ -71,12 +91,13 @@ make demo-dev
 👉 Open [`http://localhost:5173`](http://localhost:5173) in your browser.
 
 ### ✨ Demonstrator Features:
+
 - **🌍 Interactive Country Selector:**
   - 🇫🇷 **France (DINUM):** Commands `/loi` (Légifrance), `/entreprise` (RNE), `/marche` (BOAMP), `/adresse` (BAN), `/subvention`, `/stats` (INSEE), `/agent`, `/cadastre`, `/demarche`, `/opendata`, `/albert` (AI RAG).
-  - 🇩🇪 **Deutschland (Bund):** Commands `/gesetz` (*Gesetze im Internet* / BMJ), `/register` (*Handelsregister*), `/bundestag`, `/govdata`.
-  - 🇳🇱 **Nederland (Overheid):** Commands `/wet` (*Wettenbank* / Overheid.nl), `/kvk` (*Kamer van Koophandel*), `/bag` (Addresses), `/dataoverheid`.
-  - 🇪🇸 **España (Estado):** Commands `/ley` (*BOE*), `/empresa` (*Registro Mercantil*), `/licitacion` (*Contratación del Estado*), `/catastro` (*Sede del Catastro*).
-  - 🇪🇺 **European Union:** Commands `/eurlex` (*EUR-Lex* - GDPR / Directives), `/ted` (*Tenders Electronic Daily*), `/dataeuropa`.
+  - 🇩🇪 **Deutschland (Bund):** Commands `/gesetz` (_Gesetze im Internet_ / BMJ), `/register` (_Handelsregister_), `/bundestag`, `/govdata`.
+  - 🇳🇱 **Nederland (Overheid):** Commands `/wet` (_Wettenbank_ / Overheid.nl), `/kvk` (_Kamer van Koophandel_), `/bag` (Addresses), `/dataoverheid`.
+  - 🇪🇸 **España (Estado):** Commands `/ley` (_BOE_), `/empresa` (_Registro Mercantil_), `/licitacion` (_Contratación del Estado_), `/catastro` (_Sede del Catastro_).
+  - 🇪🇺 **European Union:** Commands `/eurlex` (_EUR-Lex_ - GDPR / Directives), `/ted` (_Tenders Electronic Daily_), `/dataeuropa`.
 - **🌐 Language Selector:** Instant UI locale switching (`en` 🇬🇧, `fr` 🇫🇷, `de` 🇩🇪, `nl` 🇳🇱, `es` 🇪🇸).
 - **🌙 Dark / Light Theme:** Toggle button in top right preserving WCAG AA contrast ratios.
 - **🔄 Format Switching:** Hot-switch any block between **Callout**, **Card**, and **Link (Inline Badge)** formats.
@@ -95,6 +116,7 @@ npm run demo:build
 ### 🎨 4.1. Local BlockNote Component Storybook (`packages/blocknote-sources/`)
 
 The `@suitenumerique/blocknote-sources` package includes isolated Storybook stories to test every format and state:
+
 - `SourceCalloutFormat.stories.tsx` (Marianne Callout rendering with `#000091` border)
 - `SourceCardFormat.stories.tsx` (3-column metadata card rendering)
 - `SourceLinkFormat.stories.tsx` (Compact inline link badge rendering)
@@ -113,6 +135,7 @@ make storybook
 👉 Open [`http://localhost:6006`](http://localhost:6006) in your browser.
 
 ### 🌐 4.2. Official Online La Suite Storybooks:
+
 - 📖 **Cunningham Design System Storybook:** [suitenumerique.github.io/cunningham](https://suitenumerique.github.io/cunningham/storybook/)
 - 📖 **La Suite UI Kit Storybook (`@gouvfr-lasuite`):** [suitenumerique.github.io/ui-kit](https://suitenumerique.github.io/ui-kit/)
 - 📖 **Official React-DSFR Storybook:** [components.react-dsfr.fr](https://components.react-dsfr.fr/)
@@ -152,7 +175,7 @@ npm --prefix packages/blocknote-sources run storybook
 
 ### 🐍 5.3. Package `django-lasuite-sources` (Django Backend)
 
-Python / Django REST Framework package encapsulating the 12 sovereign certified connectors, deterministic SHA-256 Redis caching (24h), and anti-SSRF defense.
+Python / Django REST Framework package encapsulating the 53 registered sovereign connectors (address BAN live, Albert RAG, Légifrance PISTE, and demonstration fixture providers), deterministic SHA-256 Redis caching (24h), and anti-SSRF defense.
 
 ```bash
 # 1. Navigate to package directory
@@ -167,6 +190,7 @@ PYTHONPATH=.. ../.venv/bin/python manage.py runserver 8000
 ```
 
 👉 Test a connector with curl:
+
 ```bash
 curl "http://localhost:8000/sources/suggest/?type=law&q=procurement"
 ```
@@ -232,7 +256,7 @@ make stop
 
 ## 🛡️ 8. Quality, Security & Traceability
 
-- **Universal Accessibility:** 100% compliant with **RGAA v4.1 (Level AA) / WCAG 2.1 AA** with full keyboard navigation.
+- **Universal Accessibility:** Designed according to **RGAA v4.1 (Level AA) / WCAG 2.1 AA** guidelines (0 Axe-Core violations, 100% keyboard navigable).
 - **UI Purity:** Zero Tailwind CSS, zero `@mantine/core` visual components in libraries, official Cunningham tokens, and DSFR components.
 - **Strict Typing:** Zero `any`, `strict: true` across the entire TypeScript monorepo.
 - **Defensive Security:** Anti-SSRF filtering on all remote requests with 3.5s circuit breaker.

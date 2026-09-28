@@ -57,7 +57,7 @@ Write an architecture audit report (in `.sessions/AUDIT_<TOPIC>.md` when applica
 1. **Scope & Current State Mermaid Diagram.**
 2. **Architecture Findings Table:**
    | Component / Layer | Observed Friction / Risk | Operational Impact | Minimal Recommendation |
-   |---|---|---|---|
+   | ----------------- | ------------------------ | ------------------ | ---------------------- |
 3. **Transition Plan with reversible milestones.**
 
 ---

@@ -63,6 +63,7 @@ help:
 
 .PHONY: check-tools
 check-tools:
+	@node scripts/check-runtime.mjs
 	@command -v git >/dev/null || (echo "Error: git is not installed" >&2; exit 1)
 	@command -v make >/dev/null || (echo "Error: make is not installed" >&2; exit 1)
 	@command -v docker >/dev/null || (echo "Error: docker is not installed" >&2; exit 1)
@@ -230,14 +231,14 @@ packages-test:
 	@echo "🧪 Execution des tests unitaires TypeScript (Vitest)..."
 	@npm run packages:test
 	@echo "\n🧪 Execution des tests unitaires Django Backend (Pytest)..."
-	@cd packages/django-lasuite-sources && if [ -f .venv/bin/pytest ]; then PYTHONPATH=. .venv/bin/pytest; else PYTHONPATH=. pytest; fi
+	@cd packages/django-lasuite-sources && PYTHONPATH=. $(PYTHON) -m pytest
 
 .PHONY: packages-build
 packages-build:
 	@echo "🏗️ Compilation des packages TypeScript (@suitenumerique/*)..."
 	@npm run packages:build
 	@echo "🏗️ Compilation du package Python (django-lasuite-sources)..."
-	@cd packages/django-lasuite-sources && $(PYTHON) -m build
+	@cd packages/django-lasuite-sources && $(PYTHON) -m build || (echo "❌ Erreur: Le module Python 'build' est manquant. Exécutez : $(PYTHON) -m pip install build" >&2; exit 1)
 
 .PHONY: packages-pack
 packages-pack: packages-build
@@ -338,12 +339,14 @@ check:
 	@node scripts/check-runtime.mjs
 	@npm audit --audit-level=low
 	@npm run lint
+	@npm run format:check
 	@npm run typecheck
 	@$(PYTHON) -m ruff check packages/django-lasuite-sources
 	@$(PYTHON) -m ruff format --check packages/django-lasuite-sources
 	@npm run packages:test
 	@cd packages/django-lasuite-sources && PYTHONPATH=. $(PYTHON) -m pytest
-	@$(MAKE) packages-build
+	@npm run packages:build
+	@cd packages/django-lasuite-sources && $(PYTHON) -m build
 	@npm run packages:verify
 	@npm run demo:build
 	@echo "🧪 Execution des tests E2E Playwright..."

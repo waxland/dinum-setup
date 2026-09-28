@@ -1,4 +1,4 @@
-import { ExternalSourceProviderDefinition } from './types';
+import { ExternalSourceProviderDefinition } from "./types";
 
 /**
  * Helper function to declare a type-safe external source provider for BlockNote.
@@ -23,25 +23,29 @@ export function defineSourceProvider(
   definition: ExternalSourceProviderDefinition,
 ): ExternalSourceProviderDefinition {
   if (!definition.name || definition.name.trim().length === 0) {
-    throw new Error('[SlashSourcesSDK] Provider definition must declare a non-empty `name`.');
+    throw new Error("[SlashSourcesSDK] Provider definition must declare a non-empty `name`.");
   }
   if (!definition.slashCommand || definition.slashCommand.trim().length === 0) {
-    throw new Error('[SlashSourcesSDK] Provider definition must declare a non-empty `slashCommand`.');
+    throw new Error(
+      "[SlashSourcesSDK] Provider definition must declare a non-empty `slashCommand`.",
+    );
   }
-  if (typeof definition.suggest !== 'function') {
-    throw new Error('[SlashSourcesSDK] Provider definition must provide a `suggest` async method.');
+  if (typeof definition.suggest !== "function") {
+    throw new Error("[SlashSourcesSDK] Provider definition must provide a `suggest` async method.");
   }
-  if (typeof definition.search !== 'function') {
-    throw new Error('[SlashSourcesSDK] Provider definition must provide a `search` async method.');
+  if (typeof definition.search !== "function") {
+    throw new Error("[SlashSourcesSDK] Provider definition must provide a `search` async method.");
   }
-  if (typeof definition.getDetail !== 'function') {
-    throw new Error('[SlashSourcesSDK] Provider definition must provide a `getDetail` async method.');
+  if (typeof definition.getDetail !== "function") {
+    throw new Error(
+      "[SlashSourcesSDK] Provider definition must provide a `getDetail` async method.",
+    );
   }
 
   const normalized = {
     ...definition,
-    type: definition.type || 'custom',
-    iconName: definition.iconName || 'database',
+    type: definition.type || "custom",
+    iconName: definition.iconName || "database",
   };
 
   return Object.freeze(normalized);

@@ -4,9 +4,7 @@ sidebar_label: "Réutilisation Transverse"
 description: Guide d'intégration des packages souverains dans les autres produits de La Suite Numérique (Projects, Meet, People) et portails ministériels tiers.
 ---
 
-
-
-L'un des avantages majeurs du découpage en **packages autonomes** (`django-lasuite-sources` et `@suitenumerique/blocknote-sources`) est leur capacité à être **réutilisés instantanément** par l'ensemble des applications de l'État français, sans aucun couplage avec *La Suite Docs*.
+L'un des avantages majeurs du découpage en **packages autonomes** (`django-lasuite-sources` et `@suitenumerique/blocknote-sources`) est leur capacité à être **réutilisés instantanément** par l'ensemble des applications de l'État français, sans aucun couplage avec _La Suite Docs_.
 
 ---
 
@@ -40,15 +38,16 @@ L'un des avantages majeurs du découpage en **packages autonomes** (`django-lasu
 
 ---
 
-## 📋 2. Cas d'Usage : Intégration dans *La Suite Projects*
+## 📋 2. Cas d'Usage : Intégration dans _La Suite Projects_
 
 Dans l'application de gestion de tâches et projets **Projects**, les agents ont un besoin fréquent d'associer des tickets ou cartes Kanban à des références légales ou des entreprises contractantes :
 
 ### Exemple : Rattachement d'un Marché Public ou d'un Numéro SIRET à une Tâche
+
 ```tsx
-import React, { useState } from 'react';
-import { SourceSearchPopover, SourceEntityProps } from '@suitenumerique/blocknote-sources';
-import { Box, Button } from '@openfun/cunningham-tokens';
+import React, { useState } from "react";
+import { SourceSearchPopover, SourceEntityProps } from "@suitenumerique/blocknote-sources";
+import { Box, Button } from "@openfun/cunningham-tokens";
 
 export const TaskSourceAttacher = ({ taskId }: { taskId: string }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -83,9 +82,10 @@ export const TaskSourceAttacher = ({ taskId }: { taskId: string }) => {
 
 ---
 
-## 🎥 3. Cas d'Usage : Intégration dans *La Suite Meet* (Ordres du Jour)
+## 🎥 3. Cas d'Usage : Intégration dans _La Suite Meet_ (Ordres du Jour)
 
 Dans **La Suite Meet**, lors de la préparation d'une réunion interministérielle :
+
 1. Les participants ajoutent des **points à l'ordre du jour**.
 2. Chaque point peut citer directement le **numéro d'article de loi** ou le **dossier législatif de l'Assemblée nationale** concerné.
 3. Le bloc s'affiche sous forme d'encadré Marianne accessible à tous les participants connectés.
@@ -94,7 +94,7 @@ Dans **La Suite Meet**, lors de la préparation d'une réunion interministériel
 
 ## 🚀 4. Guide d'Installation pour un Projet Django Externe
 
-N'importe quel ministère ou collectivité développant un portail web en Python/Django peut bénéficier des 12 connecteurs souverains en 2 étapes :
+N'importe quel ministère ou collectivité développant un portail web en Python/Django peut bénéficier des 53 connecteurs enregistrés en 2 étapes :
 
 ```bash
 pip install django-lasuite-sources
