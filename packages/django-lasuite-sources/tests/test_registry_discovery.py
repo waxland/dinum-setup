@@ -7,6 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 from unittest.mock import Mock
 
 import pytest
+
 from lasuite_sources.providers.france.law import LawSourceProvider
 from lasuite_sources.registry import source_registry
 

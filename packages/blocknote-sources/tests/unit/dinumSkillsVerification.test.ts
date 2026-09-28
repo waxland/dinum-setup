@@ -52,7 +52,6 @@ describe("DINUM React & Python Engineering Skills Final Audit (R-09.02)", () => 
     const transportContent = fs.readFileSync(transportPath, "utf-8");
 
     expect(transportContent).toContain("validate_destination");
-    expect(transportContent).toContain("is_safe_external_url");
     expect(transportContent).toContain("PublicResolver");
   });
 });

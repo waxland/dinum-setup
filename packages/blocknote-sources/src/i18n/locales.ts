@@ -126,7 +126,7 @@ export const LOCALES: Record<SupportedLocale, ExternalSourceI18nStrings> = {
   },
   fr: {
     searchPlaceholder: "Sujet, article ou nom d'un texte...",
-    searchTitle: "Rechercher une référence",
+    searchTitle: "Recherche de sources",
     backButton: "Retour",
     allFilter: "Tout",
     codesFilter: "Codes",
