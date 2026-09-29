@@ -1,32 +1,54 @@
 ---
-title: "Accueil"
-sidebar_label: "Accueil"
+title: "Home"
+sidebar_label: "Home"
 description: Standardized remote data connectors and multi-format connected blocks for BlockNote.js with WAI-ARIA accessibility and native vector exporters.
 ---
 
-**Slasher** (`@blocknote/xl-external-sources`) is an open source community extension and lightweight SDK (`@blocknote/source-provider-sdk` < 5 kB) that connects rich text editors with remote public and private APIs.
+**Slasher** (`@suitenumerique/blocknote-sources` / `@blocknote/xl-external-sources`) is an open source community extension and lightweight SDK (`@suitenumerique/slash-sources-sdk` < 5 kB) that connects rich text editors with verified remote public registries, legal databases, and enterprise APIs.
+
+<DocHeaderSummary
+  readingTime="5 min"
+  level="All Developers"
+  roles={["Frontend", "Backend", "Full-Stack", "Architects", "Maintainers"]}
+  prerequisites={["BlockNote.js 0.15+", "React 18 / 19", "TypeScript 5+", "Python 3.12+"]}
+  status="DPG Standard"
+  statusColor="success"
+  takeaway="Universal standard for verified connected data blocks in rich text editors with 0-Mantine bundle isolation, WAI-ARIA combobox palette, and native vector exporters."
+/>
+
+---
+
+## 🏛️ 3-Tier Architecture
 
 <Mermaid chart={`flowchart TD
-    subgraph SlasherEcosystem["🌐 Slasher 3-Tier Architecture"]
-        Editor["📝 BlockNote.js Editor / React 18 & 19"]
-        SlasherBlock["🧩 SlasherBlock (3 Switchable Formats)"]
-        Popover["🔍 Floating Search Popover (cmdk + WAI-ARIA)"]
-        SDK["🛠️ Slasher SDK (defineSourceProvider)"]
-        BackendProxy["🐍 Backend Proxy & Deterministic Redis Cache (SHA-256)"]
-        RemoteAPIs["🏛️ Public & Enterprise APIs (EU, France, Germany, Netherlands, Spain)"]
+    subgraph Editor["📝 Rich Text Editor (React 18 / 19)"]
+        SlashCommand["Type '/' or Trigger Shortcut"] --> Popover["Accessible Floating Popover (cmdk + ARIA)"]
+        Popover --> Block["Universal Connected Block (Callout, Card, Inline)"]
     end
 
-    Editor --> SlasherBlock
-    Editor --> Popover
+    subgraph Core["📦 Decoupled Packages (DINUM & Community)"]
+        SDK["🛠️ Provider SDK (@suitenumerique/slash-sources-sdk)"]
+        Proxy["🐍 Resilient Backend Proxy (django-lasuite-sources)"]
+    end
+
+    subgraph GlobalData["🌍 Sovereign & Global APIs (53 Connectors)"]
+        EU["🇪🇺 EUR-Lex & TED Open Data"]
+        CA["🇨🇦 Justice Laws Canada & StatsCan"]
+        FR["🇫🇷 BAN, Légifrance & BOAMP"]
+        DE["🇩🇪 Destatis & GovData Germany"]
+        NL["🇳🇱 Wettenbank & KVK Netherlands"]
+        ES["🇪🇸 BOE & Registro Mercantil Spain"]
+    end
+
     Popover --> SDK
-    SDK --> BackendProxy
-    BackendProxy --> RemoteAPIs`} />
+    SDK --> Proxy
+    Proxy --> EU & CA & FR & DE & NL & ES`} />
 
 ---
 
 ## ✨ Key Features
 
-<FeatureGrid>
+<FeatureGrid cols={2}>
   <FeatureCard
     title="3 Switchable Display Formats"
     description="Switch seamlessly between Callout (institutional quote), Card (3-column metadata grid), and Inline Mention (compact inline pill) on any block."
@@ -39,12 +61,12 @@ description: Standardized remote data connectors and multi-format connected bloc
   />
   <FeatureCard
     title="Multi-Country Sovereign Presets"
-    description="Out-of-the-box verified datasets for France 🇫🇷, Germany 🇩🇪, Netherlands 🇳🇱, Spain 🇪🇸, and the European Union 🇪🇺."
+    description="Out-of-the-box verified datasets for France 🇫🇷, Germany 🇩🇪, Netherlands 🇳🇱, Spain 🇪🇸, Canada 🇨🇦, and the European Union 🇪🇺."
     icon="globe"
   />
   <FeatureCard
     title="Native Document Exporters"
-    description="Lossless vector exporters for PDF (@react-pdf/renderer), Word DOCX (docx), and LibreOffice ODF/ODT."
+    description="Lossless vector exporters for PDF (@react-pdf/renderer), Word DOCX (docx), and LibreOffice ODF/ODT (fflate XML)."
     icon="file-text"
   />
 </FeatureGrid>

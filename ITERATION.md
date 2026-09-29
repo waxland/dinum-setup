@@ -502,3 +502,74 @@ gantt
   - Audit d'isolation Mantine & Tailwind : confirmation qu'aucun import `@blocknote/mantine` ou `@mantine/core` n'existe dans `packages/blocknote-sources/` (0-Mantine), Mantine restant cantonné à la coquille d'éditeur BlockNote core.
   - Validation par la suite `packages/blocknote-sources/tests/unit/uiMapping.test.ts` (49 tests Vitest au vert, `typecheck` et `docs:build` validés).
 - **Prochaine priorité immédiate :** `R-06.02` (Examiner les primitives de rendu BlockNote sans Mantine et les contraintes de Zudoku).
+
+---
+
+## 🔄 7. Suivi des Itérations d'Audit de la Documentation
+
+### 📌 Itération 1 (28 Septembre 2026) — Pages d'Accueil Portails FR & EN
+
+- **Fichiers traités :**
+  1. `documentation/docs/index.mdx` (Page d'accueil portail francophone DINUM)
+  2. `documentation-international/docs/index.mdx` (Landing page portail international BlockNote)
+- **Synthèse des décisions & constats :**
+  - `documentation/docs/index.mdx` : 🟡 À enrichir. Découpler l'historique hackathon vers `01-onboarding/00-contexte/`, aligner le décompte à 53 connecteurs, enrichir le schéma Mermaid avec disjoncteur/quotas.
+  - `documentation-international/docs/index.mdx` : 🟡 À enrichir. Corriger le titre frontmatter (`Accueil` $\rightarrow$ `Home`), insérer `<DocHeaderSummary>` adapté et clarifier le nommage `@blocknote/xl-external-sources`.
+- **Fichiers mis à jour / créés :** `CONTEXTE.md`, `PLAN_DOCUMENTATION_FR.md`, `PLAN_DOCUMENTATION_EN.md`.
+
+### 📌 Itération 2 (28 Septembre 2026) — Portes d'Entrée Onboarding FR & Overview EN
+
+- **Fichiers traités :**
+  1. `documentation/docs/01-onboarding/index.mdx` (Page d'accueil Onboarding FR)
+  2. `documentation-international/docs/00-overview/index.mdx` (Hub Overview EN)
+- **Synthèse des décisions & constats :**
+  - `documentation/docs/01-onboarding/index.mdx` : 🔴 **À refondre**. Doublon quasi intégral de la page d'accueil avec plus de 5 liens rompus vers des catégories obsolètes (`/00-accueil`, `/03-projets`, `/04-design-system`). À restructurer sous forme de parcours d'accueil J1 guidé en 5 étapes.
+  - `documentation-international/docs/00-overview/index.mdx` : 🟡 **À enrichir**. Introduction trop laconique ; ajouter `<DocHeaderSummary>`, une matrice comparative _Dead Copy-Paste vs Slasher Connected Blocks_, et des liens explicites vers les 4 sous-articles (`architecture-3-tier`, `engineering-standards`, `international-vision`, `05-toml-frontmatter`).
+- **Fichiers mis à jour :** `CONTEXTE.md`, `PLAN_DOCUMENTATION_FR.md`, `PLAN_DOCUMENTATION_EN.md`.
+
+### 📌 Itération 3 (28 Septembre 2026) — Environnement Hôte FR & Architecture 3-Tier EN
+
+- **Fichiers traités :**
+  1. `documentation/docs/01-onboarding/01-demarrage/environnement-machine-hote.mdx` (Environnement machine hôte FR)
+  2. `documentation-international/docs/00-overview/architecture-3-tier.mdx` (Architecture 3-Tier EN)
+- **Synthèse des décisions & constats :**
+  - `documentation/docs/01-onboarding/01-demarrage/environnement-machine-hote.mdx` : 🟡 **À enrichir**. Corriger l'incohérence recommandant `pnpm` alors que le monorepo et les scripts racine reposent strictement sur `npm >= 10.9.0` (Node 22 LTS). Ajouter la mention du script `scripts/check-runtime.mjs` et les paquets essentiels sous Linux.
+  - `documentation-international/docs/00-overview/architecture-3-tier.mdx` : 🟡 **À enrichir**. Harmoniser les noms de packages (`@slasher/*` $\rightarrow$ `@suitenumerique/*` / `django-lasuite-sources`), ajouter les sections détaillées pour chaque tier (Tier 1 headless, Tier 2 immutabilité, Tier 3 Anti-SSRF/Redis Lua).
+- **Fichiers mis à jour :** `CONTEXTE.md`, `PLAN_DOCUMENTATION_FR.md`, `PLAN_DOCUMENTATION_EN.md`.
+
+### 📌 Itération 4 (28 Septembre 2026) — Configuration Git/SSH FR & Standards d'Ingénierie EN
+
+- **Fichiers traités :**
+  1. `documentation/docs/01-onboarding/01-demarrage/git-ssh.mdx` (Guide Git & clés SSH signées FR)
+  2. `documentation-international/docs/00-overview/engineering-standards.mdx` (Standards d'ingénierie stricts DINUM EN)
+- **Synthèse des décisions & constats :**
+  - `documentation/docs/01-onboarding/01-demarrage/git-ssh.mdx` : 🟢 **Conforme**. Guide complet et pédagogique. Enrichir avec la configuration de signature des commits via clé SSH (`commit.gpgsign = true`, `gpg.format = ssh`), ajouter `<DocHeaderSummary>` et lier au Guide du Premier Commit.
+  - `documentation-international/docs/00-overview/engineering-standards.mdx` : 🟢 **Conforme**. Synthèse claire des règles DINUM/beta.gouv.fr/La Suite. Ajouter `<DocHeaderSummary>`, lier aux commandes automatisées du Quality Gate (`make check`) et expliciter l'alignement DPGA et les tests Axe-Core.
+- **Fichiers mis à jour :** `CONTEXTE.md`, `PLAN_DOCUMENTATION_FR.md`, `PLAN_DOCUMENTATION_EN.md`.
+
+### 📌 Itération 5 (28 Septembre 2026) — IDE VS Code FR & Vision Internationale / DPG EN
+
+- **Fichiers traités :**
+  1. `documentation/docs/01-onboarding/01-demarrage/vscode.mdx` (Guide VS Code & SQLTools FR)
+  2. `documentation-international/docs/00-overview/international-vision.mdx` (Vision internationale DPG & souveraineté EN)
+- **Synthèse des décisions & constats :**
+  - `documentation/docs/01-onboarding/01-demarrage/vscode.mdx` : 🟡 **À enrichir**. Actualiser les commandes de validation terminal vers le monorepo réel (`make check`, `npm run lint`, `ruff check`), clarifier la proscription de Tailwind/Biome dans `packages/`, et insérer `<DocHeaderSummary>`.
+  - `documentation-international/docs/00-overview/international-vision.mdx` : 🟡 **À enrichir**. Harmoniser les noms de packages dans le diagramme Mermaid (`@suitenumerique/*`), ajouter le Canada (`ca`), insérer la matrice de conformité aux 9 indicateurs DPGA, et détailler les perspectives de fédération européenne.
+- **Fichiers mis à jour :** `CONTEXTE.md`, `PLAN_DOCUMENTATION_FR.md`, `PLAN_DOCUMENTATION_EN.md`.
+
+### 📌 Session de Rédaction & Exécution Opérationnelle (29 Septembre 2026) — Refonte Accueil & Onboarding + Seeding PLAN_ACTIONS.md
+
+- **Fichiers réécrits & refondus :**
+  1. `documentation/docs/index.mdx` : Posture pérenne d'accueil du portail d'ingénierie, diagramme 3-tiers à 53 connecteurs avec Redis Lua et Anti-SSRF, `<DocHeaderSummary>`.
+  2. `documentation-international/docs/index.mdx` : Alignement 100% anglais (`title: "Home"`), insertion de `<DocHeaderSummary>`, diagramme 3-tiers avec 53 connecteurs souverains (dont Canada `ca`).
+  3. `documentation/docs/01-onboarding/index.mdx` : Élimination totale de la duplication avec l'accueil, réparation des liens rompus, structuration du parcours d'intégration développeur J1 en 5 étapes.
+- **Évolution de `PLAN_ACTIONS.md` :**
+  - Création de la **Section 13 : Nouvelles Actions Techniques Opérationnelles & Évolutions Continues** avec 14 actions techniques actionnables (`ACT-001` à `ACT-014`) réparties en 5 piliers :
+    - 📦 `[PKG]` (Validation taille payload Yjs `ACT-001`, exportateur Markdown `ACT-002`, citation BibTeX/CSL `ACT-003`).
+    - 🐍 `[API]` (OpenAPI dynamique `ACT-004`, Healthcheck multi-sondes `ACT-005`, connecteur OpenDataSoft `ACT-006`).
+    - 🎨 `[UI]` (Raccourcis clavier `ACT-007`, contraste élevé renforcé `ACT-008`, filtre multi-critères palette `ACT-009`).
+    - ⚙️ `[CI/CD]` (Vérification automatique des routes `ACT-010`, Playwright Firefox/WebKit `ACT-011`, budget size-limit `ACT-012`).
+    - 📖 `[DOC]` (Déploiement généralisé DocHeaderSummary `ACT-013`, miroir d'architecture EN `ACT-014`).
+- **File d'attente (Queue) pour l'Itération suivante :**
+  - `documentation/docs/01-onboarding/01-demarrage/urls-et-identifiants.mdx`
+  - `documentation-international/docs/00-overview/05-toml-frontmatter.mdx`

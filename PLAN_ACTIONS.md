@@ -876,5 +876,85 @@ Une preuve absente laisse la case ouverte. Une vérification échouée doit cond
 ### 12.2. Point de reprise après chaque réponse
 
 Dernière étape terminée : R-09.04 (validation intégrale de la checklist finale 11.3 et clôture formelle du plan d'action `PLAN_ACTIONS.md` — 100% des tâches R-01 à R-09 et T-001 à T-018 validées).
-Prochaine sous-étape : **Plan d'action intégralement terminé**.
+Prochaine sous-étape : **Plan d'action initial intégralement terminé**.
 Blocage connu à traiter ensuite : aucun.
+
+---
+
+## 13. Nouvelles Actions Techniques Opérationnelles & Évolutions Continues (Cycle Documentation & Roadmap)
+
+Ce volet recense les chantiers techniques opérationnels identifiés lors de la rédaction documentaire approfondie, de l'audit architectural et de l'analyse des besoins de production des consommateurs de La Suite Numérique et de la communauté BlockNote.
+
+### 📦 13.1. Packages & SDK (`[PKG]`)
+
+- [ ] **ACT-001 `[PKG]` Helper de Validation de Payload JSON dans `@suitenumerique/slash-sources-sdk`**  
+      _Description :_ Ajouter une méthode utilitaire `validatePayloadSize(rawPayload, maxBytes = 64 * 1024)` dans le SDK pour borner la taille du `rawPayload` avant insertion dans les documents Yjs/CRDT, évitant l'alourdissement excessif des documents collaboratifs partagés.  
+      _Critères d'acceptation :_ Méthode pure sans dépendance, tests unitaires Vitest couvrant les payloads conformes et tronqués, 0 `any`.
+
+- [ ] **ACT-002 `[PKG]` Exportateur Markdown / GFM Découplé (`/exporters/markdown`)**  
+      _Description :_ Fournir un sous-chemin d'exportation dédié `@suitenumerique/blocknote-sources/exporters/markdown` convertissant un bloc `SourceBlock` en citation GitHub Flavored Markdown (`> [!NOTE]`) ou tableau récapitulatif.  
+      _Critères d'acceptation :_ Point d'entrée exporté dans `tsup.config.ts` et `package.json`, tests unitaires dédiés, préservation des liens et des statuts.
+
+- [ ] **ACT-003 `[PKG]` Support du Format de Citation Normalisé BibTeX / CSL-JSON**  
+      _Description :_ Ajouter aux connecteurs juridiques et académiques (`law`, `insee`, `research`) une propriété optionnelle `citation` au format BibTeX ou CSL-JSON permettant aux agents publics et chercheurs d'exporter des bibliographies normalisées.  
+      _Critères d'acceptation :_ Typage strict dans `ExternalSourceEntity`, test de désérialisation sans régression sur les documents legacy.
+
+---
+
+### 🐍 13.2. Backend Django & Sécurité (`[API]`)
+
+- [ ] **ACT-004 `[API]` Endpoint d'Introspection OpenAPI Dynamique avec Schémas Enrichis**  
+      _Description :_ Générer dynamiquement l'endpoint `/api/v1/openapi.json` à partir du registre `source_registry` pour exposer la liste en direct des 53 connecteurs disponibles, leurs paramètres de filtre et leurs quotas associés.  
+      _Critères d'acceptation :_ Route Django DRF protégée par cache Redis, conformité OpenAPI 3.0.3 validée par `test_openapi_validation.py`.
+
+- [ ] **ACT-005 `[API]` Healthcheck Global Agrégé `/api/v1/health/` avec Sondes Redis & DNS**  
+      _Description :_ Créer une vue `/api/v1/health/` renvoyant le statut opérationnel de Redis, l'état des disjoncteurs par zone (`fr`, `eu`, `ca`, `de`, `nl`, `es`) et la disponibilité du DNS `PublicResolver` sans divulgation d'informations internes.  
+      _Critères d'acceptation :_ Réponse JSON structurée avec HTTP 200 (OK) ou HTTP 503 (Degraded), tests Pytest d'isolation en cas de coupure réseau.
+
+- [ ] **ACT-006 `[API]` Connecteur Live Démonstrateur OpenDataSoft Universel**  
+      _Description :_ Implémenter un connecteur générique `OpenDataSoftProvider` capable d'interroger les portails ODS de métropoles et ministères (ex: data.opendatasoft.com) avec auto-découverte des facettes et normalisation DTO.  
+      _Critères d'acceptation :_ Résolution DNS via `PublicResolver`, suite de tests `test_ods_provider.py`, documentation du connecteur.
+
+---
+
+### 🎨 13.3. Frontend, Accessibilité & BlockNote (`[UI]`)
+
+- [ ] **ACT-007 `[UI]` Raccourcis Clavier Rapides de Permutation de Format (`Ctrl+Alt+1..3`)**  
+      _Description :_ Permettre à l'utilisateur de permuter le format du bloc source sélectionné (1: Callout, 2: Carte, 3: Lien) via des raccourcis clavier accessibles documentés dans les infobulles de la barre d'outils.  
+      _Critères d'acceptation :_ Écouteur clavier accessible dans `SourceBlockToolbar`, support des claviers AZERTY/QWERTY, annonce vocale via `aria-live`.
+
+- [ ] **ACT-008 `[UI]` Mode Contraste Élevé Renforcé (High Contrast Theme)**  
+      _Description :_ Intégrer une variante de bordure et de pastilles pour le mode contraste renforcé (`@media (forced-colors: active)` / Windows High Contrast) garantissant une visibilité des bordures Marianne `#000091` supérieure à 7:1.  
+      _Critères d'acceptation :_ 0 violation Axe-Core en simulation de couleurs forcées, tests E2E Playwright dédiés.
+
+- [ ] **ACT-009 `[UI]` Filtre de Recherche Multi-Critères dans `SourceSearchPopover`**  
+      _Description :_ Permettre de filtrer la palette de recherche par type d'entité (`loi`, `adresse`, `entreprise`, `marché`, `stats`) via des puces cliquables et navigables au clavier au-dessus du champ de saisie cmdk.  
+      _Critères d'acceptation :_ Pattern WAI-ARIA `role="tablist"` ou `role="radiogroup"`, focus trapping sans perte de curseur dans l'input textuel.
+
+---
+
+### ⚙️ 13.4. Outillage, Lint & Automatisation (`[CI/CD]`)
+
+- [ ] **ACT-010 `[CI/CD]` Script de Vérification Automatisée de l'Arborescence Zudoku Navigation**  
+      _Description :_ Créer un script `scripts/verify-docs-routes.mjs` vérifiant que 100% des fichiers `.mdx` présents sur le disque sont référencés dans `zudoku.navigation.tsx` (sans route orpheline) et que tous les liens internes markdown pointent vers des cibles existantes.  
+      _Critères d'acceptation :_ Intégration dans la cible `make check`, code de sortie 0, test unitaire Vitest dédié.
+
+- [ ] **ACT-011 `[CI/CD]` Matrice de Test Playwright Cross-Browsers (Chromium, Firefox, WebKit)**  
+      _Description :_ Étendre la configuration Playwright `packages/blocknote-sources/playwright.config.ts` pour exécuter les 6 scénarios d'accessibilité et d'édition sur Firefox et WebKit en plus de Chromium dans la CI GitHub Actions.  
+      _Critères d'acceptation :_ Workflow `.github/workflows/ci-packages.yml` exécutant la matrice sur les 3 moteurs de rendu avec succès.
+
+- [ ] **ACT-012 `[CI/CD]` Benchmarks de Performance Bundle & Budget de Taille (Size-Limit)**  
+      _Description :_ Configurer un contrôle automatisé de taille (`size-limit`) garantissant que `@suitenumerique/slash-sources-sdk` reste strictement $< 5\text{ kB}$ et `@suitenumerique/blocknote-sources` $< 45\text{ kB}$ (gzippé).  
+      _Critères d'acceptation :_ Échec de la CI si le budget de taille est dépassé, rapport intégré aux jobs GitHub Actions.
+
+---
+
+### 📖 13.5. Portails, Manifestes & Documentation (`[DOC]`)
+
+- [ ] **ACT-013 `[DOC]` Déploiement Systématique des `<DocHeaderSummary>` sur l'Ensemble des 53 Fiches**  
+      _Description :_ Ajouter le composant standardisé `<DocHeaderSummary>` sur l'ensemble des fiches des connecteurs souverains de `documentation/docs/03-slasheurs-france/` et `documentation-international/docs/04-presets/`.  
+      _Critères d'acceptation :_ Temps de lecture, niveau, rôles cibles et statuts renseignés sur 100% des fiches.
+
+- [ ] **ACT-014 `[DOC]` Traduction Intégrale et Miroir EN des Guides d'Architecture**  
+      _Description :_ Compléter le portail international (`documentation-international/docs/03-backend-proxy/`) pour offrir le même niveau de détail technique en anglais sur les flux S3, CRDT Yjs et l'authentification ProConnect.  
+      _Critères d'acceptation :_ 0 route manquante, validation `npm run docs:build` avec Pagefind indexé.

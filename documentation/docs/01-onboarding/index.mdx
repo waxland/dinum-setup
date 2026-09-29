@@ -1,183 +1,113 @@
 ---
 title: "Onboarding"
 sidebar_label: "Onboarding"
-description: Portail de documentation d'ingénierie, onboarding et boîte à outils pour La Suite Numérique et le Socle des Sources Souveraines (/slash).
+description: Guide d'accueil, checklist du premier jour et parcours d'intégration pour les développeurs et contributeurs de La Suite Numérique.
 ---
 
-Bienvenue sur le portail d'ingénierie et d'orchestration locale de **La Suite numérique** de l'État français (DINUM) !
+Bienvenue dans l'espace d'**Onboarding & Démarrage Rapide** pour **La Suite numérique** et le socle souverain **`/slash`** !
 
-Ce dépôt a été initié dans le cadre de la collaboration **42 x DINUM** à l'occasion du hackathon organisé à **Forty 2 (Île d'Oléron)** du 14 au 18 septembre 2026. Il centralise l'architecture, les packages souverains, l'onboarding accéléré et la spécification des **Commandes Slash (`/slash`)**.
+Ce guide accompagne les nouveaux développeurs, contributeurs open source et agents de l'État dans la prise en main de l'environnement de développement, de la configuration système jusqu'à la soumission de leur première Pull Request.
 
 <DocHeaderSummary
-  readingTime="8 min"
-  level="Débutant"
-  roles={["Frontend", "Backend", "DevOps", "Produit / Métier"]}
-  prerequisites={["Git", "Docker", "Node.js 22+", "Python 3.12+"]}
+  readingTime="5 min"
+  level="Débutant à Intermédiaire"
+  roles={["Frontend", "Backend", "DevOps", "Contributeurs"]}
+  prerequisites={["Git", "Docker / OrbStack", "Node.js 22 LTS", "Python 3.12+"]}
   status="DPG Standard"
   statusColor="success"
-  takeaway="Portail unique d'ingénierie regroupant le socle souverain Slasher, les packages distribuables et l'onboarding complet pour La Suite numérique."
+  takeaway="Parcours pas-à-pas en 5 étapes pour bootstraper la stack locale, valider les règles d'ingénierie d'État et livrer du code conforme."
 />
 
-<OnboardingTracks />
+---
 
-🔗 **Ressources Rapides :** [Challenge 42 x DINUM](/00-accueil/challenge-42) • [📅 Planning & Agenda](/00-accueil/planning) • [Portail La Suite](https://lasuite.numerique.gouv.fr/) • [GitHub suitenumerique](https://github.com/suitenumerique) • [DINUM](https://www.numerique.gouv.fr/) • [42](https://42.fr/)
+## 🚀 Le Parcours d'Intégration en 5 Étapes
+
+```mermaid
+flowchart TD
+    A["📥 1. Cloner le dépôt & sous-modules"] --> B["⚙️ 2. make env — Préparer les .env"]
+    B --> C["🐳 3. make bootstrap — Monter Docker & DBs"]
+    C --> D["💻 4. make dev — Lancer l'orchestration locale"]
+    D --> E["🧪 5. make check — Valider le Quality Gate"]
+    E --> F["🚀 6. Prêt à développer & contribuer"]
+```
 
 ---
 
-## 🎨 Références Officielles du Design System & Maquettes Figma
-
-Pour assurer une cohérence visuelle parfaite entre les applications de La Suite et respecter la charte graphique de l'État :
+## 🧭 Sommaire du Guide d'Onboarding
 
 <FeatureGrid cols={3}>
   <FeatureCard
-    icon="📄"
-    title="Figma La Suite Docs"
-    badge="Maquette Officielle"
-    description="Maquettes Figma de référence de l'éditeur collaboratif Docs (Impress), vues de documents et CustomBlocks."
-    href="https://www.figma.com/design/qdCWR4tTUr7vQSecEjCyqO/Docs?node-id=9722-19469&p=f&t=r1O6Np4JgTbRWrCR-0"
+    icon="💻"
+    title="Environnement Hôte"
+    badge="Étape 1"
+    description="Prérequis système, moteurs Docker légers (OrbStack, Colima) et runtimes (Node 22 LTS, Python 3.12+)."
+    href="/01-onboarding/01-demarrage/environnement-machine-hote"
   />
   <FeatureCard
-    icon="🎨"
-    title="Figma La Suite UI Kit"
-    badge="Cunningham Tokens"
-    description="Bibliothèque de composants UI Kit La Suite basée sur Cunningham et le Design System officiel."
-    href="https://www.figma.com/community/file/1562860630562131728/lasuite-ui-kit"
+    icon="🔑"
+    title="Git & Clés SSH"
+    badge="Étape 2"
+    description="Génération de clés Ed25519, configuration multi-comptes (~/.ssh/config) et signature des commits."
+    href="/01-onboarding/01-demarrage/git-ssh"
   />
   <FeatureCard
-    icon="📖"
-    title="Storybook Cunningham"
-    badge="Composants Live"
-    description="Documentation interactive et bac à sable des composants UI (@openfun/cunningham-tokens)."
-    href="https://suitenumerique.github.io/cunningham/storybook/"
+    icon="🧩"
+    title="Configuration VS Code"
+    badge="Étape 3"
+    description="Extensions recommandées (Ruff, ESLint, Prettier), formatage automatique à la sauvegarde et SQLTools 1-clic."
+    href="/01-onboarding/01-demarrage/vscode"
   />
-</FeatureGrid>
-
----
-
-## ⚡ Le Projet Phare : Le Socle des Commandes Souveraines (`/slash`)
-
-Le projet **`/slash`** dote l'éditeur **La Suite Docs** d'un accès direct aux **12 grandes bases de données souveraines de l'État français** au fil de la frappe.
-
-<Mermaid chart={`flowchart TD
-    subgraph Client["📝 Éditeur Collaboratif (Navigateur)"]
-        Saisie["Saisie au clavier : /loi, /marche, /entreprise..."] --> Popover["Palette de Recherche Popover (Cunningham + cmdk)"]
-        Popover --> Block["CustomBlock Universel (3 Formats DSFR : Callout, Carte, Lien)"]
-    end
-
-    subgraph Packages["📦 Packages Autonomes Découplés (DINUM)"]
-        Pkg_Py["🐍 django-lasuite-sources (PyPI)"]
-        Pkg_JS["📦 @suitenumerique/blocknote-sources (npm)"]
-        Pkg_SDK["🛠️ @suitenumerique/slash-sources-sdk (npm)"]
-    end
-
-    subgraph APIs["🏛️ Sources Officielles de l'État"]
-        PISTE["Légifrance / PISTE (DILA)"]
-        BOAMP["Marchés Publics BOAMP (DAE)"]
-        BAN["Base Adresse Nationale (IGN)"]
-        INSEE["INSEE Stats & RNE"]
-        Albert["Albert IA Souveraine (Etalab)"]
-    end
-
-    Client --> Pkg_JS
-    Pkg_JS --> Pkg_Py
-    Pkg_Py --> APIs`} />
-
-### ⚖️ La Première Proposition Pionnière : `/loi` & la Vision Juridique
-
-La commande **/loi** (alias `/legifrance`, `/code`, `/article`) constitue la première brique emblématique de cette vision :
-
-- **Sécurité Juridique Absolue :** Interrogation en temps réel de l'API officielle **PISTE / DILA** pour certifier que l'article de loi ou le décret cité est **en vigueur**.
-- **Veille d'Abrogation Continue :** Tâche Celery scannant les documents pour avertir automatiquement les agents si un article cité vient d'être modifié ou abrogé au Journal Officiel.
-- **Rendu aux 3 Formats DSFR :** Permutation instantanée entre l'**Encadré officiel Marianne** (`#000091`), la **Carte 3 colonnes** de métadonnées et la **Pastille Lien inline**.
-- **Export Vectoriel Parfait :** Préservation de la bordure Marianne et des hyperliens lors de l'export vers PDF, Word (.docx) ou LibreOffice (.odt).
-
----
-
-## 🎮 Démonstrateur Interactif BlockNote.js en Direct
-
-Testez ci-dessous le moteur d'édition en direct avec les commandes `/loi`, `/entreprise`, `/adresse`, `/marche`, `/stats` :
-
-<BlockNoteSlashPlayground />
-
----
-
-## 🧭 Explorer les Sections du Portail
-
-<FeatureGrid cols={3}>
   <FeatureCard
-    icon="🚀"
-    title="01. Onboarding & Démarrage"
-    description="Checklist du 1er jour, configuration VS Code 1-clic, Git/SSH et environnement système."
-    href="/01-onboarding"
-    badge="Démarrage"
+    icon="🌐"
+    title="URLs & Identifiants"
+    badge="Étape 4"
+    description="Tableau récapitulatif des ports locaux, services Docker et identifiants par défaut pour PostgreSQL."
+    href="/01-onboarding/01-demarrage/urls-et-identifiants"
   />
   <FeatureCard
     icon="🏛️"
-    title="02. Architecture Globale"
-    description="Schémas Mermaid interactifs, flux OIDC ProConnect, synchronisation Yjs CRDT et stockage S3."
-    href="/02-architecture"
-    badge="Système"
-  />
-  <FeatureCard
-    icon="📦"
-    title="03. Matrice des Projets"
-    description="Fiches détaillées des applications : Docs, Meet, Tchap, Grist, Drive, Transfers, Projects, People."
-    href="/03-projets"
-    badge="Applications"
-  />
-  <FeatureCard
-    icon="🎨"
-    title="04. Design System (DSFR & Cunningham)"
-    description="Composants officiels, typographie Marianne, tokens de couleur et conformité RGAA v4.1 AA."
-    href="/04-design-system"
-    badge="UI / UX"
-  />
-  <FeatureCard
-    icon="🧰"
-    title="05. Ressources & Outils"
-    description="Templates de PR, feuille de route pluriannuelle et canaux d'entraide communautaire."
-    href="/05-ressources/communaute"
-    badge="Ressources"
-  />
-  <FeatureCard
-    icon="🤖"
-    title="07. Skills d'Agent & Ingénierie"
-    description="Procédures, directives strictes (Zéro any, Zéro cast) et compétences spécialisées."
-    href="/07-skills"
-    badge="Méthode"
-  />
-  <FeatureCard
-    icon="⚡"
-    title="08. Socle Souverain & Packages /slash"
-    description="Dossier technique complet, 53 connecteurs enregistrés, SDK développeur et architecture en 3 pôles."
-    href="/08-slash"
-    badge="Socle"
+    title="Normes DINUM & Qualité"
+    badge="Étape 5"
+    description="Standards stricts : 0 any, 0 cast, RGAA v4.1 AA, 0 violation Axe-Core et sécurité défensive Anti-SSRF."
+    href="/01-onboarding/02-workflow-et-contribution/bonnes-pratiques-dinum"
   />
   <FeatureCard
     icon="🚀"
-    title="09. Pull Requests & Contributions"
-    description="Dossiers de PR officiels pour suitenumerique/docs (VMs, packages) et TypeCellOS/BlockNote (RFC)."
-    href="/09-PR"
-    badge="Upstream"
+    title="Premier Commit & PR"
+    badge="Validation"
+    description="Guide pas-à-pas pour formater, tester avec make check, signer son commit et ouvrir une PR."
+    href="/01-onboarding/02-workflow-et-contribution/guide-du-premier-commit"
   />
 </FeatureGrid>
 
 ---
 
-## ⚡ Commandes Principales d'Orchestration
+## ⚡ Commandes d'Amorçage Rapide (Cheat Sheet)
+
+Exécutez cette séquence dans votre terminal pour initialiser l'ensemble du projet :
 
 ```bash
-make clone
+# 1. Cloner le dépôt et initialiser les dépendances
+git clone git@github.com:suitenumerique/dinum-setup.git
+cd dinum-setup
 
 # 2. Préparer les fichiers d'environnement locaux (.env)
 make env
 
-# 3. Amorcer les conteneurs et les bases de données
+# 3. Amorcer les conteneurs et les bases de données PostgreSQL
 make bootstrap
 
 # 4. Lancer les services en mode développement
 make dev
 
-# 5. Démarrer le portail documentaire local Zudoku
-make docs-dev
+# 5. Valider l'intégrité de la stack locale (16 étapes de contrôle)
+make check
 ```
+
+---
+
+## 📚 Ressources Annexes & Contexte
+
+- 🤝 **Contexte & Hackathon :** [Challenge 42 x DINUM](/01-onboarding/00-contexte/challenge-42) • [Planning](/01-onboarding/00-contexte/planning)
+- 📐 **Décisions d'Architecture :** [Registre des ADRs](/01-onboarding/02-workflow-et-contribution/adr)
+- 🛟 **Assistance :** [Glossaire Technique](/01-onboarding/03-support/glossaire) • [Guide de Dépannage](/01-onboarding/03-support/troubleshooting)

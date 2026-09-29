@@ -1,26 +1,65 @@
 ---
 title: "Accueil"
 sidebar_label: "Accueil"
-description: Portail de documentation d'ingénierie, onboarding et boîte à outils pour La Suite Numérique et le Socle des Sources Souveraines (/slash).
+description: Portail d'ingénierie, d'architecture et de documentation pour La Suite Numérique et le socle souverain des commandes /slash.
 ---
 
 Bienvenue sur le portail d'ingénierie et d'orchestration locale de **La Suite numérique** de l'État français (DINUM) !
 
-Ce dépôt a été initié dans le cadre de la collaboration **42 x DINUM** à l'occasion du hackathon organisé à **Forty 2 (Île d'Oléron)** du 14 au 18 septembre 2026. Il centralise l'architecture, les packages souverains, l'onboarding accéléré et la spécification des **Commandes Slash (`/slash`)**.
+Ce portail centralise l'architecture, les packages distribuables, le catalogue des connecteurs de données souveraines et les guides de contribution pour les applications de l'État.
 
 <DocHeaderSummary
-  readingTime="8 min"
-  level="Débutant"
-  roles={["Frontend", "Backend", "DevOps", "Produit / Métier"]}
-  prerequisites={["Git", "Docker", "Node.js 22+", "Python 3.12+"]}
+  readingTime="6 min"
+  level="Tous Niveaux"
+  roles={["Frontend", "Backend", "DevOps", "Architectes", "Produit / Métier"]}
+  prerequisites={["Git", "Docker / OrbStack", "Node.js 22 LTS", "Python 3.12+"]}
   status="DPG Standard"
   statusColor="success"
-  takeaway="Portail unique d'ingénierie regroupant le socle souverain Slasher, les packages distribuables et l'onboarding complet pour La Suite numérique."
+  takeaway="Socle unifié d'ingénierie regroupant le standard de blocs connectés /slash, 3 packages distribuables et 53 connecteurs souverains."
 />
 
 <OnboardingTracks />
 
-🔗 **Ressources Rapides :** [Challenge 42 x DINUM](/01-onboarding/00-contexte/challenge-42) • [📅 Planning & Agenda](/01-onboarding/00-contexte/planning) • [Portail La Suite](https://lasuite.numerique.gouv.fr/) • [GitHub suitenumerique](https://github.com/suitenumerique) • [DINUM](https://www.numerique.gouv.fr/) • [42](https://42.fr/)
+🔗 **Ressources Rapides :** [Guide d'Onboarding](/01-onboarding) • [Architecture Globale](/02-la-suite/02-architecture) • [Catalogue Slasheurs](/03-slasheurs-france) • [Portail La Suite](https://lasuite.numerique.gouv.fr/) • [GitHub suitenumerique](https://github.com/suitenumerique) • [DINUM](https://www.numerique.gouv.fr/)
+
+---
+
+## ⚡ Le Projet Phare : Le Socle des Commandes Souveraines (`/slash`)
+
+Le projet **`/slash`** dote l'éditeur **La Suite Docs** et tout éditeur BlockNote d'un accès instantané aux **bases de données souveraines et registres publics vérifiés** au fil de la frappe.
+
+<Mermaid chart={`flowchart TD
+    subgraph Client["📝 Éditeur Collaboratif Docs (Navigateur)"]
+        Saisie["Saisie au clavier : /loi, /adresse, /entreprise..."] --> Popover["Palette Popover Accessible (cmdk + ARIA)"]
+        Popover --> Block["SourceBlock Tri-Format (Callout, Carte, Lien)"]
+    end
+
+    subgraph Backend["🐍 Proxy Sécurisé (django-lasuite-sources)"]
+        Proxy["Proxy Django DRF (Anti-SSRF PublicResolver & Timeout 3.5s)"]
+        Redis["⚡ Redis (Quotas Lua & Circuit Breaker HTTP 429)"]
+        Proxy <--> Redis
+    end
+
+    subgraph APIs["🏛️ Sources Officielles Souveraines (53 Connecteurs)"]
+        BAN["Base Adresse Nationale (Connecté en Direct)"]
+        LEGI["Légifrance / PISTE (DILA)"]
+        BOAMP["Marchés Publics BOAMP (DAE)"]
+        INSEE["INSEE Sirene & Stats"]
+        ALBERT["Albert IA Souveraine (Etalab)"]
+    end
+
+    Client --> Proxy
+    Proxy --> BAN & LEGI & BOAMP & INSEE & ALBERT
+
+`} />
+
+---
+
+## 🎮 Démonstrateur Interactif en Direct
+
+Testez ci-dessous l'insertion en direct de blocs connectés au fil de la frappe :
+
+<BlockNoteSlashPlayground />
 
 ---
 
@@ -51,41 +90,3 @@ Pour assurer une cohérence visuelle parfaite entre les applications de La Suite
     href="https://suitenumerique.github.io/cunningham/storybook/"
   />
 </FeatureGrid>
-
----
-
-## ⚡ Le Projet Phare : Le Socle des Commandes Souveraines (`/slash`)
-
-Le projet **`/slash`** dote l'éditeur **La Suite Docs** d'un accès direct aux **12 grandes bases de données souveraines de l'État français** au fil de la frappe.
-
-<Mermaid chart={`flowchart TD
-    subgraph Client["📝 Éditeur Collaboratif (Navigateur)"]
-        Saisie["Saisie au clavier : /loi, /marche, /entreprise..."] --> Popover["Palette de Recherche Popover (Cunningham + cmdk)"]
-        Popover --> Block["CustomBlock Universel (3 Formats DSFR : Callout, Carte, Lien)"]
-    end
-
-    subgraph Packages["📦 Packages Autonomes Découplés (DINUM)"]
-        Pkg_Py["🐍 django-lasuite-sources (PyPI)"]
-        Pkg_JS["📦 @suitenumerique/blocknote-sources (npm)"]
-        Pkg_SDK["🛠️ @suitenumerique/slash-sources-sdk (npm)"]
-    end
-
-    subgraph APIs["🏛️ Sources Officielles de l'État"]
-        PISTE["Légifrance / PISTE (DILA)"]
-        BOAMP["Marchés Publics BOAMP (DAE)"]
-        BAN["Base Adresse Nationale (IGN)"]
-        INSEE["INSEE Stats & RNE"]
-        Albert["Albert IA Souveraine (Etalab)"]
-    end
-
-    Client --> Pkg_JS
-    Pkg_JS --> Pkg_Py
-    Pkg_Py --> APIs
-
-`} />
-
----
-
-## 🎮 Bac à Sable Interactif en Direct
-
-<BlockNoteSlashPlayground />
