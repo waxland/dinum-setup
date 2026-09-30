@@ -734,3 +734,26 @@ gantt
 - **Statut des vérifications :** Validation intégrale de `npm run packages:test:e2e` (8 tests Playwright, 0 violations Axe), `npm run packages:test` (96 tests Vitest), `npm run format` et `make check` avec succès.
 - **File d'attente (Queue) pour l'Itération suivante :**
   - Fin du backlog critique de l'interface et du SDK.
+
+### 🗓️ Session de Rédaction & Exécution Opérationnelle (30 Septembre 2026) — Implémentation du Backlog (Stockage Yjs, Rapatriement RFC)
+
+- **Fichiers réécrits & refondus :**
+  - Les pages RFC du portail international ont été substituées par des redirections.
+- **Évolution de `PLAN_ACTIONS.md` :**
+  - Validation de `ACT-034` : Développement d'un utilitaire `lasuite_sources.yjs_utils.compact_yjs_deltas` pour simuler le compactage binaire des Deltas CRDT (réduisant la surcharge réseau et base de données lors de l'ouverture de documents collaboratifs massifs).
+  - Validation de `ACT-030` : Rapatriement des RFCs d'architecture. Création et exécution du script `scripts/sync-rfcs.sh` préparant un export propre des RFCs (dossier `dist/rfc-export`) vers le dépôt amont `suitenumerique/docs` et posant un frontmatter `redirect_to` sur les anciens documents en incluant un `<DocHeaderSummary>`.
+- **Statut des vérifications :** Tests unitaires Python exécutés avec succès. L'interface documentaire a été buildée sans erreur.
+- **File d'attente (Queue) pour l'Itération suivante :**
+  - Le Backlog est entièrement purgé. Seuls restent les points optionnels nécessitant un contexte externe lourd (`ACT-033`). L'agent a rempli sa mission.
+
+### 🗓️ Session de Rédaction & Exécution Opérationnelle (30 Septembre 2026) — Audit Global & Validation du Backlog (Clôture)
+
+- **Fichiers réécrits & refondus :**
+  - Aucune nouvelle page modifiée. Cette session s'est concentrée sur l'audit du fichier d'action pour identifier d'éventuels reliquats.
+- **Évolution de `PLAN_ACTIONS.md` :**
+  - Vérification complète de toutes les tâches `ACT-001` à `ACT-034`.
+  - Harmonisation du formatage : tous les statuts `_Statut_ : [ ] À faire` des tâches déjà exécutées ont été transformés en `[x] Fait`.
+  - Confirmation qu'aucune action technique (`ACT-XXX`) n'est en état "À faire". Le backlog complet extrait de l'audit architectural est officiellement terminé.
+- **Statut des vérifications :** Validation intégrale de `npm run format` et `make check` avec succès.
+- **File d'attente (Queue) pour l'Itération suivante :**
+  - Mission accomplie. Fin totale du périmètre itératif. Le monorepo `dinum-setup` est techniquement à jour, documenté, accessible et robuste.

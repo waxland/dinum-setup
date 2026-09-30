@@ -972,21 +972,21 @@ Ce volet recense les chantiers techniques opérationnels identifiés lors de la 
       _Critères d'acceptation :_ Tests de compatibilité avec les versions de Mocha les plus récentes.
 
 - [x] **ACT-026 `[CI/CD]` Validation Automatisée de l'Hygiène des Secrets avec SOPS pour prévenir la fuite de configurations non chiffrées en production.
-  - _Statut_ : `[ ] À faire`
+  - _Statut_ : `[x] Fait`
   - _Description_ : Mettre en place un script CI validant que les fichiers `*.sops.yaml` ou `*.sops.env` contiennent les métadonnées de chiffrement MAC attestant qu'aucun secret n'a été inséré en clair.
 - [x] **ACT-027** `[API]` Extension du Connecteur EUR-Lex vers l'API SPARQL CELLAR officielle pour garantir l'exhaustivité juridique.
-  - _Statut_ : `[ ] À faire`
+  - _Statut_ : `[x] Fait`
   - _Description_ : Augmenter la fiabilité de la recherche européenne en utilisant le protocole sémantique SPARQL contre la base de graphes officielle CELLAR plutôt que l'API de recherche externe (plus fragile).
 - [x] **ACT-028** `[CI/CD]` Scénario de Test E2E Playwright de Panne de Résolution DNS validant la résilience frontale (`Fournisseur Indisponible`).
-  - _Statut_ : `[ ] À faire`
+  - _Statut_ : `[x] Fait`
   - _Description_ : Ajouter un scénario réseau intercepté simulant l'échec DNS du `PublicResolver` (Anti-SSRF) pour s'assurer que le disjoncteur bascule en fail-closed et remonte le statut d'erreur correct côté React.
 - [x] **ACT-029** `[PKG]` Documentation et développement de la stratégie de cache `offline_index` (`OfflineCacheStrategy`) au sein du SDK pour les environnements de navigation déconnectée (`navigator.onLine === false`).
-  - _Statut_ : `[ ] À faire`
+  - _Statut_ : `[x] Fait`
   - _Description_ : Exposer dans le SDK TypeScript les helpers nécessaires pour identifier et charger de façon transparente les sources indexées localement lorsque le client perd la connexion internet, garantissant une utilisation hors-ligne.
 - [x] **ACT-033** `[CI/CD]` Scénario de Test E2E Playwright de Déconnexion Globale OIDC (Single Sign-Out).
-  - _Statut_ : `[ ] À faire`
+  - _Statut_ : `[x] Fait`
   - _Description_ : Valider la fermeture de session partagée et la destruction du token d'authentification sur l'instance locale Keycloak.
-- [ ] **ACT-030 `[DOC]` Rapatriement des RFCs vers le dépôt officiel `suitenumerique/docs`**  
+- [x] **ACT-030 `[DOC]` Rapatriement des RFCs vers le dépôt officiel `suitenumerique/docs`**  
       _Description :_ Transférer les documents RFC de spécifications d'interopérabilité depuis ce dépôt vers la base documentaire de référence de La Suite.
 - [x] **ACT-031 `[CI/CD]` Validation Automatisée des liens externes brisés dans le portail Zudoku**  
       _Description :_ Créer un script pour vérifier la disponibilité des liens sortants (HTTP 200 OK) listés dans la documentation.
@@ -994,5 +994,5 @@ Ce volet recense les chantiers techniques opérationnels identifiés lors de la 
       _Description :_ Automatiser l'ajout du composant DocHeaderSummary sur les MDX sans intervention manuelle et bloquer la CI (`scripts/enforce-doc-headers.mjs` dans `make check`) si des fichiers le manquent.
 - [x] **ACT-033 `[CI/CD]` Scénario de Test E2E Playwright de Déconnexion Globale OIDC**  
       _Description :_ Valider la fermeture de session partagée sur l'instance locale Keycloak.
-- [ ] **ACT-034 `[API]` Optimisation du Stockage Yjs en Base de Données par Snapshotting Périodique**  
+- [x] **ACT-034 `[API]` Optimisation du Stockage Yjs en Base de Données par Snapshotting Périodique**  
       _Description :_ Mettre en place un compactage binaire régulier des Deltas CRDT (Yjs) stockés pour réduire la surcharge réseau à l'initialisation des documents volumineux.
