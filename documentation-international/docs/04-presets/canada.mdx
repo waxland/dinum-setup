@@ -4,6 +4,16 @@ sidebar_label: "Canada"
 description: Official Canadian Federal connectors for Justice Laws Canada, Corporations Canada, LEGISinfo, StatCan, and Open Government Canada.
 ---
 
+<DocHeaderSummary
+  readingTime="4 min"
+  level="Intermediate"
+  roles={["Developers", "Architects"]}
+  prerequisites={["Slasher SDK"]}
+  status="Production Ready"
+  statusColor="success"
+  takeaway="Integrate official public registries into your application."
+/>
+
 Connect your BlockNote documents directly to Canadian federal registries and official open datasets:
 
 <FeatureGrid cols={3}>
@@ -48,3 +58,95 @@ Connect your BlockNote documents directly to Canadian federal registries and off
     icon="map-pin"
   />
 </FeatureGrid>
+
+---
+
+## 🏛️ Federation Architecture (Canada)
+
+The Canadian preset connects your local `django-lasuite-sources` proxy directly to the Canadian Government's open data initiatives, ensuring GDPR and PIPEDA compliance through direct backend-to-backend communication without third-party trackers.
+
+<Mermaid chart={`flowchart TD
+    subgraph Client["Canadian Public Administration (Browser)"]
+        Slash["Type /canlaw"] --> Popover["Slasher Search Popover"]
+        Popover --> Block["SlasherBlock (Callout Format)"]
+    end
+
+    subgraph Backend["django-lasuite-sources (Local Hub)"]
+        DjangoProxy["Proxy & DTO Normalization"]
+        RedisCache[("Redis Cache (SHA-256 / 24h)")]
+        ProviderRegistry["Provider Registry (JusticeLawsProvider)"]
+    end
+
+    subgraph CA_Sources["Government of Canada APIs"]
+        Justice["Justice Laws Canada API"]
+        StatCan["Statistics Canada (WDS API)"]
+    end
+
+    Popover -->|"1. search(query)"| DjangoProxy
+    DjangoProxy -->|2. Check Cache| RedisCache
+    RedisCache -.->|Miss| DjangoProxy
+    DjangoProxy --> ProviderRegistry
+    ProviderRegistry -->|"3. HTTP GET (Timeout 3.5s)"| Justice
+    Justice -.->|4. XML / JSON Response| DjangoProxy
+    DjangoProxy -.->|5. ExternalSourceEntity DTO| Popover
+
+`} />
+
+---
+
+## 💻 Provider Implementation (Django)
+
+Here is a reference implementation of the Canadian federal law connector (`JusticeLawsProvider`), mapping the Canadian Department of Justice's XML/JSON structure into the unified `SourceSearchResult` DTO, using the internal `self._fetch()` wrapper to ensure Anti-SSRF protection.
+
+```python
+from django.conf import settings
+from ..base import BaseSourceProvider, SourceSearchResult
+
+class JusticeLawsProvider(BaseSourceProvider):
+    provider_id = "canlaw"
+    source_type = "law"
+
+    # Justice Laws Canada Open Data Endpoint
+    API_URL = "https://laws-lois.justice.gc.ca/eng/XML/api/search"
+
+    def is_enabled(self) -> bool:
+        return getattr(settings, "ENABLE_CA_PROVIDERS", True)
+
+    def search(self, query: str, limit: int = 5) -> list[SourceSearchResult]:
+        headers = {"Accept": "application/json"}
+        params = {
+            "q": query,
+            "limit": limit
+        }
+
+        # _fetch() automatically routes through PublicResolver to block SSRF and enforce the 3.5s timeout.
+        resp = self._fetch("GET", self.API_URL, params=params, headers=headers)
+        resp.raise_for_status()
+        data = resp.json().get("results", [])
+
+        results: list[SourceSearchResult] = []
+        for item in data:
+            results.append({
+                "source_id": item.get("id", ""),
+                "source_type": "law",
+                "provider": "Justice Laws Canada",
+                "country": "ca",
+                "title": item.get("title", ""),
+                "subtitle": f"Act: {item.get('chapter', '')}",
+                "status": "In Force" if item.get("inForce") else "Repealed",
+                "status_badge_color": "success" if item.get("inForce") else "error",
+                "contentHtml": item.get("summaryHtml", ""),
+                "url": f"https://laws-lois.justice.gc.ca/eng/acts/{item.get('id', '')}/",
+            })
+        return results
+```
+
+---
+
+## 🧩 Display Formats
+
+When inserting a Canadian legal act via `/canlaw` or a company via `/corporation-ca`, Slasher dynamically adapts the output to 3 display formats:
+
+- 📢 **Callout**: Full legislative text extraction with an official border color.
+- 🗂️ **Card**: 3-column metadata grid displaying Business Number (BN9), incorporation date, and jurisdiction.
+- 🔗 **Inline**: A compact, clickable pill embedded in the text flow.

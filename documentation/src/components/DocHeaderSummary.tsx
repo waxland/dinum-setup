@@ -6,6 +6,7 @@ export interface DocHeaderSummaryProps {
   status?: string;
   statusColor?: "success" | "info" | "warning";
   takeaway?: string;
+  enRoute?: string;
 }
 
 export function DocHeaderSummary({
@@ -15,6 +16,7 @@ export function DocHeaderSummary({
   prerequisites = ["Docker", "Git"],
   status = "Production Ready",
   takeaway,
+  enRoute,
 }: DocHeaderSummaryProps) {
   return (
     <div className="not-prose my-5 p-4 bg-gray-50 dark:bg-gray-900 text-xs">
@@ -31,11 +33,22 @@ export function DocHeaderSummary({
           </span>
         </div>
 
-        {status && (
-          <span className="px-2 py-0.2 text-[10px] font-mono uppercase bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
-            {status}
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          {enRoute && (
+            <a
+              href={enRoute}
+              className="px-2 py-0.5 rounded text-[11px] font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors flex items-center gap-1"
+              title="Read in English"
+            >
+              <span>🇬🇧</span> EN
+            </a>
+          )}
+          {status && (
+            <span className="px-2 py-0.2 text-[10px] font-mono uppercase bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+              {status}
+            </span>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2.5">

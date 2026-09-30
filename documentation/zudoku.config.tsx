@@ -1,6 +1,7 @@
 import { defaultLanguages, type ZudokuConfig } from "zudoku";
 import {
   AlertPreview,
+  ApiSimulator,
   BadgePreview,
   BlockNoteSlashPlayground,
   ButtonPreview,
@@ -101,12 +102,13 @@ const config: ZudokuConfig = {
       TutorialCard,
       ScheduleDay,
       ScheduleItem,
-      ColorPalettePreview,
-      TypographySpecimen,
-      IconsCatalog,
       Kanban,
       LawSlashPreview,
       BlockNoteSlashPlayground,
+      ApiSimulator,
+      ColorPalettePreview,
+      TypographySpecimen,
+      IconsCatalog,
       ButtonPreview,
       BadgePreview,
       AlertPreview,
@@ -118,6 +120,10 @@ const config: ZudokuConfig = {
       PaginationStepperPreview,
       HeaderBreadcrumbPreview,
     },
+  },
+  apis: {
+    type: "file",
+    input: "../packages/django-lasuite-sources/docs/openapi.yaml",
   },
   docs: {
     files: "./docs/**/*.{md,mdx}",

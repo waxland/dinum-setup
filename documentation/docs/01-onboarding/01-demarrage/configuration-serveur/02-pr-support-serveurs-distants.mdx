@@ -105,13 +105,13 @@ La solution consiste à **rendre ces valeurs configurables par des variables d'e
 
 ## 📊 4. Matrice des Variables d'Environnement
 
-| Variable                 | Cible / Rôle                   | Valeur par défaut (Local)               | Exemple Serveur Distant                      | Appelant         |
-| :----------------------- | :----------------------------- | :-------------------------------------- | :------------------------------------------- | :--------------- |
-| `DOCS_PUBLIC_ORIGIN`     | URL publique du frontend Docs  | `http://localhost:3000`                 | `http://207.175.155.66:3000`                 | Navigateur       |
-| `API_ORIGIN`             | URL publique de l'API Docs     | `http://localhost:8071`                 | `http://207.175.155.66:8071`                 | Navigateur       |
-| `KEYCLOAK_PUBLIC_ORIGIN` | URL publique de Keycloak       | `http://localhost:8083`                 | `http://207.175.155.66:8083`                 | Navigateur       |
-| `COLLABORATION_WS_URL`   | WebSocket de collaboration Yjs | `ws://localhost:4444/collaboration/ws/` | `ws://207.175.155.66:4444/collaboration/ws/` | Navigateur       |
-| `OIDC_INTERNAL_ORIGIN`   | Endpoint OIDC inter-conteneurs | `http://nginx:8083`                     | `http://nginx:8083`                          | Conteneur Django |
+| Variable                 | Cible / Rôle                   | Valeur par défaut (Local)               | Exemple Serveur Distant                 | Appelant         |
+| :----------------------- | :----------------------------- | :-------------------------------------- | :-------------------------------------- | :--------------- |
+| `DOCS_PUBLIC_ORIGIN`     | URL publique du frontend Docs  | `http://localhost:3000`                 | `http://207.x.x.x:3000`                 | Navigateur       |
+| `API_ORIGIN`             | URL publique de l'API Docs     | `http://localhost:8071`                 | `http://207.x.x.x:8071`                 | Navigateur       |
+| `KEYCLOAK_PUBLIC_ORIGIN` | URL publique de Keycloak       | `http://localhost:8083`                 | `http://207.x.x.x:8083`                 | Navigateur       |
+| `COLLABORATION_WS_URL`   | WebSocket de collaboration Yjs | `ws://localhost:4444/collaboration/ws/` | `ws://207.x.x.x:4444/collaboration/ws/` | Navigateur       |
+| `OIDC_INTERNAL_ORIGIN`   | Endpoint OIDC inter-conteneurs | `http://nginx:8083`                     | `http://nginx:8083`                     | Conteneur Django |
 
 ---
 
@@ -241,3 +241,37 @@ This causes three main issues on remote machines:
 - [x] Documentation has been updated accordingly
 - [x] All existing automated tests continue to pass
 ```
+
+````
+This is the description of what the code block changes:
+<changeDescription>
+Add DocHeaderSummary to documentation/docs/01-onboarding/01-demarrage/configuration-serveur/02-pr-support-serveurs-distants.mdx
+</changeDescription>
+
+This is the code block that represents the suggested code change:
+```plaintext
+// ...existing code...
+---
+title: "PR : Support pour environnements serveurs (headless)"
+description: Analyse des évolutions nécessaires dans les workflows pour supporter le déploiement sur serveurs distants ou headless.
+---
+
+<DocHeaderSummary
+  readingTime="10 min"
+  level="Expert"
+  roles={["Architectes", "DevOps", "Mainteneurs Core"]}
+  prerequisites={["Architecture des workflows CI/CD"]}
+  status="RFC Proposed"
+  statusColor="info"
+  takeaway="Comprenez les défis et les solutions techniques proposées pour adapter nos workflows de développement et de déploiement aux environnements serveurs (headless) et distants."
+/>
+
+### 1. Contexte et Synthèse de la Pull Request
+
+Cette Pull Request (PR) vise à combler les lacunes rencontrées par les équipes d’infrastructure lorsqu’elles déploient le monorepo sur des environnements d’exécution non interactifs (_headless_) ou distants. L'adoption croissante de La Suite Numérique par diverses entités nécessite une procédure de _bootstrap_ agnostique, ne présumant pas d'un accès à un environnement de bureau ou à des navigateurs locaux.
+// ...existing code...
+```
+<userPrompt>
+Provide the fully rewritten file, incorporating the suggested code change. You must produce the complete file.
+</userPrompt>
+````

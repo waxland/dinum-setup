@@ -4,6 +4,17 @@ sidebar_label: "Europe"
 description: Pan-European connectors for EUR-Lex EU Law and TED Tenders Electronic Daily eProcurement.
 ---
 
+<DocHeaderSummary
+  readingTime="4 min"
+  level="Intermediate"
+  roles={["Developers", "Architects"]}
+  prerequisites={["Slasher SDK"]}
+  status="Production Ready"
+  statusColor="success"
+  frRoute="/fr/03-slasheurs-france/01-loi"
+  takeaway="Integrate official public registries into your application."
+/>
+
 Connect your BlockNote documents directly to pan-European institutional data repositories:
 
 <FeatureGrid cols={3}>
@@ -53,3 +64,97 @@ Connect your BlockNote documents directly to pan-European institutional data rep
     icon="gavel"
   />
 </FeatureGrid>
+
+---
+
+## 🏛️ Federation Architecture (EUR-Lex)
+
+The European Union preset utilizes a federated retrieval architecture, specifically targeting the **CELLAR** repository through SPARQL endpoints or the EUR-Lex REST API.
+
+<Mermaid chart={`flowchart TD
+    subgraph Client["European Public Administration (Browser)"]
+        Slash["Type /eurlex"] --> Popover["Slasher Search Popover"]
+        Popover --> Block["SlasherBlock (Callout Format)"]
+    end
+
+    subgraph Backend["django-lasuite-sources (Local Hub)"]
+        DjangoProxy["Proxy & DTO Normalization"]
+        RedisCache[("Redis Cache (SHA-256 / 24h)")]
+        ProviderRegistry["Provider Registry (EurlexProvider)"]
+    end
+
+    subgraph EU_Sources["European Union Open Data"]
+        EURLex["EUR-Lex API (CELLAR / SPARQL)"]
+        TED["TED API (eProcurement)"]
+    end
+
+    Popover -->|"1. search(query)"| DjangoProxy
+    DjangoProxy -->|2. Check Cache| RedisCache
+    RedisCache -.->|Miss| DjangoProxy
+    DjangoProxy --> ProviderRegistry
+    ProviderRegistry -->|"3. HTTP GET (Timeout 3.5s)"| EURLex
+    EURLex -.->|4. XML / JSON Response| DjangoProxy
+    DjangoProxy -.->|5. ExternalSourceEntity DTO| Popover
+
+`} />
+
+---
+
+## 💻 Provider Implementation (Django)
+
+The EU connectors are implemented by extending the `BaseSourceProvider` in Python. Here is the reference implementation for the `EurlexSourceProvider` resolving EU treaties and regulations, using the internal `self._fetch()` wrapper to ensure Anti-SSRF protection:
+
+```python
+from django.conf import settings
+from ..base import BaseSourceProvider, SourceSearchResult
+
+class EurlexSourceProvider(BaseSourceProvider):
+    provider_id = "eurlex"
+    source_type = "law"
+
+    # EU Publications Office CELLAR Endpoint
+    API_URL = "https://eur-lex.europa.eu/api/external/search"
+
+    def is_enabled(self) -> bool:
+        return getattr(settings, "ENABLE_EU_PROVIDERS", True)
+
+    def search(self, query: str, limit: int = 5) -> list[SourceSearchResult]:
+        headers = {"Accept": "application/json"}
+        # EUR-Lex specific query formulation
+        params = {
+            "q": query,
+            "limit": limit,
+            "language": "en"
+        }
+
+        # _fetch() uses the PublicResolver (Anti-SSRF) and strictly limits timeout to 3.5s
+        resp = self._fetch("GET", self.API_URL, params=params, headers=headers)
+        resp.raise_for_status()
+        data = resp.json().get("results", [])
+
+        results: list[SourceSearchResult] = []
+        for item in data:
+            results.append({
+                "source_id": item.get("celex", ""),
+                "source_type": "law",
+                "provider": "EUR-Lex (EU)",
+                "country": "eu",
+                "title": item.get("title", ""),
+                "subtitle": f"CELEX: {item.get('celex', '')}",
+                "status": "In Force" if item.get("inForce") else "Repealed",
+                "status_badge_color": "success" if item.get("inForce") else "error",
+                "contentHtml": item.get("summaryHtml", ""),
+                "url": f"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:{item.get('celex', '')}",
+            })
+        return results
+```
+
+---
+
+## 🧩 Display Formats
+
+When an EU legal act is inserted via `/eurlex`, it supports the 3 standard Slasher formats:
+
+- 📢 **Callout**: Ideal for quoting specific GDPR articles or AI Act recitals in full text.
+- 🗂️ **Card**: Displays the CELEX number, adoption date, and official journal reference in a 3-column grid.
+- 🔗 **Inline**: A compact CELEX badge embedded directly within a paragraph.

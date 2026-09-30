@@ -343,6 +343,8 @@ check:
 	@npm run typecheck
 	@$(PYTHON) -m ruff check packages/django-lasuite-sources
 	@$(PYTHON) -m ruff format --check packages/django-lasuite-sources
+	@node scripts/verify-local-links.mjs
+	@node scripts/verify-docs-routes.mjs
 	@npm run packages:test
 	@cd packages/django-lasuite-sources && PYTHONPATH=. $(PYTHON) -m pytest
 	@npm run packages:build

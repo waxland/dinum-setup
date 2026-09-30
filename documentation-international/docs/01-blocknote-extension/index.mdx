@@ -4,9 +4,39 @@ sidebar_label: "Extension"
 description: Installation, schema integration, and quick start guide for BlockNote.js.
 ---
 
+<DocHeaderSummary
+  readingTime="3 min"
+  level="Intermediate"
+  roles={["Frontend", "React Developers"]}
+  prerequisites={["BlockNote.js", "React 18 / 19"]}
+  status="Production Ready"
+  statusColor="success"
+  takeaway="Integrate the Slasher extension into your BlockNote.js editor in 3 steps."
+/>
+
 Install the package in your React project:
 
-<PackageInstallTabs packages="@slasher/blocknote @blocknote/core @blocknote/react" />
+<PackageInstallTabs package="@suitenumerique/blocknote-sources @blocknote/core @blocknote/react" />
+
+---
+
+## 🏗️ Architecture & Component Tree
+
+The Slasher extension operates by injecting a custom block definition into the BlockNote schema. It heavily relies on React Context to distribute internationalization and the HTTP client instances.
+
+```mermaid
+flowchart TD
+    subgraph App["Your React Application"]
+        Provider["SourceSearchProvider (Context)"]
+        subgraph Editor["Editor Component"]
+            BN["<BlockNoteView />"]
+            Block["SourceBlock (createReactBlockSpec)"]
+        end
+    end
+
+    Provider -->|Provides Locale & Client| Block
+    BN --> Block
+```
 
 ---
 
@@ -16,7 +46,7 @@ Install the package in your React project:
 import { BlockNoteSchema, defaultBlockSpecs } from "@blocknote/core";
 import { BlockNoteView } from "@blocknote/mantine";
 import { useCreateBlockNote } from "@blocknote/react";
-import { SourceBlock } from "@slasher/blocknote";
+import { SourceBlock } from "@suitenumerique/blocknote-sources";
 
 const schema = BlockNoteSchema.create({
   blockSpecs: {
@@ -27,9 +57,17 @@ const schema = BlockNoteSchema.create({
 
 export function Editor() {
   const editor = useCreateBlockNote({ schema });
-  return <BlockNoteView editor={editor} />;
+
+  // Wrap your editor in the SourceSearchProvider to enable live queries
+  return (
+    <SourceSearchProvider client={mySearchClient} locale="en">
+      <BlockNoteView editor={editor} />
+    </SourceSearchProvider>
+  );
 }
 ```
+
+> **Note:** The `SourceSearchProvider` is mandatory if you want to bypass the demo mocks and perform real HTTP requests against the backend proxy.
 
 ---
 

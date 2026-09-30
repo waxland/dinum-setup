@@ -110,19 +110,19 @@ L'écosystème de La Suite repose sur une architecture distribuée de micro-appl
 
 ### 🔐 Sécurité & Identité
 
-- **[Authentification & SSO (OIDC / Keycloak)](/02-architecture/01-securite-et-identite/auth)** : Flux d'authentification partagé et configuration locale.
-- **[Fédération d'Identité & ProConnect](/02-architecture/01-securite-et-identite/federation-identite-proconnect)** : Flux OIDC, scopes claims et mire de connexion.
-- **[Gestion des Secrets (SOPS & age)](/02-architecture/01-securite-et-identite/secrets-sops)** : Chiffrement GitOps des secrets pour la CI et le déploiement.
+- **[Authentification & SSO (OIDC / Keycloak)](/02-la-suite/02-architecture/01-securite-et-identite/auth)** : Flux d'authentification partagé et configuration locale.
+- **[Fédération d'Identité & ProConnect](/02-la-suite/02-architecture/01-securite-et-identite/federation-identite-proconnect)** : Flux OIDC, scopes claims et mire de connexion.
+- **[Gestion des Secrets (SOPS & age)](/02-la-suite/02-architecture/01-securite-et-identite/secrets-sops)** : Chiffrement GitOps des secrets pour la CI et le déploiement.
 
 ### 💾 Données & Temps Réel
 
-- **[Collaboration Temps Réel & CRDT (Yjs)](/02-architecture/02-donnees-et-temps-reel/temps-reel-et-crdt)** : Modèle de synchronisation sans conflit, WebSockets et persistance.
-- **[Stockage d'Objets & Flux S3](/02-architecture/02-donnees-et-temps-reel/flux-stockage-s3)** : Téléversements multipart présignés directs et typologie des buckets.
-- **[Sauvegardes & Plan de Continuité (PRA / PCA)](/02-architecture/02-donnees-et-temps-reel/sauvegardes-et-restauration)** : Archivage continu WAL-G et PITR.
+- **[Collaboration Temps Réel & CRDT (Yjs)](/02-la-suite/02-architecture/02-donnees-et-temps-reel/temps-reel-et-crdt)** : Modèle de synchronisation sans conflit, WebSockets et persistance.
+- **[Stockage d'Objets & Flux S3](/02-la-suite/02-architecture/02-donnees-et-temps-reel/flux-stockage-s3)** : Téléversements multipart présignés directs et typologie des buckets.
+- **[Sauvegardes & Plan de Continuité (PRA / PCA)](/02-la-suite/02-architecture/02-donnees-et-temps-reel/sauvegardes-et-restauration)** : Archivage continu WAL-G et PITR.
 
 ### 🚀 DevOps & Déploiement
 
-- **[Variables d'Environnement & Secrets](/02-architecture/03-devops-et-deploiement/env)** : Gestion et arborescence des fichiers `.env`.
-- **[Hot-Reload & Environnement de Dev](/02-architecture/03-devops-et-deploiement/hot-reload)** : Stratégie de développement à chaud conteneur vs machine hôte.
-- **[Intégration Continue (CI/CD GitHub Actions)](/02-architecture/03-devops-et-deploiement/cicd-github-actions)** : Pipelines de test automatisés et matrices multi-arch.
-- **[Déploiement en Production & Cloud Souverain](/02-architecture/03-devops-et-deploiement/deploiement-production)** : Infrastructure Kubernetes, Helm et conformité SecNumCloud.
+- **[Variables d'Environnement & Secrets](/02-la-suite/02-architecture/03-devops-et-deploiement/env)** : Gestion et arborescence des fichiers `.env`.
+- **[Hot-Reload & Environnement de Dev](/02-la-suite/02-architecture/03-devops-et-deploiement/hot-reload)** : Stratégie de développement à chaud conteneur vs machine hôte.
+- **[Intégration Continue (CI/CD GitHub Actions)](/02-la-suite/02-architecture/03-devops-et-deploiement/cicd-github-actions)** : Pipelines de test automatisés et matrices multi-arch.
+- **[Déploiement en Production & Cloud Souverain](/02-la-suite/02-architecture/03-devops-et-deploiement/deploiement-production)** : Infrastructure Kubernetes, Helm et conformité SecNumCloud.

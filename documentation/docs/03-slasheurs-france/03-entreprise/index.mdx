@@ -10,6 +10,16 @@ Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le
 
 ---
 
+<DocHeaderSummary
+  readingTime="4 min"
+  level="Intermédiaire"
+  roles={["Acheteurs Publics", "Instructeurs", "Backend Django"]}
+  prerequisites={["API Entreprise / Pappers", "Jetons d'Accès"]}
+  status="Production Ready"
+  statusColor="success"
+  takeaway="Consultation en direct des SIREN/SIRET, dirigeants et bilans des entreprises avec garantie de fraîcheur des données."
+/>
+
 ## 🎯 Organisation du Dossier `/entreprise`
 
 <FeatureGrid cols={3}>
@@ -17,21 +27,21 @@ Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le
     icon="🏢"
     title="Pôle Métier & Cas d'Usage"
     description="Immatriculation légale (SIREN, SIRET, NAF, RNE/INPI), vérification des signataires et marchés publics."
-    href="/08-slash/03-entreprise/01-metier-entreprise/01-fondations-et-cadre"
+    href="/03-slasheurs-france/03-entreprise/01-metier-entreprise/01-fondations-et-cadre"
     badge="Métier"
   />
   <FeatureCard
     icon="📡"
     title="Pôle API & Veille Technique"
     description="Benchmark comparatif Pappers vs API Entreprise (DINUM) vs RNE (INPI), mode Mock et contrats de données."
-    href="/08-slash/03-entreprise/02-api-entreprise/01-benchmark-des-apis"
+    href="/03-slasheurs-france/03-entreprise/02-api-entreprise/01-benchmark-des-apis"
     badge="API"
   />
   <FeatureCard
     icon="💻"
     title="Pôle Implémentation Socle"
     description="CompanySourceProvider Django, cache Redis 24h, alertes procédures collectives et rendu DSFR."
-    href="/08-slash/03-entreprise/03-implementation-entreprise/01-provider-django"
+    href="/03-slasheurs-france/03-entreprise/03-implementation-entreprise/01-provider-django"
     badge="Code & Socle"
   />
 </FeatureGrid>
@@ -78,7 +88,7 @@ Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le
 
 ## 🧩 Formats d'Affichage Disponibles
 
-Conformément au **[Socle Technique Unifié](/08-slash/00-socle-technique)** :
+Conformément au **[Socle Technique Unifié](/03-slasheurs-france/00-socle-technique)** :
 
 - 📢 **Format Callout** : Fiche complète avec synthèse légale, extrait Kbis et alerte de solvabilité.
 - 🗂️ **Format Carte** : Encart avec grille à 3 colonnes : SIREN • Activité NAF • Dirigeant légal.

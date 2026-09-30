@@ -4,6 +4,16 @@ sidebar_label: "ADR-0003 Proxy"
 description: Architecture du proxy backend Django, sécurisation anti-SSRF et résilience avec Circuit Breaker.
 ---
 
+<DocHeaderSummary
+  readingTime="3 min"
+  level="Expert"
+  roles={["Architectes", "Backend Django", "SecOps"]}
+  prerequisites={["Django", "Sécurité Web (SSRF)"]}
+  status="DPG Standard"
+  statusColor="success"
+  takeaway="Décision architecturale majeure imposant un proxy Django entre le client et les APIs publiques pour contrer les failles SSRF et gérer la résilience (Cache, Timeout)."
+/>
+
 ## Statut
 
 ✅ **Accepté**

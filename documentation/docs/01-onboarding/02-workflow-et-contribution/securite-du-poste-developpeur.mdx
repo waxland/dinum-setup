@@ -1,19 +1,40 @@
 ---
-title: "Sécurité Poste"
-description: Bonnes pratiques de sécurité, signature cryptographique des commits (SSH / GPG), hygiène des secrets et protection des données.
+title: "Sécurité Poste & DCO"
+sidebar_label: "Sécurité Poste"
+description: Bonnes pratiques de sécurité, signature cryptographique des commits (SSH / GPG), Developer Certificate of Origin (DCO) et hygiène des secrets.
 ---
+
+<DocHeaderSummary
+  readingTime="4 min"
+  level="Débutant à Avancé"
+  roles={["Développeurs", "DevOps", "Architectes SecOps"]}
+  prerequisites={["Git CLI", "Accès Terminal"]}
+  status="DPG Standard"
+  statusColor="success"
+  takeaway="Protégez la chaîne de distribution de La Suite Numérique en chiffrant vos secrets, en activant les hooks Gitleaks et en signant vos commits cryptographiquement (DCO)."
+/>
 
 En tant que contributeur aux projets de l'État et de La Suite numérique, la sécurisation de votre poste de travail et de votre chaîne d'approvisionnement logicielle (_Supply Chain Security_) est obligatoire.
 
 ---
 
-## 🔑 1. Signature Cryptographique des Commits Git (SSH / GPG)
+## 🔑 1. Signature Cryptographique et DCO (Developer Certificate of Origin)
 
-Tous les commits fusionnés sur les dépôts officiels doivent être cryptographiquement signés afin de garantir l'authenticité de l'auteur et prévenir toute usurpation d'identité.
+Afin d'assurer la traçabilité juridique et l'authenticité des contributions open source, tous les commits doivent être **signés cryptographiquement** et inclure un **DCO**.
 
-### Option recommandée : Signature avec votre clé SSH
+### Le Developer Certificate of Origin (DCO)
 
-Git prend en charge nativement la signature via vos clés SSH existantes (sans nécessiter GPG) :
+Chaque commit doit comporter la mention `Signed-off-by` attestant que vous avez le droit de soumettre ce code. Utilisez l'option `-s` lors de vos commits :
+
+```bash
+git commit -s -m "feat(api): add eurlex legal connectors"
+```
+
+> 💡 _Astuce :_ Les vérifications CI/CD bloqueront systématiquement toute Pull Request dont les commits omettent cette signature DCO.
+
+### Signature avec votre clé SSH
+
+Git prend en charge nativement la signature via vos clés SSH existantes (sans nécessiter GPG), prouvant cryptographiquement que vous êtes bien l'auteur du commit :
 
 ```bash
 git config --global gpg.format ssh

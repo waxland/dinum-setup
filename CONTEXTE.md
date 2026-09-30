@@ -46,6 +46,8 @@ graph TD
 
 Le système assure l'interopérabilité entre le frontend TypeScript et le backend Django :
 
+> **Note sur le contrat d'interface (DTO) :** Les fournisseurs convertissent les données amont selon un schéma strict, normalisé en `snake_case` côté backend et `camelCase` (`ExternalSourceEntity`) côté TypeScript. Les champs métier obligatoires incluent l'identifiant (`sourceId`), la catégorie (`entityType`), le fournisseur d'origine (`provider`), le pays de la donnée (`country`), le rendu BlockNote (`displayMode`) et la fraîcheur (`freshness`).
+
 ```mermaid
 sequenceDiagram
     autonumber
@@ -98,22 +100,23 @@ sequenceDiagram
 ## 🛠️ 3.1 Exigences Runtime & Gestionnaires de Paquets
 
 - **Node.js :** `>= 22.23.2` (LTS Iron requise pour les tests natifs et SSR).
-- **Gestionnaire de paquets JS :** `npm >= 10.9.0` (le dépôt est un monorepo orchestré avec npm workspaces ; pnpm/yarn ne sont pas utilisés pour les commandes de build racine).
+- **Gestionnaire de paquets JS :** `npm >= 10.9.0` (le dépôt est un monorepo orchestré avec npm workspaces ; `pnpm`/`yarn` ne sont pas utilisés pour les commandes de build racine).
 - **Python :** `>= 3.12` (compatible 3.12, 3.13, 3.14 avec `uv` ou `venv`).
 - **Make & Docker / OrbStack :** Cibles unifiées `make check`, `make bootstrap`, `make dev`.
+- **Go :** Optionnel (`>= 1.22.x`), requis uniquement pour les développements avancés de microservices spécifiques à La Suite, mais non-requis pour le socle documentaire `/slash`.
 
 ---
 
 ## 🔒 3.2 Standards de Contribution & Hygiène Git / SSH
 
 - **Identité Git & Clés SSH :** Clés Ed25519 requises (`ssh-keygen -t ed25519`), permissions `chmod 600` / `700`.
-- **Signature des Commits :** Signature SSH ou GPG recommandée pour les dépôts d'État (`commit.gpgsign = true`, `gpg.format = ssh`).
+- **Signature des Commits & DCO :** Signature SSH ou GPG recommandée pour les dépôts d'État (`commit.gpgsign = true`, `gpg.format = ssh`). Usage du Developer Certificate of Origin requis (`git commit -s`). Les messages doivent obligatoirement respecter la convention _Conventional Commits_ (validé en intégration continue via `commitlint`).
 - **Configuration IDE VS Code :** Extensions unifiées (Ruff, ESLint, Prettier, SQLTools). Formats à la sauvegarde (`formatOnSave`, `organizeImports`).
 - **Règles d'Or d'Ingénierie DINUM :**
   - **TypeScript :** 0 `any`, 0 cast abusif (`as ...`), typage exhaustif des DTOs et des états UI.
   - **Python :** Formatage et linting via Ruff (88 caractères), 6 blocs d'imports stricts, zéro $N+1$ query, transactions atomiques.
   - **Accessibilité :** RGAA v4.1 AA / WCAG 2.1 AA, 0 violation Axe-Core, 100% navigable au clavier.
-  - **Sécurité :** Zéro secret versionné, anti-SSRF `PublicResolver`, transport borné à 3.5s.
+  - **Sécurité :** Zéro secret versionné (contrôle automatisé via `gitleaks`), anti-SSRF `PublicResolver`, transport borné à 3.5s.
 
 ---
 

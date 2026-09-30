@@ -6,6 +6,36 @@ description: "Comprehensive software quality standards, React/TypeScript guideli
 
 This document formalizes the **software engineering standards and quality guidelines** established by the **French Interministerial Digital Directorate (DINUM)**, **beta.gouv.fr**, and **La Suite Numérique**.
 
+<DocHeaderSummary
+  readingTime="6 min"
+  level="All Developers"
+  roles={["Frontend", "Backend", "Maintainers", "Security Auditors"]}
+  prerequisites={["TypeScript 5+", "Python 3.12+", "Ruff", "ESLint"]}
+  status="DPG Standard"
+  statusColor="success"
+  takeaway="Enforce strict typing (0 any), RGAA v4.1 AA accessibility (0 Axe errors), defensive security (Anti-SSRF), and Python architectural best practices."
+/>
+
+<Mermaid chart={`flowchart LR
+    subgraph Standards["🏛️ Engineering Standards"]
+        TS["Strict TypeScript (0 any / 0 cast)"]
+        Py["Python / Django (Ruff 88, 6 Import Groups)"]
+        A11y["RGAA v4.1 AA / WAI-ARIA (0 Axe Errors)"]
+        Sec["Defensive Security (Anti-SSRF & Timeouts)"]
+    end
+
+    subgraph Automation["⚡ Automated Quality Gate"]
+        MakeCheck["make check (16/16 Steps)"]
+    end
+
+    subgraph Output["📦 Verified Artifacts"]
+        NPM["npm Packages (@suitenumerique/*)"]
+        PyPI["PyPI Package (django-lasuite-sources)"]
+        SSR["Zudoku Portals (0 SSR Errors)"]
+    end
+
+    Standards --> MakeCheck --> Output`} />
+
 ---
 
 ## 📚 1. Official Canonical References & Handbooks
@@ -89,11 +119,12 @@ When technical guidelines appear to conflict across repositories, apply this str
 - Derive state during render instead of creating synchronized `useEffect` chains.
 - Explicitly handle all 6 UI states: _Initial, Loading, Success, Empty, Recoverable Error, Disabled_.
 
-### RGAA v4.1 AA Accessibility
+### RGAA v4.1 AA Accessibility & Axe-Core
 
 - Native semantic HTML elements (`<button>`, `<a>`, `<nav>`, `<main>`, `<dialog>`) before ARIA.
-- 100% keyboard navigable with visible focus indicators.
+- 100% keyboard navigable with visible focus indicators and explicit focus traps for modals.
 - Text contrast ratio $\ge 4.5:1$ and UI components contrast $\ge 3:1$.
+- **Validation**: All user-facing components must pass automated Playwright E2E tests executing `@axe-core/playwright` with **0 Axe-Core violations**.
 
 ---
 
@@ -120,6 +151,11 @@ When technical guidelines appear to conflict across repositories, apply this str
 
 ## 🔗 5. Canonical URLs & Resources
 
+- **Automation & CI:**
+  - Review the monorepo's [GitHub CI Workflow](https://github.com/suitenumerique/dinum-setup/blob/main/.github/workflows/ci-packages.yml).
+  - Execute the full verification suite locally via `make check`.
+- **Digital Public Goods (DPG):**
+  - Read more about the 9 criteria of the [Digital Public Goods Alliance](https://digitalpublicgoods.net/).
 - **beta.gouv.fr Standards:**
   - [Uniform Source Code](https://github.com/betagouv/standards/blob/main/qualit%C3%A9-logicielle/le-code-source-est-uniforme.md)
   - [Unit and E2E Tests](https://github.com/betagouv/standards/blob/main/qualit%C3%A9-logicielle/le-code-est-instrumente-par-des-tests-unitaires-et-des-tests-e2e.md)

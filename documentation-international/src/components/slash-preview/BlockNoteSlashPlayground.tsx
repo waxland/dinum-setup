@@ -145,6 +145,20 @@ const BlockNoteSlashEditorInner: React.FC = () => {
         },
       },
       {
+        type: "sourceBlock",
+        props: {
+          ...(MOCK_SOURCES.cadastre?.[0] || {}),
+          displayMode: "card",
+        },
+      },
+      {
+        type: "sourceBlock",
+        props: {
+          ...(MOCK_SOURCES.procurement?.[0] || {}),
+          displayMode: "callout",
+        },
+      },
+      {
         type: "paragraph",
         content: [
           {

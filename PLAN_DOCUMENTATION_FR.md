@@ -15,6 +15,7 @@
 | `documentation/docs/01-onboarding/01-demarrage/environnement-machine-hote.mdx` | 🟡 À enrichir | Itération 3 | Préciser `npm` comme gestionnaire officiel du monorepo (pas `pnpm`), ajouter l'outil `make check`, expliciter Linux & macOS.                                               |
 | `documentation/docs/01-onboarding/01-demarrage/git-ssh.mdx`                    |  🟢 Conforme  | Itération 4 | Ajouter la signature des commits via clé SSH (`commit.gpgsign`), insérer `<DocHeaderSummary>` et lier au Guide du Premier Commit.                                          |
 | `documentation/docs/01-onboarding/01-demarrage/vscode.mdx`                     | 🟡 À enrichir | Itération 5 | Actualiser les commandes de linting (`make check`, `npm run lint`, `ruff check`), clarifier l'exclusion de Biome/Tailwind dans les packages, insérer `<DocHeaderSummary>`. |
+| `documentation/docs/01-onboarding/01-demarrage/urls-et-identifiants.mdx`       |  🟢 Conforme  | Itération 6 | Ajouter le diagramme Mermaid de topologie réseau locale, intégrer le port du démonstrateur Slasher Vite (:5173) et `<DocHeaderSummary>`.                                   |
 
 ---
 
@@ -225,3 +226,21 @@
   - Guide Environnement Hôte : `/01-onboarding/01-demarrage/environnement-machine-hote`
   - Qualité & Architecture La Suite : `/01-onboarding/02-workflow-et-contribution/qualite-et-architecture-la-suite`
   - Guide du Premier Commit : `/01-onboarding/02-workflow-et-contribution/guide-du-premier-commit`
+
+---
+
+### 📄 `documentation/docs/01-onboarding/01-demarrage/urls-et-identifiants.mdx`
+
+- **Statut d'Audit :** 🟢 **Conforme**
+- **Rôle Architectural :** Répertoire d'accès et d'orchestration local, listant l'ensemble des points d'entrée applicatifs, ports d'écoute, consoles d'administration, instances PostgreSQL et stockage S3 MinIO.
+- **Diagnostic Ligne par Ligne :**
+  - `L.1-5` : Frontmatter et titre clarifiés (`title: "URLs & Identifiants"`).
+  - `L.7-18` : En-tête synthétique `<DocHeaderSummary>` présent, orientant sur les prérequis Docker/Make.
+  - `L.22-38` : Diagramme Mermaid de topologie des ports et services locaux (Browsers $\rightarrow$ Backends $\rightarrow$ Infra).
+  - `L.40-55` : Tableau des applications web avec mention explicite du Démonstrateur Slasher (port `:5173`).
+  - `L.57-110` : Inventaire exhaustif des backends Django, Keycloak, instances PostgreSQL (Docs sur `:15432`, Keycloak sur `:5433`), et MinIO/Redis.
+- **Recommandations de Contenu :**
+  1. _Composant Interactif Futur_ : Envisager à terme un composant React `<LocalTopologyMap />` pour afficher dynamiquement l'état des ports.
+- **Ressources & Liens Croisés Recommandés :**
+  - Configuration VS Code & SQLTools : `/01-onboarding/01-demarrage/vscode`
+  - Environnement Machine Hôte : `/01-onboarding/01-demarrage/environnement-machine-hote`

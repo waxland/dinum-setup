@@ -4,25 +4,63 @@ sidebar_label: "Architecture"
 description: Complete breakdown of the Editor Client, Provider SDK, and Backend Proxy tiers.
 ---
 
-Slasher is structured in 3 decoupled, independently deployable tiers:
+Slasher is structured in 3 decoupled, independently deployable tiers. This strict separation of concerns allows us to isolate the UI rendering engine (Tier 1) from the data fetching definitions (Tier 2) and the network security protections (Tier 3), ensuring maximum resilience and flexibility.
 
 <Mermaid chart={`flowchart TD
-    subgraph Tier1["🖥️ Tier 1: Editor Client Layer (@slasher/blocknote)"]
-        CustomBlock["createReactBlockSpec({ type: 'sourceBlock' })"]
-        Popover["<SourceSearchPopover /> (cmdk + ARIA combobox)"]
-        Formats["3 Formats: Callout / Card / Inline Mention"]
+    subgraph Tier1["🖥️ Tier 1: Editor Layer (@suitenumerique/blocknote-sources)"]
+        CustomBlock["SourceBlock (createReactBlockSpec)"]
+        Popover["SourceSearchPopover (cmdk + ARIA)"]
+        Formats["3 Formats: Callout / Card / Inline"]
     end
 
-    subgraph Tier2["🛠️ Tier 2: Universal SDK Layer (@slasher/sdk)"]
-        Define["defineSourceProvider() Helper (Frozen immutable schemas)"]
-        DTOs["Strict DTO Contracts: ExternalSourceEntity, ExternalSourceSuggestResult"]
+    subgraph Tier2["🛠️ Tier 2: Universal SDK (@suitenumerique/slash-sources-sdk)"]
+        Define["defineSourceProvider() (Object.freeze)"]
+        Contracts["TypeScript DTOs: ExternalSourceEntity, SuggestResult"]
     end
 
-    subgraph Tier3["🛡️ Tier 3: Defensive Backend Layer (django-slasher-core)"]
-        Proxy["REST Proxy Endpoints (/suggest/, /search/, /detail/)"]
-        Cache["Deterministic Redis Cache (SHA-256 / 24h TTL)"]
-        Security["Anti-SSRF Private IP Filtering & 3.5s Circuit Breaker"]
+    subgraph Tier3["🛡️ Tier 3: Defensive Backend (django-lasuite-sources)"]
+        Proxy["DRF REST Endpoints (/suggest/, /search/, /detail/)"]
+        Security["PublicResolver (Anti-SSRF & 3.5s Timeout)"]
+        Quotas["Redis Lua (Token Bucket & Circuit Breaker HTTP 429)"]
     end
 
     Tier1 --> Tier2
     Tier2 --> Tier3`} />
+
+---
+
+## 🖥️ Tier 1: Editor Client Layer (`@suitenumerique/blocknote-sources`)
+
+This tier manages all user interactions and rendering within the BlockNote editor.
+
+- **Headless & UI-Agnostic Core:** Uses `createReactBlockSpec` without hard dependencies on Mantine or Tailwind, ensuring 0-Mantine isolation for the publishable library.
+- **WAI-ARIA Accessibility:** The `<SourceSearchPopover />` uses a `cmdk` combobox pattern for full keyboard navigation, focus trapping, and screen-reader compatibility.
+- **Switchable Layouts:** Offers three responsive formats per connected block: institutional Callout, 3-column metadata Card, and compact Inline Mention.
+- **Robust Error Handling:** Intercepts clipboard operations to gracefully handle malformed data.
+
+## 🛠️ Tier 2: Universal SDK Layer (`@suitenumerique/slash-sources-sdk`)
+
+A lightweight (`< 5 kB`), zero-dependency SDK to define and interact with source providers.
+
+- **Immutable Definitions:** Providers are defined using `defineSourceProvider()`, which freezes the object (`Object.freeze`) to prevent runtime mutations.
+- **Strict Contracts:** Enforces standardized DTOs like `ExternalSourceEntity` and `SuggestResult`, guaranteeing typing safety (`0 any`, `0 cast`).
+
+## 🛡️ Tier 3: Defensive Backend Proxy (`django-lasuite-sources`)
+
+Acts as an impenetrable shield between the client and sovereign or external public registries.
+
+- **Anti-SSRF Protection:** Uses a `PublicResolver` to filter and block private IP resolution, mitigating SSRF attacks.
+- **Strict Network Bounds:** Every upstream request is capped by a strict 3.5s timeout.
+- **Quotas & Circuit Breaker:** Implements an atomic Token Bucket algorithm via Redis Lua scripts and an HTTP 429 Circuit Breaker (`Retry-After`) to protect external APIs from abusive traffic.
+
+---
+
+## 🔐 Security & Threat Mitigation Summary
+
+| Threat / Risk                    | Mitigation Tier    | Defense Mechanism                                                          |
+| -------------------------------- | ------------------ | -------------------------------------------------------------------------- |
+| **SSRF Attacks**                 | Tier 3 (Backend)   | `PublicResolver` blocks internal IP queries (10.0.0.0/8, 127.0.0.1, etc.). |
+| **API Rate-Limit Bypass**        | Tier 3 (Backend)   | Redis Lua token bucket enforces atomic quotas per user and per API.        |
+| **DDoS / Upstream Hanging**      | Tier 3 (Backend)   | Hard `timeout=3.5` on all outbound requests with Circuit Breaker pattern.  |
+| **Runtime Data Mutation**        | Tier 2 (SDK)       | Configurations locked via `Object.freeze`; strict generic typing.          |
+| **Focus Traps / Screen Readers** | Tier 1 (Editor UI) | WAI-ARIA `role="combobox"`, `aria-activedescendant`, and focus management. |

@@ -3,9 +3,35 @@ title: "Git SSH"
 description: Tutoriel complet pour configurer Git, générer et installer sa clé SSH sur GitHub et gérer les permissions.
 ---
 
-Ce tutoriel détaille pas à pas comment configurer votre environnement Git local, générer une clé SSH sécurisée, l'enregistrer sur votre compte GitHub et résoudre les problèmes fréquents de permissions.
+Ce tutoriel détaille pas à pas comment configurer votre environnement Git local, générer une clé SSH sécurisée, l'enregistrer sur votre compte GitHub, configurer la signature des commits et résoudre les problèmes fréquents de permissions.
+
+<DocHeaderSummary
+  readingTime="4 min"
+  level="Débutant à Intermédiaire"
+  roles={["Développeurs", "Contributeurs"]}
+  prerequisites={["Terminal (Bash/Zsh)", "Compte GitHub"]}
+  status="DPG Standard"
+  statusColor="success"
+  takeaway="Sécurisez vos échanges avec GitHub via SSH Ed25519 et signez vos commits pour garantir l'intégrité de vos contributions."
+/>
 
 🔗 **Références officielles :** [Documentation GitHub SSH](https://docs.github.com/fr/authentication/connecting-to-github-with-ssh) • [Recommandations de sécurité ANSSI](https://cyber.gouv.fr/) • [Documentation officielle Git](https://git-scm.com/doc)
+
+<Mermaid chart={`sequenceDiagram
+    autonumber
+    actor Dev as 💻 Développeur
+    participant FS as 📁 ~/.ssh/
+    participant GH as 🐙 GitHub
+    participant Git as 🔧 Git Engine
+
+    Dev->>FS: ssh-keygen -t ed25519 (chmod 600/700)
+    Dev->>GH: Dépose la clé publique (id_ed25519.pub)
+    Dev->>Git: git config --global user.signingkey ~/.ssh/id_ed25519.pub
+    Dev->>Git: git config --global commit.gpgsign true
+    Dev->>GH: git push (Authentification SSH + Commit Signé Vérifié)
+    GH-->>Dev: Badge "Verified" sur les commits GitHub
+
+`} />
 
 ---
 
@@ -140,7 +166,26 @@ chmod 600 ~/.ssh/config
 
 ---
 
-## 6. Tester la Connexion SSH
+## 6. Configurer la Signature des Commits (Recommandé)
+
+Les dépôts publics et organisationnels de l'État (DINUM / La Suite) valorisent les commits signés afin de garantir l'authenticité des contributions. Vous pouvez configurer Git pour qu'il utilise votre clé SSH pour signer tous vos commits de façon automatique :
+
+```bash
+# Indiquer à Git d'utiliser le format SSH pour la signature
+git config --global gpg.format ssh
+
+# Déclarer la clé publique à utiliser pour la signature
+git config --global user.signingkey ~/.ssh/id_ed25519.pub
+
+# Forcer la signature de tous les futurs commits
+git config --global commit.gpgsign true
+```
+
+Une fois cette configuration appliquée et votre clé publique enregistrée sur GitHub (type _Authentication Key_ ou _Signing Key_), vos contributions arboreront fièrement un badge **"Verified"** sur GitHub.
+
+---
+
+## 7. Tester la Connexion SSH
 
 Pour tester que votre clé est correctement reconnue par GitHub :
 
@@ -158,7 +203,7 @@ Hi pseudo-github! You've successfully authenticated, but GitHub does not provide
 
 ---
 
-## 7. Résolution des Erreurs Fréquentes (Troubleshooting)
+## 8. Résolution des Erreurs Fréquentes (Troubleshooting)
 
 ### 🔴 `WARNING: UNPROTECTED PRIVATE KEY FILE! Permissions 0440 are too open`
 
@@ -184,13 +229,9 @@ Hi pseudo-github! You've successfully authenticated, but GitHub does not provide
   1. **Option 1 :** Sur GitHub, allez dans les **Settings** du dépôt cible > **Collaborators** et invitez `userX` avec les permissions d'écriture (**Write** ou **Admin**).
   2. **Option 2 :** Si vous devez utiliser un autre compte GitHub, générez une clé dédiée pour ce compte et ajoutez-la dans les clés SSH de ce second compte sur [https://github.com/settings/ssh/new](https://github.com/settings/ssh/new).
 
-### 🔴 `git@github.com: Permission denied (publickey)`
+---
 
-- **Causes possibles :**
-  - La clé publique n'a pas été ajoutée sur GitHub.
-  - Le client SSH ne présente pas la bonne clé (vérifiez `ssh-add -l` ou `~/.ssh/config`).
-  - L'agent SSH n'est pas actif :
-    ```bash
-    eval "$(ssh-agent -s)"
-    ssh-add ~/.ssh/id_ed25519
-    ```
+## 🚀 Prochaine Étape
+
+Maintenant que votre identité Git est sécurisée et que vos commits seront vérifiés, vous êtes prêt pour votre première contribution.
+👉 **Poursuivez avec le [Guide du Premier Commit](/01-onboarding/02-workflow-et-contribution/guide-du-premier-commit)**.

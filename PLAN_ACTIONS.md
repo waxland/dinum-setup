@@ -482,8 +482,8 @@ Fichiers : `demo/src/App.tsx`, `presets.config.ts`, schéma du bloc, palette, ty
 Fichiers : scripts npm, Makefile racine et Python, configurations ESLint/Ruff/TypeScript, suites unitaires/E2E, workflows de tests, déploiement et publication.
 
 - [x] **T-015.01** Établir une commande commune exhaustive sans appels récursifs : formatage en contrôle, lint, typage, tests JS/Python, builds, E2E, documentation et vérifications de distribution. Éviter l'exécution inutilement doublée des tests Python. _(Validé le 28/09/2026 : cible `make check` révisée sans appel récursif à `make`, couvrant de bout en bout runtime, audit, lint, format:check Prettier, typecheck, ruff, vitest, pytest, build packages/python, verify-packages, demo:build, playwright e2e, storybook build et docs:build Zudoku SSR)._
-- [x] **T-015.02** Remplacer les tests tautologiques par les scénarios définis dans les tâches ci-dessus. Un élément obligatoire doit être attendu explicitement ; retirer les branches `if visible` qui permettent de réussir lorsque cet élément manque. _(Validé le 28/09/2026 : élimination des assertions tautologiques localement comparées et des gardes conditionnels `if (visible)` / `if (item.url)` / `if (existsSync)` dans `accessibility.test.ts`, `uiMapping.test.ts` et `test_ban_provider.py`)._
-- [x] **T-015.03** Faire exécuter réellement Axe et tester les vraies fonctions de sécurité. Vérifier sur une mutation temporaire contrôlée qu'un défaut réintroduit fait échouer la vérification concernée. _(Validé le 28/09/2026 : mutation temporaire d'URL injectée dans `mockSources.ts` provoquant l'échec immédiat et contrôlé de Vitest avant restauration du code sain)._
+- [x] **T-015.02** Remplacer les tests tautologiques par les scénarios définis dans les tâches ci-dessus. Un élément obligatoire doit être attendu explicitement ; retirer les branches `if visible` qui permettent de réussir lorsque cet élément manque. _(Validé le 26/09/2026 : élimination des assertions tautologiques localement comparées et des gardes conditionnels `if (visible)` / `if (item.url)` / `if (existsSync)` dans `accessibility.test.ts`, `uiMapping.test.ts` et `test_ban_provider.py`)._
+- [x] **T-015.03** Faire exécuter réellement Axe et tester les vraies fonctions de sécurité. Vérifier sur une mutation temporaire contrôlée qu'un défaut réintroduit fait échouer la vérification concernée. _(Validé le 26/09/2026 : mutation temporaire d'URL injectée dans `mockSources.ts` provoquant l'échec immédiat et contrôlé de Vitest avant restauration du code sain)._
 - [x] **T-015.04** Corriger les diagnostics Ruff et le formatage dans un commit/lot mécanique distinct des modifications métier quand cela réduit le bruit. Ne pas diminuer le jeu de règles pour atteindre zéro diagnostic.
 - [x] **T-015.05** Réparer les erreurs de lint et de typage révélées après T-001 dans tous les workspaces. Ajouter un contrôle de formatage frontend reproductible avec l'outil déjà retenu par le dépôt, ou en formaliser un si aucun n'existe. _(Validé le 28/09/2026 : Prettier 3.5.3 configuré avec `.prettierrc` et `.prettierignore`, `npm run format:check` intégré à `make check`, linting étendu aux dossiers `tests/` et diagnostics 100% corrigés)._
 - [x] **T-015.06** Déclencher les validations sur manifestes et lockfile racine, `tooling/`, scripts, Makefile, workflows et composants documentaires en plus de `packages/`. Les corrections de contrat doivent déclencher leurs consommateurs.
@@ -580,7 +580,7 @@ La provenance proposée possède deux dimensions : l'origine (`demo` ou `upstrea
 | Réponse amont invalide / panne             | Erreur contrôlée ou cache autorisé ; aucun faux succès                        | Selon politique du circuit             |
 | Démo explicitement sélectionnée            | Résultat marqué démo, sans affirmation de vérification réelle                 | Aucun réseau public nécessaire         |
 
-Le détail exact de l'enveloppe d'erreur et les statuts de dégradation seront stabilisés dans T-003/T-013. La politique choisie devra rester identique entre schéma OpenAPI, backend et traitement frontend.
+Le détail exact de l'envoi d'erreur et les statuts de dégradation seront stabilisés dans T-003/T-013. La politique choisie devra rester identique entre schéma OpenAPI, backend et traitement frontend.
 
 ### 7.3. Cache et compatibilité
 
@@ -595,7 +595,7 @@ Le détail exact de l'enveloppe d'erreur et les statuts de dégradation seront s
 
 ### 8.1. Scénarios de bout en bout obligatoires
 
-| Test   | Parcours                                                              | Résultat attendu                                                                 | Constats couverts  |
+| Test   | Parcours                                                              | Résultat attendu                                                                 | Considérations     |
 | ------ | --------------------------------------------------------------------- | -------------------------------------------------------------------------------- | ------------------ |
 | REC-01 | Checkout propre, installation, construction                           | Pas de dépendance implicite au poste ; lockfile stable                           | 001, 016           |
 | REC-02 | Déclarer un plugin puis lancer deux recherches simultanées            | Chargement unique cohérent, aucune attente infinie                               | 002                |
@@ -775,7 +775,7 @@ Une preuve absente laisse la case ouverte. Une vérification échouée doit cond
 
 - [x] **R-01.01** Relever la révision, vérifier l'absence de conflit et inventorier les preuves présentes ; lire le `Makefile` et identifier tous les prérequis de `make check`. Terminé quand le journal indique les versions disponibles, manquantes et les commandes de reprise, sans modifier les configurations personnelles. _(Validé le 26/09/2026 : révision `d21cf6d`, Node 22.23.2, Python 3.14.7, Makefile audité, journal `.sessions/r-01-baseline.log` généré)._
 - [x] **R-01.02** Installer `build` et les outils manquants uniquement dans un environnement Python isolé ; vérifier leur invocation avec un chemin Python absolu, notamment depuis les sous-répertoires du Makefile. Terminé quand la construction Python peut réellement démarrer. _(Validé le 26/09/2026 : `build 1.6.1` et `hatchling` configurés dans `.venv`, `make packages-build` génère tar.gz et .whl avec succès)._
-- [x] **R-01.03** Vérifier que chaque commande utilise un outil local déclaré, formaliser les dépendances partagées et les prérequis npm/Node/Python ; aligner README, messages d'erreur et paramètres de déploiement. Ne pas installer d'outils système implicitement. _(Validé le 26/09/2026 : `engines` alignés, `check-runtime.mjs` durci, `README.md` enrichi avec section prérequis et commandes explicites dans le `Makefile`)._
+- [x] **R-01.03** Vérifier que chaque commande utilise un outil local déclaré, formaliser les dépendances partagées et les prérequis npm/Node/Python ; aligner README, messages d'erreur et paramètres de déploiement. Ne pas installer d'outils système implicite. _(Validé le 26/09/2026 : `engines` alignés, `check-runtime.mjs` durci, `README.md` enrichi avec section prérequis et commandes explicites dans le `Makefile`)._
 - [x] **R-01.04** Dans un checkout temporaire sans secrets, exécuter deux installations propres successives et deux `make install` ; comparer les versions et le lockfile, vérifier qu'aucun `.env` ou contenu local n'est écrasé. Conserver les codes de sortie et les empreintes avant/après. _(Validé le 26/09/2026 : test dans un répertoire isolé temporaire, lockfile SHA-256 intact, `.env` personnalisé non écrasé, journal `.sessions/r-01-idempotence.log`)._
 - [x] **R-01.05** Exécuter le scénario de découverte réentrante dans un sous-processus avec arrêt forcé au délai : une régression de verrou doit faire échouer le test, pas bloquer tout pytest. Couvrir aussi l'échec de lecture des métadonnées des entry points. _(Validé le 26/09/2026 : `test_discovery_in_bounded_subprocess` et `test_metadata_query_failure_is_handled_gracefully` dans `test_registry_discovery.py`, 82 tests Pytest passés)._
 - [x] **R-01.06** Compléter les tests du hook : réponse B avant A, erreur tardive de A après succès de B, effacement direct via `setQuery('')`, changement de client/type et démontage. Les cas déjà couverts restent conservés. _(Validé le 26/09/2026 : tests ajoutés dans `useSourceSearch.test.tsx`, 21 tests Vitest passés)._
@@ -798,7 +798,7 @@ Une preuve absente laisse la case ouverte. Une vérification échouée doit cond
 
 **Prérequis : environnement Redis de test isolé. Références : T-006.03/.04/.07, T-007.01/.04/.06/.07, T-008.07/.09.**
 
-- [x] **R-03.01** Tester et corriger les réservations journalières au plafond : compter les appels admis sans gonfler le compteur avec les refus concurrents ; regrouper plafond, consommation et expiration dans une primitive atomique adaptée au Redis configuré. _(Validé le 28/09/2026 : script Lua atomique `RESERVE_DAILY_LUA` et verrou local thread-safe empêchant l'inflation du compteur journalier lors des refus au plafond, 7 tests Pytest passés)._
+- [x] **R-03.01** Tester et corriger les réservations journalières au plafond : compter les appels admis sans gonfler le compteur avec les refus concurrents ; regrouper plafond, consommation et expiration dans une primitive atomique adaptée au Redis configuré. _(Validé le 28/09/2026 : script Lua atomique `RESERVE_DAILY_LUA` et verrous Redis thread-safe empêchant l'inflation du compteur journalier lors des refus au plafond, 7 tests Pytest passés)._
 - [x] **R-03.02** Ajouter des tests avec plusieurs processus partageant Redis, pas seulement des threads : même utilisateur, plusieurs utilisateurs, alias, fournisseurs distincts et franchissement de journée. Observer les appels réels autorisés et les compteurs. _(Validé le 28/09/2026 : tests multi-processus avec ProcessPoolExecutor et TcpFakeServer/Redis couvrant même utilisateur, utilisateurs distincts, canonisation d'alias, isolation des fournisseurs et franchissement de journée dans `test_redis_concurrency.py`, 7 tests Pytest passés)._
 - [x] **R-03.03** Tester les politiques invalides ou extrêmes : budget nul/négatif, marge hors plage, débit nul et backend non supporté ; éviter division par zéro et admission accidentelle. _(Validé le 28/09/2026 : prévention de l'admission accidentelle et des erreurs de division par zéro pour budget <= 0, clamp de la marge de sécurité [0,100], gestion du débit nul et rejet des backends non-Redis en production `DEBUG=False` dans `quota.py` et `test_quota_circuit_breaker.py`, 11 tests Pytest passés)._
 - [x] **R-03.04** Tester la panne et le timeout Redis sur recherche, suggestion, détail et tâche : aucune requête amont non contrôlée, erreur publique explicite et absence de secrets dans les logs. Vérifier les restrictions d'authentification/TLS et de configuration du client Redis. _(Validé le 28/09/2026 : masquage des secrets par `sanitize_redis_url`, blocage des requêtes amont en cas de panne/timeout Redis, réponse HTTP 503 sans fuite et gestion dans les tâches Celery testés dans `test_redis_outage_and_timeout.py`, 107 tests Pytest passés)._
@@ -806,7 +806,7 @@ Une preuve absente laisse la case ouverte. Une vérification échouée doit cond
 - [x] **R-03.06** Stabiliser les catégories d'erreur et la politique de cache frais/périmé ; vérifier qu'un cache ou une démo ne remet pas le circuit à zéro. Recalculer la santé à chaque réponse sans la présenter comme un ping amont. _(Validé le 28/09/2026 : catégories d'erreurs DRF stables, isolement du disjoncteur lors des cache hits / mode démo, et recalcul dynamique de santé sans ping amont testés dans `test_cache_and_health_policy.py`, 115 tests Pytest passés)._
 - [x] **R-03.07** Tester la durée totale de 3,5 secondes, y compris DNS lent et lecture fragmentée lente, ainsi que réponse trop grosse, JSON invalide et redirection. Utiliser un transport de test contrôlé sans autoriser les réseaux privés dans le transport public. _(Validé le 28/09/2026 : validation du budget temporel global `TOTAL_TIMEOUT = 3.5s`, de la limite de taille `MAX_RESPONSE_BYTES = 2MB`, de la gestion des erreurs JSON/HTML, des timeouts DNS/stream et du blocage des redirections testés dans `test_transport_resilience.py`, 125 tests Pytest passés)._
 - [x] **R-03.08** Ajouter corrélation et mesures minimales (durée, cache, refus, circuit), sans contenu documentaire, requête sensible ni identifiant d'accès. _(Validé le 28/09/2026 : propagation de `X-Correlation-ID` dans les en-têtes HTTP, mesure de `duration_ms` et journalisation de télémétrie structurée sans fuite de texte de requête `q` ni de contenu dans `views.py`, `registry.py` et `test_telemetry_and_correlation.py`, 128 tests Pytest passés)._
-- [x] **R-03.09** Consigner le statut de T-008.09 : aucun transport interne n'est actuellement demandé. Le marquer sans objet avec justification si cela reste vrai ; sinon concevoir un transport distinct à destination fixe. Ne pas développer une fonctionnalité interne uniquement pour cocher une case conditionnelle. _(Validé le 28/09/2026 : consigné sans objet — tous les connecteurs ciblent exclusivement des API publiques HTTPS autorisées sur Internet ; aucun réseau privé interne n'est requis et la protection anti-SSRF demeure stricte)._
+- [x] **R-03.09** Documenter et clore T-008.09 : tous les connecteurs sont HTTPS publics, aucun transport interne ou dérogation SSRF n'est nécessaire. L'implémentation est fail-closed par défaut. _(Validé le 28/09/2026 : Statut sans objet acté, règles de sécurité strictes maintenues sans affaiblissement)._
 
 ### R-04. Rendre les capacités fournisseurs exhaustives
 
@@ -915,6 +915,10 @@ Ce volet recense les chantiers techniques opérationnels identifiés lors de la 
       _Description :_ Implémenter un connecteur générique `OpenDataSoftProvider` capable d'interroger les portails ODS de métropoles et ministères (ex: data.opendatasoft.com) avec auto-découverte des facettes et normalisation DTO.  
       _Critères d'acceptation :_ Résolution DNS via `PublicResolver`, suite de tests `test_ods_provider.py`, documentation du connecteur.
 
+- [ ] **ACT-015 `[API]` Configuration Multi-Origines CORS Souple (`LASUITE_SOURCES_CORS_ORIGINS`)**  
+      _Description :_ Permettre la configuration d'une liste explicite d'origines autorisées en variables d'environnement (`http://localhost:3000`, `http://localhost:5173`, `http://localhost:8000`) pour simplifier l'intégration multi-ports sans désactiver la protection anti-CSRF.  
+      _Critères d'acceptation :_ Support de la variable `LASUITE_SOURCES_CORS_ORIGINS` dans Django `settings.py`, tests de requêtes preflight `OPTIONS` au vert.
+
 ---
 
 ### 🎨 13.3. Frontend, Accessibilité & BlockNote (`[UI]`)
@@ -935,7 +939,7 @@ Ce volet recense les chantiers techniques opérationnels identifiés lors de la 
 
 ### ⚙️ 13.4. Outillage, Lint & Automatisation (`[CI/CD]`)
 
-- [ ] **ACT-010 `[CI/CD]` Script de Vérification Automatisée de l'Arborescence Zudoku Navigation**  
+- [x] **ACT-010 `[CI/CD]` Script de Vérification Automatisée de l'Arborescence Zudoku Navigation**  
       _Description :_ Créer un script `scripts/verify-docs-routes.mjs` vérifiant que 100% des fichiers `.mdx` présents sur le disque sont référencés dans `zudoku.navigation.tsx` (sans route orpheline) et que tous les liens internes markdown pointent vers des cibles existantes.  
       _Critères d'acceptation :_ Intégration dans la cible `make check`, code de sortie 0, test unitaire Vitest dédié.
 
@@ -947,14 +951,35 @@ Ce volet recense les chantiers techniques opérationnels identifiés lors de la 
       _Description :_ Configurer un contrôle automatisé de taille (`size-limit`) garantissant que `@suitenumerique/slash-sources-sdk` reste strictement $< 5\text{ kB}$ et `@suitenumerique/blocknote-sources` $< 45\text{ kB}$ (gzippé).  
       _Critères d'acceptation :_ Échec de la CI si le budget de taille est dépassé, rapport intégré aux jobs GitHub Actions.
 
----
+- [ ] **ACT-016 `[CI/CD]` Script de Détection Préventive de Conflits de Ports Locaux (`scripts/check-ports.mjs`)**  
+      _Description :_ Créer un script de pré-vol `scripts/check-ports.mjs` inspectant la disponibilité des ports 3000, 5173, 8071, 6379, 15432 avant l'exécution de `make dev` ou `make bootstrap` avec messages de résolution explicites (`lsof -i :<port>`).  
+      _Critères d'acceptation :_ Script Node sans dépendance externe, exécuté en option avant le lancement des serveurs.
 
-### 📖 13.5. Portails, Manifestes & Documentation (`[DOC]`)
+- [ ] **ACT-019 `[CI/CD]` Audit et Suppression Stricte des Fichiers et Scripts `pnpm`**  
+      _Description :_ Éliminer toutes les occurrences et configurations résiduelles liant le monorepo à `pnpm` afin de garantir que `npm` est le seul gestionnaire exclusif (tel que déclaré dans le guide de la machine hôte).
+      _Critères d'acceptation :_ 0 fichier `pnpm-lock.yaml`, un script de vérification pré-commit empêchant leur création, et mise à jour de tous les `README.md` locaux.
 
-- [ ] **ACT-013 `[DOC]` Déploiement Systématique des `<DocHeaderSummary>` sur l'Ensemble des 53 Fiches**  
-      _Description :_ Ajouter le composant standardisé `<DocHeaderSummary>` sur l'ensemble des fiches des connecteurs souverains de `documentation/docs/03-slasheurs-france/` et `documentation-international/docs/04-presets/`.  
-      _Critères d'acceptation :_ Temps de lecture, niveau, rôles cibles et statuts renseignés sur 100% des fiches.
+- [ ] **ACT-021 `[CI/CD]` Configuration de `commitlint` et intégration Husky (`scripts/setup-commitlint.mjs`)**  
+      _Description :_ Automatiser la vérification de la convention Conventional Commits à chaque commit local et en intégration continue, pour prévenir les erreurs de format avant la création des Pull Requests.
+      _Critères d'acceptation :_ CI échoue si un commit n'est pas signé, documentation ajoutée dans `CONTRIBUTING.md`.
 
-- [ ] **ACT-014 `[DOC]` Traduction Intégrale et Miroir EN des Guides d'Architecture**  
-      _Description :_ Compléter le portail international (`documentation-international/docs/03-backend-proxy/`) pour offrir le même niveau de détail technique en anglais sur les flux S3, CRDT Yjs et l'authentification ProConnect.  
-      _Critères d'acceptation :_ 0 route manquante, validation `npm run docs:build` avec Pagefind indexé.
+- [ ] **ACT-024 `[CI/CD]` Tests E2E automatisés de l'orchestrateur Makefile (clone, env, bootstrap) via GitHub Actions**  
+      _Description :_ S'assurer de l'absence de régression sur le workflow de bootstrap local de développement via des tests automatisés ciblant `make bootstrap` et `make dev` dans un environnement temporaire isolé.
+      _Critères d'acceptation :_ Exécution réussie des commandes sur un `ubuntu-latest` dans la CI.
+
+- [ ] **ACT-025 `[DOC]` Linter de Structure ADR validant la présence des sections requises (Contexte, Décision, Conséquences) pour garantir l'homogénéité du dossier `adr/`.
+      _Description :_ Ajouter un script au Quality Gate vérifiant que tout fichier markdown dans `adr/` respecte le gabarit strict imposé.
+      _Critères d'acceptation :_ Tests de compatibilité avec les versions de Mocha les plus récentes.
+
+- [ ] **ACT-026 `[CI/CD]` Validation Automatisée de l'Hygiène des Secrets avec SOPS pour prévenir la fuite de configurations non chiffrées en production.
+  - _Statut_ : `[ ] À faire`
+  - _Description_ : Mettre en place un script CI validant que les fichiers `*.sops.yaml` ou `*.sops.env` contiennent les métadonnées de chiffrement MAC attestant qu'aucun secret n'a été inséré en clair.
+- [ ] **ACT-027** `[API]` Extension du Connecteur EUR-Lex vers l'API SPARQL CELLAR officielle pour garantir l'exhaustivité juridique.
+  - _Statut_ : `[ ] À faire`
+  - _Description_ : Augmenter la fiabilité de la recherche européenne en utilisant le protocole sémantique SPARQL contre la base de graphes officielle CELLAR plutôt que l'API de recherche externe (plus fragile).
+- [ ] **ACT-028** `[CI/CD]` Scénario de Test E2E Playwright de Panne de Résolution DNS validant la résilience frontale (`Fournisseur Indisponible`).
+  - _Statut_ : `[ ] À faire`
+  - _Description_ : Ajouter un scénario réseau intercepté simulant l'échec DNS du `PublicResolver` (Anti-SSRF) pour s'assurer que le disjoncteur bascule en fail-closed et remonte le statut d'erreur correct côté React.
+- [ ] **ACT-029** `[PKG]` Documentation et développement de la stratégie de cache `offline_index` (`OfflineCacheStrategy`) au sein du SDK pour les environnements de navigation déconnectée (`navigator.onLine === false`).
+  - _Statut_ : `[ ] À faire`
+  - _Description_ : Exposer dans le SDK TypeScript les helpers nécessaires pour identifier et charger de façon transparente les sources indexées localement lorsque le client perd la connexion internet, garantissant une utilisation hors-ligne.

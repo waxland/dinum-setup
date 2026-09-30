@@ -4,19 +4,55 @@ sidebar_label: "Overview"
 description: Architectural overview of Slasher, the open source connected data block standard for rich text editors.
 ---
 
-**Slasher** standardizes how rich text documents interact with verified remote public records, legal databases, corporate registers, and AI knowledge bases.
+**Slasher** standardizes how rich text documents interact with verified remote public records, legal databases, corporate registers, and AI knowledge bases. It aims to solve the problem of "dead text" by connecting live, verifiable public data directly into collaborative editors.
+
+<DocHeaderSummary
+  readingTime="5 min"
+  level="Beginner to Intermediate"
+  roles={["Architects", "Full-Stack", "Open Source Maintainers"]}
+  prerequisites={["React 18 / 19", "BlockNote.js"]}
+  status="DPG Standard"
+  statusColor="success"
+  takeaway="Discover the 3-Tier architecture and engineering standards behind Slasher, moving from dead copy-paste to verifiable, live connected blocks."
+/>
 
 <Mermaid
-  chart={`flowchart LR
-    Slash["⌨️ User types /slash command"] --> Popover["🔍 Accessible Floating Popover"]
-    Popover --> SDK["🛠️ Slasher Provider SDK (< 5 kB)"]
-    SDK --> Proxy["🛡️ Defensive Backend Proxy (Anti-SSRF)"]
-    Proxy --> Block["🧩 3-Format Switchable SlasherBlock"]`}
+  chart={`sequenceDiagram
+      autonumber
+      actor User as 👤 Document Author
+      participant Editor as 📝 BlockNote Editor
+      participant Popover as 🔍 cmdk Popover (ARIA)
+      participant SDK as 🛠️ Slasher SDK
+      participant Proxy as 🐍 Defensive Proxy
+      participant Source as 🏛️ Public Registry (EU/Gov)
+
+      User->>Editor: Type /slash command
+      Editor->>Popover: Mount floating accessible palette
+      User->>Popover: Type search query
+      Popover->>SDK: execute search()
+      SDK->>Proxy: Forward query with Anti-SSRF check
+      Proxy->>Source: Query upstream API (Timeout 3.5s)
+      Source-->>Proxy: Return JSON record
+      Proxy-->>SDK: Normalized DTO
+      SDK-->>Popover: Typed entities
+      User->>Popover: Select result (Enter)
+      Popover->>Editor: Insert SlasherBlock (Callout / Card / Inline)
+
+`}
 />
 
 ---
 
-## 🏛️ Why Slasher?
+## 🏛️ Why Slasher? The Paradigm Shift
+
+### Problem vs. Solution
+
+| Feature             | Dead Copy-Paste (Traditional)         | Verified Connected Blocks (Slasher)                                |
+| ------------------- | ------------------------------------- | ------------------------------------------------------------------ |
+| **Provenance**      | Anonymous text, hard to verify.       | Embedded verified origin, fetched from official registries.        |
+| **Integrity**       | Prone to silent alteration.           | Immutable block payload with timestamped `verifiedAt`.             |
+| **Export Fidelity** | Plain text only, breaks formatting.   | Native vector exporters (PDF, DOCX, ODT) keeping original styling. |
+| **Accessibility**   | Often inaccessible to screen readers. | Full WAI-ARIA compliance, cmdk autocomplete, focus trapping.       |
 
 <FeatureGrid cols={3}>
   <FeatureCard
@@ -33,5 +69,36 @@ description: Architectural overview of Slasher, the open source connected data b
     title="Multi-Country Presets"
     description="Ready-to-use sovereign connectors for France, Germany, Netherlands, Spain, and the European Union."
     icon="globe"
+  />
+</FeatureGrid>
+
+---
+
+## 🧭 In This Section
+
+<FeatureGrid cols={2}>
+  <FeatureCard
+    title="3-Tier Architecture"
+    description="Deep dive into the decoupled tiers: Editor UI, Universal SDK, and Defensive Backend Proxy."
+    href="/00-overview/architecture-3-tier"
+    icon="layers"
+  />
+  <FeatureCard
+    title="Engineering Standards"
+    description="Explore the strict typing, Python/Django quality rules, and RGAA v4.1 AA accessibility guidelines."
+    href="/00-overview/engineering-standards"
+    icon="shield"
+  />
+  <FeatureCard
+    title="International Vision"
+    description="Slasher as a global Digital Public Good (DPG) and its European interoperability model."
+    href="/00-overview/international-vision"
+    icon="globe"
+  />
+  <FeatureCard
+    title="TOML Frontmatter"
+    description="Data contract and metadata conventions across the documentation portal."
+    href="/00-overview/05-toml-frontmatter"
+    icon="file-text"
   />
 </FeatureGrid>

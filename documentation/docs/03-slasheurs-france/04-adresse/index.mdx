@@ -10,6 +10,16 @@ Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le
 
 ---
 
+<DocHeaderSummary
+  readingTime="3 min"
+  level="Débutant"
+  roles={["Agents Territoriaux", "Développeurs Frontend", "Architectes"]}
+  prerequisites={["Aucun", "Base Adresse Nationale (BAN)"]}
+  status="Production Ready"
+  statusColor="success"
+  takeaway="Autocomplétion et géocodage en temps réel d'adresses certifiées (Loi 3DS) via l'API officielle de la BAN (IGN)."
+/>
+
 ## 🎯 Organisation du Dossier `/adresse`
 
 <FeatureGrid cols={3}>
@@ -17,21 +27,21 @@ Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le
     icon="📍"
     title="Pôle Métier & Cas d'Usage"
     description="Certification communale obligatoire (Loi 3DS), opposabilité juridique des arrêtés et notifications sans NPAI."
-    href="/08-slash/04-adresse/01-metier-adresse/01-fondations-et-cadre"
+    href="/03-slasheurs-france/04-adresse/01-metier-adresse/01-fondations-et-cadre"
     badge="Métier"
   />
   <FeatureCard
     icon="📡"
     title="Pôle API & Veille Technique"
     description="Benchmark API Adresse (Etalab/IGN) vs moteur Addok local vs Géoplateforme, GeoJSON et gratuité ouverte."
-    href="/08-slash/04-adresse/02-api-adresse/01-benchmark-des-apis"
+    href="/03-slasheurs-france/04-adresse/02-api-adresse/01-benchmark-des-apis"
     badge="API"
   />
   <FeatureCard
     icon="💻"
     title="Pôle Implémentation Socle"
     description="AddressSourceProvider Django, cache Redis 24h, extraction des coordonnées GPS et formats DSFR."
-    href="/08-slash/04-adresse/03-implementation-adresse/01-provider-django"
+    href="/03-slasheurs-france/04-adresse/03-implementation-adresse/01-provider-django"
     badge="Code & Socle"
   />
 </FeatureGrid>
@@ -76,7 +86,7 @@ Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le
 
 ## 🧩 Formats d'Affichage Disponibles
 
-Conformément au **[Socle Technique Unifié](/08-slash/00-socle-technique)** :
+Conformément au **[Socle Technique Unifié](/03-slasheurs-france/00-socle-technique)** :
 
 - 📢 **Format Callout** : Adresse complète certifiée BAN avec lien vers la fiche nationale.
 - 🗂️ **Format Carte** : Encart avec grille : Code INSEE • Type • Coordonnées GPS.

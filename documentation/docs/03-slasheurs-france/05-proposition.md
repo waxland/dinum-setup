@@ -4,6 +4,16 @@ sidebar_label: "Proposition Sources"
 description: "Document prospectif explorant 10 nouvelles commandes slash pour La Suite Docs (marchés publics, subventions, annuaire, cadastre, INSEE, Tchap, parapheur, démarches)."
 ---
 
+<DocHeaderSummary
+readingTime="5 min"
+level="Débutant à Intermédiaire"
+roles={["Développeurs", "Chefs de Produit"]}
+prerequisites={["Architecture La Suite"]}
+status="Standard"
+statusColor="info"
+takeaway="Comprendre le fonctionnement technique et stratégique des slasheurs souverains."
+/>
+
 Ce document prospectif recense et détaille **10 propositions concrètes de futures commandes slash (`/`)** pour enrichir l'éditeur collaboratif **La Suite Docs**.
 
 Chaque proposition est conçue selon le **Socle Technique Unifié** (Architecture Provider Django + CustomBlock `SourceBlockSpec` aux 3 modes DSFR **Callout**, **Carte**, **Lien**) et s'appuie exclusivement sur des **sources de données publiques souveraines**.

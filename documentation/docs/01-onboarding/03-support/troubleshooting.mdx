@@ -1,7 +1,18 @@
 ---
 title: "Dépannage FAQ"
+sidebar_label: "Dépannage FAQ"
 description: Résolution pas à pas des erreurs fréquentes en environnement de développement local (Docker, bases de données, ports, SSH, disque).
 ---
+
+<DocHeaderSummary
+  readingTime="6 min"
+  level="Débutant à Avancé"
+  roles={["Développeurs", "DevOps"]}
+  prerequisites={["Environnement local configuré"]}
+  status="DPG Standard"
+  statusColor="success"
+  takeaway="Accédez rapidement aux solutions des erreurs les plus fréquentes (ports bloqués, espace disque saturé, BuildKit, clés SSH) lors du développement local sur La Suite Numérique."
+/>
 
 Cette page regroupe les diagnostics rapides et les solutions aux erreurs les plus fréquemment rencontrées lors du bootstrap et du développement local sur La Suite numérique.
 
@@ -21,6 +32,19 @@ Cette page regroupe les diagnostics rapides et les solutions aux erreurs les plu
   make install
   ```
   Vérifiez ensuite la disponibilité avec `docker buildx version`.
+
+---
+
+### `bind: address already in use` (Conflit de Ports Locaux)
+
+- **Symptôme :** Démarrage de `make dev` ou `make bootstrap` qui échoue silencieusement.
+- **Cause :** Un autre service (ou une instance précédente non coupée) occupe les ports nécessaires (5173, 8000, 5432).
+- **Diagnostic et solution automatisée :**
+  Utilisez le script préventif de détection pour vérifier quels ports sont bloqués :
+  ```bash
+  node scripts/check-ports.mjs
+  ```
+  Libérez les ports via les PIDs indiqués par le script.
 
 ---
 

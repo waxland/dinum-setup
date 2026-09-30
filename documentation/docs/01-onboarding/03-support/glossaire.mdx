@@ -3,6 +3,16 @@ title: "Glossaire"
 description: Lexique complet des acronymes, concepts d'architecture et standards utilisés à la DINUM et dans l'écosystème La Suite numérique.
 ---
 
+<DocHeaderSummary
+  readingTime="6 min"
+  level="Débutant à Avancé"
+  roles={["Développeurs", "Chefs de Produit", "Architectes"]}
+  prerequisites={["Architecture Cloud"]}
+  status="DPG Standard"
+  statusColor="success"
+  takeaway="Maîtrisez le vocabulaire technique, les protocoles et les standards d'architecture (SecNumCloud, CRDT, DCO) utilisés au quotidien dans La Suite Numérique."
+/>
+
 Ce glossaire regroupe les définitions techniques, protocoles et standards essentiels utilisés quotidiennement sur les dépôts de La Suite numérique et au sein de la Direction Interministérielle du Numérique (DINUM).
 
 ---
@@ -85,3 +95,19 @@ Outil open-source de Mozilla permettant de chiffrer des fichiers de configuratio
 ### BlockSuite
 
 Moteur d'édition de blocs de contenu collaboratif open-source sur lequel repose la nouvelle génération de l'éditeur de documents _Docs_.
+
+---
+
+## 🔒 5. Workflow de Contribution & Cybersécurité
+
+### DCO (Developer Certificate of Origin)
+
+Attestation juridique intégrée directement dans le message de commit Git (via la mention `Signed-off-by`). Elle garantit que le contributeur possède les droits légaux sur le code qu'il soumet et qu'il accepte de le distribuer sous la licence Open Source du projet. Ce mécanisme protège le dépôt des recours pour violation de propriété intellectuelle.
+
+### Anti-SSRF (Server-Side Request Forgery Prevention)
+
+Ensemble de mécanismes défensifs (comme le `PublicResolver` dans Django) visant à empêcher une application web d'effectuer des requêtes HTTP vers des réseaux privés internes, loopback ou adresses IP réservées, empêchant ainsi l'exfiltration de données cloud ou les scans de ports par des attaquants externes.
+
+### Circuit Breaker (Disjoncteur)
+
+Design pattern architectural (implémenté via Redis Lua dans La Suite) permettant de couper temporairement (fail-fast) les appels réseau vers une API distante (ex: API Légifrance) lorsque celle-ci est saturée (HTTP 429) ou en panne (HTTP 503), afin d'éviter la congestion en cascade de l'infrastructure locale.

@@ -4,6 +4,16 @@ sidebar_label: "Standards DINUM"
 description: Corpus officiel des normes de qualité logicielle, standards React/TypeScript, conventions Python/Django, accessibilité RGAA et sécurité applicative de la DINUM.
 ---
 
+<DocHeaderSummary
+  readingTime="5 min"
+  level="Débutant à Avancé"
+  roles={["Développeurs", "Contributeurs"]}
+  prerequisites={["Environnement local configuré"]}
+  status="DPG Standard"
+  statusColor="success"
+  takeaway="Comprendre et appliquer les normes de qualité, les tests et le workflow de contribution attendus sur le projet."
+/>
+
 Ce document compile et formalise les **bonnes pratiques de développement et d'ingénierie logicielle** appliquées au sein de la **Direction Interministérielle du Numérique (DINUM)**, de **beta.gouv.fr** et de **La Suite Numérique**.
 
 ---
@@ -88,7 +98,7 @@ Avant toute modification de code frontend :
 
 ### B. Typage Strict & Purity
 
-- **Zéro `any`** et **zéro assertion de type abusive** (`as ...`).
+- **Zéro `any`** et **zéro assertion de type abusive** (`as ...`). L'utilisation du script CI/CD de détection automatisée est requise.
 - Modéliser explicitement les états optionnels et nullables (`null | undefined`).
 - Typer exhaustivement les `props` de composants et les retours d'API.
 
@@ -97,6 +107,7 @@ Avant toute modification de code frontend :
 - Composants de taille réduite, à responsabilité unique.
 - Privilégier la dérivation d'état au rendu plutôt que des synchronisations complexes par `useEffect`.
 - Gestion systématique des 6 états d'interface : _Initial, Chargement, Succès, Vide (Empty State), Erreur récupérable, Désactivé_.
+- Usage exclusif des Design Systems de l'État : `@codegouvfr/react-dsfr` et les tokens Cunningham (`#000091`, `#f5f5fe`, `#e1000f`). Aucun import de `@mantine/core` n'est toléré dans le socle documentaire.
 
 ### D. Accessibilité RGAA v4.1 (Niveau AA)
 
@@ -129,6 +140,22 @@ Avant toute modification de code frontend :
 - Zéro secret ou mot de passe commité en clair (utilisation obligatoire de SOPS/age ou `.env.example`).
 - Filtrage défensif des URLs distantes pour empêcher les attaques SSRF (blocage des plages IP privées `127.0.0.0/8`, `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `169.254.169.254`).
 - Circuit Breaker avec timeout strict (3.5s max) sur les appels d'APIs tierces.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Django as Proxy Django
+    participant Resolver as PublicResolver (Anti-SSRF)
+    participant Redis as Redis (Circuit Breaker)
+    participant API as API Distante
+
+    Django->>Resolver: get_ip(hostname)
+    Resolver-->>Django: IP Publique (ex: 93.184.216.34)
+    Django->>Redis: check_quota(provider)
+    Redis-->>Django: Autorisé
+    Django->>API: fetch(timeout=3.5s)
+    API-->>Django: 200 OK (JSON)
+```
 
 ---
 

@@ -1,4 +1,39 @@
+import { Check, Copy } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+
+/**
+ * Helper components for copy-to-clipboard functionality
+ */
+function CopyCodeButton({ code }: { code: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <button
+      onClick={handleCopy}
+      className="absolute top-2 right-2 p-1.5 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-colors z-10 border border-gray-200 dark:border-gray-700"
+      title="Copier le code HTML DSFR"
+    >
+      {copied ? <Check size={16} className="text-emerald-500" /> : <Copy size={16} />}
+    </button>
+  );
+}
+
+function PreviewWrapper({ children, code }: { children: React.ReactNode; code?: string }) {
+  return (
+    <div className="relative group rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm my-6 not-prose">
+      {code && <CopyCodeButton code={code} />}
+      <div className="p-6 md:p-8 overflow-x-auto flex justify-center">
+        <div className="w-full max-w-4xl">{children}</div>
+      </div>
+    </div>
+  );
+}
 
 /**
  * Visual Color Palette for DSFR documentation.
@@ -139,74 +174,76 @@ export function IconsCatalog() {
  * DSFR Buttons interactive showcase.
  */
 export function ButtonPreview() {
+  const codeSnippet = `<!-- Primaire -->
+<button class="fr-btn">
+  Enregistrer les modifications
+</button>
+
+<!-- Secondaire -->
+<button class="fr-btn fr-btn--secondary">
+  Annuler
+</button>
+
+<!-- Tertiaire avec icône -->
+<button class="fr-btn fr-btn--tertiary fr-btn--icon-left fr-icon-add-line">
+  Ajouter un document
+</button>
+
+<!-- Danger (Cunningham token) -->
+<button class="fr-btn" style="background-color: var(--error-425-625); color: white;">
+  Supprimer le dossier
+</button>`;
+
   return (
-    <div className="not-prose my-6 p-6 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-6">
-      <div className="space-y-2">
-        <div className="text-xs font-semibold uppercase tracking-wider text-gray-400">
-          Variantes Officielles DSFR (fr-btn)
+    <PreviewWrapper code={codeSnippet}>
+      <div className="flex flex-col gap-6">
+        <div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">
+            Boutons Principaux
+          </div>
+          <div className="flex flex-wrap gap-4 items-center">
+            <button className="fr-btn">Bouton Primaire</button>
+            <button className="fr-btn fr-btn--secondary">Bouton Secondaire</button>
+            <button className="fr-btn fr-btn--tertiary">Bouton Tertiaire</button>
+            <button className="fr-btn fr-btn--tertiary-no-outline">Sans Bordure</button>
+          </div>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <button type="button" className="fr-btn">
-            Bouton Primaire
-          </button>
-          <button type="button" className="fr-btn fr-btn--secondary">
-            Bouton Secondaire
-          </button>
-          <button type="button" className="fr-btn fr-btn--tertiary">
-            Bouton Tertiaire
-          </button>
-          <button type="button" className="fr-btn fr-btn--tertiary-no-outline">
-            Tertiaire sans contour
-          </button>
-          <button type="button" className="fr-btn" style={{ backgroundColor: "#CE0500" }}>
-            Bouton Destructif
-          </button>
-          <button type="button" className="fr-btn" disabled>
-            Désactivé
-          </button>
-        </div>
-      </div>
 
-      <div className="space-y-2 pt-4 border-t border-gray-100 dark:border-gray-800">
-        <div className="text-xs font-semibold uppercase tracking-wider text-gray-400">
-          Tailles Disponibles (fr-btn--sm, md, fr-btn--lg)
+        <div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">
+            Boutons d'Action & Icônes
+          </div>
+          <div className="flex flex-wrap gap-4 items-center">
+            <button className="fr-btn fr-btn--icon-left fr-icon-checkbox-circle-line">
+              Valider le dossier
+            </button>
+            <button className="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-download-line">
+              Télécharger (PDF)
+            </button>
+            <button
+              className="fr-btn"
+              style={{
+                backgroundColor: "var(--error-425-625, #e1000f)",
+                color: "white",
+              }}
+            >
+              Supprimer l'accès
+            </button>
+          </div>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <button type="button" className="fr-btn fr-btn--sm">
-            Petit (sm)
-          </button>
-          <button type="button" className="fr-btn">
-            Moyen (md - standard)
-          </button>
-          <button type="button" className="fr-btn fr-btn--lg">
-            Grand (lg)
-          </button>
-        </div>
-      </div>
 
-      <div className="space-y-2 pt-4 border-t border-gray-100 dark:border-gray-800">
-        <div className="text-xs font-semibold uppercase tracking-wider text-gray-400">
-          Avec Icônes Intégrées (Remix Icon / DSFR)
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <button type="button" className="fr-btn fr-icon-add-line fr-btn--icon-left">
-            Créer un document
-          </button>
-          <button
-            type="button"
-            className="fr-btn fr-btn--secondary fr-icon-download-line fr-btn--icon-right"
-          >
-            Télécharger l'export
-          </button>
-          <button
-            type="button"
-            className="fr-btn fr-btn--tertiary fr-icon-delete-line fr-btn--icon-left"
-          >
-            Supprimer
-          </button>
+        <div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">
+            Tailles (Sizes)
+          </div>
+          <div className="flex flex-wrap gap-4 items-center">
+            <button className="fr-btn fr-btn--sm">Petit (sm)</button>
+            <button className="fr-btn">Standard (md)</button>
+            <button className="fr-btn fr-btn--lg">Grand (lg)</button>
+          </div>
         </div>
       </div>
-    </div>
+    </PreviewWrapper>
   );
 }
 
@@ -214,64 +251,72 @@ export function ButtonPreview() {
  * DSFR Badges and status dots.
  */
 export function BadgePreview() {
-  const [selectedTag, setSelectedTag] = useState<string>("DINUM");
+  const codeSnippet = `<!-- Badges Standards -->
+<p class="fr-badge fr-badge--new">Nouveau</p>
+<p class="fr-badge fr-badge--info">À traiter</p>
+<p class="fr-badge fr-badge--success">Validé</p>
+<p class="fr-badge fr-badge--warning">En attente</p>
+<p class="fr-badge fr-badge--error">Rejeté</p>
+
+<!-- Tags interactifs -->
+<button class="fr-tag">DINUM</button>
+<button class="fr-tag" aria-pressed="true">OpenSource</button>`;
 
   return (
-    <div className="not-prose my-6 p-6 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-6">
-      <div className="space-y-2">
-        <div className="text-xs font-semibold uppercase tracking-wider text-gray-400">
-          Badges de Statut DSFR (fr-badge)
+    <PreviewWrapper code={codeSnippet}>
+      <div className="flex flex-col gap-6">
+        <div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">
+            Badges Standards
+          </div>
+          <div className="flex flex-wrap gap-4 items-center">
+            <span className="fr-badge fr-badge--new">Nouveau</span>
+            <span className="fr-badge fr-badge--info">À traiter</span>
+            <span className="fr-badge fr-badge--success">Validé</span>
+            <span className="fr-badge fr-badge--warning">En attente</span>
+            <span className="fr-badge fr-badge--error">Rejeté</span>
+          </div>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="fr-badge fr-badge--success">Succès / Actif</span>
-          <span className="fr-badge fr-badge--error">Erreur / Échec</span>
-          <span className="fr-badge fr-badge--warning">En Attente</span>
-          <span className="fr-badge fr-badge--info">Information</span>
-          <span className="fr-badge fr-badge--new">Nouveau</span>
-          <span className="fr-badge">Neutre</span>
-        </div>
-      </div>
 
-      <div className="space-y-2 pt-4 border-t border-gray-100 dark:border-gray-800">
-        <div className="text-xs font-semibold uppercase tracking-wider text-gray-400">
-          Puces Indicatrices (Status Dots)
+        <div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">
+            Indicateurs Serveur
+          </div>
+          <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-gray-700 dark:text-gray-300">
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>PostgreSQL 16 en ligne</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+              <span>Synchronisation en cours</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+              <span>Service arrêté</span>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-gray-700 dark:text-gray-300">
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span>PostgreSQL 16 en ligne</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-            <span>Synchronisation en cours</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-red-500"></span>
-            <span>Service arrêté</span>
-          </div>
-        </div>
-      </div>
 
-      <div className="space-y-2 pt-4 border-t border-gray-100 dark:border-gray-800">
-        <div className="text-xs font-semibold uppercase tracking-wider text-gray-400">
-          Tags Interactifs DSFR (fr-tag)
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          {["DINUM", "OpenSource", "Keycloak", "42-Oléron"].map((tag) => (
-            <button
-              key={tag}
-              type="button"
-              className="fr-tag"
-              aria-pressed={selectedTag === tag}
-              onClick={() => setSelectedTag(tag)}
-            >
-              # {tag}
-            </button>
-          ))}
-          <span className="fr-tag fr-tag--sm">Tag compact (sm)</span>
+        <div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">
+            Tags Interactifs DSFR (fr-tag)
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            {["DINUM", "OpenSource", "Keycloak", "42-Oléron"].map((tag) => (
+              <button
+                key={tag}
+                type="button"
+                className={`fr-tag ${tag === "DINUM" ? "fr-tag--pressed" : ""}`}
+                aria-pressed={tag === "DINUM"}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </PreviewWrapper>
   );
 }
 
@@ -279,34 +324,37 @@ export function BadgePreview() {
  * DSFR Alerts showcase.
  */
 export function AlertPreview() {
+  const codeSnippet = `<div class="fr-alert fr-alert--info">
+  <h3 class="fr-alert__title">Mise à jour système</h3>
+  <p>Une maintenance est prévue ce soir de 20h à 22h.</p>
+</div>
+
+<div class="fr-alert fr-alert--success">
+  <h3 class="fr-alert__title">Dossier validé</h3>
+  <p>Votre demande a été traitée avec succès.</p>
+</div>`;
+
   return (
-    <div className="not-prose my-6 space-y-4">
-      <div className="fr-alert fr-alert--info">
-        <h3 className="fr-alert__title">Information Système</h3>
-        <div className="text-sm">
-          La mise à jour de la documentation est synchronisée automatiquement avec le dépôt Git.
+    <PreviewWrapper code={codeSnippet}>
+      <div className="flex flex-col gap-4">
+        <div className="fr-alert fr-alert--info">
+          <h3 className="fr-alert__title">Mise à jour système</h3>
+          <p>Une maintenance est prévue ce soir de 20h à 22h.</p>
+        </div>
+        <div className="fr-alert fr-alert--success">
+          <h3 className="fr-alert__title">Dossier validé</h3>
+          <p>Votre demande a été traitée avec succès.</p>
+        </div>
+        <div className="fr-alert fr-alert--warning">
+          <h3 className="fr-alert__title">Attention</h3>
+          <p>Votre session expirera dans 5 minutes.</p>
+        </div>
+        <div className="fr-alert fr-alert--error">
+          <h3 className="fr-alert__title">Erreur de connexion</h3>
+          <p>Serveur PostgreSQL injoignable.</p>
         </div>
       </div>
-      <div className="fr-alert fr-alert--success">
-        <h3 className="fr-alert__title">Modifications Enregistrées</h3>
-        <div className="text-sm">
-          Votre document a été sauvegardé avec succès sur le stockage souverain S3.
-        </div>
-      </div>
-      <div className="fr-alert fr-alert--warning">
-        <h3 className="fr-alert__title">Expiration de Session Proche</h3>
-        <div className="text-sm">
-          Votre jeton OIDC expire dans 5 minutes. Pensez à enregistrer vos travaux en cours.
-        </div>
-      </div>
-      <div className="fr-alert fr-alert--error">
-        <h3 className="fr-alert__title">Erreur de Connexion à la Base</h3>
-        <div className="text-sm">
-          Impossible de joindre le serveur PostgreSQL sur le port 15432. Vérifiez que Docker est
-          actif.
-        </div>
-      </div>
-    </div>
+    </PreviewWrapper>
   );
 }
 

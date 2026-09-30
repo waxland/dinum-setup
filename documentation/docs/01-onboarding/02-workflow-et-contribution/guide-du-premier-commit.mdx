@@ -1,15 +1,26 @@
 ---
-title: "Premier Commit"
+title: "Guide du Premier Commit"
 description: Normes de contribution, convention de nommage des commits, branches, pull requests et revue de code à la DINUM.
 ---
+
+<DocHeaderSummary
+  readingTime="5 min"
+  level="Débutant à Avancé"
+  roles={["Développeurs", "Contributeurs"]}
+  prerequisites={["Environnement local configuré"]}
+  status="DPG Standard"
+  statusColor="success"
+  takeaway="Comprendre et appliquer les normes de qualité, les tests et le workflow de contribution attendus sur le projet, y compris l'usage du Quality Gate unifié."
+/>
 
 Ce guide vous accompagne pas à pas pour soumettre votre toute première contribution sur les dépôts de **La Suite numérique** dans le respect des standards de qualité et de traçabilité de l'équipe.
 
 ---
 
-## 📋 1. La Spécification Conventional Commits
+## 📋 1. La Spécification Conventional Commits & DCO
 
 Tous les dépôts de l'organisation imposent la convention [Conventional Commits v1.0.0](https://www.conventionalcommits.org/fr/v1.0.0/) afin d'automatiser la génération des changelogs et la gestion sémantique des versions (_SemVer_).
+De plus, la signature DCO (Developer Certificate of Origin) est requise pour toute contribution open source.
 
 ### Structure d'un message de commit
 
@@ -19,6 +30,7 @@ Tous les dépôts de l'organisation imposent la convention [Conventional Commits
 [corps optionnel détaillant le contexte et la justification]
 
 [pied de page optionnel avec les tickets liés]
+Signed-off-by: Votre Nom <votre.email@beta.gouv.fr>
 ```
 
 ### Types autorisés
@@ -63,19 +75,23 @@ Tous les dépôts de l'organisation imposent la convention [Conventional Commits
 
 2. **Développer et valider localement :**
 
-   ```bash
-   # Linter et formatage
-   pnpm lint
+   Le monorepo centralise toutes les vérifications via un unique orchestrateur (`make check`). Vous devez valider le code avant de commiter. Respectez la règle du **zéro `any` / zéro `as`** en TypeScript, et du zéro secret codé en dur.
 
-   # Exécution des tests unitaires
-   pnpm test
+   ```bash
+   # Formater le code rapidement
+   npm run format
+
+   # Lancement de l'orchestrateur de validation complet (Quality Gate)
+   make check
    ```
 
 3. **Signer et commiter vos modifications :**
 
+   Il est fortement recommandé d'utiliser l'option `-s` (pour ajouter le `Signed-off-by` DCO) et `-S` (pour la signature GPG/SSH).
+
    ```bash
    git add src/
-   git commit -S -m "feat(docs): add pdf document export via typst"
+   git commit -s -S -m "feat(docs): add pdf document export via typst"
    ```
 
 4. **Pousser votre branche et ouvrir la Pull Request :**
@@ -89,7 +105,8 @@ Tous les dépôts de l'organisation imposent la convention [Conventional Commits
 
 Pour qu'une Pull Request soit fusionnée dans la branche principale `main` :
 
-- ✅ **Tous les workflows GitHub Actions doivent être verts** (Lint, TypeScript compilation, Unit Tests, E2E Playwright).
+- ✅ **Tous les workflows GitHub Actions doivent être verts** (Lint, TypeScript, Python Ruff, Vitest, Pytest, Axe-Core).
 - ✅ **Au moins une approbation (_Approve_)** d'un mainteneur du projet.
-- ✅ **Pas de secrets ou de tokens committés** (vérifié automatiquement par les scanners de secrets CI).
+- ✅ **Pas de secrets ou de tokens committés** (vérifié automatiquement par `gitleaks` dans la CI).
+- ✅ **Respect de l'accessibilité RGAA v4.1 AA** (navigable au clavier, contrastes $\ge 4.5:1$).
 - ✅ **Fusion par Squash & Merge** pour garder un historique Git linéaire et propre.

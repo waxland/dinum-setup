@@ -15,6 +15,7 @@
 | `documentation-international/docs/00-overview/architecture-3-tier.mdx`   | 🟡 Needs Enrichment | Iteration 3 | Harmonize package naming to official monorepo scope, add runtime contracts, detail Anti-SSRF PublicResolver & Redis Lua rate-limiting.           |
 | `documentation-international/docs/00-overview/engineering-standards.mdx` |     🟢 Conforme     | Iteration 4 | Add `<DocHeaderSummary>`, link to automated Quality Gate commands (`make check`), add DPGA & Axe-Core validation context.                        |
 | `documentation-international/docs/00-overview/international-vision.mdx`  | 🟡 Needs Enrichment | Iteration 5 | Align package names in Mermaid, add DPG 9-indicator compliance matrix, expand European sovereign registries (Estonia, Nordic countries).         |
+| `documentation-international/docs/00-overview/05-toml-frontmatter.mdx`   |     🟢 Conforme     | Iteration 6 | TOML metadata specifications, comparison with YAML, security override documentation (`toml@4.2.0`), `<DocHeaderSummary>`.                        |
 
 ---
 
@@ -265,3 +266,21 @@
   - European Union Preset: `/04-presets/european-union`
   - Canada Preset: `/04-presets/canada`
   - DPGA Standards: https://digitalpublicgoods.net/
+
+---
+
+### 📄 `documentation-international/docs/00-overview/05-toml-frontmatter.mdx`
+
+- **Audit Status:** 🟢 **Conforme**
+- **Architectural Role:** Specification and validation of the native TOML frontmatter parser (`toml@4.2.0`) in the Zudoku MDX pipeline, enabling unified metadata across Python (`pyproject.toml`), Rust (`Cargo.toml`), and documentation.
+- **Line-by-Line Diagnostic:**
+  - `L.1-6`: Frontmatter uses TOML delimiters `+++` correctly.
+  - `L.8-20`: Enriched explanation of multi-ecosystem metadata and `<DocHeaderSummary>`.
+  - `L.22-38`: Architecture flowchart showing format detection (YAML `---` vs TOML `+++`) leading to unified SSR output.
+  - `L.40-75`: Clear side-by-side syntax comparison between TOML and YAML frontmatter.
+  - `L.77-98`: Security documentation on prototype pollution override in `package.json` (`toml: "4.2.0"`) and link to automated CI test `tomlAndOverrides.test.ts`.
+- **Recommendations of Content:**
+  - Standard compliant and fully validated during `npm run docs:build`.
+- **Cross-References & Documentation Links:**
+  - Engineering Standards: `/00-overview/engineering-standards`
+  - Dependency Security: `/01-onboarding/02-workflow-et-contribution/qualite-et-architecture-la-suite`

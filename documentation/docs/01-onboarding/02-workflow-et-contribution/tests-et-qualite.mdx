@@ -3,6 +3,16 @@ title: "Tests Qualité"
 description: Guide des commandes de tests unitaires, linters, tests end-to-end et conventions de code pour La Suite numérique.
 ---
 
+<DocHeaderSummary
+  readingTime="5 min"
+  level="Débutant à Avancé"
+  roles={["Développeurs", "Contributeurs"]}
+  prerequisites={["Environnement local configuré"]}
+  status="DPG Standard"
+  statusColor="success"
+  takeaway="Comprendre et appliquer les normes de qualité, les tests et le workflow de contribution attendus sur le projet."
+/>
+
 La fiabilité et la sécurité de **La Suite numérique** reposent sur une politique rigoureuse de tests automatisés (unitaires, intégration, bout-en-bout) et de vérification continue du style de code (_linting_).
 
 🔗 **Frameworks de test & outils :** [Pytest Docs](https://docs.pytest.org/) • [Vitest Docs](https://vitest.dev/) • [Playwright E2E](https://playwright.dev/) • [Spécification Conventional Commits](https://www.conventionalcommits.org/fr/v1.0.0/)
@@ -19,90 +29,72 @@ Avant de soumettre une Pull Request sur l'un des dépôts :
 
 ---
 
-## 🔬 2. Commandes de Tests & Linting par Projet
+## 🔬 2. Le Quality Gate Unifié (`make check`)
 
-### A. Docs (`src/docs`)
+Dans le cadre du monorepo DINUM `/slash`, toutes les commandes de linting, typage et tests ont été unifiées à la racine pour garantir un standard de qualité homogène sur l'ensemble des paquets.
 
-Docs combine des tests backend Django (pytest), des tests frontend (Vitest) et des tests E2E (Playwright) :
+L'outil central de votre quotidien de développeur est la commande :
 
 ```bash
-cd src/docs
+make check
+```
 
-make lint                 # Lance tous les linters (Python + TypeScript + CSS)
-make lint-backend         # Pylint & flake8 sur le code Django
-make lint-frontend        # ESLint & Prettier sur Next.js
+Cette commande exécute séquentiellement **16 étapes de validation**, garantissant que le code respecte strictement les normes d'État (0 violation) :
 
-# 2. Tests Unitaires & Intégration
-make test                 # Lance l'ensemble des suites de tests
-make test-backend         # Tests unitaires Django / Pytest
-make test-frontend        # Tests Vitest / React Testing Library
+1. **Formatage et Linting TypeScript :** `npm run format:check` et `npm run lint` (ESLint, Prettier).
+2. **Typage Stricte TypeScript :** `npm run typecheck` (0 erreur `any` ou `as` silencieuse).
+3. **Formatage et Linting Python :** `ruff format --check .` et `ruff check .` (Règles PEP8 et imports).
+4. **Vérification Mypy :** Typage statique Python.
+5. **Vérification des Dépendances :** `npm audit` pour bloquer les failles de sécurité connues.
+6. **Tests Unitaires TypeScript :** `make packages-test-js` (Vitest sur le SDK et BlockNote).
+7. **Tests Unitaires Python :** `make packages-test-python` (Pytest sur Django avec mocks DB/Redis).
+8. **Tests Accessibilité / E2E :** `npm run test:e2e` (Playwright & Axe-Core).
+9. **Build de la Documentation :** `npm run docs:build` (0 erreur SSR sur les portails Zudoku).
 
-# 3. Tests End-to-End (E2E) avec Playwright
-make bootstrap-e2e        # Construit les images Docker de test E2E
-make e2e                  # Exécute la suite complète Playwright
+---
+
+## ⚙️ 3. Commandes Ciblées par Écosystème
+
+Si vous travaillez sur une brique spécifique et souhaitez accélérer la boucle de rétroaction sans lancer la vérification globale `make check`, voici les commandes ciblées à exécuter depuis la racine du workspace :
+
+### A. Frontend (React / TypeScript)
+
+```bash
+# Formater tous les fichiers (JS, TS, MDX, JSON)
+npm run format
+
+# Lancer le linter ESLint en corrigeant automatiquement
+npm run lint:fix
+
+# Vérifier les types TypeScript sans transpiler
+npm run typecheck
+
+# Lancer les tests unitaires frontend (Vitest)
+npm run test:js
+```
+
+### B. Backend (Python / Django)
+
+```bash
+# Lancer Ruff (linter) avec correction automatique
+ruff check --fix .
+
+# Formater le code Python avec Ruff
+ruff format .
+
+# Exécuter les tests unitaires backend (Pytest)
+make packages-test-python
 ```
 
 ---
 
-### B. Projects (`src/projects`)
+## 🚀 4. Intégration Continue (GitHub Actions)
 
-Projects utilise un monorepo client React / serveur Sails.js :
+Chaque Push ou Pull Request sur ce dépôt déclenche automatiquement une pipeline stricte sur GitHub Actions (`ci-packages.yml` et `ci-docs.yml`) reproduisant à l'identique l'environnement local :
 
-```bash
-cd src/projects
+1. **Matrice multi-OS** : Exécution sur `ubuntu-latest` et environnements isolés.
+2. **Versionnage** : Tests sur Node.js 22 LTS et Python 3.12/3.13/3.14.
+3. **Accessibilité** : Exécution stricte de `@axe-core/playwright` sur les composants interactifs.
+4. **Sécurité** : Validation des overrides de dépendances (`tomlAndOverrides.test.ts`) empêchant l'inclusion accidentelle de packages vulnérables.
 
-# 1. Tests & Linters globaux
-npm run lint              # Vérification ESLint client et serveur
-npm test                  # Exécute les tests unitaires
-
-# 2. Tests Frontend (client/)
-cd client
-npm test -- --watchAll=false  # Tests Jest / React Testing Library
-
-# 3. Tests Backend (server/)
-cd ../server
-npm test                  # Tests Mocha / Chai de l'API REST
-```
-
----
-
-### C. Transfers (`src/transfers`)
-
-Transfers teste les flux de téléversement multipart S3 et les tâches asynchrones :
-
-```bash
-cd src/transfers
-
-# 1. Linters
-make lint                 # Ruff / Flake8 / Prettier
-
-# 2. Tests Backend Django & Celery
-make test                 # Pytest avec base de données PostgreSQL de test
-```
-
----
-
-### D. People (`src/people`) & Accounts (`src/accounts`)
-
-```bash
-# Pour People
-cd src/people
-make lint                 # Linters Python & TypeScript
-make test                 # Tests Django REST Framework
-
-# Pour Accounts
-cd src/accounts
-make lint                 # Linters
-make test                 # Tests unitaires Django
-```
-
----
-
-## ⚙️ 3. Intégration Continue (GitHub Actions)
-
-Chaque dépôt upstream exécute automatiquement sur GitHub Actions :
-
-1. **Validation du titre et des commits** (Gitlint / Semantic Pull Requests).
-2. **Matrices de tests multi-versions** (Python 3.12 à 3.14, Node.js 20 à 22).
-3. **Analyses de sécurité** (Snyk, Trivy et audits des dépendances npm/pip).
-4. **Vérification du build des conteneurs Docker** multi-architectures (`amd64` / `arm64`).
+> 🛑 **Note sur les fusions** : Une Pull Request ne peut être fusionnée dans la branche principale `main` que si et seulement si l'ensemble des _Checks_ GitHub Actions sont au vert.

@@ -1,8 +1,18 @@
 ---
-title: "Allemagne"
-sidebar_label: "Allemagne"
+title: "Germany"
+sidebar_label: "Germany"
 description: Official German Federal connectors for Gesetze im Internet (BMJ), Handelsregister, and Bund.de Vergabe.
 ---
+
+<DocHeaderSummary
+  readingTime="4 min"
+  level="Intermediate"
+  roles={["Developers", "Architects"]}
+  prerequisites={["Slasher SDK"]}
+  status="Production Ready"
+  statusColor="success"
+  takeaway="Integrate official public registries into your application."
+/>
 
 Connect your BlockNote documents directly to official German federal registries:
 
@@ -24,7 +34,7 @@ Connect your BlockNote documents directly to official German federal registries:
   />
   <FeatureCard
     title="/destatis (Federal Statistics)"
-    description="Consumer Price Index (VPI), inflation rates, and macroeconomic indicators from Destatis Genesis API."
+    description="Economic, population, and inflation data from the Statistisches Bundesamt (Destatis) via Genesis-Online."
     icon="bar-chart-3"
   />
   <FeatureCard
@@ -38,3 +48,95 @@ Connect your BlockNote documents directly to official German federal registries:
     icon="shopping-bag"
   />
 </FeatureGrid>
+
+---
+
+## 🏛️ Federation Architecture (Germany)
+
+The German preset enables a privacy-first connection to official German registries. Data is fetched server-side via `django-lasuite-sources`, keeping client IPs hidden from third-party federal services (e.g. GovData, Handelsregister).
+
+<Mermaid chart={`flowchart TD
+    subgraph Client["German Public Administration (Browser)"]
+        Slash["Type /gesetz"] --> Popover["Slasher Search Popover"]
+        Popover --> Block["SlasherBlock (Callout Format)"]
+    end
+
+    subgraph Backend["django-lasuite-sources (Local Hub)"]
+        DjangoProxy["Proxy & DTO Normalization"]
+        RedisCache[("Redis Cache (SHA-256 / 24h)")]
+        ProviderRegistry["Provider Registry (GesetzProvider)"]
+    end
+
+    subgraph DE_Sources["German Federal APIs"]
+        Gesetze["Gesetze im Internet (BMJ)"]
+        Bund["Bund.de (Open Data)"]
+    end
+
+    Popover -->|"1. search(query)"| DjangoProxy
+    DjangoProxy -->|2. Check Cache| RedisCache
+    RedisCache -.->|Miss| DjangoProxy
+    DjangoProxy --> ProviderRegistry
+    ProviderRegistry -->|"3. HTTP GET (Timeout 3.5s)"| Gesetze
+    Gesetze -.->|4. XML / JSON Response| DjangoProxy
+    DjangoProxy -.->|5. ExternalSourceEntity DTO| Popover
+
+`} />
+
+---
+
+## 💻 Provider Implementation (Django)
+
+The following snippet illustrates the implementation of the German Federal Law connector (`GesetzProvider`). It resolves German laws and securely transforms them into standard Slasher DTOs.
+
+```python
+import requests
+from django.conf import settings
+from ..base import BaseSourceProvider, SourceSearchResult
+
+class GesetzProvider(BaseSourceProvider):
+    provider_id = "gesetz"
+    source_type = "law"
+
+    # Hypothetical or Official API endpoint for Gesetze im Internet
+    API_URL = "https://api.gesetze-im-internet.de/search"
+
+    def is_enabled(self) -> bool:
+        return getattr(settings, "ENABLE_DE_PROVIDERS", True)
+
+    def search(self, query: str, limit: int = 5) -> list[SourceSearchResult]:
+        headers = {"Accept": "application/json"}
+        params = {
+            "q": query,
+            "limit": limit
+        }
+
+        resp = requests.get(self.API_URL, params=params, headers=headers, timeout=3.5)
+        resp.raise_for_status()
+        data = resp.json().get("results", [])
+
+        results: list[SourceSearchResult] = []
+        for item in data:
+            results.append({
+                "source_id": item.get("id", ""),
+                "source_type": "law",
+                "provider": "Gesetze im Internet",
+                "country": "de",
+                "title": item.get("title", ""),
+                "subtitle": f"Gesetz: {item.get('lawCode', '')}",
+                "status": "In Kraft" if item.get("inForce") else "Außer Kraft",
+                "status_badge_color": "success" if item.get("inForce") else "error",
+                "contentHtml": item.get("textHtml", ""),
+                "url": f"https://www.gesetze-im-internet.de/{item.get('lawCode', '')}/__{item.get('id', '')}.html",
+            })
+        return results
+```
+
+---
+
+## 🧩 Display Formats
+
+For German data sources, the standard Slasher display formats are applied automatically:
+
+- 📢 **Callout**: Ideal for quoting specific paragraphs (e.g., § 823 BGB) in full within the text flow.
+- 🗂️ **Card**: Summarizes Handelsregister entries (HRB number, registered office, status) in a structured 3-column metadata card.
+- 🔗 **Inline**: A compact pill badge allowing legal citations without breaking the paragraph's readability.

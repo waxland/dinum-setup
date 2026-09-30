@@ -3,7 +3,34 @@ title: "Machine Hôte"
 description: Prérequis système, moteurs d'exécution de conteneurs (OrbStack, Colima, Docker Desktop), versions de Node.js, Python et Go.
 ---
 
+<DocHeaderSummary
+  readingTime="3 min"
+  level="Débutant à Avancé"
+  roles={["Développeurs", "DevOps"]}
+  prerequisites={["Accès root ou sudo sur le poste local"]}
+  status="DPG Standard"
+  statusColor="success"
+  takeaway="Découvrez comment configurer correctement votre poste de travail (macOS / Linux) avec les runtimes (Node 22 LTS, Python 3.12+) et les moteurs de conteneurs recommandés (OrbStack, Colima)."
+/>
+
 Pour exécuter confortablement la stack locale de La Suite numérique, votre machine de développement doit disposer d'un environnement moderne et optimisé pour la conteneurisation.
+
+<Mermaid chart={`graph LR
+    subgraph System["💻 Machine de Développement"]
+        Node["Node.js 22 LTS (Iron)<br/>npm >= 10.9.0"]
+        Python["Python >= 3.12<br/>(uv / venv)"]
+        Engine["Moteur Docker<br/>(OrbStack / Colima / Docker)"]
+        Make["GNU Make"]
+    end
+
+    subgraph Automation["⚙️ Scripts de Validation"]
+        CheckRuntime["scripts/check-runtime.mjs"]
+        MakeCheck["make check (16 étapes)"]
+    end
+
+    System --> CheckRuntime --> MakeCheck
+
+`} />
 
 ---
 
@@ -46,6 +73,15 @@ Si vous disposez d'une licence ou travaillez sous Linux :
 docker compose version
 ```
 
+### Dépendances Linux (Ubuntu / Debian)
+
+Si vous êtes sous environnement Linux, installeillez les dépendances essentielles à la compilation :
+
+```bash
+sudo apt-get update
+sudo apt-get install build-essential libpq-dev python3-dev curl make
+```
+
 ---
 
 ## 📦 3. Gestionnaires de Versions (Node.js, Python, Go)
@@ -67,18 +103,28 @@ echo 'eval "$(mise activate zsh)"' >> ~/.zshrc
 | Outil / Langage                  | Version de référence | Gestionnaire recommandé |
 | -------------------------------- | -------------------- | ----------------------- |
 | **Node.js**                      | `>= 22.x LTS` (Iron) | `mise` / `nvm` / `fnm`  |
-| **Package Manager**              | `pnpm >= 9.x`        | `corepack enable`       |
+| **Package Manager**              | `npm >= 10.9.0`      | Fourni avec Node.js 22  |
 | **Python**                       | `>= 3.12.x`          | `mise` / `uv` / `pyenv` |
 | **Go**                           | `>= 1.22.x`          | `mise` / `gvm`          |
 | **Rust** (si compilation locale) | `>= 1.80.x`          | `rustup`                |
+
+> ⚠️ **Note sur le langage Go** : Le compilateur Go est requis uniquement si vous compilez certains microservices spécifiques de La Suite. Il **n'est pas requis** pour la partie documentaire ni pour l'intégration des composants du socle `/slash`. Le gestionnaire de paquet `pnpm` n'est pas utilisé dans l'écosystème `/slash`.
 
 ```bash
 # Installation des runtimes recommandés
 mise use --global node@22
 mise use --global python@3.12
 mise use --global go@1.22
-
-# Activer pnpm via Corepack
-corepack enable
-corepack prepare pnpm@latest --activate
 ```
+
+---
+
+## ✅ 4. Validation Automatique de l'Environnement
+
+Un utilitaire inclus dans le projet permet de valider d'un coup d'œil l'ensemble de votre environnement :
+
+```bash
+node scripts/check-runtime.mjs
+```
+
+S'il échoue, il vous indiquera précisément quelle version de Node, npm ou Python n'est pas conforme.

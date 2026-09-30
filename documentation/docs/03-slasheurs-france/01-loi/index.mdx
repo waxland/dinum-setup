@@ -10,6 +10,17 @@ Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le
 
 ---
 
+<DocHeaderSummary
+  readingTime="4 min"
+  level="Intermédiaire"
+  roles={["Juristes", "Développeurs React", "Backend Django"]}
+  prerequisites={["API Légifrance / PISTE", "OAuth2 Client Credentials"]}
+  status="Production Ready"
+  statusColor="success"
+  enRoute="/en/04-presets/european-union"
+  takeaway="Recherche plein texte instantanée dans les codes et lois françaises avec extraction d'articles in extenso et cache SHA-256 (24h)."
+/>
+
 ## 🎯 Organisation du Dossier `/loi`
 
 <FeatureGrid cols={3}>
@@ -17,21 +28,21 @@ Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le
     icon="🏢"
     title="Pôle Métier & Cas d'Usage"
     description="Hiérarchie des normes (Kelsen), compréhension des codes et lois, règles de citation et situations de travail réelles."
-    href="/08-slash/01-loi/01-metier-loi/01-fondations-et-cadre"
+    href="/03-slasheurs-france/01-loi/01-metier-loi/01-fondations-et-cadre"
     badge="Métier"
   />
   <FeatureCard
     icon="📡"
     title="Pôle API & Veille Technique"
     description="Benchmark comparatif PISTE / DILA vs IA Albert vs Judilibre, authentification OAuth2 et contrats de données."
-    href="/08-slash/01-loi/02-api-loi/01-benchmark-des-apis"
+    href="/03-slasheurs-france/01-loi/02-api-loi/01-benchmark-des-apis"
     badge="API"
   />
   <FeatureCard
     icon="💻"
     title="Pôle Implémentation Socle"
     description="LawSourceProvider Django, mapping vers SourceBlockSpec (Callout, Carte, Lien) et activation conditionnelle."
-    href="/08-slash/01-loi/03-implementation-loi/01-provider-django"
+    href="/03-slasheurs-france/01-loi/03-implementation-loi/01-provider-django"
     badge="Code & Socle"
   />
 </FeatureGrid>
@@ -76,7 +87,7 @@ Ce dossier structure l'ensemble de la démarche en **trois pôles normés** : le
 
 ## 🧩 Formats d'Affichage Disponibles
 
-Conformément au **[Socle Technique Unifié](/08-slash/00-socle-technique)**, les articles insérés sont déclinables en :
+Conformément au **[Socle Technique Unifié](/03-slasheurs-france/00-socle-technique)**, les articles insérés sont déclinables en :
 
 - 📢 **Format Callout (Encadré DSFR)** : Reproduction intégrale du texte légal certifié avec badge `VIGUEUR`.
 - 🗂️ **Format Carte (Card DSFR)** : Synthèse avec code, article, date d'effet et lien officiel.

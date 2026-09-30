@@ -89,42 +89,42 @@ Inspiré de l'architecture native de **`/link-doc` (`Interlinking`)**, ce socle 
     icon="🧩"
     title="Architecture & Inspiration /link-doc"
     description="Cycle de vie du composant (état recherche -> état sélectionné), synchronisation CRDT Yjs et focus trap."
-    href="/08-slash/01-architecture-standardisee"
+    href="/03-slasheurs-france/01-architecture-standardisee"
     badge="Conception"
   />
   <FeatureCard
     icon="🎨"
     title="CustomBlock Unique & 3 Modes DSFR"
     description="Code TypeScript du composant BlockNote universel, modes Callout, Carte et Lien avec prévisualisation."
-    href="/08-slash/02-composant-customblock-unique"
+    href="/03-slasheurs-france/02-composant-customblock-unique"
     badge="Frontend React"
   />
   <FeatureCard
     icon="🐍"
     title="Proxy Django & Provider Registry"
     description="Architecture backend unifiée, interface BaseSourceProvider, cache Redis 24h et rate limiting."
-    href="/08-slash/03-proxy-backend-et-cache"
+    href="/03-slasheurs-france/03-proxy-backend-et-cache"
     badge="Backend Django"
   />
   <FeatureCard
     icon="⚡"
     title="Tutoriel : Ajouter une API en 10 min"
     description="Guide pas-à-pas pour brancher une nouvelle source externe sans toucher au cœur de l'éditeur."
-    href="/08-slash/04-tutoriel-ajouter-une-api"
+    href="/03-slasheurs-france/04-tutoriel-ajouter-une-api"
     badge="Guide Dev"
   />
   <FeatureCard
     icon="📦"
     title="Package Frontend : @suitenumerique/blocknote-sources"
     description="Extension BlockNote.js autonome prête à l'emploi (npm), 100% Cunningham et DSFR, zéro any, zéro Tailwind."
-    href="/08-slash/06-sdk-developpeur"
+    href="/03-slasheurs-france/06-sdk-developpeur"
     badge="npm package"
   />
   <FeatureCard
     icon="🐍"
     title="Package Backend : django-lasuite-sources"
     description="Application Django autonome (PyPI) fournissant le registre des 53 connecteurs enregistrés et le cache Redis 24h."
-    href="/08-slash/03-proxy-backend-et-cache"
+    href="/03-slasheurs-france/03-proxy-backend-et-cache"
     badge="PyPI package"
   />
 </FeatureGrid>
@@ -137,19 +137,14 @@ Pour garantir une intégration **en 1 clic** sans polluer le cœur générique d
 
 ### 1. Package Python (`django-lasuite-sources`)
 
-```bash
-uv add django-lasuite-sources
-pip install django-lasuite-sources
-```
+<PythonInstallTabs package="django-lasuite-sources" />
 
 - **Configuration `settings.py` :** Ajouter `"lasuite_sources"` dans `INSTALLED_APPS`.
 - **Routage `urls.py` :** `path("api/v1.0/", include("lasuite_sources.urls"))`.
 
 ### 2. Package Frontend (`@suitenumerique/blocknote-sources`)
 
-```bash
-pnpm add @suitenumerique/blocknote-sources
-```
+<PackageInstallTabs package="@suitenumerique/blocknote-sources" />
 
 - **Schéma BlockNote :** `sourceBlock: SourceBlock()` importé depuis `@suitenumerique/blocknote-sources`.
 - **Menu Slash :** `getSourceReactSlashMenuItems(editor, t, 'Sources Souveraines')`.

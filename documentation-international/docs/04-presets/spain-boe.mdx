@@ -4,6 +4,16 @@ sidebar_label: "Espagne"
 description: Official Spanish connectors for Boletín Oficial del Estado (BOE), Registro Mercantil, and Contratación del Estado.
 ---
 
+<DocHeaderSummary
+  readingTime="4 min"
+  level="Intermediate"
+  roles={["Developers", "Architects"]}
+  prerequisites={["Slasher SDK"]}
+  status="Production Ready"
+  statusColor="success"
+  takeaway="Integrate official public registries into your application."
+/>
+
 Connect your BlockNote documents directly to official Spanish state registers:
 
 <FeatureGrid cols={3}>
@@ -37,4 +47,101 @@ Connect your BlockNote documents directly to official Spanish state registers:
     description="National open data catalog from the Spanish Government (Datos.gob.es)."
     icon="globe"
   />
+  <FeatureCard
+    title="/datos-es (Datos.gob.es)"
+    description="Unified query interface for Spain's national open data portal, cataloging datasets from all autonomous communities."
+    icon="globe"
+  />
 </FeatureGrid>
+
+---
+
+## 🏛️ Federation Architecture (Spain)
+
+By leveraging a decentralized architecture, the Spanish preset connects regional and national state registries securely through the backend proxy.
+
+<Mermaid chart={`flowchart TD
+    subgraph Client["Spanish Public Administration (Browser)"]
+        Slash["Type /ley"] --> Popover["Slasher Search Popover"]
+        Popover --> Block["SlasherBlock (Callout Format)"]
+    end
+
+    subgraph Backend["django-lasuite-sources (Local Hub)"]
+        DjangoProxy["Proxy & DTO Normalization"]
+        RedisCache[("Redis Cache (SHA-256 / 24h)")]
+        ProviderRegistry["Provider Registry (BOEProvider)"]
+    end
+
+    subgraph ES_Sources["Spanish Federal APIs"]
+        BOE["Boletín Oficial del Estado (BOE)"]
+        Registro["Registro Mercantil"]
+    end
+
+    Popover -->|"1. search(query)"| DjangoProxy
+    DjangoProxy -->|2. Check Cache| RedisCache
+    RedisCache -.->|Miss| DjangoProxy
+    DjangoProxy --> ProviderRegistry
+    ProviderRegistry -->|"3. HTTP GET (Timeout 3.5s)"| BOE
+    BOE -.->|4. XML / JSON Response| DjangoProxy
+    DjangoProxy -.->|5. ExternalSourceEntity DTO| Popover
+
+`} />
+
+---
+
+## 💻 Provider Implementation (Django)
+
+The following snippet demonstrates the `BOEProvider`, transforming Spanish official journal data into a consumable block for the editor.
+
+```python
+import requests
+from django.conf import settings
+from ..base import BaseSourceProvider, SourceSearchResult
+
+class BOEProvider(BaseSourceProvider):
+    provider_id = "ley"
+    source_type = "law"
+
+    # Hypothetical Open Data endpoint for BOE
+    API_URL = "https://api.boe.es/search"
+
+    def is_enabled(self) -> bool:
+        return getattr(settings, "ENABLE_ES_PROVIDERS", True)
+
+    def search(self, query: str, limit: int = 5) -> list[SourceSearchResult]:
+        headers = {"Accept": "application/json"}
+        params = {
+            "q": query,
+            "limit": limit
+        }
+
+        resp = requests.get(self.API_URL, params=params, headers=headers, timeout=3.5)
+        resp.raise_for_status()
+        data = resp.json().get("results", [])
+
+        results: list[SourceSearchResult] = []
+        for item in data:
+            results.append({
+                "source_id": item.get("boe_id", ""),
+                "source_type": "law",
+                "provider": "Boletín Oficial del Estado",
+                "country": "es",
+                "title": item.get("title", ""),
+                "subtitle": f"Disposición: {item.get('departamento', '')}",
+                "status": "Vigente" if item.get("inForce") else "Derogada",
+                "status_badge_color": "success" if item.get("inForce") else "error",
+                "contentHtml": item.get("textHtml", ""),
+                "url": f"https://www.boe.es/buscar/act.php?id={item.get('boe_id', '')}",
+            })
+        return results
+```
+
+---
+
+## 🧩 Display Formats
+
+All Spanish providers automatically integrate with the editor's core formatting components:
+
+- 📢 **Callout**: Extracts and visually highlights articles from the BOE, including proper attribution to the corresponding Ministry.
+- 🗂️ **Card**: Summarizes Registro Mercantil (NIF, corporate name, province) or PLACSP procurement notices in a structured format.
+- 🔗 **Inline**: Compact badge formatting for minimal disruption when citing a specific law or cadastral parcel within a document.

@@ -1,8 +1,18 @@
 ---
-title: "Pays-Bas"
-sidebar_label: "Pays-Bas"
+title: "Netherlands"
+sidebar_label: "Netherlands"
 description: Official Dutch connectors for Wettenbank (KOOP / Overheid.nl), KVK Handelsregister, and BAG.
 ---
+
+<DocHeaderSummary
+  readingTime="4 min"
+  level="Intermediate"
+  roles={["Developers", "Architects"]}
+  prerequisites={["Slasher SDK"]}
+  status="Production Ready"
+  statusColor="success"
+  takeaway="Integrate official public registries into your application."
+/>
 
 Connect your BlockNote documents directly to official Dutch public administration registers:
 
@@ -23,8 +33,8 @@ Connect your BlockNote documents directly to official Dutch public administratio
     icon="map-pin"
   />
   <FeatureCard
-    title="/cbs (CBS StatLine)"
-    description="Official consumer price index (CPI), inflation, and demographic datasets from Centraal Bureau voor de Statistiek."
+    title="/cbs (Statistics Netherlands)"
+    description="Key economic, inflation (CPI), and demographic open data indicators from Centraal Bureau voor de Statistiek (CBS)."
     icon="bar-chart-3"
   />
   <FeatureCard
@@ -38,3 +48,95 @@ Connect your BlockNote documents directly to official Dutch public administratio
     icon="shopping-bag"
   />
 </FeatureGrid>
+
+---
+
+## 🏛️ Federation Architecture (Netherlands)
+
+The Dutch preset integrates with standardized national APIs (often structured around REST or SOAP with XML/JSON). Slasher acts as a unified hub, transforming these varied interfaces into a normalized, frontend-friendly DTO.
+
+<Mermaid chart={`flowchart TD
+    subgraph Client["Dutch Public Administration (Browser)"]
+        Slash["Type /wet"] --> Popover["Slasher Search Popover"]
+        Popover --> Block["SlasherBlock (Callout Format)"]
+    end
+
+    subgraph Backend["django-lasuite-sources (Local Hub)"]
+        DjangoProxy["Proxy & DTO Normalization"]
+        RedisCache[("Redis Cache (SHA-256 / 24h)")]
+        ProviderRegistry["Provider Registry (WettenbankProvider)"]
+    end
+
+    subgraph NL_Sources["Dutch Federal APIs"]
+        Wettenbank["Wetten.overheid.nl (KOOP)"]
+        KVK["KVK Handelsregister API"]
+    end
+
+    Popover -->|"1. search(query)"| DjangoProxy
+    DjangoProxy -->|2. Check Cache| RedisCache
+    RedisCache -.->|Miss| DjangoProxy
+    DjangoProxy --> ProviderRegistry
+    ProviderRegistry -->|"3. HTTP GET (Timeout 3.5s)"| Wettenbank
+    Wettenbank -.->|4. XML / JSON Response| DjangoProxy
+    DjangoProxy -.->|5. ExternalSourceEntity DTO| Popover
+
+`} />
+
+---
+
+## 💻 Provider Implementation (Django)
+
+Below is an outline of the Dutch Legal connector (`WettenbankProvider`). It queries the KOOP / Overheid.nl registry and formats the results for immediate use in the text editor.
+
+```python
+import requests
+from django.conf import settings
+from ..base import BaseSourceProvider, SourceSearchResult
+
+class WettenbankProvider(BaseSourceProvider):
+    provider_id = "wet"
+    source_type = "law"
+
+    # Overheid.nl Open Data API endpoint (hypothetical/official mapping)
+    API_URL = "https://api.overheid.nl/wetten/search"
+
+    def is_enabled(self) -> bool:
+        return getattr(settings, "ENABLE_NL_PROVIDERS", True)
+
+    def search(self, query: str, limit: int = 5) -> list[SourceSearchResult]:
+        headers = {"Accept": "application/json"}
+        params = {
+            "q": query,
+            "limit": limit
+        }
+
+        resp = requests.get(self.API_URL, params=params, headers=headers, timeout=3.5)
+        resp.raise_for_status()
+        data = resp.json().get("results", [])
+
+        results: list[SourceSearchResult] = []
+        for item in data:
+            results.append({
+                "source_id": item.get("jci", ""),
+                "source_type": "law",
+                "provider": "Wettenbank (KOOP)",
+                "country": "nl",
+                "title": item.get("title", ""),
+                "subtitle": f"Regeling: {item.get('regeling', '')}",
+                "status": "Geldig" if item.get("inForce") else "Vervallen",
+                "status_badge_color": "success" if item.get("inForce") else "error",
+                "contentHtml": item.get("textHtml", ""),
+                "url": f"https://wetten.overheid.nl/{item.get('regelingId', '')}/",
+            })
+        return results
+```
+
+---
+
+## 🧩 Display Formats
+
+All Dutch endpoints adhere strictly to the 3 Slasher presentation modes:
+
+- 📢 **Callout**: Extracts full legal texts (e.g., from the Burgerlijk Wetboek) into an institutional container.
+- 🗂️ **Card**: Presents KVK corporate registration data (KVK-nummer, RSIN, Legal form) in a dense 3-column summary.
+- 🔗 **Inline**: Provides a small mention badge for referencing BAG addresses natively within a document.

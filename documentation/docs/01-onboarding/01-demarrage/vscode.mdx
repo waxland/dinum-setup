@@ -5,9 +5,29 @@ description: Guide des extensions recommandées (GitLens, Git Graph, Ruff, ESLin
 
 Un environnement de développement bien configuré dans **VS Code** permet d'accélérer significativement la boucle de rétroaction : détection immédiate des erreurs de syntaxe, respect automatique des normes de style de code (_linting_ & _formatting_) et navigation fluide dans l'historique multi-dépôts.
 
+<DocHeaderSummary
+  readingTime="5 min"
+  level="Débutant à Intermédiaire"
+  roles={["Développeurs"]}
+  prerequisites={["VS Code (ou VSCodium)"]}
+  status="DPG Standard"
+  statusColor="success"
+  takeaway="Extensions pré-configurées, formatage automatique (Ruff/Prettier) et base de données 1-clic pour un cycle de développement fluide."
+/>
+
 Ce dépôt inclut une configuration prédéfinie dans le dossier `.vscode/` (`extensions.json` et `settings.json`) partagée avec toute l'équipe.
 
 🔗 **Ressources utiles :** [VS Code Marketplace](https://marketplace.visualstudio.com/) • [Documentation GitLens](https://www.gitkraken.com/gitlens) • [Documentation Ruff (Linter Python)](https://docs.astral.sh/ruff/) • [Documentation Prettier](https://prettier.io/) • [Documentation ESLint](https://eslint.org/)
+
+<Mermaid
+  chart={`flowchart LR
+    Edit["📝 Édition de Code (TS / Python)"] --> Save["💾 Sauvegarde (Cmd+S)"]
+    Save --> Format["🪄 Auto-Format (Ruff 88 / Prettier)"]
+    Format --> Diagnostic["🔍 Linting en direct (ESLint / Pylance)"]
+    Diagnostic --> SQL["🐘 Inspection BDD (SQLTools 1-clic)"]
+    SQL --> Quality["⚡ Validation Terminal (make check)"]
+`}
+/>
 
 ---
 
@@ -54,6 +74,9 @@ Les interfaces de La Suite (`Docs`, `Projects`, `Transfers`, `Meet`) utilisent R
 | **Prettier - Code Formatter** | `esbenp.prettier-vscode`    | Formatage automatique du code TypeScript, HTML, CSS, JSON et Markdown.                                                 |
 | **Tailwind CSS IntelliSense** | `bradlc.vscode-tailwindcss` | Autocomplétion intelligente des classes utilitaires Tailwind, coloration et prévisualisation CSS.                      |
 | **Biome**                     | `biomejs.biome`             | Outil moderne tout-en-un de formatage et linting ultra-rapide pour JS/TS.                                              |
+
+> ⚠️ **Attention sur les dépendances Frontend :**  
+> Tailwind CSS et Biome, bien que parfois utilisés dans certaines applications amont ou le démonstrateur, **sont formellement proscrits** dans les bibliothèques distribuables du monorepo (comme `@suitenumerique/blocknote-sources`). Le socle documentaire `/slash` applique une règle stricte de **0-Tailwind / 0-Mantine** pour garantir une interopérabilité sans conflit. Utilisez toujours les tokens Cunningham (`@openfun/cunningham-tokens`).
 
 ---
 
@@ -190,14 +213,20 @@ Chaque sauvegarde (`Ctrl+S` / `Cmd+S`) applique automatiquement :
 
 ### Lancer les Linters avant Commit
 
-Bien que VS Code corrige automatiquement la majorité des erreurs à la sauvegarde, vous pouvez toujours vérifier manuellement l'état complet de chaque projet via le terminal intégré :
+Bien que VS Code corrige automatiquement la majorité des erreurs à la sauvegarde, vous pouvez toujours vérifier manuellement l'état complet du projet via le terminal intégré avec les commandes officielles du monorepo :
 
 ```bash
-cd src/docs && make lint
+# Lancer le Quality Gate complet (tous les linters et tests)
+make check
 
-# Pour Transfers
-cd src/transfers && make lint
+# Vérifier uniquement le formatage et linting TypeScript/React
+npm run lint
+npm run typecheck
 
-# Pour Projects
-cd src/projects && npm run lint
+# Vérifier uniquement le linting et formatage Python
+ruff check .
+ruff format --check .
+
+# Lancer la suite de tests unitaires (Python & TS)
+make packages-test
 ```

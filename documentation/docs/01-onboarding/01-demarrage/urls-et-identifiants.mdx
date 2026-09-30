@@ -1,11 +1,51 @@
 ---
-title: "Identifiants"
-description: Répertoire exhaustif de toutes les URLs locales, ports localhost, identifiants par défaut et connexions de bases de données pour La Suite numérique.
+title: "URLs & Identifiants"
+sidebar_label: "URLs & Identifiants"
+description: Répertoire exhaustif des URLs locales, ports d'écoute, identifiants par défaut et topologies de bases de données pour La Suite numérique et le socle /slash.
 ---
 
-Cette page regroupe l'ensemble des points d'accès locaux, des ports d'écoute `localhost`, des consoles d'administration et des identifiants de test pré-configurés pour l'écosystème de **La Suite numérique** (DINUM / ANCT).
+Cette page regroupe l'ensemble des points d'accès locaux, des ports d'écoute `localhost`, des consoles d'administration et des identifiants de test pré-configurés pour l'écosystème de **La Suite numérique** et le socle souverain **`/slash`**.
+
+<DocHeaderSummary
+  readingTime="4 min"
+  level="Tous Niveaux"
+  roles={["Frontend", "Backend", "DevOps", "Contributeurs"]}
+  prerequisites={["Docker / OrbStack", "make bootstrap", "make dev"]}
+  status="DPG Standard"
+  statusColor="success"
+  takeaway="Cartographie complète des ports, services web, APIs REST, instances PostgreSQL et stockage S3 de l'environnement local."
+/>
 
 🔗 **Documentation des outils :** [Documentation Keycloak](https://www.keycloak.org/documentation) • [Documentation PostgreSQL 16](https://www.postgresql.org/docs/16/index.html) • [Documentation MinIO S3](https://min.io/docs/minio/linux/index.html) • [Documentation LiveKit SFU](https://docs.livekit.io/)
+
+---
+
+## 🗺️ Topologie des Ports & Services Locaux
+
+```mermaid
+graph TD
+    subgraph Browsers["🌐 Navigateur Développeur"]
+        UIPort["Portail Docs Impress (:3000)"]
+        DemoPort["Démonstrateur Slasher (:5173)"]
+        ZudokuPort["Portail Documentation (:3000 / :4000)"]
+    end
+
+    subgraph Backends["🐍 Backends & APIs"]
+        DjangoDocs["API Docs Django (:8071)"]
+        DjangoSources["Proxy Sources Django (:8000 / :8071)"]
+        Yjs["Serveur Temps Réel Yjs (:4444)"]
+    end
+
+    subgraph Infra["🐘 Données & Infrastructure Docker"]
+        Keycloak["Keycloak OIDC (:8080 / :5433)"]
+        PG["PostgreSQL Impress (:15432)"]
+        Redis["Redis Cache & Quotas (:6379)"]
+        MinIO["MinIO S3 (:9000 API / :9001 Console)"]
+    end
+
+    Browsers --> Backends
+    Backends --> Infra
+```
 
 ---
 
@@ -13,15 +53,16 @@ Cette page regroupe l'ensemble des points d'accès locaux, des ports d'écoute `
 
 Les applications clientes sont accessibles directement dans votre navigateur dès que les stacks sont lancées en mode dev (`make dev`) :
 
-| Application              | URL / Port Local                                                 | Identifiants par défaut                | Rôle & Remarques                                                                                  |
-| ------------------------ | ---------------------------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| **Docs (Impress)**       | [http://localhost:3000](http://localhost:3000)                   | `impress` / `impress`                  | Interface Next.js 16 / React de l'éditeur collaboratif. Le compte est pré-créé lors du bootstrap. |
-| **Projects (Kanban)**    | [http://localhost:8000](http://localhost:8000)                   | Connexion OIDC automatique             | Application de gestion de tâches et tableaux Kanban (Sails.js / React).                           |
-| **Meet (Visio)**         | [http://localhost:3001](http://localhost:3001)                   | _Sans authentification_                | Visioconférence WebRTC client.                                                                    |
-| **Transfers**            | [http://localhost:8980](http://localhost:8980)                   | `agent@collectivite.fr` / `transferts` | Application de transfert sécurisé de gros fichiers.                                               |
-| **Accounts**             | [http://localhost:9900](http://localhost:9900)                   | `accounts` / `accounts`                | Gestion centrale des comptes et identités.                                                        |
-| **People**               | [http://localhost:8071](http://localhost:8071)                   | `admin` / `admin`                      | Annuaire et gestion des équipes / rôles.                                                          |
-| **Documentation Zudoku** | [http://localhost:3000](http://localhost:3000) _(ou port libre)_ | —                                      | Portail de documentation locale lancé avec `make docs-dev`.                                       |
+| Application               | URL / Port Local                                                 | Identifiants par défaut                | Rôle & Remarques                                                                                  |
+| ------------------------- | ---------------------------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| **Docs (Impress)**        | [http://localhost:3000](http://localhost:3000)                   | `impress` / `impress`                  | Interface Next.js 16 / React de l'éditeur collaboratif. Le compte est pré-créé lors du bootstrap. |
+| **Démonstrateur Slasher** | [http://localhost:5173](http://localhost:5173)                   | _Sans authentification_                | Bac à sable interactif BlockNote + connecteurs souverains (Vite / React 19).                      |
+| **Projects (Kanban)**     | [http://localhost:8000](http://localhost:8000)                   | Connexion OIDC automatique             | Application de gestion de tâches et tableaux Kanban (Sails.js / React).                           |
+| **Meet (Visio)**          | [http://localhost:3001](http://localhost:3001)                   | _Sans authentification_                | Visioconférence WebRTC client.                                                                    |
+| **Transfers**             | [http://localhost:8980](http://localhost:8980)                   | `agent@collectivite.fr` / `transferts` | Application de transfert sécurisé de gros fichiers.                                               |
+| **Accounts**              | [http://localhost:9900](http://localhost:9900)                   | `accounts` / `accounts`                | Gestion centrale des comptes et identités.                                                        |
+| **People**                | [http://localhost:8071](http://localhost:8071)                   | `admin` / `admin`                      | Annuaire et gestion des équipes / rôles.                                                          |
+| **Documentation Zudoku**  | [http://localhost:3000](http://localhost:3000) _(ou port libre)_ | —                                      | Portails documentaires Zudoku SSR lancés avec `make docs-dev` ou `npm run docs:dev`.              |
 
 ---
 

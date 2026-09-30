@@ -6,23 +6,71 @@ description: Architectural approach for connecting public and private European d
 
 Slasher is designed from the ground up as a **universal, borderless standard** for rich connected documents. Any country, public administration, or enterprise can implement its own custom slasher providers in less than 15 minutes.
 
+<DocHeaderSummary
+  readingTime="4 min"
+  level="All Audiences"
+  roles={["Architects", "Policy Makers", "Maintainers"]}
+  prerequisites={["None"]}
+  status="DPG Standard"
+  statusColor="success"
+  takeaway="Slasher aligns with the 9 Digital Public Goods Alliance criteria, fostering sovereign, federated, and GDPR-compliant open data networks across Europe and beyond."
+/>
+
 <Mermaid chart={`flowchart TD
-    subgraph Standard["🌐 Universal Slasher Core (@slasher/sdk & @slasher/blocknote)"]
-        Core["Immutable Schema + 3 Display Formats + WAI-ARIA Popover"]
+    subgraph Standard["🌐 Universal Slasher Standard (DPGA Compliant)"]
+        SDK["@suitenumerique/slash-sources-sdk (< 5 kB)"]
+        Editor["@suitenumerique/blocknote-sources (0-Mantine UI)"]
+        Proxy["django-lasuite-sources (Defensive Anti-SSRF)"]
     end
 
-    subgraph Hubs["🏛️ National & Enterprise Slasher Hubs"]
-        FR["🇫🇷 France (Légifrance, BAN, RNE, BOAMP, Albert IA)"]
-        DE["🇩🇪 Germany (Gesetze im Internet, Handelsregister)"]
-        NL["🇳🇱 Netherlands (Wettenbank, KVK, BAG)"]
-        ES["🇪🇸 Spain (BOE, Registro Mercantil, Catastro)"]
-        EU["🇪🇺 European Union (EUR-Lex, TED eProcurement)"]
-        Custom["🏢 Enterprise APIs (CRM, ERP, SQL, Vector DB)"]
+    subgraph Hubs["🏛️ Verified Sovereign Registries"]
+        EU["🇪🇺 European Union (EUR-Lex / TED)"]
+        FR["🇫🇷 France (BAN, Légifrance, BOAMP)"]
+        DE["🇩🇪 Germany (Gesetze im Internet, Destatis)"]
+        NL["🇳🇱 Netherlands (Wettenbank, KVK)"]
+        ES["🇪🇸 Spain (BOE, Registro Mercantil)"]
+        CA["🇨🇦 Canada (Justice Laws, StatsCan)"]
     end
 
-    Standard --> FR
-    Standard --> DE
-    Standard --> NL
-    Standard --> ES
-    Standard --> EU
-    Standard --> Custom`} />
+    Standard --> EU & FR & DE & NL & ES & CA`} />
+
+---
+
+## 🏛️ Digital Public Goods Alliance (DPGA) Alignment
+
+Slasher is built in strict adherence to the [Digital Public Goods Alliance (DPGA)](https://digitalpublicgoods.net/) indicators, ensuring its sustainability, interoperability, and respect for privacy.
+
+### The 9 Indicators
+
+| DPGA Indicator                       | Slasher Implementation                                                                                                       |
+| :----------------------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
+| **1. Open Source License**           | Published under an OSI-approved license (MIT / European Union Public Licence compatible).                                    |
+| **2. Clear Ownership**               | Maintained transparently by the French Interministerial Digital Directorate (DINUM) and open-source contributors.            |
+| **3. Platform Independence**         | Headless architecture (`@suitenumerique/slash-sources-sdk`); UI avoids hard vendor lock-ins (0-Mantine policy).              |
+| **4. Documentation**                 | Complete bilingual documentation, automated E2E tests, and OpenAPI 3.0 specification.                                        |
+| **5. Mechanism for Extracting Data** | Transparent APIs (`/search/`, `/detail/`) and lossless document exporters (XML/ODF, DOCX).                                   |
+| **6. Data Privacy (GDPR)**           | Zero third-party trackers, zero telemetry, and the ability to self-host the defensive proxy in isolated air-gapped networks. |
+| **7. Security Design**               | Native Anti-SSRF DNS pinning (`PublicResolver`) and strict token-bucket rate limits using Redis Lua.                         |
+| **8. Open Standards**                | Uses W3C semantic HTML, WAI-ARIA 1.2, and RESTful stateless DTOs.                                                            |
+| **9. Do No Harm (SDGs)**             | Directly supports UN Sustainable Development Goals (SDGs) 9 (Innovation) and 16 (Strong & Transparent Institutions).         |
+
+---
+
+## 🌍 The Federation Model
+
+Rather than centralizing all API calls into a single monolithic bottleneck, Slasher promotes a **Federated Hub Model**:
+
+1. **Self-Hosted Autonomy:** Each organization deploys its own instance of `django-lasuite-sources`, maintaining control over network limits, proxy rules, and internal IPs.
+2. **Standardized Interfaces:** The frontend simply points to a different hub endpoint while using the exact same `<SourceSearchPopover />` and DTO structure.
+3. **Regional Extensibility:** By exposing a generic API contract (`source_id`, `entity_type`, `title`, `verified_at`), developers can easily add new sovereign data sets (e.g., Estonia X-Road, European Data Portal) without changing the core editor code.
+
+---
+
+## 🚀 Built-in Sovereign Presets
+
+Slasher ships with out-of-the-box support for key international endpoints, ensuring immediate productivity:
+
+- **🇫🇷 France:** National Address Base (BAN), Company Register (Sirene), Official Journal (Légifrance).
+- **🇩🇪 Germany:** GovData API, Destatis, and federal law archives.
+- **🇪🇺 European Union:** EUR-Lex (Legal acts) and TED (Tenders Electronic Daily).
+- **🇨🇦 Canada:** Justice Laws and Statistics Canada (StatsCan) via open data endpoints.

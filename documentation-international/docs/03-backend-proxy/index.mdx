@@ -1,18 +1,31 @@
 ---
-title: "Proxy"
+title: "Proxy Architecture"
 sidebar_label: "Proxy"
 description: Overview of the Django REST Framework proxy, Redis deterministic SHA-256 caching, and anti-SSRF defensive security.
 ---
 
-The backend layer (`django-slasher-core`) acts as a secure, high-performance gateway between client-side rich text editors and upstream sovereign APIs.
+<DocHeaderSummary
+  readingTime="6 min"
+  level="Advanced"
+  roles={["Backend", "Security", "DevOps"]}
+  prerequisites={["Python 3.12+", "Django REST Framework", "Redis"]}
+  status="Production Ready"
+  statusColor="success"
+  takeaway="Understand the Django Proxy that acts as a secure, rate-limited, and Anti-SSRF gateway between client-side rich text editors and upstream sovereign APIs."
+/>
+
+The backend layer (`django-lasuite-sources`) acts as a secure, high-performance proxy gateway between client-side rich text editors and upstream sovereign APIs.
 
 <Mermaid
   chart={`flowchart LR
-    Editor["Client Editor"] -->|GET /slashers/suggest/| Proxy["Django REST Proxy"]
+    Editor["Client Editor"] -->|GET /api/v1/sources/suggest/| Proxy["Django REST Proxy"]
     Proxy -->|SHA-256 Key| Cache{"Redis Cache (24h)"}
     Cache -->|Hit| Editor
-    Cache -->|Miss| Upstream["Upstream Sovereign API"]
-    Upstream -->|Normalize| Cache`}
+    Cache -->|Miss| TokenBucket["Redis Lua Token Bucket"]
+    TokenBucket -->|Allowed| SSRF["PublicResolver (Anti-SSRF)"]
+    TokenBucket -->|Rate Limited (429)| Editor
+    SSRF --> Upstream["Upstream Sovereign API"]
+    Upstream -->|Normalize DTO| Cache`}
 />
 
 ---
@@ -22,7 +35,7 @@ The backend layer (`django-slasher-core`) acts as a secure, high-performance gat
 <FeatureGrid cols={2}>
   <FeatureCard
     title="Anti-SSRF IP Filtering"
-    description="Strict rejection of private IPv4/IPv6 ranges (10.x, 127.x, 172.16-31.x, 192.168.x, 169.254.x)."
+    description="Strict rejection of private IPv4/IPv6 ranges (10.x, 127.x, 172.16-31.x, 192.168.x, 169.254.x) using PublicResolver."
     icon="shield-check"
     href="/03-backend-proxy/defensive-security-ssrf"
   />
@@ -34,7 +47,7 @@ The backend layer (`django-slasher-core`) acts as a secure, high-performance gat
   />
   <FeatureCard
     title="Distributed Quotas & Rate Limiting"
-    description="80% safety margin threshold, per-user burst limits, and graceful degradation."
+    description="Redis Lua atomic Token Bucket with 80% safety margin threshold, per-user burst limits, and graceful degradation."
     icon="gauge"
     href="/03-backend-proxy/quota-and-rate-limiting"
   />

@@ -1,6 +1,7 @@
 import { defaultLanguages, type ZudokuConfig } from "zudoku";
 import {
   AlertPreview,
+  ApiSimulator,
   BadgePreview,
   BlockNoteSlashPlayground,
   ButtonPreview,
@@ -35,7 +36,7 @@ import "./zudoku.theme.css";
 
 const config: ZudokuConfig = {
   metadata: {
-    title: "%s | Slasher — Universal BlockNote Standard & Sovereign Connectors",
+    title: "%s | Slasher Open Standard — Documentation",
     description:
       "Universal BlockNote standard, TypeScript SDK, 3-tier architecture, and multi-country sovereign presets (EU, Canada, Germany, Netherlands, Spain, UN/World Bank).",
     favicon: "/favicon.ico",
@@ -100,12 +101,13 @@ const config: ZudokuConfig = {
       TutorialCard,
       ScheduleDay,
       ScheduleItem,
-      ColorPalettePreview,
-      TypographySpecimen,
-      IconsCatalog,
       Kanban,
       LawSlashPreview,
       BlockNoteSlashPlayground,
+      ApiSimulator,
+      ColorPalettePreview,
+      TypographySpecimen,
+      IconsCatalog,
       ButtonPreview,
       BadgePreview,
       AlertPreview,
@@ -117,6 +119,10 @@ const config: ZudokuConfig = {
       PaginationStepperPreview,
       HeaderBreadcrumbPreview,
     },
+  },
+  apis: {
+    type: "file",
+    input: "../packages/django-lasuite-sources/docs/openapi.yaml",
   },
   docs: {
     files: "./docs/**/*.{md,mdx}",

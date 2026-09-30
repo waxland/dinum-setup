@@ -25,10 +25,10 @@ describe("Documented Claims and Parameter Alignment Audit (R-08.02)", () => {
     expect(fs.existsSync(inventoryPath)).toBe(true);
 
     const content = fs.readFileSync(inventoryPath, "utf-8");
-    expect(content).toContain("Total Registered Providers: 53");
-    expect(content).toContain("address");
-    expect(content).toContain("albert");
-    expect(content).toContain("law");
+    expect(content).toContain("**Total Registered Connectors:** 53");
+    expect(content).toMatch(/address/i);
+    expect(content).toMatch(/albert/i);
+    expect(content).toMatch(/law/i);
   });
 
   it("verifies documentation pages avoid unproven 'DPGA Certified' claims", () => {
