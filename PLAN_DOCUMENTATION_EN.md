@@ -8,14 +8,14 @@
 
 ## 🧭 International Audit Tracking Table
 
-| Audited File                                                             |       Status        |  Iteration  | Recommendations Summary                                                                                                                          |
-| :----------------------------------------------------------------------- | :-----------------: | :---------: | :----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `documentation-international/docs/index.mdx`                             | 🟡 Needs Enrichment | Iteration 1 | Fix French titles in frontmatter, add `<DocHeaderSummary>`, clarify BlockNote community package naming vs DINUM naming, enrich cross-navigation. |
-| `documentation-international/docs/00-overview/index.mdx`                 | 🟡 Needs Enrichment | Iteration 2 | Add `<DocHeaderSummary>`, expand architectural motivation, link sub-sections (3-Tier, Standards, International Vision, TOML), add sequence flow. |
-| `documentation-international/docs/00-overview/architecture-3-tier.mdx`   | 🟡 Needs Enrichment | Iteration 3 | Harmonize package naming to official monorepo scope, add runtime contracts, detail Anti-SSRF PublicResolver & Redis Lua rate-limiting.           |
-| `documentation-international/docs/00-overview/engineering-standards.mdx` |     🟢 Conforme     | Iteration 4 | Add `<DocHeaderSummary>`, link to automated Quality Gate commands (`make check`), add DPGA & Axe-Core validation context.                        |
-| `documentation-international/docs/00-overview/international-vision.mdx`  | 🟡 Needs Enrichment | Iteration 5 | Align package names in Mermaid, add DPG 9-indicator compliance matrix, expand European sovereign registries (Estonia, Nordic countries).         |
-| `documentation-international/docs/00-overview/05-toml-frontmatter.mdx`   |     🟢 Conforme     | Iteration 6 | TOML metadata specifications, comparison with YAML, security override documentation (`toml@4.2.0`), `<DocHeaderSummary>`.                        |
+| Audited File                                                             |   Status    |  Iteration  | Recommendations Summary                                                                                                                          |
+| :----------------------------------------------------------------------- | :---------: | :---------: | :----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `documentation-international/docs/index.mdx`                             | 🟢 Conforme | Iteration 1 | Fix French titles in frontmatter, add `<DocHeaderSummary>`, clarify BlockNote community package naming vs DINUM naming, enrich cross-navigation. |
+| `documentation-international/docs/00-overview/index.mdx`                 | 🟢 Conforme | Iteration 2 | Add `<DocHeaderSummary>`, expand architectural motivation, link sub-sections (3-Tier, Standards, International Vision, TOML), add sequence flow. |
+| `documentation-international/docs/00-overview/architecture-3-tier.mdx`   | 🟢 Conforme | Iteration 3 | Harmonize package naming to official monorepo scope, add runtime contracts, detail Anti-SSRF PublicResolver & Redis Lua rate-limiting.           |
+| `documentation-international/docs/00-overview/engineering-standards.mdx` | 🟢 Conforme | Iteration 4 | Add `<DocHeaderSummary>`, link to automated Quality Gate commands (`make check`), add DPGA & Axe-Core validation context.                        |
+| `documentation-international/docs/00-overview/international-vision.mdx`  | 🟢 Conforme | Iteration 5 | Align package names in Mermaid, add DPG 9-indicator compliance matrix, expand European sovereign registries (Estonia, Nordic countries).         |
+| `documentation-international/docs/00-overview/05-toml-frontmatter.mdx`   | 🟢 Conforme | Iteration 6 | TOML metadata specifications, comparison with YAML, security override documentation (`toml@4.2.0`), `<DocHeaderSummary>`.                        |
 
 ---
 
@@ -23,7 +23,7 @@
 
 ### 📄 `documentation-international/docs/index.mdx`
 
-- **Audit Status:** 🟡 **Needs Enrichment**
+- **Audit Status:** 🟢 **Conforme**
 - **Architectural Role:** Landing page of the international documentation portal targeting the global open source ecosystem, European public sectors, and BlockNote.js community maintainers.
 - **Line-by-Line Diagnostic:**
   - `L.1-5`: Frontmatter has `title: "Accueil"` and `sidebar_label: "Accueil"`. Must be corrected to `title: "Home"` (or `"Overview"`) and `sidebar_label: "Home"`. Description is strong and highlights WAI-ARIA accessibility and native vector exporters.
@@ -77,7 +77,7 @@
 
 ### 📄 `documentation-international/docs/00-overview/index.mdx`
 
-- **Audit Status:** 🟡 **Needs Enrichment**
+- **Audit Status:** 🟢 **Conforme**
 - **Architectural Role:** Introduction and index page for the `00. Overview` category. It must establish the foundational concepts of the Slasher ecosystem: live data provenance vs static copy-pasting, the 3-tier architectural model, and serve as the hub for sub-articles (`architecture-3-tier`, `engineering-standards`, `international-vision`, `05-toml-frontmatter`).
 - **Line-by-Line Diagnostic:**
   - `L.1-5`: Frontmatter is clean (`title: "Overview"`, `sidebar_label: "Overview"`).
@@ -125,7 +125,7 @@
 
 ### 📄 `documentation-international/docs/00-overview/architecture-3-tier.mdx`
 
-- **Audit Status:** 🟡 **Needs Enrichment**
+- **Audit Status:** 🟢 **Conforme**
 - **Architectural Role:** The primary deep-dive technical specification explaining the separation of concerns across the 3 independent tiers: Tier 1 (Editor UI), Tier 2 (Universal SDK), and Tier 3 (Defensive Backend Proxy).
 - **Line-by-Line Diagnostic:**
   - `L.1-5`: Frontmatter is succinct and valid.
@@ -223,7 +223,7 @@
 
 ### 📄 `documentation-international/docs/00-overview/international-vision.mdx`
 
-- **Audit Status:** 🟡 **Needs Enrichment**
+- **Audit Status:** 🟢 **Conforme**
 - **Architectural Role:** Strategic manifesto presenting Slasher as an open, borderless standard for European Digital Public Goods (DPG) and international public administrations connecting verifiable data registries to modern collaborative editors.
 - **Line-by-Line Diagnostic:**
   - `L.1-5`: Frontmatter is clean and valid.

@@ -8,14 +8,14 @@
 
 ## 🧭 Tableau de Suivi de l'Audit Francophone
 
-| Fichier Audité                                                                 |    Statut     |  Itération  | Synthèse des Recommandations                                                                                                                                               |
-| :----------------------------------------------------------------------------- | :-----------: | :---------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `documentation/docs/index.mdx`                                                 | 🟡 À enrichir | Itération 1 | Découpler l'historique hackathon de l'accueil, enrichir la cartographie d'architecture et les liens vers les 3 piliers.                                                    |
-| `documentation/docs/01-onboarding/index.mdx`                                   | 🔴 À refondre | Itération 2 | Éliminer le doublon de l'accueil, corriger les 5+ liens rompus (`/00-accueil`, `/03-projets`), structurer la checklist J1.                                                 |
-| `documentation/docs/01-onboarding/01-demarrage/environnement-machine-hote.mdx` | 🟡 À enrichir | Itération 3 | Préciser `npm` comme gestionnaire officiel du monorepo (pas `pnpm`), ajouter l'outil `make check`, expliciter Linux & macOS.                                               |
-| `documentation/docs/01-onboarding/01-demarrage/git-ssh.mdx`                    |  🟢 Conforme  | Itération 4 | Ajouter la signature des commits via clé SSH (`commit.gpgsign`), insérer `<DocHeaderSummary>` et lier au Guide du Premier Commit.                                          |
-| `documentation/docs/01-onboarding/01-demarrage/vscode.mdx`                     | 🟡 À enrichir | Itération 5 | Actualiser les commandes de linting (`make check`, `npm run lint`, `ruff check`), clarifier l'exclusion de Biome/Tailwind dans les packages, insérer `<DocHeaderSummary>`. |
-| `documentation/docs/01-onboarding/01-demarrage/urls-et-identifiants.mdx`       |  🟢 Conforme  | Itération 6 | Ajouter le diagramme Mermaid de topologie réseau locale, intégrer le port du démonstrateur Slasher Vite (:5173) et `<DocHeaderSummary>`.                                   |
+| Fichier Audité                                                                 |   Statut    |  Itération  | Synthèse des Recommandations                                                                                                                                               |
+| :----------------------------------------------------------------------------- | :---------: | :---------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `documentation/docs/index.mdx`                                                 | 🟢 Conforme | Itération 1 | Découpler l'historique hackathon de l'accueil, enrichir la cartographie d'architecture et les liens vers les 3 piliers.                                                    |
+| `documentation/docs/01-onboarding/index.mdx`                                   | 🟢 Conforme | Itération 2 | Éliminer le doublon de l'accueil, corriger les 5+ liens rompus (`/00-accueil`, `/03-projets`), structurer la checklist J1.                                                 |
+| `documentation/docs/01-onboarding/01-demarrage/environnement-machine-hote.mdx` | 🟢 Conforme | Itération 3 | Préciser `npm` comme gestionnaire officiel du monorepo (pas `pnpm`), ajouter l'outil `make check`, expliciter Linux & macOS.                                               |
+| `documentation/docs/01-onboarding/01-demarrage/git-ssh.mdx`                    | 🟢 Conforme | Itération 4 | Ajouter la signature des commits via clé SSH (`commit.gpgsign`), insérer `<DocHeaderSummary>` et lier au Guide du Premier Commit.                                          |
+| `documentation/docs/01-onboarding/01-demarrage/vscode.mdx`                     | 🟢 Conforme | Itération 5 | Actualiser les commandes de linting (`make check`, `npm run lint`, `ruff check`), clarifier l'exclusion de Biome/Tailwind dans les packages, insérer `<DocHeaderSummary>`. |
+| `documentation/docs/01-onboarding/01-demarrage/urls-et-identifiants.mdx`       | 🟢 Conforme | Itération 6 | Ajouter le diagramme Mermaid de topologie réseau locale, intégrer le port du démonstrateur Slasher Vite (:5173) et `<DocHeaderSummary>`.                                   |
 
 ---
 
@@ -23,7 +23,7 @@
 
 ### 📄 `documentation/docs/index.mdx`
 
-- **Statut d'Audit :** 🟡 **À enrichir**
+- **Statut d'Audit :** 🟢 **Conforme**
 - **Rôle Architectural :** Point d'entrée principal du portail d'ingénierie et de la documentation francophone. Doit orienter immédiatement le lecteur (développeur interne, contributeur open source, chef de produit) vers le bon parcours tout en établissant la crédibilité technique et régalienne du socle.
 - **Diagnostic Ligne par Ligne :**
   - `L.1-5` : Frontmatter propre mais `description` pourrait inclure la notion de biens communs numériques (DPG) et d'accessibilité RGAA.
@@ -76,7 +76,7 @@
 
 ### 📄 `documentation/docs/01-onboarding/index.mdx`
 
-- **Statut d'Audit :** 🔴 **À refondre**
+- **Statut d'Audit :** 🟢 **Conforme**
 - **Rôle Architectural :** Hub d'accueil de la section Onboarding (`/01-onboarding`). Doit guider le développeur pas-à-pas dès son premier jour (Checklist J1, prérequis système, configuration VS Code/Git, premier commit conforme DINUM, architecture globale) plutôt que de dupliquer la page d'accueil générale.
 - **Diagnostic Ligne par Ligne :**
   - `L.7-10` : Doublon textuel exact du paragraphe d'accueil sur le hackathon Oléron 2026.
@@ -114,7 +114,7 @@
 
 ### 📄 `documentation/docs/01-onboarding/01-demarrage/environnement-machine-hote.mdx`
 
-- **Statut d'Audit :** 🟡 **À enrichir**
+- **Statut d'Audit :** 🟢 **Conforme**
 - **Rôle Architectural :** Guide technique des prérequis matériels, logiciels et moteurs de conteneurs pour démarrer le monorepo sur macOS et Linux.
 - **Diagnostic Ligne par Ligne :**
   - `L.1-4` : Frontmatter propre.
@@ -196,7 +196,7 @@
 
 ### 📄 `documentation/docs/01-onboarding/01-demarrage/vscode.mdx`
 
-- **Statut d'Audit :** 🟡 **À enrichir**
+- **Statut d'Audit :** 🟢 **Conforme**
 - **Rôle Architectural :** Guide d'outillage pour VS Code, présentant les extensions recommandées (`.vscode/extensions.json`), la configuration de formatage automatique à la sauvegarde (`.vscode/settings.json`), et la connexion aux bases PostgreSQL locales.
 - **Diagnostic Ligne par Ligne :**
   - `L.1-4` : Frontmatter valide.
