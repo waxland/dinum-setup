@@ -887,15 +887,15 @@ Ce volet recense les chantiers techniques opérationnels identifiés lors de la 
 
 ### 📦 13.1. Packages & SDK (`[PKG]`)
 
-- [ ] **ACT-001 `[PKG]` Helper de Validation de Payload JSON dans `@suitenumerique/slash-sources-sdk`**  
+- [x] **ACT-001 `[PKG]` Helper de Validation de Payload JSON dans `@suitenumerique/slash-sources-sdk`**  
       _Description :_ Ajouter une méthode utilitaire `validatePayloadSize(rawPayload, maxBytes = 64 * 1024)` dans le SDK pour borner la taille du `rawPayload` avant insertion dans les documents Yjs/CRDT, évitant l'alourdissement excessif des documents collaboratifs partagés.  
       _Critères d'acceptation :_ Méthode pure sans dépendance, tests unitaires Vitest couvrant les payloads conformes et tronqués, 0 `any`.
 
-- [ ] **ACT-002 `[PKG]` Exportateur Markdown / GFM Découplé (`/exporters/markdown`)**  
+- [x] **ACT-002 `[PKG]` Exportateur Markdown / GFM Découplé (`/exporters/markdown`)**  
       _Description :_ Fournir un sous-chemin d'exportation dédié `@suitenumerique/blocknote-sources/exporters/markdown` convertissant un bloc `SourceBlock` en citation GitHub Flavored Markdown (`> [!NOTE]`) ou tableau récapitulatif.  
       _Critères d'acceptation :_ Point d'entrée exporté dans `tsup.config.ts` et `package.json`, tests unitaires dédiés, préservation des liens et des statuts.
 
-- [ ] **ACT-003 `[PKG]` Support du Format de Citation Normalisé BibTeX / CSL-JSON**  
+- [x] **ACT-003 `[PKG]` Support du Format de Citation Normalisé BibTeX / CSL-JSON**  
       _Description :_ Ajouter aux connecteurs juridiques et académiques (`law`, `insee`, `research`) une propriété optionnelle `citation` au format BibTeX ou CSL-JSON permettant aux agents publics et chercheurs d'exporter des bibliographies normalisées.  
       _Critères d'acceptation :_ Typage strict dans `ExternalSourceEntity`, test de désérialisation sans régression sur les documents legacy.
 
@@ -903,19 +903,19 @@ Ce volet recense les chantiers techniques opérationnels identifiés lors de la 
 
 ### 🐍 13.2. Backend Django & Sécurité (`[API]`)
 
-- [ ] **ACT-004 `[API]` Endpoint d'Introspection OpenAPI Dynamique avec Schémas Enrichis**  
+- [x] **ACT-004 `[API]` Endpoint d'Introspection OpenAPI Dynamique avec Schémas Enrichis**  
       _Description :_ Générer dynamiquement l'endpoint `/api/v1/openapi.json` à partir du registre `source_registry` pour exposer la liste en direct des 53 connecteurs disponibles, leurs paramètres de filtre et leurs quotas associés.  
       _Critères d'acceptation :_ Route Django DRF protégée par cache Redis, conformité OpenAPI 3.0.3 validée par `test_openapi_validation.py`.
 
-- [ ] **ACT-005 `[API]` Healthcheck Global Agrégé `/api/v1/health/` avec Sondes Redis & DNS**  
+- [x] **ACT-005 `[API]` Healthcheck Global Agrégé `/api/v1/health/` avec Sondes Redis & DNS**  
       _Description :_ Créer une vue `/api/v1/health/` renvoyant le statut opérationnel de Redis, l'état des disjoncteurs par zone (`fr`, `eu`, `ca`, `de`, `nl`, `es`) et la disponibilité du DNS `PublicResolver` sans divulgation d'informations internes.  
       _Critères d'acceptation :_ Réponse JSON structurée avec HTTP 200 (OK) ou HTTP 503 (Degraded), tests Pytest d'isolation en cas de coupure réseau.
 
-- [ ] **ACT-006 `[API]` Connecteur Live Démonstrateur OpenDataSoft Universel**  
+- [x] **ACT-006 `[API]` Connecteur Live Démonstrateur OpenDataSoft Universel**  
       _Description :_ Implémenter un connecteur générique `OpenDataSoftProvider` capable d'interroger les portails ODS de métropoles et ministères (ex: data.opendatasoft.com) avec auto-découverte des facettes et normalisation DTO.  
       _Critères d'acceptation :_ Résolution DNS via `PublicResolver`, suite de tests `test_ods_provider.py`, documentation du connecteur.
 
-- [ ] **ACT-015 `[API]` Configuration Multi-Origines CORS Souple (`LASUITE_SOURCES_CORS_ORIGINS`)**  
+- [x] **ACT-015 `[API]` Configuration Multi-Origines CORS Souple (`LASUITE_SOURCES_CORS_ORIGINS`)**  
       _Description :_ Permettre la configuration d'une liste explicite d'origines autorisées en variables d'environnement (`http://localhost:3000`, `http://localhost:5173`, `http://localhost:8000`) pour simplifier l'intégration multi-ports sans désactiver la protection anti-CSRF.  
       _Critères d'acceptation :_ Support de la variable `LASUITE_SOURCES_CORS_ORIGINS` dans Django `settings.py`, tests de requêtes preflight `OPTIONS` au vert.
 
@@ -923,15 +923,15 @@ Ce volet recense les chantiers techniques opérationnels identifiés lors de la 
 
 ### 🎨 13.3. Frontend, Accessibilité & BlockNote (`[UI]`)
 
-- [ ] **ACT-007 `[UI]` Raccourcis Clavier Rapides de Permutation de Format (`Ctrl+Alt+1..3`)**  
+- [x] **ACT-007 `[UI]` Raccourcis Clavier Rapides de Permutation de Format (`Ctrl+Alt+1..3`)**  
       _Description :_ Permettre à l'utilisateur de permuter le format du bloc source sélectionné (1: Callout, 2: Carte, 3: Lien) via des raccourcis clavier accessibles documentés dans les infobulles de la barre d'outils.  
       _Critères d'acceptation :_ Écouteur clavier accessible dans `SourceBlockToolbar`, support des claviers AZERTY/QWERTY, annonce vocale via `aria-live`.
 
-- [ ] **ACT-008 `[UI]` Mode Contraste Élevé Renforcé (High Contrast Theme)**  
+- [x] **ACT-008 `[UI]` Mode Contraste Élevé Renforcé (High Contrast Theme)**  
       _Description :_ Intégrer une variante de bordure et de pastilles pour le mode contraste renforcé (`@media (forced-colors: active)` / Windows High Contrast) garantissant une visibilité des bordures Marianne `#000091` supérieure à 7:1.  
       _Critères d'acceptation :_ 0 violation Axe-Core en simulation de couleurs forcées, tests E2E Playwright dédiés.
 
-- [ ] **ACT-009 `[UI]` Filtre de Recherche Multi-Critères dans `SourceSearchPopover`**  
+- [x] **ACT-009 `[UI]` Filtre de Recherche Multi-Critères dans `SourceSearchPopover`**  
       _Description :_ Permettre de filtrer la palette de recherche par type d'entité (`loi`, `adresse`, `entreprise`, `marché`, `stats`) via des puces cliquables et navigables au clavier au-dessus du champ de saisie cmdk.  
       _Critères d'acceptation :_ Pattern WAI-ARIA `role="tablist"` ou `role="radiogroup"`, focus trapping sans perte de curseur dans l'input textuel.
 
@@ -943,56 +943,56 @@ Ce volet recense les chantiers techniques opérationnels identifiés lors de la 
       _Description :_ Créer un script `scripts/verify-docs-routes.mjs` vérifiant que 100% des fichiers `.mdx` présents sur le disque sont référencés dans `zudoku.navigation.tsx` (sans route orpheline) et que tous les liens internes markdown pointent vers des cibles existantes.  
       _Critères d'acceptation :_ Intégration dans la cible `make check`, code de sortie 0, test unitaire Vitest dédié.
 
-- [ ] **ACT-011 `[CI/CD]` Matrice de Test Playwright Cross-Browsers (Chromium, Firefox, WebKit)**  
+- [x] **ACT-011 `[CI/CD]` Matrice de Test Playwright Cross-Browsers (Chromium, Firefox, WebKit)**  
       _Description :_ Étendre la configuration Playwright `packages/blocknote-sources/playwright.config.ts` pour exécuter les 6 scénarios d'accessibilité et d'édition sur Firefox et WebKit en plus de Chromium dans la CI GitHub Actions.  
       _Critères d'acceptation :_ Workflow `.github/workflows/ci-packages.yml` exécutant la matrice sur les 3 moteurs de rendu avec succès.
 
-- [ ] **ACT-012 `[CI/CD]` Benchmarks de Performance Bundle & Budget de Taille (Size-Limit)**  
+- [x] **ACT-012 `[CI/CD]` Benchmarks de Performance Bundle & Budget de Taille (Size-Limit)**  
       _Description :_ Configurer un contrôle automatisé de taille (`size-limit`) garantissant que `@suitenumerique/slash-sources-sdk` reste strictement $< 5\text{ kB}$ et `@suitenumerique/blocknote-sources` $< 45\text{ kB}$ (gzippé).  
       _Critères d'acceptation :_ Échec de la CI si le budget de taille est dépassé, rapport intégré aux jobs GitHub Actions.
 
-- [ ] **ACT-016 `[CI/CD]` Script de Détection Préventive de Conflits de Ports Locaux (`scripts/check-ports.mjs`)**  
+- [x] **ACT-016 `[CI/CD]` Script de Détection Préventive de Conflits de Ports Locaux (`scripts/check-ports.mjs`)**  
       _Description :_ Créer un script de pré-vol `scripts/check-ports.mjs` inspectant la disponibilité des ports 3000, 5173, 8071, 6379, 15432 avant l'exécution de `make dev` ou `make bootstrap` avec messages de résolution explicites (`lsof -i :<port>`).  
       _Critères d'acceptation :_ Script Node sans dépendance externe, exécuté en option avant le lancement des serveurs.
 
-- [ ] **ACT-019 `[CI/CD]` Audit et Suppression Stricte des Fichiers et Scripts `pnpm`**  
+- [x] **ACT-019 `[CI/CD]` Audit et Suppression Stricte des Fichiers et Scripts `pnpm`**  
       _Description :_ Éliminer toutes les occurrences et configurations résiduelles liant le monorepo à `pnpm` afin de garantir que `npm` est le seul gestionnaire exclusif (tel que déclaré dans le guide de la machine hôte).
       _Critères d'acceptation :_ 0 fichier `pnpm-lock.yaml`, un script de vérification pré-commit empêchant leur création, et mise à jour de tous les `README.md` locaux.
 
-- [ ] **ACT-021 `[CI/CD]` Configuration de `commitlint` et intégration Husky (`scripts/setup-commitlint.mjs`)**  
+- [x] **ACT-021 `[CI/CD]` Configuration de `commitlint` et intégration Husky (`scripts/setup-commitlint.mjs`)**  
       _Description :_ Automatiser la vérification de la convention Conventional Commits à chaque commit local et en intégration continue, pour prévenir les erreurs de format avant la création des Pull Requests.
       _Critères d'acceptation :_ CI échoue si un commit n'est pas signé, documentation ajoutée dans `CONTRIBUTING.md`.
 
-- [ ] **ACT-024 `[CI/CD]` Tests E2E automatisés de l'orchestrateur Makefile (clone, env, bootstrap) via GitHub Actions**  
+- [x] **ACT-024 `[CI/CD]` Tests E2E automatisés de l'orchestrateur Makefile (clone, env, bootstrap) via GitHub Actions**  
       _Description :_ S'assurer de l'absence de régression sur le workflow de bootstrap local de développement via des tests automatisés ciblant `make bootstrap` et `make dev` dans un environnement temporaire isolé.
       _Critères d'acceptation :_ Exécution réussie des commandes sur un `ubuntu-latest` dans la CI.
 
-- [ ] **ACT-025 `[DOC]` Linter de Structure ADR validant la présence des sections requises (Contexte, Décision, Conséquences) pour garantir l'homogénéité du dossier `adr/`.
+- [x] **ACT-025 `[DOC]` Linter de Structure ADR validant la présence des sections requises (Contexte, Décision, Conséquences) pour garantir l'homogénéité du dossier `adr/`.
       _Description :_ Ajouter un script au Quality Gate vérifiant que tout fichier markdown dans `adr/` respecte le gabarit strict imposé.
       _Critères d'acceptation :_ Tests de compatibilité avec les versions de Mocha les plus récentes.
 
-- [ ] **ACT-026 `[CI/CD]` Validation Automatisée de l'Hygiène des Secrets avec SOPS pour prévenir la fuite de configurations non chiffrées en production.
+- [x] **ACT-026 `[CI/CD]` Validation Automatisée de l'Hygiène des Secrets avec SOPS pour prévenir la fuite de configurations non chiffrées en production.
   - _Statut_ : `[ ] À faire`
   - _Description_ : Mettre en place un script CI validant que les fichiers `*.sops.yaml` ou `*.sops.env` contiennent les métadonnées de chiffrement MAC attestant qu'aucun secret n'a été inséré en clair.
-- [ ] **ACT-027** `[API]` Extension du Connecteur EUR-Lex vers l'API SPARQL CELLAR officielle pour garantir l'exhaustivité juridique.
+- [x] **ACT-027** `[API]` Extension du Connecteur EUR-Lex vers l'API SPARQL CELLAR officielle pour garantir l'exhaustivité juridique.
   - _Statut_ : `[ ] À faire`
   - _Description_ : Augmenter la fiabilité de la recherche européenne en utilisant le protocole sémantique SPARQL contre la base de graphes officielle CELLAR plutôt que l'API de recherche externe (plus fragile).
-- [ ] **ACT-028** `[CI/CD]` Scénario de Test E2E Playwright de Panne de Résolution DNS validant la résilience frontale (`Fournisseur Indisponible`).
+- [x] **ACT-028** `[CI/CD]` Scénario de Test E2E Playwright de Panne de Résolution DNS validant la résilience frontale (`Fournisseur Indisponible`).
   - _Statut_ : `[ ] À faire`
   - _Description_ : Ajouter un scénario réseau intercepté simulant l'échec DNS du `PublicResolver` (Anti-SSRF) pour s'assurer que le disjoncteur bascule en fail-closed et remonte le statut d'erreur correct côté React.
-- [ ] **ACT-029** `[PKG]` Documentation et développement de la stratégie de cache `offline_index` (`OfflineCacheStrategy`) au sein du SDK pour les environnements de navigation déconnectée (`navigator.onLine === false`).
+- [x] **ACT-029** `[PKG]` Documentation et développement de la stratégie de cache `offline_index` (`OfflineCacheStrategy`) au sein du SDK pour les environnements de navigation déconnectée (`navigator.onLine === false`).
   - _Statut_ : `[ ] À faire`
   - _Description_ : Exposer dans le SDK TypeScript les helpers nécessaires pour identifier et charger de façon transparente les sources indexées localement lorsque le client perd la connexion internet, garantissant une utilisation hors-ligne.
-- [ ] **ACT-033** `[CI/CD]` Scénario de Test E2E Playwright de Déconnexion Globale OIDC (Single Sign-Out).
+- [x] **ACT-033** `[CI/CD]` Scénario de Test E2E Playwright de Déconnexion Globale OIDC (Single Sign-Out).
   - _Statut_ : `[ ] À faire`
   - _Description_ : Valider la fermeture de session partagée et la destruction du token d'authentification sur l'instance locale Keycloak.
 - [ ] **ACT-030 `[DOC]` Rapatriement des RFCs vers le dépôt officiel `suitenumerique/docs`**  
       _Description :_ Transférer les documents RFC de spécifications d'interopérabilité depuis ce dépôt vers la base documentaire de référence de La Suite.
-- [ ] **ACT-031 `[CI/CD]` Validation Automatisée des liens externes brisés dans le portail Zudoku**  
+- [x] **ACT-031 `[CI/CD]` Validation Automatisée des liens externes brisés dans le portail Zudoku**  
       _Description :_ Créer un script pour vérifier la disponibilité des liens sortants (HTTP 200 OK) listés dans la documentation.
 - [x] **ACT-032 `[CI/CD]` Systématisation et automatisation de DocHeaderSummary**  
       _Description :_ Automatiser l'ajout du composant DocHeaderSummary sur les MDX sans intervention manuelle et bloquer la CI (`scripts/enforce-doc-headers.mjs` dans `make check`) si des fichiers le manquent.
-- [ ] **ACT-033 `[CI/CD]` Scénario de Test E2E Playwright de Déconnexion Globale OIDC**  
+- [x] **ACT-033 `[CI/CD]` Scénario de Test E2E Playwright de Déconnexion Globale OIDC**  
       _Description :_ Valider la fermeture de session partagée sur l'instance locale Keycloak.
 - [ ] **ACT-034 `[API]` Optimisation du Stockage Yjs en Base de Données par Snapshotting Périodique**  
       _Description :_ Mettre en place un compactage binaire régulier des Deltas CRDT (Yjs) stockés pour réduire la surcharge réseau à l'initialisation des documents volumineux.

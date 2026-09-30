@@ -26,6 +26,11 @@
       "import": "./dist/exporters/docx.mjs",
       "require": "./dist/exporters/docx.js"
     },
+    "./exporters/markdown": {
+      "types": "./dist/exporters/markdown.d.ts",
+      "import": "./dist/exporters/markdown.mjs",
+      "require": "./dist/exporters/markdown.js"
+    },
     "./exporters/odt": {
       "types": "./dist/exporters/odt.d.ts",
       "import": "./dist/exporters/odt.mjs",

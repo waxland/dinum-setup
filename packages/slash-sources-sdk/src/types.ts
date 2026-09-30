@@ -54,6 +54,7 @@ export interface ExternalSourceEntity {
   updatedAt?: string;
   verifiedAt?: string;
   freshness?: "live" | "cached" | "offline_index";
+  citation?: string;
   rawPayload?: Record<string, unknown> | string;
   // Legacy compatibility fields
   entityType?: SourceEntityType;

@@ -77,6 +77,7 @@ export function parseSearchResponse(payload: unknown): SourceEntityProps[] {
       provider: optionalText(item.provider),
       origin: item.origin === "demo" || item.origin === "upstream" ? item.origin : undefined,
       rawPayload: isObjectRecord(item.raw_payload) ? JSON.stringify(item.raw_payload) : undefined,
+      citation: optionalText(item.citation),
     };
   });
 }

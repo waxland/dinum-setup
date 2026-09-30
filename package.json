@@ -34,14 +34,18 @@
     "packages:build": "npm --prefix packages/slash-sources-sdk run build && npm --prefix packages/blocknote-sources run build",
     "packages:test": "npm --prefix packages/slash-sources-sdk test && npm --prefix packages/blocknote-sources test",
     "packages:verify": "node scripts/verify-packages.mjs",
-    "storybook": "npm --prefix packages/blocknote-sources run storybook"
+    "storybook": "npm --prefix packages/blocknote-sources run storybook",
+    "prepare": "husky"
   },
   "dependencies": {
     "@suitenumerique/blocknote-sources": "*",
     "@suitenumerique/slash-sources-sdk": "*"
   },
   "devDependencies": {
+    "@commitlint/cli": "^21.2.3",
+    "@commitlint/config-conventional": "^21.2.3",
     "eslint": "^9.39.5",
+    "husky": "^9.1.7",
     "prettier": "^3.5.3",
     "typescript": "^5.9.2"
   },

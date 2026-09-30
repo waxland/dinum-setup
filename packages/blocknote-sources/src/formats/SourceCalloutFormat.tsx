@@ -18,6 +18,7 @@ export const SourceCalloutFormat: React.FC<SourceCalloutFormatProps> = ({ props 
       style={{
         padding: "12px 14px",
         borderLeft: "3px solid var(--blue-france, #000091)",
+        outline: "var(--high-contrast-outline, transparent) solid 2px",
         borderTop: "1px solid var(--border-color, #e5e5e5)",
         borderRight: "1px solid var(--border-color, #e5e5e5)",
         borderBottom: "1px solid var(--border-color, #e5e5e5)",
@@ -143,3 +144,4 @@ export const SourceCalloutFormat: React.FC<SourceCalloutFormatProps> = ({ props 
     </div>
   );
 };
+// Ensure forced-colors mode has proper high-contrast outlines instead of relying solely on background/borders.

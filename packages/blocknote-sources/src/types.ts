@@ -112,6 +112,7 @@ export interface SourceEntityProps {
   origin?: "demo" | "upstream";
   freshness?: "live" | "cached" | "offline_index";
   rawPayload?: string;
+  citation?: string;
 }
 
 export interface SourceSuggestResult {
@@ -156,6 +157,7 @@ export type CreateSourceBlockConfig = BlockConfig<
     freshness: { default: "" };
     retrievedAt: { default: "" };
     rawPayload: { default: "" };
+    citation: { default: "" };
     textAlignment: typeof defaultProps.textAlignment;
     backgroundColor: typeof defaultProps.backgroundColor;
   },

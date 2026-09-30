@@ -1,0 +1,40 @@
+name: E2E Makefile Orchestrator
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test-makefile:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify tools
+        run: make check-tools
+
+      # Note: 'make clone', 'make env', 'make bootstrap' will require external dependencies or mock repos.
+      # Since we don't have the actual external repos, we will test the structure of make commands via dry-run or unit testing the scripts.
+      # For now, we just test that the makefile parses correctly and can execute basic checks.
+      - name: Test Make targets (dry-run)
+        run: |
+          make -n clone
+          make -n env
+          make -n bootstrap
+          make -n dev
+          make -n stop

@@ -77,6 +77,7 @@ const SourceComponent: React.FC<SourceComponentProps> = ({ block, editor }) => {
         : undefined,
     retrievedAt: block.props.retrievedAt,
     rawPayload: block.props.rawPayload,
+    citation: block.props.citation,
   };
   const hasSelectedEntity = Boolean(props.sourceId && props.title);
 
@@ -106,6 +107,7 @@ const SourceComponent: React.FC<SourceComponentProps> = ({ block, editor }) => {
         freshness: entity.freshness || "",
         retrievedAt: entity.retrievedAt || "",
         rawPayload: entity.rawPayload || "",
+        citation: entity.citation || "",
       },
     });
     editor.focus();
@@ -191,6 +193,7 @@ export const SourceBlock = createReactBlockSpec(
       freshness: { default: "" },
       retrievedAt: { default: "" },
       rawPayload: { default: "" },
+      citation: { default: "" },
       textAlignment: defaultProps.textAlignment,
       backgroundColor: defaultProps.backgroundColor,
     },

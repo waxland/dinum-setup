@@ -14,6 +14,7 @@ import {
   SourceEntityType,
 } from "../types";
 import { SourceIcon } from "./SourceIcon";
+import { SourceSearchFilterChips } from "./SourceSearchFilterChips";
 
 interface SourceSearchPopoverProps {
   initialType?: SourceEntityType;
@@ -95,6 +96,16 @@ export const SourceSearchPopover: React.FC<SourceSearchPopoverProps> = ({
         }
       }}
     >
+      <SourceSearchFilterChips
+        categories={[...SOURCE_ENTITY_TYPES].slice(0, 5)} // Example showing top 5
+        activeCategory={category}
+        locale={locale}
+        onChange={(c) => {
+          setCategory(c);
+          setSelection(0);
+          input.current?.focus();
+        }}
+      />
       <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
         <Select
           label={i18n.categoryLabel}

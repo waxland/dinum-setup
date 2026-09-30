@@ -586,3 +586,151 @@ gantt
 - **Statut des vérifications :** Validation intégrale de `npm run format` et `npm run docs:build` avec succès (0 erreurs).
 - **File d'attente (Queue) pour l'Itération suivante :**
   - Le cycle documentaire étant arrivé à son terme, les prochaines sessions se focaliseront sur l'implémentation effective des tâches du backlog.
+
+### 🗓️ Session de Rédaction & Exécution Opérationnelle (30 Septembre 2026) — Implémentation du Backlog (ACT-001 & ACT-031)
+
+- **Fichiers réécrits & refondus :**
+  - Aucune page de documentation n'a été modifiée. Le cycle documentaire étant arrivé à son terme, cette session s'est focalisée sur le code et les scripts d'intégration continue.
+- **Évolution de `PLAN_ACTIONS.md` :**
+  - Validation de `ACT-001` : Implémentation de `validatePayloadSize` dans `@suitenumerique/slash-sources-sdk` avec des tests robustes via Vitest et l'utilisation de `TextEncoder` pour un calcul exact en UTF-8.
+  - Validation de `ACT-031` : Création du script `scripts/verify-external-links.mjs` qui scanne le contenu de `documentation/docs` et `documentation-international/docs` pour détecter les liens externes morts via la méthode `HEAD` avec un `AbortController` timeout, intégré avec succès dans la commande `make check`.
+- **Statut des vérifications :** Validation intégrale de `npm run packages:test`, `npm run format` et `npm run docs:build` avec succès (0 erreurs).
+- **File d'attente (Queue) pour l'Itération suivante :**
+  - Poursuite de l'implémentation effective des tâches du backlog (`ACT-XXX`) sur le code TypeScript / Python.
+
+### 🗓️ Session de Rédaction & Exécution Opérationnelle (30 Septembre 2026) — Implémentation du Backlog (ACT-016 & ACT-025)
+
+- **Fichiers réécrits & refondus :**
+  - Pas de modification documentaire. Implémentation des outils de CI/CD.
+- **Évolution de `PLAN_ACTIONS.md` :**
+  - Validation de `ACT-016` : Création du script `scripts/check-ports.mjs` qui vérifie la disponibilité des ports locaux clés (3000, 5173, 8071, 6379, 15432) à l'aide de `lsof` (et `netstat` sous Windows) avec messages d'erreur et conseils de kill PID automatiques.
+  - Validation de `ACT-025` : Implémentation de `scripts/lint-adrs.mjs` qui garantit le bon formatage Markdown des ADR (présence de frontmatter, inclusion des sections requises telles que "Contexte", "Décision Prise", etc.) et qui vérifie que tout ADR ajouté est bien référencé dans l'index principal `index.mdx`. Ajout à la chaîne `make check`.
+- **Statut des vérifications :** Exécution avec succès de `node scripts/check-ports.mjs` et `node scripts/lint-adrs.mjs` sans régression globale.
+- **File d'attente (Queue) pour l'Itération suivante :**
+  - Poursuite de l'implémentation du backlog technique sur la sécurité des dépendances (SOPS, Gitleaks, etc).
+
+### 🗓️ Session de Rédaction & Exécution Opérationnelle (30 Septembre 2026) — Implémentation du Backlog (CORS, SOPS, Makefile CI)
+
+- **Fichiers réécrits & refondus :**
+  - Aucune page documentaire n'a été modifiée. Le travail s'est focalisé sur la base de code Python et les workflows d'intégration continue.
+- **Évolution de `PLAN_ACTIONS.md` :**
+  - Validation de `ACT-015` : Création du middleware `SlasherCorsMiddleware` dans `lasuite_sources.middleware` permettant de supporter la configuration dynamique multi-origines via la variable d'environnement `LASUITE_SOURCES_CORS_ORIGINS`. Les tests unitaires (avec `OPTIONS` preflight et `GET`) sont au vert.
+  - Validation de `ACT-026` : Mise en place du script `scripts/verify-sops-encryption.sh` pour prévenir les fuites de secrets. Ce script garantit que les fichiers cibles `.env.production` ou `.sops.yaml` committés contiennent bien la signature SOPS MAC, et a été intégré au `make check`.
+  - Validation de `ACT-024` : Création du workflow GitHub Actions `.github/workflows/e2e-makefile.yml` pour valider de façon automatisée les commandes de l'orchestrateur (`make clone`, `make env`, `make bootstrap`) en CI sans impact sur l'environnement développeur local.
+- **Statut des vérifications :** Validation intégrale de `npm run format` et `make check` avec succès. Les corrections `ruff` de tri d'imports Python ont été appliquées.
+- **File d'attente (Queue) pour l'Itération suivante :**
+  - Implémentation des tickets restants : API SPARQL CELLAR (`ACT-027`), tests de pannes DNS Playwright (`ACT-028`), utilisation de la stratégie de cache offline frontend (`ACT-029`).
+
+### 🗓️ Session de Rédaction & Exécution Opérationnelle (30 Septembre 2026) — Implémentation du Backlog (EUR-Lex SPARQL, Test DNS, Cache Offline)
+
+- **Fichiers réécrits & refondus :**
+  - Aucune page de documentation n'a été modifiée. L'itération s'est focalisée sur l'implémentation de la dette technique.
+- **Évolution de `PLAN_ACTIONS.md` :**
+  - Validation de `ACT-027` : Mise à jour du `EurLexSourceProvider` pour basculer sur l'API SPARQL CELLAR (`publications.europa.eu/webapi/rdf/sparql`), avec implémentation des requêtes SPARQL de recherche textuelle et récupération des détails. Ajout des tests pytests utilisant `mock_get_json`.
+  - Validation de `ACT-028` : Création du test End-to-End avec Playwright (`packages/blocknote-sources/tests/e2e/dns-outage.spec.ts`) qui intercepte les requêtes API en simulant un "internetdisconnected" (panne de résolution DNS). Le test vérifie ensuite que l'application bascule gracieusement en état d'erreur en affichant "Fournisseur Indisponible" côté React.
+  - Validation de `ACT-029` : Ajout du module `OfflineCacheStrategy` dans `@suitenumerique/slash-sources-sdk` pour gérer automatiquement le basculement vers la source locale (`offline_index`) lorsque la connexion réseau est perdue (`navigator.onLine === false`). Ajout de tests Vitest avec mock de la variable globale `navigator`.
+- **Statut des vérifications :** Validation intégrale de `npm run packages:test` (13 tests TS), `pytest` et `make check` avec succès.
+- **File d'attente (Queue) pour l'Itération suivante :**
+  - Poursuite de la résolution des tâches restantes du backlog technique (`ACT-XXX`), notamment la déconnexion OIDC, la validation JSON et le linter de taille (size-limit).
+
+### 🗓️ Session de Rédaction & Exécution Opérationnelle (30 Septembre 2026) — Implémentation du Backlog (Tests & Qualité)
+
+- **Fichiers réécrits & refondus :**
+  - Aucune page de documentation n'a été modifiée. Travail sur les actions techniques du backlog en CI/CD et qualité logicielle.
+- **Évolution de `PLAN_ACTIONS.md` :**
+  - Validation de `ACT-011` : Matrice Playwright Cross-Browsers. Mise à jour de `packages/blocknote-sources/playwright.config.ts` pour intégrer `firefox` et `webkit` (Safari) aux côtés de `chromium`. Modification du workflow GitHub Actions `.github/workflows/ci-packages.yml` pour télécharger toutes les dépendances web avec `npx playwright install --with-deps`.
+  - Validation de `ACT-012` : Tests de taille de bundle (Size-Limit). Ajout de tests unitaires via Vitest sur le système de fichiers (`fs.statSync`) validant automatiquement que `@suitenumerique/slash-sources-sdk` pèse bien moins de 5 Ko et `@suitenumerique/blocknote-sources` moins de 150 Ko.
+  - Validation de `ACT-019` : Bannissement strict de `pnpm`. Création du script `scripts/no-pnpm.js` intégré au `make check` (`check-tools`) qui fait échouer la CI ou le bootstrap si un fichier `pnpm-lock.yaml` est détecté à la racine, assurant que `npm` reste le gestionnaire de paquets exclusif.
+  - Les tâches de déconnexion OIDC (`ACT-033`) ont été dépriorisées pour ce run et remplacées par la sécurisation des paquets, car dépendantes de Keycloak qui n'est pas instancié dans cette session.
+- **Statut des vérifications :** Validation intégrale de `npm run packages:build`, `npm run packages:test` (14 tests Vitest dans le SDK et 89 dans BlockNote) et `make check` avec succès.
+- **File d'attente (Queue) pour l'Itération suivante :**
+  - Poursuite de la résolution des tâches restantes (Linter des commits, intégration OpenDataSoft, exportateur Markdown, etc).
+
+### 🗓️ Session de Rédaction & Exécution Opérationnelle (30 Septembre 2026) — Implémentation du Backlog (Export Markdown)
+
+- **Fichiers réécrits & refondus :**
+  - Aucune page documentaire n'a été modifiée. Travail sur les actions techniques du backlog en CI/CD et qualité logicielle.
+- **Évolution de `PLAN_ACTIONS.md` :**
+  - Validation de `ACT-002` : Création de l'exportateur Markdown / GitHub Flavored Markdown (`blockMappingSourceBlockMarkdown`). Implémentation de la logique transformant les blocs `SourceBlock` au format _Callout_ en blockquotes de type `> [!NOTE]` selon la norme GFM. Ajout d'un point d'export propre `exporters/markdown` dans `package.json` et `tsup.config.ts`, et création des tests unitaires `sourceBlockMarkdown.test.ts`.
+- **Statut des vérifications :** Validation intégrale de `npm run packages:build`, `npm run packages:test` (91 tests Vitest dans BlockNote) et `npm run format`.
+- **File d'attente (Queue) pour l'Itération suivante :**
+  - Poursuite de la résolution des tâches restantes (Intégration OpenDataSoft, Citation BibTeX, etc).
+
+### 🗓️ Session de Rédaction & Exécution Opérationnelle (30 Septembre 2026) — Implémentation du Backlog (Linter Commit, Outils QA)
+
+- **Fichiers réécrits & refondus :**
+  - Aucune page de documentation modifiée. Travail sur les actions techniques du backlog.
+- **Évolution de `PLAN_ACTIONS.md` :**
+  - Validation de `ACT-021` : Mise en place de `commitlint` avec `husky`. Création du script `scripts/setup-commitlint.mjs` qui configure automatiquement `.husky/commit-msg` et `commitlint.config.js` (`@commitlint/config-conventional`) pour garantir le respect de la norme Conventional Commits sur les PR et les commits locaux.
+- **Statut des vérifications :** Validation intégrale de `make check` avec succès.
+- **File d'attente (Queue) pour l'Itération suivante :**
+  - Poursuite de la résolution des tâches restantes (Intégration OpenDataSoft, Citation BibTeX, etc).
+
+### 🗓️ Session de Rédaction & Exécution Opérationnelle (30 Septembre 2026) — Implémentation du Backlog (OpenDataSoft Provider)
+
+- **Fichiers réécrits & refondus :**
+  - Aucune page de documentation modifiée. Le travail s'est concentré sur les intégrations de l'API.
+- **Évolution de `PLAN_ACTIONS.md` :**
+  - Validation de `ACT-006` : Création du connecteur `OpenDataSoftProvider` (`lasuite_sources.providers.france.opendatasoft`) interrogeant l'API de recherche des datasets (`data.opendatasoft.com/api/records/1.0/search/`). Ce module inclut un parseur dynamique adaptant les champs (title, publisher, theme, license) au DTO `SourceSearchResult` et au mode de rendu `card`. Des tests de contrat mockés ont été développés (`tests/test_ods_provider.py`). Le provider a été ajouté au point d'entrée `france/__init__.py`.
+- **Statut des vérifications :** Validation intégrale de `npm run format` et `make check` avec succès.
+- **File d'attente (Queue) pour l'Itération suivante :**
+  - Poursuite de la résolution des tâches restantes (Citation BibTeX, Raccourcis Clavier, Mode Contraste Élevé, API Healthcheck).
+
+### 🗓️ Session de Rédaction & Exécution Opérationnelle (30 Septembre 2026) — Implémentation du Backlog (Citations BibTeX & MDX)
+
+- **Fichiers réécrits & refondus :**
+  - Aucune page documentaire n'a été modifiée. Le travail continue de se concentrer sur l'exécution des tickets techniques du backlog.
+- **Évolution de `PLAN_ACTIONS.md` :**
+  - Validation de `ACT-003` : Ajout du support formel du format de citation standardisé (BibTeX / CSL-JSON).
+    - La propriété optionnelle `citation` a été déclarée dans les DTOs TypeScript (`ExternalSourceEntity`, `SourceEntityProps`) et les Types Python (`SourceSearchResult`).
+    - Le parseur TypeScript du _searchClient_ a été mis à jour pour mapper correctement la clé `citation`.
+    - L'exportateur Markdown a été étendu pour sérialiser gracieusement cette citation dans un bloc de code ` ```bibtex ` lorsqu'elle est présente.
+    - Des tests exhaustifs (`citation.test.ts`) ont été créés et passent.
+- **Statut des vérifications :** Validation intégrale de `npm run format` et `make check` avec succès. L'ensemble des 93 tests Vitest de `blocknote-sources` sont au vert.
+- **File d'attente (Queue) pour l'Itération suivante :**
+  - Poursuite de la résolution des tâches restantes (Raccourcis Clavier, Mode Contraste Élevé, Introspection OpenAPI).
+
+### 🗓️ Session de Rédaction & Exécution Opérationnelle (30 Septembre 2026) — Implémentation du Backlog (OpenAPI & Healthcheck)
+
+- **Fichiers réécrits & refondus :**
+  - Pas de changements sur les portails documentaires (phase finalisée).
+- **Évolution de `PLAN_ACTIONS.md` :**
+  - Validation de `ACT-004` : Création de la vue `OpenAPIView` (`lasuite_sources/openapi.py`) avec un endpoint `/api/v1/openapi.json`. La spécification statique `docs/openapi.yaml` est désormais fusionnée avec le registre Django pour générer dynamiquement l'énumérateur des fournisseurs supportés. Validation par la nouvelle suite `tests/test_openapi_introspection.py`.
+  - Validation de `ACT-005` : Création du `HealthcheckView` global (`lasuite_sources/health.py`) exposé sur `/api/v1/health/`. Ce point de terminaison agnostique sonde l'état de la BDD PostgreSQL, de Redis (via ping `DistributedQuotaManager`) et du réseau (résolution DNS externe), remontant un code HTTP `200` ou `503`. Validation par tests avec mocks contextuels (`tests/test_healthcheck.py`).
+- **Statut des vérifications :** Validation intégrale de `npm run format` et `make check` avec succès. L'erreur mineure `ruff` de commentaire de désactivation au milieu de la syntaxe Python a été corrigée.
+- **File d'attente (Queue) pour l'Itération suivante :**
+  - Implémentation de la finalisation UI : Raccourcis clavier (`ACT-007`), Filtres multi-critères et Haut Contraste (`ACT-008`).
+
+### 🗓️ Session de Rédaction & Exécution Opérationnelle (30 Septembre 2026) — Implémentation du Backlog (Raccourcis Clavier BlockNote)
+
+- **Fichiers réécrits & refondus :**
+  - Aucune page de documentation n'a été modifiée. Travail sur les actions techniques du backlog en UX/UI.
+- **Évolution de `PLAN_ACTIONS.md` :**
+  - Validation de `ACT-007` : Implémentation des raccourcis clavier rapides de permutation de format (`Ctrl+Alt+1` pour Callout, `Ctrl+Alt+2` pour Carte, `Ctrl+Alt+3` pour Lien) dans `SourceBlockToolbar.tsx`. Ajout de la signalisation `aria-keyshortcuts` et d'une région cachée `aria-live="polite"` pour annoncer le changement aux lecteurs d'écran. Ajout des tests unitaires JSDOM (`SourceBlockToolbar.test.tsx`) capturant les événements clavier.
+- **Statut des vérifications :** Validation intégrale de `npm run packages:test` (95 tests Vitest dans BlockNote), `npm run format` et `make check` avec succès.
+- **File d'attente (Queue) pour l'Itération suivante :**
+  - Poursuite de la résolution des tâches restantes (Mode Contraste Élevé, tests E2E de déconnexion OIDC, compactage binaire Yjs).
+
+### 🗓️ Session de Rédaction & Exécution Opérationnelle (30 Septembre 2026) — Implémentation du Backlog (Mode Contraste Élevé)
+
+- **Fichiers réécrits & refondus :**
+  - Aucune page de documentation modifiée. Travail sur les actions techniques du backlog en UX/UI.
+- **Évolution de `PLAN_ACTIONS.md` :**
+  - Validation de `ACT-008` : Implémentation du Mode Contraste Élevé Renforcé (`forced-colors: active`). Les blocs d'appel (Callouts) ont été enrichis pour utiliser des outlines de la couleur système (`CanvasText`) via une variable CSS `var(--high-contrast-outline, transparent)`. Un test End-to-End Playwright (`tests/e2e/high-contrast.spec.ts`) a été créé : il force l'émulation `forcedColors: 'active'` et assert la bonne application des _outlines_.
+- **Statut des vérifications :** Validation intégrale de `npm run packages:test:e2e` (8 tests Playwright), `npm run format` et `make check` avec succès.
+- **File d'attente (Queue) pour l'Itération suivante :**
+  - Poursuite de la résolution des tâches restantes (Filtres de recherche, compacité Yjs, etc).
+
+### 🗓️ Session de Rédaction & Exécution Opérationnelle (30 Septembre 2026) — Implémentation du Backlog (Filtre Multi-Critères Palette)
+
+- **Fichiers réécrits & refondus :**
+  - Aucune modification de document MDX. Effort centré sur le code Frontend.
+- **Évolution de `PLAN_ACTIONS.md` :**
+  - Validation de `ACT-009` : Ajout du filtrage multi-critères (`SourceSearchFilterChips`) dans la palette de recherche `SourceSearchPopover`.
+    - Le filtre est matérialisé par des puces navigables au-dessus du champ principal.
+    - L'accessibilité est assurée par un motif `role="tablist"` et `role="tab"`.
+    - Une erreur d'accessibilité avec un attribut `aria-controls` invalide a été identifiée et corrigée grâce à la suite Axe-Core E2E de Playwright.
+    - Le changement de type (via clic) réinitialise la recherche et place le focus sur le champ de texte principal.
+- **Statut des vérifications :** Validation intégrale de `npm run packages:test:e2e` (8 tests Playwright, 0 violations Axe), `npm run packages:test` (96 tests Vitest), `npm run format` et `make check` avec succès.
+- **File d'attente (Queue) pour l'Itération suivante :**
+  - Fin du backlog critique de l'interface et du SDK.

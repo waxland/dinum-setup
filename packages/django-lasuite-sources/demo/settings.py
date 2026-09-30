@@ -22,6 +22,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "lasuite_sources.middleware.SlasherCorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -29,6 +30,10 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
 ]
+
+LASUITE_SOURCES_CORS_ORIGINS = os.environ.get(
+    "LASUITE_SOURCES_CORS_ORIGINS", "http://localhost:3000,http://localhost:5173"
+)
 
 ROOT_URLCONF = "urls"
 

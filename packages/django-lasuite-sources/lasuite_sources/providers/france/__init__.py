@@ -10,6 +10,7 @@ from lasuite_sources.providers.france.grant import GrantSourceProvider
 from lasuite_sources.providers.france.insee import InseeSourceProvider
 from lasuite_sources.providers.france.law import LawSourceProvider
 from lasuite_sources.providers.france.opendata import OpenDataSourceProvider
+from lasuite_sources.providers.france.opendatasoft import OpenDataSoftProvider
 from lasuite_sources.providers.france.parliament import ParliamentSourceProvider
 from lasuite_sources.providers.france.procurement import ProcurementSourceProvider
 
@@ -26,4 +27,5 @@ __all__ = [
     "CadastreSourceProvider",
     "DemarcheSourceProvider",
     "OpenDataSourceProvider",
+    "OpenDataSoftProvider",
 ]

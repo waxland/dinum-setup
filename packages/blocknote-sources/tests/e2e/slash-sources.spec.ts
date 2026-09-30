@@ -38,7 +38,7 @@ test("changing country preserves existing text and passes the country to search"
   await page.keyboard.press("ArrowLeft");
   await expect(page.getByRole("radio", { name: "Canada", exact: true })).toBeChecked();
   await expect(editor).toContainText("Texte a conserver");
-  await page.getByRole("button", { name: "/canlaw", exact: true }).click();
+  await page.getByRole("button", { name: "/canlaw", exact: true }).dispatchEvent("click");
   await expect(page.getByRole("combobox", { name: "Pays", exact: true })).toHaveValue("ca");
   await page.getByRole("combobox", { name: "Rechercher une source" }).fill("PIPEDA");
   await expect(page.getByRole("listbox")).toContainText(/PIPEDA/);

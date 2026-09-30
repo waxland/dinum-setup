@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { getI18nStrings } from "../i18n";
 import { useSourceSearchConfiguration } from "../SourceSearchContext";
 import { DisplayMode } from "../types";
@@ -18,6 +18,45 @@ export const SourceBlockToolbar: React.FC<SourceBlockToolbarProps> = ({
 }) => {
   const configuration = useSourceSearchConfiguration();
   const i18n = getI18nStrings(configuration.locale || "fr");
+  const [announcement, setAnnouncement] = useState("");
+
+  // Keyboard shortcut listener
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Look for Ctrl+Alt+[1,2,3]
+      if (e.ctrlKey && e.altKey) {
+        if (e.key === "1") {
+          e.preventDefault();
+          onModeChange("callout");
+          setAnnouncement(`Mode d'affichage changé vers : ${i18n.modes.callout}`);
+        } else if (e.key === "2") {
+          e.preventDefault();
+          onModeChange("card");
+          setAnnouncement(`Mode d'affichage changé vers : ${i18n.modes.card}`);
+        } else if (e.key === "3") {
+          e.preventDefault();
+          onModeChange("link");
+          setAnnouncement(`Mode d'affichage changé vers : ${i18n.modes.link}`);
+        }
+      }
+    };
+
+    // We only attach to the document if the block is focused.
+    // However, a simple global listener is easiest for this iteration.
+    // In a real editor we'd scope this or use ProseMirror shortcuts.
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onModeChange, i18n]);
+
+  // Clear announcement after screen reader picks it up
+  useEffect(() => {
+    if (announcement) {
+      const timer = setTimeout(() => setAnnouncement(""), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [announcement]);
 
   return (
     <div
@@ -34,6 +73,21 @@ export const SourceBlockToolbar: React.FC<SourceBlockToolbarProps> = ({
         color: "var(--text-muted, #777777)",
       }}
     >
+      {/* Screen reader announcement region */}
+      <div
+        aria-live="polite"
+        aria-atomic="true"
+        style={{
+          position: "absolute",
+          width: "1px",
+          height: "1px",
+          overflow: "hidden",
+          clip: "rect(0 0 0 0)",
+        }}
+      >
+        {announcement}
+      </div>
+
       <span
         style={{
           fontWeight: 600,
@@ -50,7 +104,7 @@ export const SourceBlockToolbar: React.FC<SourceBlockToolbarProps> = ({
         aria-label={i18n.displayModeLabel}
         style={{ display: "flex", alignItems: "center", gap: "4px" }}
       >
-        {(["callout", "card", "link"] as const).map((mode) => {
+        {(["callout", "card", "link"] as const).map((mode, index) => {
           const label =
             mode === "callout"
               ? i18n.modes.callout
@@ -58,11 +112,15 @@ export const SourceBlockToolbar: React.FC<SourceBlockToolbarProps> = ({
                 ? i18n.modes.card
                 : i18n.modes.link;
           const isActive = currentMode === mode;
+          const shortcut = `Ctrl+Alt+${index + 1}`;
+
           return (
             <button
               key={mode}
               type="button"
               aria-pressed={isActive}
+              title={`${label} (${shortcut})`}
+              aria-keyshortcuts={shortcut}
               onClick={(e) => {
                 e.preventDefault();
                 onModeChange(mode);

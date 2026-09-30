@@ -1,5 +1,7 @@
 """Tests for European Union sovereign source providers."""
 
+from unittest.mock import MagicMock, patch
+
 import pytest
 
 from lasuite_sources.providers.europe import (
@@ -15,11 +17,26 @@ from lasuite_sources.providers.europe import (
 )
 
 
-def test_eurlex_provider():
+@patch("lasuite_sources.providers.europe.eurlex.get_json")
+def test_eurlex_provider(mock_get_json):
     """Verify EUR-Lex provider search, suggest and get_detail."""
     provider = EurLexSourceProvider()
     assert provider.is_enabled()
     assert provider.source_type == "eurlex"
+
+    mock_get_json.return_value = {
+        "results": {
+            "bindings": [
+                {
+                    "celex": {"value": "32016R0679"},
+                    "title": {"value": "Regulation (EU) 2016/679"},
+                    "work": {
+                        "value": "http://publications.europa.eu/resource/celex/32016R0679"
+                    },
+                }
+            ]
+        }
+    }
 
     # Search GDPR
     results = provider.search("gdpr")

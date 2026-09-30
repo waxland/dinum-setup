@@ -64,6 +64,8 @@ help:
 .PHONY: check-tools
 check-tools:
 	@node scripts/check-runtime.mjs
+	@node scripts/no-pnpm.mjs
+	@./scripts/verify-sops-encryption.sh
 	@command -v git >/dev/null || (echo "Error: git is not installed" >&2; exit 1)
 	@command -v make >/dev/null || (echo "Error: make is not installed" >&2; exit 1)
 	@command -v docker >/dev/null || (echo "Error: docker is not installed" >&2; exit 1)
@@ -78,6 +80,8 @@ prepare-docker:
 .PHONY: install
 install:
 	@node scripts/check-runtime.mjs
+	@node scripts/no-pnpm.mjs
+	@./scripts/verify-sops-encryption.sh
 	@npm ci
 
 .PHONY: clone
@@ -337,6 +341,8 @@ deploy-vercel: deploy-demo deploy-storybook deploy-docs deploy-docs-en
 .PHONY: check
 check:
 	@node scripts/check-runtime.mjs
+	@node scripts/no-pnpm.mjs
+	@./scripts/verify-sops-encryption.sh
 	@node scripts/enforce-doc-headers.mjs
 	@npm audit --audit-level=low
 	@npm run lint
@@ -345,6 +351,8 @@ check:
 	@$(PYTHON) -m ruff check packages/django-lasuite-sources
 	@$(PYTHON) -m ruff format --check packages/django-lasuite-sources
 	@node scripts/verify-local-links.mjs
+	@node scripts/verify-external-links.mjs
+	@node scripts/lint-adrs.mjs
 	@node scripts/verify-docs-routes.mjs
 	@npm run packages:test
 	@cd packages/django-lasuite-sources && PYTHONPATH=. $(PYTHON) -m pytest
