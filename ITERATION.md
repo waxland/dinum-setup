@@ -241,7 +241,7 @@ gantt
   - Rejet systématique des backends de cache non-Redis en environnement de production (`DEBUG = False`) avec levée de l'exception `SourceUnavailable`.
   - Validation par la suite `packages/django-lasuite-sources/tests/test_quota_circuit_breaker.py` (11 tests Pytest au vert) et 101 tests Pytest totaux au vert.
 
-- **Tâche R-03.04 & T-006.07 / T-007.01 / T-008.07 (Pannes & Timeouts Redis, Masquage des Secrets & Fail-Closed) :**
+- **Tâche R-03.04 & T-007.01 / T-007.06 / T-008.07 (Pannes & Timeouts Redis, Masquage des Secrets & Fail-Closed) :**
   - Implémentation du helper de masquage de secrets `sanitize_redis_url(url_or_msg)` filtrant les mots de passe et jetons d'accès présent dans les URL Redis (`redis://:***@host:port/db`) lors des journaux de logs.
   - Garantie du mode _fail-closed_ lors des pannes ou timeouts Redis (`RedisError`, `ConnectionError`, `TimeoutError`, `socket.timeout`) : blocage systématique des requêtes amont en ligne (`fetch()` non exécuté), éliminant tout appel non contrôlé vers les API externes.
   - Exposition de réponses publiques contrôlées HTTP 503 (`provider_unavailable` / `quota_service_unavailable`) dans `SourceAPIView.handle_exception` sans fuite de stack trace ou d'identifiants de base de données/Redis.
@@ -573,3 +573,16 @@ gantt
 - **File d'attente (Queue) pour l'Itération suivante :**
   - `documentation/docs/01-onboarding/01-demarrage/urls-et-identifiants.mdx`
   - `documentation-international/docs/00-overview/05-toml-frontmatter.mdx`
+
+### 🗓️ Session de Rédaction & Exécution Opérationnelle (30 Septembre 2026) — Finalisation Documentation Architecture (SSO & Temps Réel)
+
+- **Fichiers réécrits & refondus :**
+  1. `documentation/docs/02-la-suite/02-architecture/01-securite-et-identite/auth.mdx` : Ajout d'un `<DocHeaderSummary>` adapté pour clarifier l'intégration du SSO OIDC mutualisé (Keycloak / ProConnect).
+  2. `documentation/docs/02-la-suite/02-architecture/02-donnees-et-temps-reel/temps-reel-et-crdt.mdx` : Insertion du `<DocHeaderSummary>` ciblant les architectes et développeurs Core sur l'approche de synchronisation temps réel (WebSockets / CRDT Yjs).
+- **Évolution de `PLAN_ACTIONS.md` :**
+  - Ajout de 2 nouvelles actions techniques issues des constats d'architecture :
+    - `ACT-033` `[CI/CD]` Scénario de Test E2E Playwright de Déconnexion Globale OIDC (Single Sign-Out) sur l'instance locale Keycloak.
+    - `ACT-034` `[API]` Optimisation du Stockage Yjs en Base de Données par Snapshotting Périodique (Compactage binaire des Deltas CRDT).
+- **Statut des vérifications :** Validation intégrale de `npm run format` et `npm run docs:build` avec succès (0 erreurs).
+- **File d'attente (Queue) pour l'Itération suivante :**
+  - Le cycle documentaire étant arrivé à son terme, les prochaines sessions se focaliseront sur l'implémentation effective des tâches du backlog.

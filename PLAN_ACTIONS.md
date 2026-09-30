@@ -983,3 +983,16 @@ Ce volet recense les chantiers techniques opérationnels identifiés lors de la 
 - [ ] **ACT-029** `[PKG]` Documentation et développement de la stratégie de cache `offline_index` (`OfflineCacheStrategy`) au sein du SDK pour les environnements de navigation déconnectée (`navigator.onLine === false`).
   - _Statut_ : `[ ] À faire`
   - _Description_ : Exposer dans le SDK TypeScript les helpers nécessaires pour identifier et charger de façon transparente les sources indexées localement lorsque le client perd la connexion internet, garantissant une utilisation hors-ligne.
+- [ ] **ACT-033** `[CI/CD]` Scénario de Test E2E Playwright de Déconnexion Globale OIDC (Single Sign-Out).
+  - _Statut_ : `[ ] À faire`
+  - _Description_ : Valider la fermeture de session partagée et la destruction du token d'authentification sur l'instance locale Keycloak.
+- [ ] **ACT-030 `[DOC]` Rapatriement des RFCs vers le dépôt officiel `suitenumerique/docs`**  
+      _Description :_ Transférer les documents RFC de spécifications d'interopérabilité depuis ce dépôt vers la base documentaire de référence de La Suite.
+- [ ] **ACT-031 `[CI/CD]` Validation Automatisée des liens externes brisés dans le portail Zudoku**  
+      _Description :_ Créer un script pour vérifier la disponibilité des liens sortants (HTTP 200 OK) listés dans la documentation.
+- [x] **ACT-032 `[CI/CD]` Systématisation et automatisation de DocHeaderSummary**  
+      _Description :_ Automatiser l'ajout du composant DocHeaderSummary sur les MDX sans intervention manuelle et bloquer la CI (`scripts/enforce-doc-headers.mjs` dans `make check`) si des fichiers le manquent.
+- [ ] **ACT-033 `[CI/CD]` Scénario de Test E2E Playwright de Déconnexion Globale OIDC**  
+      _Description :_ Valider la fermeture de session partagée sur l'instance locale Keycloak.
+- [ ] **ACT-034 `[API]` Optimisation du Stockage Yjs en Base de Données par Snapshotting Périodique**  
+      _Description :_ Mettre en place un compactage binaire régulier des Deltas CRDT (Yjs) stockés pour réduire la surcharge réseau à l'initialisation des documents volumineux.

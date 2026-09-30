@@ -337,6 +337,7 @@ deploy-vercel: deploy-demo deploy-storybook deploy-docs deploy-docs-en
 .PHONY: check
 check:
 	@node scripts/check-runtime.mjs
+	@node scripts/enforce-doc-headers.mjs
 	@npm audit --audit-level=low
 	@npm run lint
 	@npm run format:check
