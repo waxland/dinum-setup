@@ -20,7 +20,7 @@ export const COUNTRY_PRESETS: Record<SupportedCountry, CountryPresetConfig> = {
     flag: "🇫🇷",
     defaultLocale: "fr",
     description:
-      "Connecteurs Souverains DINUM / République Française (Légifrance, Annuaire Entreprises, BAN, BOAMP...)",
+      "Connecteurs de Données Souverains DINUM / République Française (Légifrance, Annuaire Entreprises, BAN, BOAMP...)",
     buttons: [
       { type: "law", label: "/loi", icon: "⚖️", desc: "Légifrance / DILA" },
       { type: "company", label: "/entreprise", icon: "🏢", desc: "Annuaire Entreprises / RNE" },

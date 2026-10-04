@@ -273,7 +273,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     type: "category",
-    label: "Slasheurs Souverains",
+    label: "Connecteurs de Données Souverains",
     icon: "terminal",
     collapsed: false,
     items: [

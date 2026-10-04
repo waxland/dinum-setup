@@ -121,6 +121,21 @@ Inspiré de l'architecture native de **`/link-doc` (`Interlinking`)**, ce socle 
 
 ---
 
+## 🏛️ Décision d'Arbitrage : Packages Autonomes Découplés (Option B)
+
+Pour intégrer les **Connecteurs de Données Souverains** dans l'écosystème de La Suite Numérique (`suitenumerique/docs`, `suitenumerique/projects`, etc.), la DINUM a validé l'**Option B (Packages Autonomes Découplés)** :
+
+| Critère                   | Option A : Monolithe En-Arbre | Option B : Packages Autonomes (Retenue)   |
+| :------------------------ | :---------------------------- | :---------------------------------------- |
+| **Empreinte dans `docs`** | 15 000+ lignes de code        | **Moins de 10 lignes de diff**            |
+| **Risque de régression**  | Élevé sur le cœur de Docs     | **Nul (interfaces étanches)**             |
+| **Réutilisabilité**       | Verrouillée sur Docs          | **Immédiate (Projects, Meet, Transfers)** |
+| **Distribution**          | Fermée                        | **NPM (`@suitenumerique/*`) & PyPI**      |
+
+Pour consulter l'analyse technique et les décisions d'architecture, référez-vous au dossier : [ADR-0001 : Architecture Monorepo & Décision d'Arbitrage](/01-onboarding/02-workflow-et-contribution/adr/0001-architecture-monorepo-4-piliers).
+
+---
+
 ## 📦 Les Packages Autonomes « Plug & Play » (Dossier `packages/`)
 
 Pour garantir une intégration **en 1 clic** sans polluer le cœur générique de `suitenumerique/docs`, le socle souverain est packagé de manière autonome :

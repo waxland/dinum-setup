@@ -14,13 +14,14 @@ import { Mermaid } from "../../../src/components/Mermaid";
 
 ## 📌 Executive Summary
 
-| Attribute               | Specification                                                                                    |
-| :---------------------- | :----------------------------------------------------------------------------------------------- |
-| **Target Repository**   | [`suitenumerique/docs`](https://github.com/suitenumerique/docs)                                  |
-| **Target Branch**       | `main`                                                                                           |
-| **Pull Request Status** | 🟢 **Open & Submitted:** [PR #2703](https://github.com/suitenumerique/docs/pull/2703)            |
-| **Commit Title**        | `✨(dev) make development URLs configurable for remote servers and VMs`                          |
-| **Scope**               | Docker Compose environment configuration, Keycloak public hostname, Next.js `allowedDevOrigins`. |
+| Attribute               | Specification                                                                                                                                                                                                                                                          |
+| :---------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Target Repository**   | [`suitenumerique/docs`](https://github.com/suitenumerique/docs)                                                                                                                                                                                                        |
+| **Target Branch**       | `main`                                                                                                                                                                                                                                                                 |
+| **Pull Request Status** | 🟢 **Open & Submitted:** [PR #2703](https://github.com/suitenumerique/docs/pull/2703)                                                                                                                                                                                  |
+| **Commit Title**        | `✨(dev) make development URLs configurable for remote servers and VMs`                                                                                                                                                                                                |
+| **Scope**               | Docker Compose environment configuration, Keycloak public hostname, Next.js `allowedDevOrigins`.                                                                                                                                                                       |
+| **Live Prototype**      | 🚀 [Figma Interactive Demo](https://www.figma.com/proto/mDkEb8Pl4A4DFeQ7Xez11d/La-Suite-%E2%80%94-Loi-Source-%E2%80%94-Feature-Flow-and-Mockups?node-id=2267-12521&t=6IRdUmyY2ONJPlD1-0&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&fuid=1039480416252129992) |
 
 ---
 

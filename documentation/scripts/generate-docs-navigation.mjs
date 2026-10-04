@@ -62,7 +62,7 @@ function formatLabel(name) {
     return "Design System";
   }
   if (clean === "slasheurs-france") {
-    return "Slasheurs Souverains";
+    return "Connecteurs de Données Souverains";
   }
   if (clean === "socle-technique") {
     return "Socle Technique";

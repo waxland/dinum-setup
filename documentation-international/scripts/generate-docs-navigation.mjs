@@ -22,7 +22,7 @@ function formatLabel(name) {
 
   const specialLabels = {
     overview: "Overview",
-    "blocknote-extension": "BlockNote Extension",
+    "blocknote-extension": "BlockNote External Sources Extension",
     "provider-sdk": "Provider SDK",
     "backend-proxy": "Backend Proxy",
     presets: "Presets",

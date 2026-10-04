@@ -35,6 +35,15 @@ export const Header: React.FC<HeaderProps> = ({
 
         <div className="sober-nav-actions">
           <a
+            href="https://www.figma.com/proto/mDkEb8Pl4A4DFeQ7Xez11d/La-Suite-%E2%80%94-Loi-Source-%E2%80%94-Feature-Flow-and-Mockups?node-id=2267-12521&t=6IRdUmyY2ONJPlD1-0&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&fuid=1039480416252129992"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="sober-link sober-link-highlight"
+            title="Prototype Démo Figma"
+          >
+            🎨 Prototype Figma
+          </a>
+          <a
             href="https://dinum-docs-waxlands-projects.vercel.app"
             target="_blank"
             rel="noopener noreferrer"

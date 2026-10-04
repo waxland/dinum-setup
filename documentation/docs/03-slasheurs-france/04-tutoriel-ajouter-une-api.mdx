@@ -57,6 +57,19 @@ class AddressSourceProvider(BaseSourceProvider):
 
 ## 🔌 Enregistrer le Provider dans le Registry Backend
 
+### 1. Enregistrement via Entry Points Python (`pyproject.toml`)
+
+Pour rendre un connecteur disponible sans modifier le cœur de `django-lasuite-sources`, déclarez-le dans les entry-points de votre package :
+
+```toml
+[project.entry-points."lasuite_sources.providers"]
+adresse = "mon_package.providers.address:AddressSourceProvider"
+```
+
+Le proxy Django découvrira automatiquement le provider au démarrage et l'exposera sur `/api/v1.0/sources/search/?provider=adresse`.
+
+### 2. Enregistrement Programmatique
+
 ```python
 from .providers.law import LawSourceProvider
 from .providers.company import CompanySourceProvider

@@ -27,7 +27,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     type: "category",
-    label: "BlockNote Extension",
+    label: "BlockNote External Sources Extension",
     icon: "monitor",
     collapsed: false,
     items: [

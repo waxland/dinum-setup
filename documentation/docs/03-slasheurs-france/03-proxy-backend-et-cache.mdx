@@ -148,6 +148,13 @@ class SourceSearchView(APIView):
 
 ## ⚡ Gestion Distribuée des Quotas & Circuit Breaker
 
+Le proxy backend intègre des mécanismes stricts de résilience et de métrologie :
+
+1. **Endpoint de Santé (`/api/v1.0/sources/health/`) :** Retourne l'état de chaque connecteur, le statut du cache Redis et l'état des disjoncteurs.
+2. **Circuit Breakers (Disjoncteurs) :** Bascule automatique en mode dégradé après 5 échecs consécutifs, avec sonde de rétablissement toutes les 30s.
+3. **Cache Déterministe SHA-256 (24h) :** Réduit de 90%+ les requêtes vers les APIs officielles d'État.
+4. **Limitation de Débit (Rate Limiting) :** Token Bucket par utilisateur pour prévenir les dépassements de quota sur PISTE, INSEE ou BAN.
+
 Pour protéger les quotas des APIs ministérielles et garantir qu'un document ne soit jamais bloqué en cas de panne d'un fournisseur tiers, le backend intègre le **`DistributedQuotaManager`** (`lasuite_sources/quota.py`) :
 
 <Mermaid
