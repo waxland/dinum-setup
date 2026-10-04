@@ -343,7 +343,6 @@ check:
 	@node scripts/check-runtime.mjs
 	@node scripts/no-pnpm.mjs
 	@./scripts/verify-sops-encryption.sh
-	@node scripts/enforce-doc-headers.mjs
 	@npm audit --audit-level=critical
 	@npm run lint
 	@npm run format:check

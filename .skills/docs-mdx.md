@@ -1,7 +1,7 @@
 ---
 title: Rédaction de Documentation Technique (MDX & Zudoku)
 sidebar_label: Docs MDX
-description: Normes de rédaction MDX dans Zudoku, proscription des doublons de titres H1, utilisation obligatoire du composant interactif Mermaid et composants dynamiques (CodeTabs, DocHeaderSummary).
+description: Normes de rédaction MDX dans Zudoku, proscription des doublons de titres H1, utilisation obligatoire du composant interactif Mermaid et composants dynamiques (CodeTabs, PackageInstallTabs).
 ---
 
 Ce skill définit les règles fondamentales, les standards stylistiques et les bonnes pratiques pour rédiger et maintenir une documentation technique claire, interactive et sans défaut de rendu dans l'écosystème **Zudoku (Vite SSR + MDX)**.
@@ -31,16 +31,9 @@ Ce skill définit les règles fondamentales, les standards stylistiques et les b
   description: Description concise de la page pour le SEO et le moteur de recherche.
   ---
 
-  <!-- ✅ Pas de "# Titre" ici ! Démarrez directement avec l'introduction ou <DocHeaderSummary> -->
+  <!-- ✅ Pas de "# Titre" ici ! Démarrez directement avec l'introduction -->
 
-  <DocHeaderSummary
-    readingTime="5 min"
-    level="Intermédiaire"
-    roles={["Frontend", "Backend"]}
-    prerequisites={["Docker", "Node.js 22+"]}
-    status="Production Ready"
-    takeaway="Architecture modulaire découpée en 3 tiers avec cache Redis."
-  />
+  Ce document décrit l'architecture modulaire découpée en 3 tiers avec cache Redis.
 
   ## 🏛️ 1. Vue d'Ensemble
   ```
@@ -104,7 +97,7 @@ Pour toute commande d'installation ou comparatif de code, proscrire les listings
 Toute nouvelle page doit respecter le schéma type suivant :
 
 1. **Frontmatter YAML :** `title`, `sidebar_label`, `description`.
-2. **En-tête de Synthèse :** `<DocHeaderSummary>` (temps de lecture, niveau, rôles cibles, prérequis, résumé).
+2. **Introduction & Synthèse :** Brève présentation du sujet et objectifs.
 3. **Corps Structuré :**
    - `## 1. Contexte & Problématique Métier`
    - `## 2. Architecture & Diagramme Interactif (<Mermaid>)`

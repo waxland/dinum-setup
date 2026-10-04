@@ -1,18 +1,8 @@
 ---
-title: "Sécurité"
-sidebar_label: "Sécurité"
+title: "Defensive Security, Anti-SSRF & Circuit Breakers"
+sidebar_label: "Defensive Security"
 description: Strict private network IP blocking, scheme enforcement, and 3.5s timeout circuit breaker architecture.
 ---
-
-<DocHeaderSummary
-  readingTime="3 min"
-  level="Advanced"
-  roles={["Backend", "Security", "DevSecOps"]}
-  prerequisites={["Django", "Redis Lua"]}
-  status="Production Ready"
-  statusColor="success"
-  takeaway="Understand the anti-SSRF protections and the 3.5s timeout boundaries enforced on every outgoing query to external providers."
-/>
 
 The backend proxy enforces zero-trust URL validation to shield internal infrastructure from Server-Side Request Forgery (SSRF) vulnerabilities:
 

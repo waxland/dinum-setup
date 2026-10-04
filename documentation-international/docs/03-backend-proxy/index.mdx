@@ -1,18 +1,8 @@
 ---
-title: "Proxy Architecture"
-sidebar_label: "Proxy"
+title: "Backend Proxy — Architecture & Security"
+sidebar_label: "Proxy Architecture"
 description: Overview of the Django REST Framework proxy, Redis deterministic SHA-256 caching, and anti-SSRF defensive security.
 ---
-
-<DocHeaderSummary
-  readingTime="6 min"
-  level="Advanced"
-  roles={["Backend", "Security", "DevOps"]}
-  prerequisites={["Python 3.12+", "Django REST Framework", "Redis"]}
-  status="Production Ready"
-  statusColor="success"
-  takeaway="Understand the Django Proxy that acts as a secure, rate-limited, and Anti-SSRF gateway between client-side rich text editors and upstream sovereign APIs."
-/>
 
 The backend layer (`django-lasuite-sources`) acts as a secure, high-performance proxy gateway between client-side rich text editors and upstream sovereign APIs.
 

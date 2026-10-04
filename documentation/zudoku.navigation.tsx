@@ -10,7 +10,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     type: "category",
-    label: "01. Onboarding",
+    label: "Onboarding",
     icon: "compass",
     collapsed: false,
     items: [
@@ -21,7 +21,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         type: "category",
-        label: "Contexte 42",
+        label: "Contexte",
         icon: "folder",
         collapsed: false,
         items: ["/01-onboarding/00-contexte/challenge-42", "/01-onboarding/00-contexte/planning"],
@@ -105,7 +105,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     type: "category",
-    label: "02. La Suite",
+    label: "La Suite",
     icon: "palette",
     collapsed: false,
     items: [
@@ -273,7 +273,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     type: "category",
-    label: "03. Slasheurs France",
+    label: "Slasheurs France",
     icon: "terminal",
     collapsed: false,
     items: [

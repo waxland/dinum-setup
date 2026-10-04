@@ -1,18 +1,8 @@
 ---
-title: "Quotas"
-sidebar_label: "Quotas"
+title: "Quota Management & Token Bucket Rate Limiting"
+sidebar_label: "Quotas & Rate Limiting"
 description: Architectural specification for distributed quota tracking, 80% safety margins, per-user burst rate limits, and HTTP 429 Retry-After circuit breakers.
 ---
-
-<DocHeaderSummary
-  readingTime="3 min"
-  level="Intermediate"
-  roles={["Developers", "Contributors"]}
-  prerequisites={["None"]}
-  status="Production Ready"
-  statusColor="success"
-  takeaway="Detailed documentation page containing context, specs, and references."
-/>
 
 In enterprise and public-sector collaborative deployments, public APIs often enforce strict rate limits and daily quota ceilings.
 

@@ -1,18 +1,8 @@
 ---
-title: "Proxy Cache"
-sidebar_label: "Proxy Cache"
+title: "Proxy Backend Sécurisé & Stratégie de Cache"
+sidebar_label: "Proxy & Cache"
 description: Architecture backend unifiée, classe abstraite BaseSourceProvider, cache Redis générique et gestion des quotas.
 ---
-
-<DocHeaderSummary
-  readingTime="5 min"
-  level="Débutant à Intermédiaire"
-  roles={["Développeurs", "Chefs de Produit"]}
-  prerequisites={["Architecture La Suite"]}
-  status="Standard"
-  statusColor="info"
-  takeaway="Comprendre le fonctionnement technique et stratégique des slasheurs souverains."
-/>
 
 Côté serveur, le **Socle Technique Unifié** s'appuie sur le patron de conception **Provider Registry** au sein du backend Django 5. Il centralise la sécurité des clés d'API, le cache Redis partagé et la résilience réseau.
 

@@ -35,7 +35,7 @@ describe("Documented Claims and Parameter Alignment Audit (R-08.02)", () => {
     const indexMdxPath = path.join(rootDir, "documentation/docs/index.mdx");
     const content = fs.readFileSync(indexMdxPath, "utf-8");
 
-    expect(content).toContain('status="DPG Standard"');
-    expect(content).not.toContain('status="DPGA Certified"');
+    expect(content).toContain("Bien Public Numérique (DPG)");
+    expect(content).not.toContain("DPGA Certified");
   });
 });

@@ -1,7 +1,7 @@
 ---
 title: Technical Documentation Authoring (MDX & Zudoku)
 sidebar_label: Docs MDX
-description: MDX authoring rules for Zudoku, H1 title deduplication, mandatory interactive Mermaid component, and dynamic widgets (CodeTabs, DocHeaderSummary).
+description: MDX authoring rules for Zudoku, H1 title deduplication, mandatory interactive Mermaid component, and dynamic widgets (CodeTabs, PackageInstallTabs).
 ---
 
 This skill provides mandatory engineering rules and styling standards for authoring clean, interactive, and error-free technical documentation in **Zudoku (Vite SSR + MDX)**.
@@ -31,16 +31,9 @@ This skill provides mandatory engineering rules and styling standards for author
   description: Concise page summary for SEO and search indexing.
   ---
 
-  <!-- ✅ No "# Title" here! Start directly with <DocHeaderSummary> or introduction -->
+  <!-- ✅ No "# Title" here! Start directly with the introduction -->
 
-  <DocHeaderSummary
-    readingTime="5 min"
-    level="Intermediate"
-    roles={["Frontend", "Backend"]}
-    prerequisites={["Docker", "Node.js 22+"]}
-    status="Production Ready"
-    takeaway="3-tier modular architecture with Redis cache."
-  />
+  This document describes the 3-tier modular architecture with Redis cache.
 
   ## 🏛️ 1. Architecture Overview
   ```
@@ -104,7 +97,7 @@ For installation commands and language comparisons, never use separate static sn
 Every new documentation page must adhere to the standard template:
 
 1. **YAML Frontmatter:** `title`, `sidebar_label`, `description`.
-2. **Header Summary:** `<DocHeaderSummary>` (reading time, difficulty level, target roles, prerequisites, takeaway).
+2. **Introduction & Summary:** Brief topic introduction and learning objectives.
 3. **Structured Body:**
    - `## 1. Context & Problem Statement`
    - `## 2. Architecture & Interactive Diagram (<Mermaid>)`

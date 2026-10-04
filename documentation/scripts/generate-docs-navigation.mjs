@@ -1,7 +1,7 @@
+import { execSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { execSync } from "node:child_process";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -44,13 +44,13 @@ function formatLabel(name) {
     return "Serveur";
   }
   if (clean === "onboarding") {
-    return "01. Onboarding";
+    return "Onboarding";
   }
   if (clean === "contexte") {
-    return "Contexte 42";
+    return "Contexte";
   }
   if (clean === "la-suite") {
-    return "02. La Suite";
+    return "La Suite";
   }
   if (clean === "applications") {
     return "Applications";
@@ -62,16 +62,16 @@ function formatLabel(name) {
     return "Design System";
   }
   if (clean === "slasheurs-france") {
-    return "03. Slasheurs France";
+    return "Slasheurs France";
   }
   if (clean === "socle-technique") {
     return "Socle Technique";
   }
   if (clean.toLowerCase() === "pr") {
-    return "04. Pull Requests";
+    return "Pull Requests";
   }
   if (clean === "skills") {
-    return "05. Skills";
+    return "Skills";
   }
   if (clean === "docs-serveur-config") {
     return "PR Serveurs";

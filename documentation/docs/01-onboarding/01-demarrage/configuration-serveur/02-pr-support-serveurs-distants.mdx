@@ -1,5 +1,5 @@
 ---
-title: "Support Serveurs"
+title: "Support des Serveurs Distants & Pull Requests"
 sidebar_label: "Support Serveurs"
 description: Document complet et argumenté prêt à être partagé avec l'équipe de La Suite Numérique / DINUM pour rendre La Suite Docs nativement compatible avec les serveurs distants.
 ---
@@ -241,37 +241,3 @@ This causes three main issues on remote machines:
 - [x] Documentation has been updated accordingly
 - [x] All existing automated tests continue to pass
 ```
-
-````
-This is the description of what the code block changes:
-<changeDescription>
-Add DocHeaderSummary to documentation/docs/01-onboarding/01-demarrage/configuration-serveur/02-pr-support-serveurs-distants.mdx
-</changeDescription>
-
-This is the code block that represents the suggested code change:
-```plaintext
-// ...existing code...
----
-title: "PR : Support pour environnements serveurs (headless)"
-description: Analyse des évolutions nécessaires dans les workflows pour supporter le déploiement sur serveurs distants ou headless.
----
-
-<DocHeaderSummary
-  readingTime="10 min"
-  level="Expert"
-  roles={["Architectes", "DevOps", "Mainteneurs Core"]}
-  prerequisites={["Architecture des workflows CI/CD"]}
-  status="RFC Proposed"
-  statusColor="info"
-  takeaway="Comprenez les défis et les solutions techniques proposées pour adapter nos workflows de développement et de déploiement aux environnements serveurs (headless) et distants."
-/>
-
-### 1. Contexte et Synthèse de la Pull Request
-
-Cette Pull Request (PR) vise à combler les lacunes rencontrées par les équipes d’infrastructure lorsqu’elles déploient le monorepo sur des environnements d’exécution non interactifs (_headless_) ou distants. L'adoption croissante de La Suite Numérique par diverses entités nécessite une procédure de _bootstrap_ agnostique, ne présumant pas d'un accès à un environnement de bureau ou à des navigateurs locaux.
-// ...existing code...
-```
-<userPrompt>
-Provide the fully rewritten file, incorporating the suggested code change. You must produce the complete file.
-</userPrompt>
-````

@@ -7,19 +7,8 @@ description: Request for Comments (RFC) proposal and community extension package
 import { Mermaid } from "../../../src/components/Mermaid";
 import { FeatureCard, FeatureGrid } from "../../../src/components/Cards";
 import { PackageInstallTabs, DualLanguageTabs } from "../../../src/components/CodeTabs";
-import { DocHeaderSummary } from "../../../src/components/DocHeaderSummary";
 
 # 🌐 PR 3: RFC & Upstream Extension Proposal for BlockNote.js (`TypeCellOS/BlockNote`)
-
-<DocHeaderSummary
-readingTime="8 min"
-level="Advanced"
-roles={["Frontend BlockNote", "Architect", "Open Source Maintainer"]}
-prerequisites={["@blocknote/core", "TypeScript", "WCAG 2.1 AA"]}
-status="Ready for Upstream RFC Submission"
-statusColor="info"
-takeaway="Formal Request for Comments (RFC) proposing @blocknote/xl-external-sources to standardize connected data blocks across the global BlockNote ecosystem."
-/>
 
 Beyond internal integration within La Suite Docs, this specification represents an **upstream open source contribution to the international [`TypeCellOS/BlockNote`](https://github.com/TypeCellOS/BlockNote) ecosystem**.
 

@@ -6,19 +6,8 @@ description: Official Pull Request dossier for suitenumerique/docs integrating s
 
 import { Mermaid } from "../../../src/components/Mermaid";
 import { PackageInstallTabs, PythonInstallTabs, DualLanguageTabs } from "../../../src/components/CodeTabs";
-import { DocHeaderSummary } from "../../../src/components/DocHeaderSummary";
 
 # 📦 PR 2: Modular Integration of Sovereign Sources into La Suite Docs
-
-<DocHeaderSummary
-readingTime="7 min"
-level="Advanced"
-roles={["Backend Django", "Frontend React", "Maintainer"]}
-prerequisites={["suitenumerique/docs", "DCO signoff", "Gitmoji"]}
-status="Ready for Upstream Review"
-statusColor="success"
-takeaway="Integrate 41+ sovereign public data connectors into La Suite Docs in under 10 lines of diff with zero core domain pollution."
-/>
 
 This document provides the **complete, production-ready Pull Request dossier** prepared according to the **`send-pr`**, **`dinum-python`**, **`dinum-react`**, and **`dpg-review`** skills for submission to [`suitenumerique/docs`](https://github.com/suitenumerique/docs).
 

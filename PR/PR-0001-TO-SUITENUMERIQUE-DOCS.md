@@ -5,19 +5,8 @@ description: Complete Pull Request dossier for suitenumerique/docs making La Sui
 ---
 
 import { Mermaid } from "../../../src/components/Mermaid";
-import { DocHeaderSummary } from "../../../src/components/DocHeaderSummary";
 
 # 🌐 PR 1: Remote Servers & Cloud VMs Support for La Suite Docs
-
-<DocHeaderSummary
-readingTime="5 min"
-level="Intermediate"
-roles={["DevOps", "Backend Django", "Maintainer"]}
-prerequisites={["suitenumerique/docs", "DCO signoff", "Docker"]}
-status="Merged / Submitted (PR #2703)"
-statusColor="success"
-takeaway="Enables running La Suite Docs on remote servers, VMs, and cloud instances without modifying source code."
-/>
 
 **Upstream Reference:** [suitenumerique/docs#2703](https://github.com/suitenumerique/docs/pull/2703)
 

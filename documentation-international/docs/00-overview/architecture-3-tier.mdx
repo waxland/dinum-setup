@@ -1,18 +1,8 @@
 ---
-title: "Architecture"
-sidebar_label: "Architecture"
+title: "3-Tier Architecture & System Overview"
+sidebar_label: "3-Tier Architecture"
 description: Complete breakdown of the Editor Client, Provider SDK, and Backend Proxy tiers.
 ---
-
-<DocHeaderSummary
-  readingTime="3 min"
-  level="Intermediate"
-  roles={["Developers", "Contributors"]}
-  prerequisites={["None"]}
-  status="Production Ready"
-  statusColor="success"
-  takeaway="Detailed documentation page containing context, specs, and references."
-/>
 
 Slasher is structured in 3 decoupled, independently deployable tiers. This strict separation of concerns allows us to isolate the UI rendering engine (Tier 1) from the data fetching definitions (Tier 2) and the network security protections (Tier 3), ensuring maximum resilience and flexibility.
 

@@ -1,17 +1,8 @@
 ---
-title: "Stockage S3"
+sidebar_label: "Stockage S3"
+title: "Stockage Objet S3 & MinIO Souverain"
 description: Architecture de stockage S3, URLs présignées pour téléversements directs (multipart upload), politiques de conservation et isolation des buckets.
 ---
-
-<DocHeaderSummary
-  readingTime="3 min"
-  level="Débutant à Intermédiaire"
-  roles={["Développeurs", "Contributeurs"]}
-  prerequisites={["Aucun"]}
-  status="DPG Standard"
-  statusColor="success"
-  takeaway="Page documentaire détaillée contenant contexte, spécifications et références."
-/>
 
 Pour traiter des volumes de données importants (transferts de fichiers volumineux dans **Transfers**, pièces jointes de messagerie, avatars dans **People**), La Suite numérique utilise le protocole standard **S3** avec une architecture de **téléversement direct présigné** (_Presigned Direct Upload_).
 
