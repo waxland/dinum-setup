@@ -41,28 +41,28 @@ function formatLabel(name) {
     return "ADRs";
   }
   if (clean === "configuration-serveur") {
-    return "Serveur";
+    return "Configuration Serveur";
   }
   if (clean === "onboarding") {
-    return "Onboarding";
+    return "Onboarding & Démarrage";
   }
   if (clean === "contexte") {
-    return "Contexte";
+    return "Contexte 42";
   }
   if (clean === "la-suite") {
-    return "La Suite";
+    return "La Suite Numérique";
   }
   if (clean === "applications") {
-    return "Applications";
+    return "Écosystème des Applications";
   }
   if (clean === "architecture") {
-    return "Architecture";
+    return "Architecture Globale";
   }
   if (clean === "design-system") {
     return "Design System";
   }
   if (clean === "slasheurs-france") {
-    return "Slasheurs France";
+    return "Slasheurs Souverains";
   }
   if (clean === "socle-technique") {
     return "Socle Technique";
@@ -83,7 +83,7 @@ function formatLabel(name) {
     return "PR BlockNote";
   }
   if (clean === "guide-d-arbitrage-et-migration" || clean === "guide-d-arbitrage") {
-    return "Arbitrage Migration";
+    return "Arbitrage & Migration";
   }
   if (clean === "pr-interne-monolithique") {
     return "PR Interne";
@@ -101,22 +101,40 @@ function formatLabel(name) {
     return "Pôle Implémentation";
   }
   if (clean.startsWith("loi")) {
-    return "01. Loi";
+    return "Loi & Légifrance";
   }
-  if (clean.startsWith("pappers")) {
-    return "02. Entreprises";
+  if (clean.startsWith("pappers") || clean.startsWith("entreprise")) {
+    return "Entreprises & Pappers";
   }
   if (clean.startsWith("assemblee")) {
-    return "03. Assemblée";
+    return "Assemblée Nationale";
   }
-  if (clean.startsWith("ban")) {
-    return "04. BAN";
+  if (clean.startsWith("ban") || clean.startsWith("adresse")) {
+    return "Adresses & BAN";
+  }
+  if (clean.startsWith("albert")) {
+    return "Albert & IA Souveraine";
+  }
+  if (clean.startsWith("marche")) {
+    return "Marchés Publics (BOAMP)";
+  }
+  if (clean.startsWith("subvention")) {
+    return "Subventions & Aides";
+  }
+  if (clean.startsWith("stats")) {
+    return "Statistiques Insee";
+  }
+  if (clean.startsWith("agent")) {
+    return "Annuaire des Agents";
+  }
+  if (clean.startsWith("cadastre")) {
+    return "Cadastre & Parcelles";
   }
   if (clean.startsWith("remplir")) {
-    return "05. Remplir";
+    return "Formulaires & Remplir";
   }
   if (clean.startsWith("propositions-sources") || clean.startsWith("proposition")) {
-    return "06. Propositions";
+    return "Propositions Sources";
   }
   if (clean === "fondations") {
     return "Fondations";
@@ -125,37 +143,37 @@ function formatLabel(name) {
     return "Composants";
   }
   if (clean === "layout-et-structure" || clean === "layout") {
-    return "Structure";
+    return "Layout & Structure";
   }
   if (clean === "ressources") {
     return "Ressources";
   }
   if (clean === "support") {
-    return "Support";
+    return "Support & Dépannage";
   }
   if (clean === "demarrage") {
     return "Démarrage";
   }
   if (clean === "workflow-et-contribution" || clean === "workflow") {
-    return "Workflow";
+    return "Workflow & Contribution";
   }
   if (clean === "documents-et-contenus") {
-    return "Contenus";
+    return "Documents & Contenus";
   }
   if (clean === "communication-et-echange") {
-    return "Communication";
+    return "Communication & Échange";
   }
   if (clean === "gestion-et-utilisateurs") {
-    return "Gestion";
+    return "Gestion & Utilisateurs";
   }
   if (clean === "securite-et-identite") {
-    return "Sécurité";
+    return "Sécurité & Identité";
   }
   if (clean === "donnees-et-temps-reel") {
-    return "Données";
+    return "Données & Temps Réel";
   }
   if (clean === "devops-et-deploiement") {
-    return "DevOps";
+    return "DevOps & Déploiement";
   }
 
   const acronyms = {

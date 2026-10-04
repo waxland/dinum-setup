@@ -10,7 +10,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     type: "category",
-    label: "Onboarding",
+    label: "Onboarding & Démarrage",
     icon: "compass",
     collapsed: false,
     items: [
@@ -21,7 +21,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         type: "category",
-        label: "Contexte",
+        label: "Contexte 42",
         icon: "folder",
         collapsed: false,
         items: ["/01-onboarding/00-contexte/challenge-42", "/01-onboarding/00-contexte/planning"],
@@ -38,7 +38,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           "/01-onboarding/01-demarrage/vscode",
           {
             type: "category",
-            label: "Serveur",
+            label: "Configuration Serveur",
             icon: "server",
             collapsed: false,
             items: [
@@ -50,7 +50,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         type: "category",
-        label: "Workflow",
+        label: "Workflow & Contribution",
         icon: "git-pull-request",
         collapsed: false,
         items: [
@@ -81,7 +81,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         type: "category",
-        label: "Support",
+        label: "Support & Dépannage",
         icon: "life-buoy",
         collapsed: false,
         items: [
@@ -105,7 +105,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     type: "category",
-    label: "La Suite",
+    label: "La Suite Numérique",
     icon: "palette",
     collapsed: false,
     items: [
@@ -116,7 +116,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         type: "category",
-        label: "Applications",
+        label: "Écosystème des Applications",
         icon: "folder",
         collapsed: false,
         items: [
@@ -127,7 +127,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             type: "category",
-            label: "Contenus",
+            label: "Documents & Contenus",
             icon: "file-text",
             collapsed: false,
             items: [
@@ -138,7 +138,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             type: "category",
-            label: "Communication",
+            label: "Communication & Échange",
             icon: "message-square",
             collapsed: false,
             items: [
@@ -149,7 +149,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             type: "category",
-            label: "Gestion",
+            label: "Gestion & Utilisateurs",
             icon: "users",
             collapsed: false,
             items: [
@@ -162,7 +162,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         type: "category",
-        label: "Architecture",
+        label: "Architecture Globale",
         icon: "folder",
         collapsed: false,
         items: [
@@ -173,7 +173,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             type: "category",
-            label: "Sécurité",
+            label: "Sécurité & Identité",
             icon: "shield-check",
             collapsed: false,
             items: [
@@ -184,7 +184,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             type: "category",
-            label: "Données",
+            label: "Données & Temps Réel",
             icon: "database",
             collapsed: false,
             items: [
@@ -195,7 +195,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             type: "category",
-            label: "DevOps",
+            label: "DevOps & Déploiement",
             icon: "cloud",
             collapsed: false,
             items: [
@@ -251,7 +251,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
           },
           {
             type: "category",
-            label: "Structure",
+            label: "Layout & Structure",
             icon: "layout-grid",
             collapsed: false,
             items: ["/02-la-suite/03-design-system/03-layout-et-structure/navigation-et-layout"],
@@ -273,7 +273,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
   },
   {
     type: "category",
-    label: "Slasheurs France",
+    label: "Slasheurs Souverains",
     icon: "terminal",
     collapsed: false,
     items: [
@@ -293,7 +293,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       "/03-slasheurs-france/14-retour-d-experience",
       {
         type: "category",
-        label: "01. Loi",
+        label: "Loi & Légifrance",
         icon: "scale",
         collapsed: false,
         items: [
@@ -336,7 +336,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         type: "category",
-        label: "03. Assemblée",
+        label: "Assemblée Nationale",
         icon: "landmark",
         collapsed: false,
         items: [
@@ -379,7 +379,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         type: "category",
-        label: "Entreprises (/entreprise)",
+        label: "Entreprises & Pappers",
         icon: "building-2",
         collapsed: false,
         items: [
@@ -422,7 +422,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         type: "category",
-        label: "Base Adresse Nationale (/adresse)",
+        label: "Adresses & BAN",
         icon: "map-pin",
         collapsed: false,
         items: [
@@ -465,7 +465,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         type: "category",
-        label: "Albert",
+        label: "Albert & IA Souveraine",
         icon: "folder",
         collapsed: false,
         items: [
@@ -521,7 +521,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         type: "category",
-        label: "Marchés Publics (/marche)",
+        label: "Marchés Publics (BOAMP)",
         icon: "folder",
         collapsed: false,
         items: [
@@ -564,7 +564,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         type: "category",
-        label: "Subventions (/subvention)",
+        label: "Subventions & Aides",
         icon: "folder",
         collapsed: false,
         items: [
@@ -607,7 +607,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         type: "category",
-        label: "Stats",
+        label: "Statistiques Insee",
         icon: "folder",
         collapsed: false,
         items: [
@@ -650,7 +650,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         type: "category",
-        label: "Agent",
+        label: "Annuaire des Agents",
         icon: "folder",
         collapsed: false,
         items: [
@@ -693,7 +693,7 @@ export const docsNavigation: ZudokuConfig["navigation"] = [
       },
       {
         type: "category",
-        label: "Cadastre (/cadastre)",
+        label: "Cadastre & Parcelles",
         icon: "folder",
         collapsed: false,
         items: [

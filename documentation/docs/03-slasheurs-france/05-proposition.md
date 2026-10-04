@@ -1,6 +1,6 @@
 ---
 title: "Proposition & Spécifications Initiales des Sources"
-sidebar_label: "Proposition Sources"
+sidebar_label: "Proposition & Spécifications"
 description: "Document prospectif explorant 10 nouvelles commandes slash pour La Suite Docs (marchés publics, subventions, annuaire, cadastre, INSEE, Tchap, parapheur, démarches)."
 ---
 
